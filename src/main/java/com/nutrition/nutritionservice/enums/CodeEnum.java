@@ -8,8 +8,8 @@ import java.io.Serializable;
  * @author heng.liu
  * @since 2020/9/21
  */
-public interface CodeEnum extends Serializable {
+public interface CodeEnum<T> extends Serializable {
 
-    String getCode();
+    T getCode();
 
 }

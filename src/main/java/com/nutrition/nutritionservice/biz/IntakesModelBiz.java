@@ -31,9 +31,9 @@ public class IntakesModelBiz {
         ModelMetabolismLevelVo modelMetabolismLevelVo = metabolismLevelService.selectByGenderAndAge(param.getGender(),
                 param.getAge());
         Map<String, Double> sportLevelValueMap = configPropertiesService.sportLevelValueMap();
-        double metabolism = modelMetabolismLevelVo.getMetabolismLevel() * param.getWeight()
+        double dailyCalorie = modelMetabolismLevelVo.getMetabolismLevel() * param.getWeight()
                 * sportLevelValueMap.get(String.valueOf(param.getSportLevel()));
-
+        
         return null;
     }
 
