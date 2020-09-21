@@ -7,12 +7,14 @@ import com.nutrition.nutritionservice.service.MetabolismLevelService;
 import com.nutrition.nutritionservice.vo.IntakesModelUserInfoParamVo;
 import com.nutrition.nutritionservice.vo.IntakesModelVo;
 import com.nutrition.nutritionservice.vo.MetabolismLevelVo;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Map;
 
 /**
  * 摄入模型业务层。
@@ -30,13 +32,8 @@ public class IntakesModelBiz {
     @Resource
     private MetabolismLevelService metabolismLevelService;
 
-    private final Map<Integer, Double> sportLevelValueMap = Maps.newHashMap();
-
-    {
-        sportLevelValueMap.put(1, 1.5);
-        sportLevelValueMap.put(2, 1.75);
-        sportLevelValueMap.put(3, 2.0);
-    }
+    @Value("${business.sportLevelValueJson}")
+    private String sportLevelValueJson;
 
     public MetabolismLevelVo testDatabase(int gender, int age) {
         MetabolismLevelVo metabolismLevelVo = metabolismLevelService.selectByGenderAndAge(gender, age);
