@@ -7,7 +7,6 @@ import com.nutrition.nutritionservice.vo.IntakesModelUserInfoParamVo;
 import com.nutrition.nutritionservice.vo.IntakesModelVo;
 import com.nutrition.nutritionservice.vo.modeldata.ModelMetabolismLevelVo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.annotation.Resource;
 import java.util.Map;
@@ -21,9 +20,6 @@ import java.util.Map;
 @Biz
 @Slf4j
 public class IntakesModelBiz {
-
-    @Resource
-    private JdbcTemplate jdbcTemplate;
 
     @Resource
     private MetabolismLevelService metabolismLevelService;
