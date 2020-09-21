@@ -9,12 +9,12 @@ import lombok.Data;
  * @since 2020/9/13
  */
 @Data
-public class FoodIntakesVo {
+public class IngredientSubCategoryIntakesVo {
 
-    private String code;
+    private String subCategoryCode;
 
-    private String name;
+    private String zhName;
 
-    private int intakes;
+    private int weight;
 
 }

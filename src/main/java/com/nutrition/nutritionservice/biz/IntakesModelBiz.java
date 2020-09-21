@@ -3,12 +3,15 @@ package com.nutrition.nutritionservice.biz;
 import com.nutrition.nutritionservice.annotation.Biz;
 import com.nutrition.nutritionservice.service.ConfigPropertiesService;
 import com.nutrition.nutritionservice.service.MetabolismLevelService;
+import com.nutrition.nutritionservice.service.ModelCalorieIngredientSubCategoryIntakesService;
 import com.nutrition.nutritionservice.vo.IntakesModelUserInfoParamVo;
 import com.nutrition.nutritionservice.vo.IntakesModelVo;
+import com.nutrition.nutritionservice.vo.modeldata.ModelCalorieIngredientSubCategoryIntakesVo;
 import com.nutrition.nutritionservice.vo.modeldata.ModelMetabolismLevelVo;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,12 +30,17 @@ public class IntakesModelBiz {
     @Resource
     private ConfigPropertiesService configPropertiesService;
 
+    @Resource
+    private ModelCalorieIngredientSubCategoryIntakesService modelCalorieIngredientSubCategoryIntakesService;
+
     public IntakesModelVo calculateIntakesModel(IntakesModelUserInfoParamVo param) {
         ModelMetabolismLevelVo modelMetabolismLevelVo = metabolismLevelService.selectByGenderAndAge(param.getGender(),
                 param.getAge());
         Map<String, Double> sportLevelValueMap = configPropertiesService.sportLevelValueMap();
         double dailyCalorie = modelMetabolismLevelVo.getMetabolismLevel() * param.getWeight()
                 * sportLevelValueMap.get(String.valueOf(param.getSportLevel()));
+        List<ModelCalorieIngredientSubCategoryIntakesVo> subCategoryIntakesModelList = modelCalorieIngredientSubCategoryIntakesService
+                .queryByCalorie(dailyCalorie);
         
         return null;
     }

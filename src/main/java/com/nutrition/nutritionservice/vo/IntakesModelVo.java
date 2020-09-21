@@ -15,6 +15,6 @@ public class IntakesModelVo {
 
     private String uuid;
 
-    private List<CategoryIntakesVo> categoryIntakesList;
+    private List<IngredientCategoryIntakesVo> categoryIntakesList;
 
 }
