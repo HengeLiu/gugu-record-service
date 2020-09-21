@@ -3,7 +3,7 @@ package com.nutrition.nutritionservice.controller;
 import com.nutrition.nutritionservice.biz.IntakesModelBiz;
 import com.nutrition.nutritionservice.vo.IntakesModelUserInfoParamVo;
 import com.nutrition.nutritionservice.vo.IntakesModelVo;
-import com.nutrition.nutritionservice.vo.MetabolismLevelVo;
+import com.nutrition.nutritionservice.vo.modeldata.ModelMetabolismLevelVo;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,12 +31,6 @@ public class IntakesModelController {
     @ResponseBody
     public IntakesModelVo calculateIntakesModel(IntakesModelUserInfoParamVo param) {
         return intakesModelBiz.calculateIntakesModel(param);
-    }
-
-    @GetMapping("/test")
-    @ResponseBody
-    public MetabolismLevelVo test(Integer gender, Integer age) {
-        return intakesModelBiz.testDatabase(gender, age);
     }
 
 }

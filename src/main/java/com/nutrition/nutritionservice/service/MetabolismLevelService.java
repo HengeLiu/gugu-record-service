@@ -1,7 +1,7 @@
 package com.nutrition.nutritionservice.service;
 
 import com.nutrition.nutritionservice.mapper.MetabolismLevelMapper;
-import com.nutrition.nutritionservice.vo.MetabolismLevelVo;
+import com.nutrition.nutritionservice.vo.modeldata.ModelMetabolismLevelVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -18,7 +18,7 @@ public class MetabolismLevelService {
     @Resource
     private MetabolismLevelMapper metabolismLevelMapper;
 
-    public MetabolismLevelVo selectByGenderAndAge(int gender, int age) {
+    public ModelMetabolismLevelVo selectByGenderAndAge(int gender, int age) {
         return metabolismLevelMapper.select(gender, age);
     }
 

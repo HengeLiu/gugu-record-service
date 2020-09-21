@@ -1,6 +1,6 @@
 package com.nutrition.nutritionservice.mapper;
 
-import com.nutrition.nutritionservice.vo.MetabolismLevelVo;
+import com.nutrition.nutritionservice.vo.modeldata.ModelMetabolismLevelVo;
 import org.apache.ibatis.annotations.Select;
 
 /**
@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Select;
  */
 public interface MetabolismLevelMapper {
 
-    @Select("select * from metabolism_level where gender = #{gender} and age = #{age} order by age limit 1")
-    public MetabolismLevelVo select(int gender, int age);
+    @Select("select * from metabolism_level where gender = #{gender} and age >= #{age} order by age limit 1")
+    public ModelMetabolismLevelVo select(int gender, int age);
 
 }
