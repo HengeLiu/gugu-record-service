@@ -21,6 +21,6 @@ public class IngredientCategoryIntakesVo {
 
     private int weight;
 
-    private List<IngredientSubCategoryIntakesVo> foodIntakesList;
+    private List<IngredientSubCategoryIntakesVo> subCategoryIntakesList;
 
 }

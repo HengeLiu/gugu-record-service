@@ -16,6 +16,7 @@ import com.nutrition.nutritionservice.vo.modeldata.ModelMetabolismLevelVo;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.Resource;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -65,11 +66,12 @@ public class IntakesModelBiz {
                                         .zhName(categoryEnum.getZhName()).build());
                     }
                     categoryIntakesList.add(IngredientCategoryIntakesVo.builder().categoryCode(categoryEnum.getCode())
-                            .zhName(categoryEnum.getZhName()).foodIntakesList(subCategoryIntakesVoList)
+                            .zhName(categoryEnum.getZhName()).subCategoryIntakesList(subCategoryIntakesVoList)
                             .weight(subCategoryIntakesVoList.stream()
                                     .mapToInt(IngredientSubCategoryIntakesVo::getWeight).sum())
                             .build());
                 });
+        categoryIntakesList.sort(Comparator.comparing(IngredientCategoryIntakesVo::getCategoryCode));
         return IntakesModelVo.builder().categoryIntakesList(categoryIntakesList).build();
     }
 

@@ -1,7 +1,9 @@
 package com.nutrition.nutritionservice.vo;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 摄入模型用于参数。
@@ -11,6 +13,8 @@ import lombok.Data;
  */
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class IntakesModelUserInfoParamVo {
 
     private int gender;

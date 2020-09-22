@@ -5,6 +5,7 @@ import com.nutrition.nutritionservice.vo.IntakesModelUserInfoParamVo;
 import com.nutrition.nutritionservice.vo.IntakesModelVo;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,7 +28,7 @@ public class IntakesModelController {
 
     @PostMapping("/calculate")
     @ResponseBody
-    public IntakesModelVo calculateIntakesModel(IntakesModelUserInfoParamVo param) {
+    public IntakesModelVo calculateIntakesModel(@RequestBody IntakesModelUserInfoParamVo param) {
         return intakesModelBiz.calculateIntakesModel(param);
     }
 
