@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Select;
  */
 public interface MetabolismLevelMapper {
 
-    @Select("select * from metabolism_level where gender = #{gender} and age >= #{age} order by age limit 1")
+    @Select("select * from model_metabolism_level where gender = #{gender} and age >= #{age} order by age limit 1")
     ModelMetabolismLevelVo select(int gender, int age);
 
 }

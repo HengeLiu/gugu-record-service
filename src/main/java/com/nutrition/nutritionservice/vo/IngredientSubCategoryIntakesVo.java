@@ -1,5 +1,6 @@
 package com.nutrition.nutritionservice.vo;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -9,9 +10,10 @@ import lombok.Data;
  * @since 2020/9/13
  */
 @Data
+@Builder
 public class IngredientSubCategoryIntakesVo {
 
-    private String subCategoryCode;
+    private int subCategoryCode;
 
     private String zhName;
 

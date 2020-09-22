@@ -15,7 +15,10 @@ import java.util.List;
 @Mapper
 public interface ModelCalorieIngredientSubCategoryIntakesMapper {
 
-    @Select("select * from model_calorie_ingredient_sub_category_intakes where calorie >= #{calorie} order by calorie limit 1")
+    @Select("select * from model_calorie_ingredient_sub_category_intakes where calorie = #{calorie}")
     List<ModelCalorieIngredientSubCategoryIntakesVo> selectByCalorie(double calorie);
+
+    @Select("select max(calorie) from model_calorie_ingredient_sub_category_intakes where calorie <= #{calorie}")
+    double selectMaxCalorieLte(double calorie);
 
 }

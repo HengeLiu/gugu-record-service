@@ -1,5 +1,6 @@
 package com.nutrition.nutritionservice.vo;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -9,6 +10,7 @@ import lombok.Data;
  * @since 2020/9/13
  */
 @Data
+@Builder
 public class IntakesModelUserInfoParamVo {
 
     private int gender;

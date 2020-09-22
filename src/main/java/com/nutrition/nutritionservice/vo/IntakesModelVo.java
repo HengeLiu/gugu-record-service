@@ -1,5 +1,6 @@
 package com.nutrition.nutritionservice.vo;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
  * @since 2020/9/13
  */
 @Data
+@Builder
 public class IntakesModelVo {
 
     private String uuid;

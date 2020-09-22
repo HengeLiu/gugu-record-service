@@ -23,4 +23,8 @@ public class ModelCalorieIngredientSubCategoryIntakesService {
         return modelCalorieIngredientSubCategoryIntakesMapper.selectByCalorie(calorie);
     }
 
+    public double queryMaxCalorieLte(double calorie) {
+        return modelCalorieIngredientSubCategoryIntakesMapper.selectMaxCalorieLte(calorie);
+    }
+
 }
