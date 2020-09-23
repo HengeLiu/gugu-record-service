@@ -18,6 +18,8 @@ public class UserInfoVo extends TimeBasedVo {
 
     private String uuid;
 
+    private String nickName;
+
     private int gender;
 
     private int age;

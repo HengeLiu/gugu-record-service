@@ -1,11 +1,14 @@
 package com.nutrition.nutritionservice.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -23,15 +26,19 @@ public class WechatHttpApiService {
     private final String code2SessionUrl = "https://api.weixin.qq.com/sns/jscode2session?appid=" + appId + "&secret="
             + appSecret + "&grant_type=authorization_code&js_code=";
 
-    public Object getUserSession(String jsCode) {
+    public String getUserOpenId(String jsCode) {
         HttpGet httpGet = new HttpGet(code2SessionUrl + jsCode);
         try (CloseableHttpResponse response = HttpClients.createDefault().execute(httpGet)) {
             StatusLine statusLine = response.getStatusLine();
-            HttpEntity responseEntity = response.getEntity();
+            if (statusLine.getStatusCode() == 200) {
+                HttpEntity responseEntity = response.getEntity();
+                JSONObject resDataJO = JSON.parseObject(EntityUtils.toString(responseEntity));
+                return resDataJO.getString("openid");
+            }
         } catch (Exception e) {
             log.error("查询微信用户会话时发生异常", e);
         }
-        return null;
+        return "";
     }
 
 }
