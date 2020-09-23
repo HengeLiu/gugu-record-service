@@ -28,11 +28,11 @@ public class UserBiz {
     @Resource
     private UserAccountService userAccountService;
 
-    public String loginWithWechat(String jsCode) {
+    public UserAccountVo loginWithWechat(String jsCode) {
         String wxOpenid = wechatHttpApiService.getUserOpenId(jsCode);
         if (StringUtils.isEmpty(wxOpenid)) {
             log.error("Cannot get wx.openid.");
-            return "";
+            return null;
         }
         UserAccountVo userAccount = userAccountService.queryByExternalIdAndType(wxOpenid, UserAccountTypeEnum.WEI_XIN);
         if (userAccount == null) {
@@ -42,20 +42,16 @@ public class UserBiz {
             userAccount.setType(UserAccountTypeEnum.WEI_XIN.getCode());
             userAccount.setExternalId(wxOpenid);
             userAccount.setStatus(UserAccountStatusTypeEnum.ENABLE.getCode());
-            if (register(userAccount)) {
-                return uuid;
-            }
-        } else {
-            return userAccount.getUuid();
+            register(userAccount);
         }
-        return "";
+        return userAccount;
     }
 
-    public boolean register(UserAccountVo userAccount) {
+    public void register(UserAccountVo userAccount) {
         if (userAccount.getPassword() == null) {
             userAccount.setPassword("");
         }
-        return userAccountService.addUserAccount(userAccount);
+        userAccountService.addUserAccount(userAccount);
     }
 
 }
