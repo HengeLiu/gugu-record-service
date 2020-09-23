@@ -15,7 +15,7 @@ import java.util.Map;
  * @since 2020/9/21
  */
 @Service
-@PropertySource("classpath:business-config.properties")
+@PropertySource({"classpath:business-config.properties","classpath:system-config.properties"})
 public class ConfigPropertiesService {
 
     @Value("${business.sportLevelValueJson}")
