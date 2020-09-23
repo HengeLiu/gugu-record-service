@@ -15,10 +15,10 @@ public interface UserAccountMapper {
     @Select("select * from user_account where uuid = #{uuid}")
     UserAccountVo selectByUuid(String uuid);
 
-    @Select("select * from user_account where externalId = #{externalId} and type = #{type}")
+    @Select("select * from user_account where external_id = #{externalId} and type = #{type}")
     UserAccountVo selectByExternalIdAndType(String externalId, int type);
 
-    @Insert("insert into table user_account(uuid, password, type, external_id, status) values (#{userAccount.uuid}, #{userAccount.password}, #{userAccount.type}, #{userAccount.external_id}, #{userAccount.status})")
+    @Insert("insert into user_account(uuid, password, type, external_id, status) values (#{uuid}, #{password}, #{type}, #{externalId}, #{status})")
     int insert(UserAccountVo userAccount);
 
 }
