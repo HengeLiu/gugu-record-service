@@ -7,12 +7,14 @@ import com.nutrition.nutritionservice.enums.IngredientSubCategoryEnum;
 import com.nutrition.nutritionservice.service.ConfigPropertiesService;
 import com.nutrition.nutritionservice.service.MetabolismLevelService;
 import com.nutrition.nutritionservice.service.ModelCalorieIngredientSubCategoryIntakesService;
+import com.nutrition.nutritionservice.service.WechatHttpApiService;
 import com.nutrition.nutritionservice.vo.IngredientCategoryIntakesVo;
 import com.nutrition.nutritionservice.vo.IngredientSubCategoryIntakesVo;
 import com.nutrition.nutritionservice.vo.IntakesModelUserInfoParamVo;
 import com.nutrition.nutritionservice.vo.IntakesModelVo;
 import com.nutrition.nutritionservice.vo.modeldata.ModelCalorieIngredientSubCategoryIntakesVo;
 import com.nutrition.nutritionservice.vo.modeldata.ModelMetabolismLevelVo;
+import com.nutrition.nutritionservice.vo.user.UserInfoVo;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.Resource;
@@ -40,6 +42,9 @@ public class IntakesModelBiz {
 
     @Resource
     private ModelCalorieIngredientSubCategoryIntakesService modelCalorieIngredientSubCategoryIntakesService;
+
+    @Resource
+    private WechatHttpApiService wechatHttpApiService;
 
     public IntakesModelVo calculateIntakesModel(IntakesModelUserInfoParamVo param) {
         ModelMetabolismLevelVo modelMetabolismLevelVo = metabolismLevelService.selectByGenderAndAge(param.getGender(),
@@ -73,6 +78,11 @@ public class IntakesModelBiz {
                 });
         categoryIntakesList.sort(Comparator.comparing(IngredientCategoryIntakesVo::getCategoryCode));
         return IntakesModelVo.builder().categoryIntakesList(categoryIntakesList).build();
+    }
+
+    public boolean saveIntakesModel(IntakesModelVo intakesModel){
+
+        return true;
     }
 
 }
