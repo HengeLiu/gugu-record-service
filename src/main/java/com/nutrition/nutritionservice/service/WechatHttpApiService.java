@@ -8,6 +8,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import sun.net.www.http.HttpClient;
 
@@ -24,12 +25,17 @@ import java.net.URL;
 @Slf4j
 public class WechatHttpApiService {
 
-    private final String code2SessionUrl = "https://api.weixin.qq.com/sns/jscode2session?appid=APPID&secret=SECRET&grant_type=authorization_code&js_code=";
+    @Value("${wechat.miniProgram.appId}")
+    private String appId;
+    @Value("${wechat.miniProgram.appSecret}")
+    private String appSecret;
+
+    private final String code2SessionUrl = "https://api.weixin.qq.com/sns/jscode2session?appid=" + appId + "&secret="
+            + appSecret + "&grant_type=authorization_code&js_code=";
 
     public Object getUserSession(String jsCode) {
-        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            HttpGet httpGet = new HttpGet(code2SessionUrl + jsCode);
-            CloseableHttpResponse response = httpClient.execute(httpGet);
+        HttpGet httpGet = new HttpGet(code2SessionUrl + jsCode);
+        try (CloseableHttpResponse response = HttpClients.createDefault().execute(httpGet)) {
             StatusLine statusLine = response.getStatusLine();
             HttpEntity responseEntity = response.getEntity();
         } catch (Exception e) {
