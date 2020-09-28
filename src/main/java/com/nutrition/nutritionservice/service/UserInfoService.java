@@ -4,6 +4,8 @@ import com.nutrition.nutritionservice.mapper.UserInfoMapper;
 import com.nutrition.nutritionservice.vo.user.UserInfoVo;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 /**
  * 用户信息Service。
  * 
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserInfoService {
 
+    @Resource
     private UserInfoMapper userInfoMapper;
 
     public UserInfoVo queryByUuid(String uuid) {

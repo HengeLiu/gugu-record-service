@@ -65,4 +65,8 @@ public class UserBiz {
         userAccountService.addUserAccount(userAccount);
     }
 
+    public void saveUserInfo(UserInfoVo userInfoVo) {
+        userInfoService.saveUserInfo(userInfoVo);
+    }
+
 }

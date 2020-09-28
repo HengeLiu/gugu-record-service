@@ -1,10 +1,11 @@
 package com.nutrition.nutritionservice.controller;
 
 import com.nutrition.nutritionservice.biz.UserBiz;
-import com.nutrition.nutritionservice.vo.user.UserAccountVo;
+import com.nutrition.nutritionservice.common.Response;
 import com.nutrition.nutritionservice.vo.user.UserInfoVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,9 +24,15 @@ public class UserController {
     @Resource
     private UserBiz userBiz;
 
-    @GetMapping("/login/wechat")
-    public UserInfoVo loginWechat(@RequestParam String jsCode) {
-        return userBiz.loginWithWechat(jsCode);
+    @GetMapping("/wechat/query/userinfo")
+    public Response queryUserinfo(@RequestParam String wxUserCode) {
+        return Response.success(userBiz.loginWithWechat(wxUserCode));
+    }
+
+    @PostMapping("/wechat/save/userinfo")
+    public Response saveUserInfo(UserInfoVo userInfoVo) {
+        userBiz.saveUserInfo(userInfoVo);
+        return Response.success();
     }
 
 }
