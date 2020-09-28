@@ -7,4 +7,8 @@ package com.nutrition.nutritionservice.exception;
  * @since 2020/9/23
  */
 public class NutritionServiceException extends RuntimeException {
+
+    public NutritionServiceException(String message) {
+        super(message);
+    }
 }

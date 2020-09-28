@@ -3,6 +3,7 @@ package com.nutrition.nutritionservice.biz;
 import com.nutrition.nutritionservice.annotation.Biz;
 import com.nutrition.nutritionservice.enums.UserAccountStatusTypeEnum;
 import com.nutrition.nutritionservice.enums.UserAccountTypeEnum;
+import com.nutrition.nutritionservice.exception.NutritionServiceException;
 import com.nutrition.nutritionservice.service.UserAccountService;
 import com.nutrition.nutritionservice.service.WechatHttpApiService;
 import com.nutrition.nutritionservice.util.UUIDUtils;
@@ -32,7 +33,7 @@ public class UserBiz {
         String wxOpenid = wechatHttpApiService.getUserOpenId(jsCode);
         if (StringUtils.isEmpty(wxOpenid)) {
             log.error("Cannot get wx.openid.");
-            return null;
+            throw new NutritionServiceException("未查询到用户的微信账号");
         }
         UserAccountVo userAccount = userAccountService.queryByExternalIdAndType(wxOpenid, UserAccountTypeEnum.WEI_XIN);
         if (userAccount == null) {
