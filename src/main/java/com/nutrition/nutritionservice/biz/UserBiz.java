@@ -5,9 +5,11 @@ import com.nutrition.nutritionservice.enums.UserAccountStatusTypeEnum;
 import com.nutrition.nutritionservice.enums.UserAccountTypeEnum;
 import com.nutrition.nutritionservice.exception.NutritionServiceException;
 import com.nutrition.nutritionservice.service.UserAccountService;
+import com.nutrition.nutritionservice.service.UserInfoService;
 import com.nutrition.nutritionservice.service.WechatHttpApiService;
 import com.nutrition.nutritionservice.util.UUIDUtils;
 import com.nutrition.nutritionservice.vo.user.UserAccountVo;
+import com.nutrition.nutritionservice.vo.user.UserInfoVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
@@ -29,7 +31,10 @@ public class UserBiz {
     @Resource
     private UserAccountService userAccountService;
 
-    public UserAccountVo loginWithWechat(String jsCode) {
+    @Resource
+    private UserInfoService userInfoService;
+
+    public UserInfoVo loginWithWechat(String jsCode) {
         String wxOpenid = wechatHttpApiService.getUserOpenId(jsCode);
         if (StringUtils.isEmpty(wxOpenid)) {
             log.error("Cannot get wx.openid.");
@@ -45,7 +50,12 @@ public class UserBiz {
             userAccount.setStatus(UserAccountStatusTypeEnum.ENABLE.getCode());
             register(userAccount);
         }
-        return userAccount;
+        UserInfoVo userInfo = userInfoService.queryByUuid(userAccount.getUuid());
+        if (userInfo == null) {
+            userInfo = new UserInfoVo();
+            userInfo.setUuid(userAccount.getUuid());
+        }
+        return userInfo;
     }
 
     public void register(UserAccountVo userAccount) {

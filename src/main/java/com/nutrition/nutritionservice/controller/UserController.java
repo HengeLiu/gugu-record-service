@@ -2,6 +2,7 @@ package com.nutrition.nutritionservice.controller;
 
 import com.nutrition.nutritionservice.biz.UserBiz;
 import com.nutrition.nutritionservice.vo.user.UserAccountVo;
+import com.nutrition.nutritionservice.vo.user.UserInfoVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +24,7 @@ public class UserController {
     private UserBiz userBiz;
 
     @GetMapping("/login/wechat")
-    public UserAccountVo loginWechat(@RequestParam String jsCode) {
+    public UserInfoVo loginWechat(@RequestParam String jsCode) {
         return userBiz.loginWithWechat(jsCode);
     }
 
