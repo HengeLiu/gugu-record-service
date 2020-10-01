@@ -7,17 +7,17 @@ import com.nutrition.nutritionservice.enums.IngredientSubCategoryEnum;
 import com.nutrition.nutritionservice.service.ConfigPropertiesService;
 import com.nutrition.nutritionservice.service.MetabolismLevelService;
 import com.nutrition.nutritionservice.service.ModelCalorieIngredientSubCategoryIntakesService;
-import com.nutrition.nutritionservice.service.WechatHttpApiService;
 import com.nutrition.nutritionservice.vo.IngredientCategoryIntakesVo;
 import com.nutrition.nutritionservice.vo.IngredientSubCategoryIntakesVo;
 import com.nutrition.nutritionservice.vo.IntakesModelUserInfoParamVo;
 import com.nutrition.nutritionservice.vo.IntakesModelVo;
 import com.nutrition.nutritionservice.vo.modeldata.ModelCalorieIngredientSubCategoryIntakesVo;
 import com.nutrition.nutritionservice.vo.modeldata.ModelMetabolismLevelVo;
-import com.nutrition.nutritionservice.vo.user.UserInfoVo;
+import com.nutrition.nutritionservice.vo.user.UserIntakeCategoryModelVo;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.Resource;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -43,9 +43,6 @@ public class IntakesModelBiz {
     @Resource
     private ModelCalorieIngredientSubCategoryIntakesService modelCalorieIngredientSubCategoryIntakesService;
 
-    @Resource
-    private WechatHttpApiService wechatHttpApiService;
-
     public IntakesModelVo calculateIntakesModel(IntakesModelUserInfoParamVo param) {
         ModelMetabolismLevelVo modelMetabolismLevelVo = metabolismLevelService.selectByGenderAndAge(param.getGender(),
                 param.getAge());
@@ -60,6 +57,7 @@ public class IntakesModelBiz {
                         subIngredient.getIngredientSubCategoryCode()), Function.identity()));
         List<IngredientCategoryIntakesVo> categoryIntakesList = Lists.newArrayList();
         subCategoryGroupMap.entrySet().stream()
+                // 按照大分类排序
                 .collect(Collectors.groupingBy(subCategoryEntry -> subCategoryEntry.getKey().getParentCategory()))
                 .forEach((categoryEnum, subCategoryEntryList) -> {
                     List<IngredientSubCategoryIntakesVo> subCategoryIntakesVoList = Lists.newArrayList();
@@ -80,9 +78,26 @@ public class IntakesModelBiz {
         return IntakesModelVo.builder().categoryIntakesList(categoryIntakesList).build();
     }
 
-    public boolean saveIntakesModel(IntakesModelVo intakesModel){
+    public boolean save(IntakesModelVo intakesModel) {
+        String uuid = intakesModel.getUuid();
+        List<IngredientSubCategoryIntakesVo> subCategoryIntakesList = intakesModel.getCategoryIntakesList().stream()
+                .map(IngredientCategoryIntakesVo::getSubCategoryIntakesList).flatMap(Collection::stream)
+                .collect(Collectors.toList());
+        List<UserIntakeCategoryModelVo> userIntakeCategoryModelVoList = Lists.newArrayList();
+        for (IngredientSubCategoryIntakesVo subCategoryIntakesVo : subCategoryIntakesList) {
+            UserIntakeCategoryModelVo userIntakeCategoryModelVo = new UserIntakeCategoryModelVo();
+            userIntakeCategoryModelVo.setUuid(uuid);
+            userIntakeCategoryModelVo.setSubCategoryCode(subCategoryIntakesVo.getSubCategoryCode());
+            userIntakeCategoryModelVo.setPerDayWeight(subCategoryIntakesVo.getWeight());
+            userIntakeCategoryModelVoList.add(userIntakeCategoryModelVo);
+        }
 
         return true;
+    }
+
+    public IntakesModelVo query(String uuid) {
+
+        return null;
     }
 
 }

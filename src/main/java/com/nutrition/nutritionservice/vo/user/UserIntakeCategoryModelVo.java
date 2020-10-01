@@ -18,7 +18,7 @@ public class UserIntakeCategoryModelVo extends TimeBasedVo {
 
     private String uuid;
 
-    private String subCategoryCode;
+    private int subCategoryCode;
 
     private int perDayWeight;
 }

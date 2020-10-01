@@ -1,6 +1,5 @@
 package com.nutrition.nutritionservice.controller;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -9,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2020/9/13
  */
 @RestController
-@EnableAutoConfiguration
+@RequestMapping("/test")
 public class TestController {
 
     @RequestMapping("/hello")

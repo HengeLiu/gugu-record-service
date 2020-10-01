@@ -3,9 +3,7 @@ package com.nutrition.nutritionservice.controller;
 import com.nutrition.nutritionservice.biz.IntakesModelBiz;
 import com.nutrition.nutritionservice.vo.IntakesModelUserInfoParamVo;
 import com.nutrition.nutritionservice.vo.IntakesModelVo;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +16,6 @@ import javax.annotation.Resource;
  * @since 2020/9/13
  */
 @RestController
-@EnableAutoConfiguration
 @RequestMapping("/intakes-model")
 public class IntakesModelController {
 
@@ -26,8 +23,13 @@ public class IntakesModelController {
     private IntakesModelBiz intakesModelBiz;
 
     @PostMapping("/calculate")
-    public IntakesModelVo calculateIntakesModel(@RequestBody IntakesModelUserInfoParamVo param) {
+    public IntakesModelVo calculateIntakesModel(IntakesModelUserInfoParamVo param) {
         return intakesModelBiz.calculateIntakesModel(param);
+    }
+
+    @PostMapping("/query")
+    public IntakesModelVo queryIntakesModel(String uuid) {
+        return null;
     }
 
 }
