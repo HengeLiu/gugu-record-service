@@ -28,4 +28,8 @@ public class UserInfoVo extends TimeBasedVo {
 
     private int weight;
 
+    private int profeChar;
+
+    private int sportHabits;
+
 }
