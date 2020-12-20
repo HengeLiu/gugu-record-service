@@ -13,7 +13,7 @@ public class TestController {
 
     @RequestMapping("/hello")
     public String hello(){
-        return "Welcome to Nutrition service.";
+        return "Welcome to the future of healthy life, Gugu nutrition service.";
     }
 
 }
