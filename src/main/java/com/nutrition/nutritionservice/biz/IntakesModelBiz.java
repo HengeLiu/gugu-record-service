@@ -2,7 +2,6 @@ package com.nutrition.nutritionservice.biz;
 
 import com.google.common.collect.Lists;
 import com.nutrition.nutritionservice.annotation.Biz;
-import com.nutrition.nutritionservice.enums.ModelGoalEnum;
 import com.nutrition.nutritionservice.service.EnergyCalorieCalculateService;
 import com.nutrition.nutritionservice.service.ModelIngredientIntakesService;
 import com.nutrition.nutritionservice.vo.IngredientCategoryIntakesVo;
@@ -37,7 +36,6 @@ public class IntakesModelBiz {
     public ModelIngredientIntakesVo calculateIntakesModel(ModelParamVo paramVo) {
         int dailyEnergy = energyCalorieCalculateService.calculate(paramVo);
         return modelIngredientIntakesService.getIntakesByCalorieGoal(dailyEnergy, paramVo.getGoal());
-
     }
 
     // public IntakesModelVo calculateIntakesModel(ModelParamVo param) {
