@@ -6,7 +6,7 @@ package com.nutrition.nutritionservice.enums;
  * @author heng.liu
  * @since 2020/9/21
  */
-public enum IngredientSubCategoryEnum implements CodeEnum<String> {
+public enum IngredientCategoryEnum implements CodeEnum<String> {
 
     PROCESSED_GRAINS("processed_grains", "精制谷物", IngredientSuperCategoryEnum.GRAINS_POTATOES),
 
@@ -49,7 +49,7 @@ public enum IngredientSubCategoryEnum implements CodeEnum<String> {
 
     private final IngredientSuperCategoryEnum parentCategory;
 
-    IngredientSubCategoryEnum(String code, String desc, IngredientSuperCategoryEnum parentCategory) {
+    IngredientCategoryEnum(String code, String desc, IngredientSuperCategoryEnum parentCategory) {
         this.code = code;
         this.desc = desc;
         this.parentCategory = parentCategory;

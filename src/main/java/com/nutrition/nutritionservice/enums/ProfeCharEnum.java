@@ -8,7 +8,15 @@ package com.nutrition.nutritionservice.enums;
  */
 public enum ProfeCharEnum implements CodeEnum<Integer> {
 
-    ALWAYS_SITTING(0, "久坐", 0), BALANCED(1, "坐站均衡", 1), ALWAYS_STANDING(2, "久站", 2), HEAVY_WORK(3, "重体力劳动", 3)
+    UNKNOWN(0, "未知", 0),
+
+    ALWAYS_SITTING(1, "久坐", 0),
+
+    BALANCED(2, "坐站均衡", 1),
+
+    ALWAYS_STANDING(3, "久站", 2),
+
+    HEAVY_WORK(4, "重体力劳动", 3)
 
     ;
 

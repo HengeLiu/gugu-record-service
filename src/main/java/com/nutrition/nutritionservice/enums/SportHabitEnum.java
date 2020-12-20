@@ -8,13 +8,15 @@ package com.nutrition.nutritionservice.enums;
  */
 public enum SportHabitEnum implements CodeEnum<Integer> {
 
-    NEVER(0, "从不运动", 0),
+    UNKNOWN(0, "未知", 0),
 
-    OCCASIONAL_ACTIVITY(1, "", 1),
+    NEVER(1, "从不运动", 0),
 
-    OCCASIONAL_EXERCISE(2, "", 2),
+    OCCASIONAL_ACTIVITY(2, "偶尔活动身体", 1),
 
-    FREQUENT_EXERCISE(3, "", 3),
+    OCCASIONAL_EXERCISE(3, "偶尔运动", 2),
+
+    FREQUENT_EXERCISE(4, "经常运动", 3),
 
     ;
 
