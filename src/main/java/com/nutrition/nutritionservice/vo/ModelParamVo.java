@@ -15,16 +15,20 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class IntakesModelUserInfoParamVo {
+public class ModelParamVo {
 
     private int gender;
 
-    private int stature;
+    private int age;
+
+    private int height;
 
     private int weight;
 
-    private int age;
+    private int profeChar;
 
-    private int sportLevel;
+    private int sportHabits;
+
+    private int goal;
 
 }

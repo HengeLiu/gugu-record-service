@@ -8,13 +8,13 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * 日需热量下的食材摄入量Service。
+ * 食材摄入量Service。
  * 
  * @author heng.liu
  * @since 2020/9/21
  */
 @Service
-public class ModelCalorieIngredientSubCategoryIntakesService {
+public class IngredientCategoryIntakesService {
 
     @Resource
     private ModelCalorieIngredientSubCategoryIntakesMapper modelCalorieIngredientSubCategoryIntakesMapper;

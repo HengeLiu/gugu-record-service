@@ -1,0 +1,18 @@
+
+### 启动测试
+GET https://localhost/nutrition/test/hello
+Content-Type: application/x-www-form-urlencoded
+
+### 计算模型
+POST https://localhost/nutrition/intakes-model/calculate
+Content-Type: application/json
+
+{
+  "gender": 1,
+  "age": 25,
+  "height": 180,
+  "weight": 60,
+  "profeChar": 1,
+  "sportHabits": 2,
+  "goal": 2
+}

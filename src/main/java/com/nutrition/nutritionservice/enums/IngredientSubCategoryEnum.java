@@ -1,72 +1,70 @@
 package com.nutrition.nutritionservice.enums;
 
 /**
- * 食材子类别枚举。
+ * 食材类别枚举。
  *
  * @author heng.liu
  * @since 2020/9/21
  */
-public enum IngredientSubCategoryEnum implements CodeEnum<Integer> {
+public enum IngredientSubCategoryEnum implements CodeEnum<String> {
 
-    REFINED_GRAINS(1, "refined_grains", "精制谷物", IngredientCategoryEnum.GRAINS_POTATOES),
+    PROCESSED_GRAINS("processed_grains", "精制谷物", IngredientSuperCategoryEnum.GRAINS_POTATOES),
 
-    WHOLE_GRAINS_BEANS(2, "whole_grains_beans", "全谷物及杂豆", IngredientCategoryEnum.GRAINS_POTATOES),
+    UNPROCESSED_GRAINS("unprocessed_grains", "全谷物", IngredientSuperCategoryEnum.GRAINS_POTATOES),
 
-    TUBER(3, "tubers", "薯类", IngredientCategoryEnum.GRAINS_POTATOES),
+    MIXED_BEANS("mixed_beans", "杂豆", IngredientSuperCategoryEnum.GRAINS_POTATOES),
 
-    GENERAL_VEGETABLES(4, "general_vegetables", "一般蔬菜", IngredientCategoryEnum.VEGETABLES_FRUITS),
+    TUBER("tuber", "薯类", IngredientSuperCategoryEnum.GRAINS_POTATOES),
 
-    DARK_VEGETABLES(5, "dark_vegetables", "深色蔬菜", IngredientCategoryEnum.VEGETABLES_FRUITS),
+    GENERAL_VEGETABLES("general_vegetables", "一般蔬菜", IngredientSuperCategoryEnum.VEGETABLES_FRUITS),
 
-    FRUITS(6, "fruits", "水果", IngredientCategoryEnum.VEGETABLES_FRUITS),
+    DARK_VEGETABLES("dark_vegetables", "深色蔬菜", IngredientSuperCategoryEnum.VEGETABLES_FRUITS),
 
-    LIVESTOCK_POULTRY_MEAT(7, "livestock_poultry_meat", "畜禽肉类", IngredientCategoryEnum.FISH_POULTRY_EGGS),
+    FRUITS("fruits", "水果", IngredientSuperCategoryEnum.VEGETABLES_FRUITS),
 
-    EGGS(8, "egg", "蛋类", IngredientCategoryEnum.FISH_POULTRY_EGGS),
+    MEAT("meat", "禽肉", IngredientSuperCategoryEnum.FISH_POULTRY_EGGS),
 
-    AQUATICS(9, "aquatics", "水产品", IngredientCategoryEnum.FISH_POULTRY_EGGS),
+    POULTRY("poultry", "畜肉", IngredientSuperCategoryEnum.FISH_POULTRY_EGGS),
 
-    DAIRY(10, "dairy", "乳制品", IngredientCategoryEnum.DAIRY_BEANS_NUTS),
+    aquatic("aquatic", "水产品", IngredientSuperCategoryEnum.FISH_POULTRY_EGGS),
 
-    SOYBEANS(11, "soybeans", "大豆", IngredientCategoryEnum.DAIRY_BEANS_NUTS),
+    EGGS("egg", "蛋", IngredientSuperCategoryEnum.FISH_POULTRY_EGGS),
 
-    NUTS(12, "nuts", "坚果", IngredientCategoryEnum.DAIRY_BEANS_NUTS),
+    DAIRY("dairy", "乳制品", IngredientSuperCategoryEnum.DAIRY_BEANS_NUTS),
 
-    COOKING_OIL(13, "cooking_oil", "烹调油", IngredientCategoryEnum.OIL_SALT),
+    SOYBEAN("soybean", "大豆", IngredientSuperCategoryEnum.DAIRY_BEANS_NUTS),
 
-    SALT(14, "salt", "食盐", IngredientCategoryEnum.OIL_SALT),
+    NUT("nut", "坚果", IngredientSuperCategoryEnum.DAIRY_BEANS_NUTS),
+
+    OIL("oil", "烹调油", IngredientSuperCategoryEnum.OIL_SALT),
+
+    SALT("salt", "食盐", IngredientSuperCategoryEnum.OIL_SALT),
 
     ;
 
-    private final Integer code;
+    private final String code;
 
-    private final String enName;
 
-    private final String zhName;
+    private final String desc;
 
-    private final IngredientCategoryEnum parentCategory;
+    private final IngredientSuperCategoryEnum parentCategory;
 
-    IngredientSubCategoryEnum(Integer code, String enName, String zhName, IngredientCategoryEnum parentCategory) {
+    IngredientSubCategoryEnum(String code, String desc, IngredientSuperCategoryEnum parentCategory) {
         this.code = code;
-        this.enName = enName;
-        this.zhName = zhName;
+        this.desc = desc;
         this.parentCategory = parentCategory;
     }
 
     @Override
-    public Integer getCode() {
+    public String getCode() {
         return code;
     }
 
-    public String getEnName() {
-        return enName;
+    public String getDesc() {
+        return desc;
     }
 
-    public String getZhName() {
-        return zhName;
-    }
-
-    public IngredientCategoryEnum getParentCategory() {
+    public IngredientSuperCategoryEnum getParentCategory() {
         return parentCategory;
     }
 }

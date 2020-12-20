@@ -2,26 +2,20 @@ package com.nutrition.nutritionservice.biz;
 
 import com.google.common.collect.Lists;
 import com.nutrition.nutritionservice.annotation.Biz;
-import com.nutrition.nutritionservice.enums.CodeEnums;
-import com.nutrition.nutritionservice.enums.IngredientSubCategoryEnum;
-import com.nutrition.nutritionservice.service.ConfigPropertiesService;
-import com.nutrition.nutritionservice.service.MetabolismLevelService;
-import com.nutrition.nutritionservice.service.ModelCalorieIngredientSubCategoryIntakesService;
+import com.nutrition.nutritionservice.enums.ModelGoalEnum;
+import com.nutrition.nutritionservice.service.EnergyCalorieCalculateService;
+import com.nutrition.nutritionservice.service.ModelIngredientIntakesService;
 import com.nutrition.nutritionservice.vo.IngredientCategoryIntakesVo;
 import com.nutrition.nutritionservice.vo.IngredientSubCategoryIntakesVo;
-import com.nutrition.nutritionservice.vo.IntakesModelUserInfoParamVo;
 import com.nutrition.nutritionservice.vo.IntakesModelVo;
-import com.nutrition.nutritionservice.vo.modeldata.ModelCalorieIngredientSubCategoryIntakesVo;
-import com.nutrition.nutritionservice.vo.modeldata.ModelMetabolismLevelVo;
+import com.nutrition.nutritionservice.vo.ModelParamVo;
+import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientIntakesVo;
 import com.nutrition.nutritionservice.vo.user.UserIntakeCategoryModelVo;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.Resource;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -35,48 +29,53 @@ import java.util.stream.Collectors;
 public class IntakesModelBiz {
 
     @Resource
-    private MetabolismLevelService metabolismLevelService;
+    private EnergyCalorieCalculateService energyCalorieCalculateService;
 
     @Resource
-    private ConfigPropertiesService configPropertiesService;
+    private ModelIngredientIntakesService modelIngredientIntakesService;
 
-    @Resource
-    private ModelCalorieIngredientSubCategoryIntakesService modelCalorieIngredientSubCategoryIntakesService;
+    public ModelIngredientIntakesVo calculateIntakesModel(ModelParamVo paramVo) {
+        int dailyEnergy = energyCalorieCalculateService.calculate(paramVo);
+        return modelIngredientIntakesService.getIntakesByCalorieGoal(dailyEnergy, paramVo.getGoal());
 
-    public IntakesModelVo calculateIntakesModel(IntakesModelUserInfoParamVo param) {
-        ModelMetabolismLevelVo modelMetabolismLevelVo = metabolismLevelService.selectByGenderAndAge(param.getGender(),
-                param.getAge());
-        Map<String, Double> sportLevelValueMap = configPropertiesService.sportLevelValueMap();
-        double dailyCalorie = modelMetabolismLevelVo.getMetabolismLevel() * param.getWeight()
-                * sportLevelValueMap.get(String.valueOf(param.getSportLevel()));
-        double modelCalorieValue = modelCalorieIngredientSubCategoryIntakesService.queryMaxCalorieLte(dailyCalorie);
-        List<ModelCalorieIngredientSubCategoryIntakesVo> subCategoryIntakesModelList = modelCalorieIngredientSubCategoryIntakesService
-                .queryByCalorie(modelCalorieValue);
-        Map<IngredientSubCategoryEnum, ModelCalorieIngredientSubCategoryIntakesVo> subCategoryGroupMap = subCategoryIntakesModelList
-                .stream().collect(Collectors.toMap(subIngredient -> CodeEnums.valueOf(IngredientSubCategoryEnum.class,
-                        subIngredient.getIngredientSubCategoryCode()), Function.identity()));
-        List<IngredientCategoryIntakesVo> categoryIntakesList = Lists.newArrayList();
-        subCategoryGroupMap.entrySet().stream()
-                // 按照大分类排序
-                .collect(Collectors.groupingBy(subCategoryEntry -> subCategoryEntry.getKey().getParentCategory()))
-                .forEach((categoryEnum, subCategoryEntryList) -> {
-                    List<IngredientSubCategoryIntakesVo> subCategoryIntakesVoList = Lists.newArrayList();
-                    for (Map.Entry<IngredientSubCategoryEnum, ModelCalorieIngredientSubCategoryIntakesVo> subCategoryEntry : subCategoryEntryList) {
-                        IngredientSubCategoryEnum subCategoryEnum = subCategoryEntry.getKey();
-                        subCategoryIntakesVoList
-                                .add(IngredientSubCategoryIntakesVo.builder().subCategoryCode(subCategoryEnum.getCode())
-                                        .weight((int) subCategoryEntry.getValue().getDailyWeight())
-                                        .zhName(categoryEnum.getZhName()).build());
-                    }
-                    categoryIntakesList.add(IngredientCategoryIntakesVo.builder().categoryCode(categoryEnum.getCode())
-                            .zhName(categoryEnum.getZhName()).subCategoryIntakesList(subCategoryIntakesVoList)
-                            .weight(subCategoryIntakesVoList.stream()
-                                    .mapToInt(IngredientSubCategoryIntakesVo::getWeight).sum())
-                            .build());
-                });
-        categoryIntakesList.sort(Comparator.comparing(IngredientCategoryIntakesVo::getCategoryCode));
-        return IntakesModelVo.builder().categoryIntakesList(categoryIntakesList).build();
     }
+
+    // public IntakesModelVo calculateIntakesModel(ModelParamVo param) {
+    // ModelMetabolismLevelVo modelMetabolismLevelVo = metabolismLevelService.selectByGenderAndAge(param.getGender(),
+    // param.getAge());
+    // Map<String, Double> sportLevelValueMap = configPropertiesService.sportLevelValueMap();
+    // double dailyCalorie = modelMetabolismLevelVo.getMetabolismLevel() * param.getWeight()
+    // * sportLevelValueMap.get(String.valueOf(param.getSportLevel()));
+    // double modelCalorieValue = ingredientCategoryIntakesService.queryMaxCalorieLte(dailyCalorie);
+    // List<ModelCalorieIngredientSubCategoryIntakesVo> subCategoryIntakesModelList = ingredientCategoryIntakesService
+    // .queryByCalorie(modelCalorieValue);
+    // Map<IngredientSubCategoryEnum, ModelCalorieIngredientSubCategoryIntakesVo> subCategoryGroupMap =
+    // subCategoryIntakesModelList
+    // .stream().collect(Collectors.toMap(subIngredient -> CodeEnums.valueOf(IngredientSubCategoryEnum.class,
+    // subIngredient.getIngredientSubCategoryCode()), Function.identity()));
+    // List<IngredientCategoryIntakesVo> categoryIntakesList = Lists.newArrayList();
+    // subCategoryGroupMap.entrySet().stream()
+    // // 按照大分类排序
+    // .collect(Collectors.groupingBy(subCategoryEntry -> subCategoryEntry.getKey().getParentCategory()))
+    // .forEach((categoryEnum, subCategoryEntryList) -> {
+    // List<IngredientSubCategoryIntakesVo> subCategoryIntakesVoList = Lists.newArrayList();
+    // for (Map.Entry<IngredientSubCategoryEnum, ModelCalorieIngredientSubCategoryIntakesVo> subCategoryEntry :
+    // subCategoryEntryList) {
+    // IngredientSubCategoryEnum subCategoryEnum = subCategoryEntry.getKey();
+    // subCategoryIntakesVoList
+    // .add(IngredientSubCategoryIntakesVo.builder().subCategoryCode(subCategoryEnum.getCode())
+    // .weight((int) subCategoryEntry.getValue().getDailyWeight())
+    // .zhName(categoryEnum.getDesc()).build());
+    // }
+    // categoryIntakesList.add(IngredientCategoryIntakesVo.builder().categoryCode(categoryEnum.getCode())
+    // .zhName(categoryEnum.getDesc()).subCategoryIntakesList(subCategoryIntakesVoList)
+    // .weight(subCategoryIntakesVoList.stream()
+    // .mapToInt(IngredientSubCategoryIntakesVo::getWeight).sum())
+    // .build());
+    // });
+    // categoryIntakesList.sort(Comparator.comparing(IngredientCategoryIntakesVo::getCategoryCode));
+    // return IntakesModelVo.builder().categoryIntakesList(categoryIntakesList).build();
+    // }
 
     public boolean save(IntakesModelVo intakesModel) {
         String uuid = intakesModel.getUuid();

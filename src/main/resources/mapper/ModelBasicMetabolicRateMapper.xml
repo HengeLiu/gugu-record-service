@@ -11,7 +11,7 @@
     <sql id="Base_Column_List">
     id, age, gender, bmr, version
   </sql>
-    <select id="selectBmrByAgeGender" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="selectBmrByAgeGender" resultType="java.lang.Double">
     select
       bmr
     from model_basic_metabolic_rate

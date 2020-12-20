@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nutrition.nutritionservice.mapper.ModelIngredientIntakesMapper">
+    <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.modeldata.ModelIngredientIntakesVo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="calorie" jdbcType="INTEGER" property="calorie"/>
+        <result column="processed_grains" jdbcType="INTEGER" property="processedGrains"/>
+        <result column="unprocessed_grains" jdbcType="INTEGER" property="unprocessedGrains"/>
+        <result column="mixed_beans" jdbcType="INTEGER" property="mixedBeans"/>
+        <result column="tuber" jdbcType="INTEGER" property="tuber"/>
+        <result column="general_vegetables" jdbcType="INTEGER" property="generalVegetables"/>
+        <result column="dark_vegetables" jdbcType="INTEGER" property="darkVegetables"/>
+        <result column="fruit" jdbcType="INTEGER" property="fruit"/>
+        <result column="meat" jdbcType="INTEGER" property="meat"/>
+        <result column="poultry" jdbcType="INTEGER" property="poultry"/>
+        <result column="aquatic" jdbcType="INTEGER" property="aquatic"/>
+        <result column="egg" jdbcType="INTEGER" property="egg"/>
+        <result column="dairy" jdbcType="INTEGER" property="dairy"/>
+        <result column="soybean" jdbcType="INTEGER" property="soybean"/>
+        <result column="nut" jdbcType="INTEGER" property="nut"/>
+        <result column="oil" jdbcType="INTEGER" property="oil"/>
+        <result column="salt" jdbcType="INTEGER" property="salt"/>
+        <result column="goal" jdbcType="TINYINT" property="goal"/>
+        <result column="version" jdbcType="INTEGER" property="version"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, calorie, processed_grains, unprocessed_grains, mixed_beans, tuber, general_vegetables, 
+    dark_vegetables, fruit, meat, poultry, aquatic, egg, dairy, soybean, nut, oil, salt, 
+    goal, version
+  </sql>
+    <select id="selectByCalorieGoal"
+            resultType="com.nutrition.nutritionservice.vo.modeldata.ModelIngredientIntakesVo">
+        select
+        <include refid="Base_Column_List"/>
+        from model_ingredient_intakes
+        where calorie = #{calorie} and goal = #{goal}
+    </select>
+</mapper>

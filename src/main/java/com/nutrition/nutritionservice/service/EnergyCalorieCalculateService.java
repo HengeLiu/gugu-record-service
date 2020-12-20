@@ -4,8 +4,7 @@ import com.nutrition.nutritionservice.enums.CodeEnums;
 import com.nutrition.nutritionservice.enums.ProfeCharEnum;
 import com.nutrition.nutritionservice.enums.SportHabitEnum;
 import com.nutrition.nutritionservice.mapper.ModelBasicMetabolicRateMapper;
-import com.nutrition.nutritionservice.vo.modeldata.ModelBaseInfoVo;
-import com.nutrition.nutritionservice.vo.modeldata.ModelBasicMetabolicRateVo;
+import com.nutrition.nutritionservice.vo.ModelParamVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -22,10 +21,16 @@ public class EnergyCalorieCalculateService {
     @Resource
     private ModelBasicMetabolicRateMapper modelBasicMetabolicRateMapper;
 
-    public int calculate(ModelBaseInfoVo modelBaseInfoVo) {
+    public int calculate(ModelParamVo modelBaseInfoVo) {
         double surfaceArea = 0.006 * modelBaseInfoVo.getHeight() + 0.0126 * modelBaseInfoVo.getWeight() - 0.1603;
-        double bmr = modelBasicMetabolicRateMapper.selectBmrByAgeGender(modelBaseInfoVo.getAge(),
-                modelBaseInfoVo.getGender());
+        double bmr;
+        if (modelBaseInfoVo.getAge() > 45) {
+            bmr = modelBasicMetabolicRateMapper.selectBmrByAgeGender(45, modelBaseInfoVo.getGender());
+        } else {
+            bmr = modelBasicMetabolicRateMapper.selectBmrByAgeGender(modelBaseInfoVo.getAge(),
+                    modelBaseInfoVo.getGender());
+        }
+
         double sportLevelRatio = sportLevelRatio(CodeEnums.valueOf(ProfeCharEnum.class, modelBaseInfoVo.getProfeChar()),
                 CodeEnums.valueOf(SportHabitEnum.class, modelBaseInfoVo.getSportHabits()));
         double bee = surfaceArea * bmr * 24 * sportLevelRatio;
