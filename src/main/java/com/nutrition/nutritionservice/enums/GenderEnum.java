@@ -23,7 +23,6 @@ public enum GenderEnum implements CodeEnum<Integer> {
         this.desc = desc;
     }
 
-    @Override
     public Integer getCode() {
         return code;
     }

@@ -27,7 +27,6 @@ public enum ModelGoalEnum implements CodeEnum<Integer> {
         this.desc = desc;
     }
 
-    @Override
     public Integer getCode() {
         return code;
     }

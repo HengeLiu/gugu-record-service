@@ -28,8 +28,7 @@ public enum StateCodeEnum implements CodeEnum<Integer> {
         this.code = code;
     }
 
-    @Override
-    public Integer getCode() {
+    public Integer getNameEn() {
         return code;
     }
 

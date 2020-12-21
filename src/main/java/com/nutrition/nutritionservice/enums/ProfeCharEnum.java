@@ -32,7 +32,6 @@ public enum ProfeCharEnum implements CodeEnum<Integer> {
         this.score = score;
     }
 
-    @Override
     public Integer getCode() {
         return code;
     }

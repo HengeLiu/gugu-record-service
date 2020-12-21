@@ -46,12 +46,12 @@ public class UserAccountVo extends TimeBasedVo implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return status != UserAccountStatusTypeEnum.EXPIRE.getCode();
+        return status != UserAccountStatusTypeEnum.EXPIRE.getNameEn();
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return status != UserAccountStatusTypeEnum.LOCKED.getCode();
+        return status != UserAccountStatusTypeEnum.LOCKED.getNameEn();
     }
 
     @Override
@@ -61,6 +61,6 @@ public class UserAccountVo extends TimeBasedVo implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return status == UserAccountStatusTypeEnum.ENABLE.getCode();
+        return status == UserAccountStatusTypeEnum.ENABLE.getNameEn();
     }
 }

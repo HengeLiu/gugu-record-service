@@ -6,35 +6,42 @@ package com.nutrition.nutritionservice.enums;
  * @author heng.liu
  * @since 2020/9/21
  */
-public enum IngredientSuperCategoryEnum implements CodeEnum<String> {
+public enum IngredientSuperCategoryEnum implements CodeEnum<Integer> {
 
-    GRAINS_POTATOES("grains_potatoes", "谷薯类"),
+    GRAINS_POTATOES(1, "grains_potatoes", "谷薯类"),
 
-    VEGETABLES_FRUITS("vegetables_fruits", "蔬菜水果"),
+    VEGETABLES_FRUITS(2, "vegetables_fruits", "蔬菜水果"),
 
-    FISH_POULTRY_EGGS("fish_poultry_eggs", "鱼畜禽蛋"),
+    FISH_POULTRY_EGGS(3, "fish_poultry_eggs", "鱼畜禽蛋"),
 
-    DAIRY_BEANS_NUTS("dairy_beans_nuts", "乳豆坚果"),
+    DAIRY_BEANS_NUTS(4, "dairy_beans_nuts", "乳豆坚果"),
 
-    OIL_SALT("oil_salt", "油盐"),
+    CONDIMENTS(5, "condiments", "调味品"),
 
     ;
 
-    private final String code;
+    private final int code;
 
-    private final String desc;
+    private final String nameEn;
 
-    IngredientSuperCategoryEnum(String code, String desc) {
+    private final String nameZh;
+
+    IngredientSuperCategoryEnum(int code, String nameEn, String nameZh) {
         this.code = code;
-        this.desc = desc;
+        this.nameEn = nameEn;
+        this.nameZh = nameZh;
+    }
+
+    public String getNameEn() {
+        return nameEn;
+    }
+
+    public String getNameZh() {
+        return nameZh;
     }
 
     @Override
-    public String getCode() {
+    public Integer getCode() {
         return code;
-    }
-
-    public String getDesc() {
-        return desc;
     }
 }

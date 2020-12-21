@@ -45,9 +45,9 @@ public class UserBiz {
             String uuid = UUIDUtils.createRandomUUID();
             userAccount = new UserAccountVo();
             userAccount.setUuid(uuid);
-            userAccount.setType(UserAccountTypeEnum.WEI_XIN.getCode());
+            userAccount.setType(UserAccountTypeEnum.WEI_XIN.getNameEn());
             userAccount.setExternalId(wxOpenid);
-            userAccount.setStatus(UserAccountStatusTypeEnum.ENABLE.getCode());
+            userAccount.setStatus(UserAccountStatusTypeEnum.ENABLE.getNameEn());
             register(userAccount);
         }
         UserInfoVo userInfo = userInfoService.queryByUuid(userAccount.getUuid());

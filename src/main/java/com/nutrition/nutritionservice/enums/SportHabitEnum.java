@@ -32,7 +32,6 @@ public enum SportHabitEnum implements CodeEnum<Integer> {
         this.score = score;
     }
 
-    @Override
     public Integer getCode() {
         return code;
     }

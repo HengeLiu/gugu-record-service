@@ -19,7 +19,6 @@ public enum UserAccountStatusTypeEnum implements CodeEnum<Integer> {
         this.code = code;
     }
 
-    @Override
     public Integer getCode() {
         return code;
     }
