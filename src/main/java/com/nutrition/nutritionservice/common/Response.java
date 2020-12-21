@@ -1,5 +1,6 @@
 package com.nutrition.nutritionservice.common;
 
+import com.nutrition.nutritionservice.enums.StateCodeEnum;
 import lombok.Data;
 
 /**

@@ -1,4 +1,4 @@
-package com.nutrition.nutritionservice.common;
+package com.nutrition.nutritionservice.enums;
 
 import com.nutrition.nutritionservice.enums.CodeEnum;
 
@@ -28,7 +28,7 @@ public enum StateCodeEnum implements CodeEnum<Integer> {
         this.code = code;
     }
 
-    public Integer getNameEn() {
+    public Integer getCode() {
         return code;
     }
 
