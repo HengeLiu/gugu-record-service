@@ -39,7 +39,7 @@ public class Response {
     public static Response success(StateCodeEnum state, String msg) {
         Response response = new Response();
         response.setResult(true);
-        response.setState(state.getNameEn());
+        response.setState(state.getCode());
         response.setMsg(msg);
         return response;
     }
@@ -51,7 +51,7 @@ public class Response {
     public static Response success(StateCodeEnum state, String msg, Object data) {
         Response response = new Response();
         response.setResult(true);
-        response.setState(state.getNameEn());
+        response.setState(state.getCode());
         response.setMsg(msg);
         response.setData(data);
         return response;
@@ -64,7 +64,7 @@ public class Response {
     public static Response failure(StateCodeEnum state, String msg) {
         Response response = new Response();
         response.setResult(false);
-        response.setState(state.getNameEn());
+        response.setState(state.getCode());
         response.setMsg(msg);
         return response;
     }
@@ -76,7 +76,7 @@ public class Response {
     public static Response failure(StateCodeEnum state, String msg, Object data) {
         Response response = new Response();
         response.setResult(false);
-        response.setState(state.getNameEn());
+        response.setState(state.getCode());
         response.setMsg(msg);
         response.setData(data);
         return response;

@@ -19,11 +19,11 @@ public class ModelIngredientIntakesService {
 
     public ModelIngredientIntakesVo getIntakesByCalorieGoal(int calorie, int goal) {
         int calorieTmp = (calorie / 100) * 100;
-        if ((goal == ModelGoalEnum.BALANCE.getNameEn() || goal == ModelGoalEnum.INCREASED_MUSCLE.getNameEn())
+        if ((goal == ModelGoalEnum.BALANCE.getCode() || goal == ModelGoalEnum.INCREASED_MUSCLE.getCode())
                 && calorieTmp > 3000) {
             return modelIngredientIntakesMapper.selectByCalorieGoal(3000, goal);
         }
-        if (goal == ModelGoalEnum.LOSE_WEIGHT.getNameEn() && calorie > 3800) {
+        if (goal == ModelGoalEnum.LOSE_WEIGHT.getCode() && calorie > 3800) {
             return modelIngredientIntakesMapper.selectByCalorieGoal(3800, goal);
         }
         return modelIngredientIntakesMapper.selectByCalorieGoal(calorieTmp, goal);

@@ -26,7 +26,7 @@ public class UserAccountService implements UserDetailsService {
     }
 
     public UserAccountVo queryByExternalIdAndType(String externalId, UserAccountTypeEnum typeEnum) {
-        return userAccountMapper.selectByExternalIdAndType(externalId, typeEnum.getNameEn());
+        return userAccountMapper.selectByExternalIdAndType(externalId, typeEnum.getCode());
     }
 
     public boolean addUserAccount(UserAccountVo userAccountVo) {

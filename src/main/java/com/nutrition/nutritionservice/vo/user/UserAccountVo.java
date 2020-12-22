@@ -19,6 +19,8 @@ import java.util.Collection;
 @Data
 public class UserAccountVo extends TimeBasedVo implements UserDetails {
 
+    private static final long serialVersionUID = -1106127018250012296L;
+
     private String uuid;
 
     private String password;
@@ -46,12 +48,12 @@ public class UserAccountVo extends TimeBasedVo implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return status != UserAccountStatusTypeEnum.EXPIRE.getNameEn();
+        return status != UserAccountStatusTypeEnum.EXPIRE.getCode();
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return status != UserAccountStatusTypeEnum.LOCKED.getNameEn();
+        return status != UserAccountStatusTypeEnum.LOCKED.getCode();
     }
 
     @Override
@@ -61,6 +63,6 @@ public class UserAccountVo extends TimeBasedVo implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return status == UserAccountStatusTypeEnum.ENABLE.getNameEn();
+        return status == UserAccountStatusTypeEnum.ENABLE.getCode();
     }
 }
