@@ -17,7 +17,7 @@ public interface UserInfoDao {
 
     @Insert("insert into user_info(uuid, gender, calorie, goal, nickname, age, height, weight, profe_char, sports_habits, info_status) "
             + "values (#{uuid}, #{gender}, #{calorie}, #{goal}, #{nickname}, #{age}, #{height}, #{weight}, #{profeChar}, #{sportsHabits}, #{infoStatus}) on duplicate key update "
-            + "gender = #{gender}, calorie = #{calorie}, goal = #{goal}, nick_name = #{nick_name},  age = #{age}, height = #{height}, weight = #{weight}, profe_char = #{profeChar}, sports_habits = #{sportsHabits}, info_status = #{infoStatus}")
+            + "gender = #{gender}, calorie = #{calorie}, goal = #{goal}, nickname = #{nickname},  age = #{age}, height = #{height}, weight = #{weight}, profe_char = #{profeChar}, sports_habits = #{sportsHabits}, info_status = #{infoStatus}")
     int insertOrUpdate(UserInfoVo userInfo);
 
 }

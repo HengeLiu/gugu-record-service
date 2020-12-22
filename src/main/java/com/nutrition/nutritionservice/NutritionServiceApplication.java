@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-@MapperScan("com.nutrition.nutritionservice.mapper")
+@MapperScan("com.nutrition.nutritionservice.dao")
 public class NutritionServiceApplication {
 
     public static void main(String[] args) {

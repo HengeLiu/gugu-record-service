@@ -1,17 +1,15 @@
 package com.nutrition.nutritionservice.dao;
 
 import com.nutrition.nutritionservice.vo.user.UserCategoryIntakesModelVo;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface UserCategoryIntakesModelDao {
-    int deleteByPrimaryKey(Integer id);
 
     int insert(UserCategoryIntakesModelVo record);
 
     int insertSelective(UserCategoryIntakesModelVo record);
 
-    UserCategoryIntakesModelVo selectByPrimaryKey(Integer id);
+    UserCategoryIntakesModelVo selectLastByUuid(String uuid);
 
-    int updateByPrimaryKeySelective(UserCategoryIntakesModelVo record);
-
-    int updateByPrimaryKey(UserCategoryIntakesModelVo record);
 }
