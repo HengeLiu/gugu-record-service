@@ -26,10 +26,16 @@ public class IntakesModelController {
     @Resource
     private IntakesModelBiz intakesModelBiz;
 
-    @PostMapping("/calculate")
+    @PostMapping("/calculate-by-param")
     public ModelIngredientIntakesVo calculateIntakesModel(@RequestBody ModelParamVo param) {
         log.info("Calculate model, model param {}", param);
         return intakesModelBiz.calculateIntakesModel(param);
+    }
+
+    @PostMapping("/calculate-by-uuid")
+    public ModelIngredientIntakesVo calculateIntakesModel(@RequestBody String uuid) {
+        log.info("Calculate model, model param {}", uuid);
+        return intakesModelBiz.calculateIntakesModelByUuid(uuid);
     }
 
     @PostMapping("/query")

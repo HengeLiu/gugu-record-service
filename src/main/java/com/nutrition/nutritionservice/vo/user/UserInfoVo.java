@@ -18,9 +18,13 @@ public class UserInfoVo extends TimeBasedVo {
 
     private String uuid;
 
-    private String nickName;
-
     private int gender;
+
+    private int calorie;
+
+    private int goal;
+
+    private String nickname;
 
     private int age;
 
@@ -30,6 +34,8 @@ public class UserInfoVo extends TimeBasedVo {
 
     private int profeChar;
 
-    private int sportHabits;
+    private int sportsHabits;
+
+    private int infoStatus;
 
 }

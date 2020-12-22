@@ -1,4 +1,4 @@
-package com.nutrition.nutritionservice.mapper;
+package com.nutrition.nutritionservice.dao;
 
 import com.nutrition.nutritionservice.vo.user.UserAccountVo;
 import org.apache.ibatis.annotations.Insert;
@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Select;
  * @author heng.liu
  * @since 2020/9/23
  */
-public interface UserAccountMapper {
+public interface UserAccountDao {
 
     @Select("select * from user_account where uuid = #{uuid}")
     UserAccountVo selectByUuid(String uuid);

@@ -1,6 +1,6 @@
 package com.nutrition.nutritionservice.service;
 
-import com.nutrition.nutritionservice.mapper.UserInfoMapper;
+import com.nutrition.nutritionservice.dao.UserInfoDao;
 import com.nutrition.nutritionservice.vo.user.UserInfoVo;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +16,14 @@ import javax.annotation.Resource;
 public class UserInfoService {
 
     @Resource
-    private UserInfoMapper userInfoMapper;
+    private UserInfoDao userInfoDao;
 
-    public UserInfoVo queryByUuid(String uuid) {
-        return userInfoMapper.selectByUuid(uuid);
+    public UserInfoVo selectByUuid(String uuid) {
+        return userInfoDao.selectByUuid(uuid);
     }
 
     public int saveUserInfo(UserInfoVo userInfo) {
-        return userInfoMapper.insertOrUpdate(userInfo);
+        return userInfoDao.insertOrUpdate(userInfo);
     }
 
 }

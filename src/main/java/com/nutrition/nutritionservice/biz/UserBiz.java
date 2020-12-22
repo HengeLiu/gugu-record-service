@@ -4,14 +4,17 @@ import com.nutrition.nutritionservice.annotation.Biz;
 import com.nutrition.nutritionservice.enums.UserAccountStatusTypeEnum;
 import com.nutrition.nutritionservice.enums.UserAccountTypeEnum;
 import com.nutrition.nutritionservice.exception.NutritionServiceException;
+import com.nutrition.nutritionservice.service.EnergyCalorieCalculateService;
 import com.nutrition.nutritionservice.service.UserAccountService;
 import com.nutrition.nutritionservice.service.UserInfoService;
 import com.nutrition.nutritionservice.service.WechatHttpApiService;
 import com.nutrition.nutritionservice.util.UUIDUtils;
+import com.nutrition.nutritionservice.vo.ModelParamVo;
 import com.nutrition.nutritionservice.vo.user.UserAccountVo;
 import com.nutrition.nutritionservice.vo.user.UserInfoVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.annotation.Resource;
 
@@ -34,6 +37,13 @@ public class UserBiz {
     @Resource
     private UserInfoService userInfoService;
 
+    @Resource
+    private EnergyCalorieCalculateService energyCalorieCalculateService;
+
+    private UserInfoVo queryUserInfo(String uuid) {
+        return userInfoService.selectByUuid(uuid);
+    }
+
     public UserInfoVo loginWithWechat(String jsCode) {
         String wxOpenid = wechatHttpApiService.getUserOpenId(jsCode);
         if (StringUtils.isEmpty(wxOpenid)) {
@@ -50,7 +60,7 @@ public class UserBiz {
             userAccount.setStatus(UserAccountStatusTypeEnum.ENABLE.getCode());
             register(userAccount);
         }
-        UserInfoVo userInfo = userInfoService.queryByUuid(userAccount.getUuid());
+        UserInfoVo userInfo = userInfoService.selectByUuid(userAccount.getUuid());
         if (userInfo == null) {
             userInfo = new UserInfoVo();
             userInfo.setUuid(userAccount.getUuid());
@@ -66,7 +76,17 @@ public class UserBiz {
     }
 
     public void saveUserInfo(UserInfoVo userInfoVo) {
+        int calorie = energyCalorieCalculateService.calculateByUserInfo(userInfoVo);
+        userInfoVo.setCalorie(calorie);
         userInfoService.saveUserInfo(userInfoVo);
+    }
+
+    public int calculateAndSaveUserCalorie(String uuid) {
+        UserInfoVo userInfoVo = userInfoService.selectByUuid(uuid);
+        int calorie = energyCalorieCalculateService.calculateByUserInfo(userInfoVo);
+        userInfoVo.setCalorie(calorie);
+        userInfoService.saveUserInfo(userInfoVo);
+        return calorie;
     }
 
 }

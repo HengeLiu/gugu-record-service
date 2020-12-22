@@ -1,7 +1,7 @@
 package com.nutrition.nutritionservice.service;
 
 import com.nutrition.nutritionservice.enums.ModelGoalEnum;
-import com.nutrition.nutritionservice.mapper.ModelIngredientIntakesMapper;
+import com.nutrition.nutritionservice.dao.ModelIngredientIntakesDao;
 import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientIntakesVo;
 import org.springframework.stereotype.Service;
 
@@ -15,18 +15,18 @@ import javax.annotation.Resource;
 public class ModelIngredientIntakesService {
 
     @Resource
-    private ModelIngredientIntakesMapper modelIngredientIntakesMapper;
+    private ModelIngredientIntakesDao modelIngredientIntakesDao;
 
     public ModelIngredientIntakesVo getIntakesByCalorieGoal(int calorie, int goal) {
         int calorieTmp = (calorie / 100) * 100;
         if ((goal == ModelGoalEnum.BALANCE.getCode() || goal == ModelGoalEnum.INCREASED_MUSCLE.getCode())
                 && calorieTmp > 3000) {
-            return modelIngredientIntakesMapper.selectByCalorieGoal(3000, goal);
+            return modelIngredientIntakesDao.selectByCalorieGoal(3000, goal);
         }
         if (goal == ModelGoalEnum.LOSE_WEIGHT.getCode() && calorie > 3800) {
-            return modelIngredientIntakesMapper.selectByCalorieGoal(3800, goal);
+            return modelIngredientIntakesDao.selectByCalorieGoal(3800, goal);
         }
-        return modelIngredientIntakesMapper.selectByCalorieGoal(calorieTmp, goal);
+        return modelIngredientIntakesDao.selectByCalorieGoal(calorieTmp, goal);
     }
 
 }
