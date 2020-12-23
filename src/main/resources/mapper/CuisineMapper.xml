@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nutrition.nutritionservice.dao.CuisineDao">
+    <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.store.CuisineVo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="store_code" jdbcType="VARCHAR" property="storeCode"/>
+        <result column="calorie" jdbcType="INTEGER" property="calorie"/>
+        <result column="goal" jdbcType="TINYINT" property="goal"/>
+        <result column="cuisine_type" jdbcType="TINYINT" property="cuisineType"/>
+        <result column="dine_time" jdbcType="TINYINT" property="dineTime"/>
+        <result column="warm" jdbcType="TINYINT" property="warm"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, code, `name`, store_code, calorie, goal, cuisine_type, dine_time, warm, `status`, 
+    create_time
+  </sql>
+    <select id="selectByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from cuisine
+        where code = #{code}
+    </select>
+    <select id="selectCountByCalorieAndGoal" resultType="java.lang.Integer">
+        select count(*) from cuisine where goal = #{goal} and calorie &gt;= #{minCalorie} and calorie &lt; #{maxCalorie}
+    </select>
+    <insert id="insert" parameterType="com.nutrition.nutritionservice.vo.store.CuisineVo">
+    insert into cuisine (code, `name`, store_code, 
+      calorie, goal, cuisine_type, 
+      dine_time, warm, `status`)
+    values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{storeCode,jdbcType=VARCHAR}, 
+      #{calorie,jdbcType=INTEGER}, #{goal,jdbcType=TINYINT}, #{cuisineType,jdbcType=TINYINT}, 
+      #{dineTime,jdbcType=TINYINT}, #{warm,jdbcType=TINYINT}, #{status,jdbcType=TINYINT})
+  </insert>
+    <update id="updateStatusByCode" parameterType="java.lang.String">
+    update cuisine set status = #{status} where code = #{code}
+  </update>
+</mapper>
