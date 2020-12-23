@@ -1,6 +1,7 @@
 package com.nutrition.nutritionservice.biz;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.nutrition.nutritionservice.annotation.Biz;
 import com.nutrition.nutritionservice.enums.database.GenderEnum;
 import com.nutrition.nutritionservice.service.ConfigPropertiesService;
@@ -16,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 摄入模型业务层。
@@ -66,8 +68,11 @@ public class IntakesModelBiz {
 
     public ModelIngredientIntakesVo queryMostNeededModel() {
         List<ModelIngredientIntakesVo> allModelsList = modelIngredientIntakesService.listAllModels();
-        int maxNeededNumber = Integer.MIN_VALUE;
         List<ModelIngredientIntakesVo> mostNeededModelList = Lists.newArrayList();
+        Map<String, Integer> userModelCountMap = Maps.newHashMap();
+        Map<String, Integer> cuisineCountMap = Maps.newHashMap();
+        double userModelCountSum = 0;
+        double cuisineCountSum = 0;
         for (ModelIngredientIntakesVo model : allModelsList) {
             int modelCalorie = model.getCalorie();
             int goal = model.getGoal();
@@ -76,11 +81,24 @@ public class IntakesModelBiz {
                     (int) (modelCalorie * 1.2), goal);
             log.debug("model calorie {}, user model count {}, cuisine count {}.", modelCalorie, userModelCount,
                     cuisineCount);
-            if (userModelCount - cuisineCount > maxNeededNumber) {
-                maxNeededNumber = userModelCount - cuisineCount;
+            userModelCountMap.put(modelCalorie + "-" + goal, userModelCount);
+            cuisineCountMap.put(modelCalorie + "-" + goal, cuisineCount);
+            userModelCountSum += userModelCount;
+            cuisineCountSum += cuisineCount;
+        }
+        double maxNeededNumber = Double.MIN_VALUE;
+        for (ModelIngredientIntakesVo model : allModelsList) {
+            String key = model.getCalorie() + "-" + model.getGoal();
+            double userModelRate = userModelCountMap.getOrDefault(key, 0) / userModelCountSum;
+            double cuisineRate = cuisineCountSum == 0 ? 0.0 : cuisineCountMap.getOrDefault(key, 0) / cuisineCountSum;
+            double rateMinus = userModelRate - cuisineRate;
+            log.debug("model calorie {}, goal {}, user model rate {}, cuisine model rate {}, rate minus {}.",
+                    model.getCalorie(), model.getGoal(), userModelRate, cuisineRate, rateMinus);
+            if (rateMinus > maxNeededNumber) {
+                maxNeededNumber = rateMinus;
                 mostNeededModelList = Lists.newArrayList();
                 mostNeededModelList.add(model);
-            } else if (userModelCount - cuisineCount == maxNeededNumber) {
+            } else if (rateMinus == maxNeededNumber) {
                 mostNeededModelList.add(model);
             }
         }
