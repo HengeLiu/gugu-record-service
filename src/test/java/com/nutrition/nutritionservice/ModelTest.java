@@ -5,7 +5,7 @@ import com.nutrition.nutritionservice.service.EnergyCalorieCalculateService;
 import com.nutrition.nutritionservice.service.ModelIngredientIntakesService;
 import com.nutrition.nutritionservice.service.UserCategoryIntakesModelService;
 import com.nutrition.nutritionservice.service.UserInfoService;
-import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientIntakesVo;
+import com.nutrition.nutritionservice.vo.modeldata.IntakesModelVo;
 import com.nutrition.nutritionservice.vo.user.UserCategoryIntakesModelVo;
 import com.nutrition.nutritionservice.vo.user.UserInfoVo;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +46,7 @@ public class ModelTest {
                 userInfoVo.setCalorie(calorie);
                 userInfoService.saveUserInfo(userInfoVo);
             }
-            ModelIngredientIntakesVo intakesModel = modelIngredientIntakesService
+            IntakesModelVo intakesModel = modelIngredientIntakesService
                     .getIntakesByCalorieGoal(userInfoVo.getCalorie(), userInfoVo.getGoal());
             UserCategoryIntakesModelVo userModel = IntakesModel2UserModelConverter.INSTANCE.convert(intakesModel);
             userModel.setUuid(String.valueOf(uuid));
@@ -56,10 +56,10 @@ public class ModelTest {
 
     @Test
     public void calculateAllModelSimilarity() {
-        List<ModelIngredientIntakesVo> modelList = modelIngredientIntakesService.listAllModels();
-        for (ModelIngredientIntakesVo model1 : modelList) {
+        List<IntakesModelVo> modelList = modelIngredientIntakesService.listAllModels();
+        for (IntakesModelVo model1 : modelList) {
             System.out.print("" + model1.getCalorie() + "," + model1.getGoal());
-            for (ModelIngredientIntakesVo model2 : modelList) {
+            for (IntakesModelVo model2 : modelList) {
                 double euclidDistance = modelIngredientIntakesService.calculateEuclidDistance(model1, model2);
                 System.out.print("," + euclidDistance);
 //                double cosineSimilarity = modelIngredientIntakesService.calculateCosineSimilarity(model1, model2);

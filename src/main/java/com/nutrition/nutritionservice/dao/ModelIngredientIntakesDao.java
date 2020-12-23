@@ -1,6 +1,6 @@
 package com.nutrition.nutritionservice.dao;
 
-import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientIntakesVo;
+import com.nutrition.nutritionservice.vo.modeldata.IntakesModelVo;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -8,8 +8,8 @@ import java.util.List;
 @Repository
 public interface ModelIngredientIntakesDao {
 
-    ModelIngredientIntakesVo selectByCalorieGoal(int calorie, int goal);
+    IntakesModelVo selectByCalorieGoal(int calorie, int goal);
 
-    List<ModelIngredientIntakesVo> selectAll();
+    List<IntakesModelVo> selectAll();
 
 }

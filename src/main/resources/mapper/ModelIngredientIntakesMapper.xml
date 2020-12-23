@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nutrition.nutritionservice.dao.ModelIngredientIntakesDao">
-    <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.modeldata.ModelIngredientIntakesVo">
+    <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.modeldata.IntakesModelVo">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="calorie" jdbcType="INTEGER" property="calorie"/>
         <result column="processed_grains" jdbcType="INTEGER" property="processedGrains"/>
@@ -29,13 +29,13 @@
     goal, version
   </sql>
     <select id="selectByCalorieGoal"
-            resultType="com.nutrition.nutritionservice.vo.modeldata.ModelIngredientIntakesVo">
+            resultType="com.nutrition.nutritionservice.vo.modeldata.IntakesModelVo">
         select
         <include refid="Base_Column_List"/>
         from model_ingredient_intakes
         where calorie = #{calorie} and goal = #{goal}
     </select>
-    <select id="selectAll" resultType="com.nutrition.nutritionservice.vo.modeldata.ModelIngredientIntakesVo">
+    <select id="selectAll" resultType="com.nutrition.nutritionservice.vo.modeldata.IntakesModelVo">
         select * from model_ingredient_intakes
     </select>
 </mapper>

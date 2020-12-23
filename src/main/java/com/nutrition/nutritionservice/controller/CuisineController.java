@@ -1,6 +1,7 @@
 package com.nutrition.nutritionservice.controller;
 
 import com.nutrition.nutritionservice.biz.CuisineBiz;
+import com.nutrition.nutritionservice.vo.store.CuisineWebAo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +22,11 @@ public class CuisineController {
 
     @GetMapping("/designer")
     public ModelAndView designer() {
-        return new ModelAndView("cuisine_designer", "categoryList", cuisineBiz.queryIngredientAndCategory());
+        ModelAndView model = new ModelAndView("cuisine_designer");
+        model.addObject("ingredientCategoryMap", cuisineBiz.queryIngredientCategoryMap());
+        model.addObject("recommendedCategoryMap", cuisineBiz.queryRecommendedCategoryMap());
+        model.addObject("cuisine", CuisineWebAo.builder().build());
+        return model;
     }
 
 }

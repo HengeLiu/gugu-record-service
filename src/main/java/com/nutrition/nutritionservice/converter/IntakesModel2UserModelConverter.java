@@ -1,6 +1,6 @@
 package com.nutrition.nutritionservice.converter;
 
-import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientIntakesVo;
+import com.nutrition.nutritionservice.vo.modeldata.IntakesModelVo;
 import com.nutrition.nutritionservice.vo.user.UserCategoryIntakesModelVo;
 
 /**
@@ -8,7 +8,7 @@ import com.nutrition.nutritionservice.vo.user.UserCategoryIntakesModelVo;
  * @since 2020/12/22
  */
 public class IntakesModel2UserModelConverter
-        extends BaseConverter<ModelIngredientIntakesVo, UserCategoryIntakesModelVo> {
+        extends BaseConverter<IntakesModelVo, UserCategoryIntakesModelVo> {
 
     public static final IntakesModel2UserModelConverter INSTANCE = new IntakesModel2UserModelConverter();
 
@@ -16,52 +16,52 @@ public class IntakesModel2UserModelConverter
     }
 
     @Override
-    protected UserCategoryIntakesModelVo doForward(ModelIngredientIntakesVo modelIngredientIntakesVo) {
+    protected UserCategoryIntakesModelVo doForward(IntakesModelVo intakesModelVo) {
         UserCategoryIntakesModelVo userCategoryIntakesModelVo = new UserCategoryIntakesModelVo();
-        userCategoryIntakesModelVo.setId(modelIngredientIntakesVo.getId());
-        userCategoryIntakesModelVo.setCalorie(modelIngredientIntakesVo.getCalorie());
-        userCategoryIntakesModelVo.setProcessedGrains(modelIngredientIntakesVo.getProcessedGrains());
-        userCategoryIntakesModelVo.setUnprocessedGrains(modelIngredientIntakesVo.getUnprocessedGrains());
-        userCategoryIntakesModelVo.setMixedBeans(modelIngredientIntakesVo.getMixedBeans());
-        userCategoryIntakesModelVo.setTuber(modelIngredientIntakesVo.getTuber());
-        userCategoryIntakesModelVo.setGeneralVegetables(modelIngredientIntakesVo.getGeneralVegetables());
-        userCategoryIntakesModelVo.setDarkVegetables(modelIngredientIntakesVo.getDarkVegetables());
-        userCategoryIntakesModelVo.setFruit(modelIngredientIntakesVo.getFruit());
-        userCategoryIntakesModelVo.setMeat(modelIngredientIntakesVo.getMeat());
-        userCategoryIntakesModelVo.setPoultry(modelIngredientIntakesVo.getPoultry());
-        userCategoryIntakesModelVo.setAquatic(modelIngredientIntakesVo.getAquatic());
-        userCategoryIntakesModelVo.setEgg(modelIngredientIntakesVo.getEgg());
-        userCategoryIntakesModelVo.setDairy(modelIngredientIntakesVo.getDairy());
-        userCategoryIntakesModelVo.setSoybean(modelIngredientIntakesVo.getSoybean());
-        userCategoryIntakesModelVo.setNut(modelIngredientIntakesVo.getNut());
-        userCategoryIntakesModelVo.setOil(modelIngredientIntakesVo.getOil());
-        userCategoryIntakesModelVo.setSalt(modelIngredientIntakesVo.getSalt());
-        userCategoryIntakesModelVo.setGoal(modelIngredientIntakesVo.getGoal());
+        userCategoryIntakesModelVo.setId(intakesModelVo.getId());
+        userCategoryIntakesModelVo.setCalorie(intakesModelVo.getCalorie());
+        userCategoryIntakesModelVo.setProcessedGrains(intakesModelVo.getProcessedGrains());
+        userCategoryIntakesModelVo.setUnprocessedGrains(intakesModelVo.getUnprocessedGrains());
+        userCategoryIntakesModelVo.setMixedBeans(intakesModelVo.getMixedBeans());
+        userCategoryIntakesModelVo.setTuber(intakesModelVo.getTuber());
+        userCategoryIntakesModelVo.setGeneralVegetables(intakesModelVo.getGeneralVegetables());
+        userCategoryIntakesModelVo.setDarkVegetables(intakesModelVo.getDarkVegetables());
+        userCategoryIntakesModelVo.setFruit(intakesModelVo.getFruit());
+        userCategoryIntakesModelVo.setMeat(intakesModelVo.getMeat());
+        userCategoryIntakesModelVo.setPoultry(intakesModelVo.getPoultry());
+        userCategoryIntakesModelVo.setAquatic(intakesModelVo.getAquatic());
+        userCategoryIntakesModelVo.setEgg(intakesModelVo.getEgg());
+        userCategoryIntakesModelVo.setDairy(intakesModelVo.getDairy());
+        userCategoryIntakesModelVo.setSoybean(intakesModelVo.getSoybean());
+        userCategoryIntakesModelVo.setNut(intakesModelVo.getNut());
+        userCategoryIntakesModelVo.setOil(intakesModelVo.getOil());
+        userCategoryIntakesModelVo.setSalt(intakesModelVo.getSalt());
+        userCategoryIntakesModelVo.setGoal(intakesModelVo.getGoal());
         return userCategoryIntakesModelVo;
     }
 
     @Override
-    protected ModelIngredientIntakesVo doBackward(UserCategoryIntakesModelVo userCategoryIntakesModelVo) {
-        ModelIngredientIntakesVo modelIngredientIntakesVo = new ModelIngredientIntakesVo();
-        modelIngredientIntakesVo.setId(userCategoryIntakesModelVo.getId());
-        modelIngredientIntakesVo.setCalorie(userCategoryIntakesModelVo.getCalorie());
-        modelIngredientIntakesVo.setProcessedGrains(userCategoryIntakesModelVo.getProcessedGrains());
-        modelIngredientIntakesVo.setUnprocessedGrains(userCategoryIntakesModelVo.getUnprocessedGrains());
-        modelIngredientIntakesVo.setMixedBeans(userCategoryIntakesModelVo.getMixedBeans());
-        modelIngredientIntakesVo.setTuber(userCategoryIntakesModelVo.getTuber());
-        modelIngredientIntakesVo.setGeneralVegetables(userCategoryIntakesModelVo.getGeneralVegetables());
-        modelIngredientIntakesVo.setDarkVegetables(userCategoryIntakesModelVo.getDarkVegetables());
-        modelIngredientIntakesVo.setFruit(userCategoryIntakesModelVo.getFruit());
-        modelIngredientIntakesVo.setMeat(userCategoryIntakesModelVo.getMeat());
-        modelIngredientIntakesVo.setPoultry(userCategoryIntakesModelVo.getPoultry());
-        modelIngredientIntakesVo.setAquatic(userCategoryIntakesModelVo.getAquatic());
-        modelIngredientIntakesVo.setEgg(userCategoryIntakesModelVo.getEgg());
-        modelIngredientIntakesVo.setDairy(userCategoryIntakesModelVo.getDairy());
-        modelIngredientIntakesVo.setSoybean(userCategoryIntakesModelVo.getSoybean());
-        modelIngredientIntakesVo.setNut(userCategoryIntakesModelVo.getNut());
-        modelIngredientIntakesVo.setOil(userCategoryIntakesModelVo.getOil());
-        modelIngredientIntakesVo.setSalt(userCategoryIntakesModelVo.getSalt());
-        modelIngredientIntakesVo.setGoal(userCategoryIntakesModelVo.getGoal());
-        return modelIngredientIntakesVo;
+    protected IntakesModelVo doBackward(UserCategoryIntakesModelVo userCategoryIntakesModelVo) {
+        IntakesModelVo intakesModelVo = IntakesModelVo.builder().build();
+        intakesModelVo.setId(userCategoryIntakesModelVo.getId());
+        intakesModelVo.setCalorie(userCategoryIntakesModelVo.getCalorie());
+        intakesModelVo.setProcessedGrains(userCategoryIntakesModelVo.getProcessedGrains());
+        intakesModelVo.setUnprocessedGrains(userCategoryIntakesModelVo.getUnprocessedGrains());
+        intakesModelVo.setMixedBeans(userCategoryIntakesModelVo.getMixedBeans());
+        intakesModelVo.setTuber(userCategoryIntakesModelVo.getTuber());
+        intakesModelVo.setGeneralVegetables(userCategoryIntakesModelVo.getGeneralVegetables());
+        intakesModelVo.setDarkVegetables(userCategoryIntakesModelVo.getDarkVegetables());
+        intakesModelVo.setFruit(userCategoryIntakesModelVo.getFruit());
+        intakesModelVo.setMeat(userCategoryIntakesModelVo.getMeat());
+        intakesModelVo.setPoultry(userCategoryIntakesModelVo.getPoultry());
+        intakesModelVo.setAquatic(userCategoryIntakesModelVo.getAquatic());
+        intakesModelVo.setEgg(userCategoryIntakesModelVo.getEgg());
+        intakesModelVo.setDairy(userCategoryIntakesModelVo.getDairy());
+        intakesModelVo.setSoybean(userCategoryIntakesModelVo.getSoybean());
+        intakesModelVo.setNut(userCategoryIntakesModelVo.getNut());
+        intakesModelVo.setOil(userCategoryIntakesModelVo.getOil());
+        intakesModelVo.setSalt(userCategoryIntakesModelVo.getSalt());
+        intakesModelVo.setGoal(userCategoryIntakesModelVo.getGoal());
+        return intakesModelVo;
     }
 }

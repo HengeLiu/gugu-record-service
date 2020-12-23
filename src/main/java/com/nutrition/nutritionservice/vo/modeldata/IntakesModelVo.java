@@ -1,5 +1,6 @@
 package com.nutrition.nutritionservice.vo.modeldata;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -8,8 +9,9 @@ import lombok.Data;
  * @author heng.liu
  * @since 2020/12/19
  */
+@Builder
 @Data
-public class ModelIngredientIntakesVo {
+public class IntakesModelVo {
     private int id;
 
     /**

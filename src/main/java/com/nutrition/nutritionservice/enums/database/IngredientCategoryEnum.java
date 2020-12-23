@@ -24,11 +24,11 @@ public enum IngredientCategoryEnum implements CodeEnum<Integer> {
 
     FRUITS(7, "fruits", "水果", IngredientSuperCategoryEnum.VEGETABLES_FRUITS),
 
-    MEAT(8, "meat", "禽肉", IngredientSuperCategoryEnum.FISH_POULTRY_EGGS),
+    MEAT(8, "meat", "畜肉", IngredientSuperCategoryEnum.FISH_POULTRY_EGGS),
 
-    POULTRY(9, "poultry", "畜肉", IngredientSuperCategoryEnum.FISH_POULTRY_EGGS),
+    POULTRY(9, "poultry", "禽肉", IngredientSuperCategoryEnum.FISH_POULTRY_EGGS),
 
-    aquatic(10, "aquatic", "水产品", IngredientSuperCategoryEnum.FISH_POULTRY_EGGS),
+    AQUATIC(10, "aquatic", "水产品", IngredientSuperCategoryEnum.FISH_POULTRY_EGGS),
 
     EGGS(11, "egg", "蛋", IngredientSuperCategoryEnum.FISH_POULTRY_EGGS),
 

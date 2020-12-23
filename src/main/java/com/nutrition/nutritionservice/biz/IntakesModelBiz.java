@@ -11,7 +11,7 @@ import com.nutrition.nutritionservice.service.ModelIngredientIntakesService;
 import com.nutrition.nutritionservice.service.UserCategoryIntakesModelService;
 import com.nutrition.nutritionservice.service.UserInfoService;
 import com.nutrition.nutritionservice.vo.ModelParamVo;
-import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientIntakesVo;
+import com.nutrition.nutritionservice.vo.modeldata.IntakesModelVo;
 import com.nutrition.nutritionservice.vo.user.UserInfoVo;
 import lombok.extern.slf4j.Slf4j;
 
@@ -47,18 +47,18 @@ public class IntakesModelBiz {
     @Resource
     private CuisineService cuisineService;
 
-    public ModelIngredientIntakesVo calculateIntakesModel(ModelParamVo paramVo) {
+    public IntakesModelVo calculateIntakesModel(ModelParamVo paramVo) {
         int dailyCalorie = energyCalorieCalculateService.calculate(paramVo);
         return modelIngredientIntakesService.getIntakesByCalorieGoal(dailyCalorie, paramVo.getGoal());
     }
 
-    public ModelIngredientIntakesVo getDefaultUserModel() {
+    public IntakesModelVo getDefaultUserModel() {
         UserInfoVo defaultUserInfo = configPropertiesService.getDefaultUserInfo(GenderEnum.FEMALE);
         int dailyCalorie = energyCalorieCalculateService.calculateByUserInfo(defaultUserInfo);
         return modelIngredientIntakesService.getIntakesByCalorieGoal(dailyCalorie, defaultUserInfo.getGoal());
     }
 
-    public ModelIngredientIntakesVo calculateIntakesModelByUuid(String uuid) {
+    public IntakesModelVo calculateIntakesModelByUuid(String uuid) {
         UserInfoVo userInfoVo = userInfoService.selectByUuid(uuid);
         if (userInfoVo.getCalorie() <= 0) {
             throw new RuntimeException("user calorie's zero");
@@ -66,14 +66,14 @@ public class IntakesModelBiz {
         return modelIngredientIntakesService.getIntakesByCalorieGoal(userInfoVo.getCalorie(), userInfoVo.getGoal());
     }
 
-    public ModelIngredientIntakesVo queryMostNeededModel() {
-        List<ModelIngredientIntakesVo> allModelsList = modelIngredientIntakesService.listAllModels();
-        List<ModelIngredientIntakesVo> mostNeededModelList = Lists.newArrayList();
+    public IntakesModelVo queryMostNeededModel() {
+        List<IntakesModelVo> allModelsList = modelIngredientIntakesService.listAllModels();
+        List<IntakesModelVo> mostNeededModelList = Lists.newArrayList();
         Map<String, Integer> userModelCountMap = Maps.newHashMap();
         Map<String, Integer> cuisineCountMap = Maps.newHashMap();
         double userModelCountSum = 0;
         double cuisineCountSum = 0;
-        for (ModelIngredientIntakesVo model : allModelsList) {
+        for (IntakesModelVo model : allModelsList) {
             int modelCalorie = model.getCalorie();
             int goal = model.getGoal();
             int userModelCount = userCategoryIntakesModelService.countByCalorieAndGoal(modelCalorie, goal);
@@ -87,7 +87,7 @@ public class IntakesModelBiz {
             cuisineCountSum += cuisineCount;
         }
         double maxNeededNumber = Double.MIN_VALUE;
-        for (ModelIngredientIntakesVo model : allModelsList) {
+        for (IntakesModelVo model : allModelsList) {
             String key = model.getCalorie() + "-" + model.getGoal();
             double userModelRate = userModelCountMap.getOrDefault(key, 0) / userModelCountSum;
             double cuisineRate = cuisineCountSum == 0 ? 0.0 : cuisineCountMap.getOrDefault(key, 0) / cuisineCountSum;
@@ -105,15 +105,15 @@ public class IntakesModelBiz {
         if (mostNeededModelList.size() == 1) {
             return mostNeededModelList.get(0);
         }
-        ModelIngredientIntakesVo defaultUserModel = getDefaultUserModel();
+        IntakesModelVo defaultUserModel = getDefaultUserModel();
         if (mostNeededModelList.size() == 0) {
             log.info("no most needed model found.");
             return defaultUserModel;
         }
         log.debug("default user model calorie {}, gaol {}.", defaultUserModel.getCalorie(), defaultUserModel.getGoal());
         double minEuclidDistance = Double.MAX_VALUE;
-        ModelIngredientIntakesVo bestModel = null;
-        for (ModelIngredientIntakesVo model : mostNeededModelList) {
+        IntakesModelVo bestModel = null;
+        for (IntakesModelVo model : mostNeededModelList) {
             double modelEuclidDistance = modelIngredientIntakesService.calculateEuclidDistance(model, defaultUserModel);
             log.debug("model calorie {}, goal {}, Euclid Distance to default model {}.", model.getCalorie(),
                     model.getGoal(), modelEuclidDistance);

@@ -2,7 +2,7 @@ package com.nutrition.nutritionservice.controller;
 
 import com.nutrition.nutritionservice.biz.IntakesModelBiz;
 import com.nutrition.nutritionservice.vo.ModelParamVo;
-import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientIntakesVo;
+import com.nutrition.nutritionservice.vo.modeldata.IntakesModelVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,19 +27,19 @@ public class IntakesModelController {
     private IntakesModelBiz intakesModelBiz;
 
     @PostMapping("/calculate-by-param")
-    public ModelIngredientIntakesVo calculateIntakesModel(@RequestBody ModelParamVo param) {
+    public IntakesModelVo calculateIntakesModel(@RequestBody ModelParamVo param) {
         log.info("Calculate model, model param {}", param);
         return intakesModelBiz.calculateIntakesModel(param);
     }
 
     @PostMapping("/calculate-by-uuid")
-    public ModelIngredientIntakesVo calculateIntakesModel(@RequestBody String uuid) {
+    public IntakesModelVo calculateIntakesModel(@RequestBody String uuid) {
         log.info("Calculate model, model param {}", uuid);
         return intakesModelBiz.calculateIntakesModelByUuid(uuid);
     }
 
     @GetMapping("/query-most-needed")
-    public ModelIngredientIntakesVo queryMostNeededModel() {
+    public IntakesModelVo queryMostNeededModel() {
         return intakesModelBiz.queryMostNeededModel();
     }
 
