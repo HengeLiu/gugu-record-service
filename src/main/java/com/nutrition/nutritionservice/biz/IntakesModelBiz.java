@@ -13,7 +13,6 @@ import com.nutrition.nutritionservice.vo.ModelParamVo;
 import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientIntakesVo;
 import com.nutrition.nutritionservice.vo.user.UserInfoVo;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.convert.ConversionService;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -90,12 +89,16 @@ public class IntakesModelBiz {
         }
         ModelIngredientIntakesVo defaultUserModel = getDefaultUserModel();
         if (mostNeededModelList.size() == 0) {
+            log.info("no most needed model found.");
             return defaultUserModel;
         }
+        log.debug("default user model calorie {}, gaol {}.", defaultUserModel.getCalorie(), defaultUserModel.getGoal());
         double minEuclidDistance = Double.MAX_VALUE;
         ModelIngredientIntakesVo bestModel = null;
         for (ModelIngredientIntakesVo model : mostNeededModelList) {
             double modelEuclidDistance = modelIngredientIntakesService.calculateEuclidDistance(model, defaultUserModel);
+            log.debug("model calorie {}, goal {}, Euclid Distance to default model {}.", model.getCalorie(),
+                    model.getGoal(), modelEuclidDistance);
             if (modelEuclidDistance < minEuclidDistance) {
                 minEuclidDistance = modelEuclidDistance;
                 bestModel = model;

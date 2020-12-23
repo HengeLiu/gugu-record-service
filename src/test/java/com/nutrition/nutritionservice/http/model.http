@@ -1,10 +1,10 @@
 
 ### 启动测试
-GET https://localhost/nutrition/test/hello
+GET https://localhost/test/hello
 Content-Type: application/x-www-form-urlencoded
 
 ### 计算模型
-POST https://localhost/nutrition/intakes-model/calculate
+POST https://localhost/model/calculate
 Content-Type: application/json
 
 {
@@ -16,3 +16,7 @@ Content-Type: application/json
   "sportHabits": 2,
   "goal": 2
 }
+
+### 计算模型
+GET https://localhost/model/query-most-needed
+Content-Type: application/json
