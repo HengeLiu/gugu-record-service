@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>菜品设计助手</title>
+</head>
+<script>
+
+</script>
+<body>
+<form action="demo_form.php" method="get">
+    <div th:each="category:${categoryList}">
+        <label th:text="${category.fst.nameZh}"></label>
+        <select>
+            <option>请选择食材</option>
+            <option th:each="ingredient:${category.snd}" th:value="${ingredient.code}" th:text="${ingredient.name}"
+                    value="1" th:selected="${ingredient.code eq ingredient.name}"></option>
+        </select>
+    </div>
+    <input type="submit" value="保存">
+</form>
+</body>
+</html>
