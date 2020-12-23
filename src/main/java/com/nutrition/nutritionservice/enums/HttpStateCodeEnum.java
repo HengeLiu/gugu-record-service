@@ -1,7 +1,5 @@
 package com.nutrition.nutritionservice.enums;
 
-import com.nutrition.nutritionservice.enums.CodeEnum;
-
 /**
  *
  * Response.state
@@ -9,7 +7,7 @@ import com.nutrition.nutritionservice.enums.CodeEnum;
  * @author heng.liu
  * @since 2020/9/28
  */
-public enum StateCodeEnum implements CodeEnum<Integer> {
+public enum HttpStateCodeEnum implements CodeEnum<Integer> {
     SUCCESS(0),
 
     BUSINESS_ERROR(400),
@@ -24,7 +22,7 @@ public enum StateCodeEnum implements CodeEnum<Integer> {
 
     int code;
 
-    StateCodeEnum(int code) {
+    HttpStateCodeEnum(int code) {
         this.code = code;
     }
 

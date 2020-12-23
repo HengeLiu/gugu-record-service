@@ -2,9 +2,9 @@ package com.nutrition.nutritionservice.controller;
 
 import com.nutrition.nutritionservice.biz.IntakesModelBiz;
 import com.nutrition.nutritionservice.vo.ModelParamVo;
-import com.nutrition.nutritionservice.vo.IntakesModelVo;
 import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientIntakesVo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +19,7 @@ import javax.annotation.Resource;
  * @since 2020/9/13
  */
 @RestController
-@RequestMapping("/intakes-model")
+@RequestMapping("/model")
 @Slf4j
 public class IntakesModelController {
 
@@ -38,9 +38,9 @@ public class IntakesModelController {
         return intakesModelBiz.calculateIntakesModelByUuid(uuid);
     }
 
-    @PostMapping("/query")
-    public IntakesModelVo queryIntakesModel(String uuid) {
-        return null;
+    @GetMapping("/query-most-needed")
+    public ModelIngredientIntakesVo queryMostNeededModel() {
+        return intakesModelBiz.queryMostNeededModel();
     }
 
 }

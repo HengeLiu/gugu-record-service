@@ -2,52 +2,60 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nutrition.nutritionservice.dao.UserCategoryIntakesModelDao">
   <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.user.UserCategoryIntakesModelVo">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="uuid" jdbcType="VARCHAR" property="uuid" />
-    <result column="calorie" jdbcType="INTEGER" property="calorie" />
-    <result column="processed_grains" jdbcType="INTEGER" property="processedGrains" />
-    <result column="unprocessed_grains" jdbcType="INTEGER" property="unprocessedGrains" />
-    <result column="mixed_beans" jdbcType="INTEGER" property="mixedBeans" />
-    <result column="tuber" jdbcType="INTEGER" property="tuber" />
-    <result column="general_vegetables" jdbcType="INTEGER" property="generalVegetables" />
-    <result column="dark_vegetables" jdbcType="INTEGER" property="darkVegetables" />
-    <result column="fruit" jdbcType="INTEGER" property="fruit" />
-    <result column="meat" jdbcType="INTEGER" property="meat" />
-    <result column="poultry" jdbcType="INTEGER" property="poultry" />
-    <result column="aquatic" jdbcType="INTEGER" property="aquatic" />
-    <result column="egg" jdbcType="INTEGER" property="egg" />
-    <result column="dairy" jdbcType="INTEGER" property="dairy" />
-    <result column="soybean" jdbcType="INTEGER" property="soybean" />
-    <result column="nut" jdbcType="INTEGER" property="nut" />
-    <result column="oil" jdbcType="INTEGER" property="oil" />
-    <result column="salt" jdbcType="INTEGER" property="salt" />
-    <result column="goal" jdbcType="TINYINT" property="goal" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <id column="id" jdbcType="INTEGER" property="id"/>
+    <result column="uuid" jdbcType="VARCHAR" property="uuid"/>
+    <result column="calorie" jdbcType="INTEGER" property="calorie"/>
+    <result column="processed_grains" jdbcType="INTEGER" property="processedGrains"/>
+    <result column="unprocessed_grains" jdbcType="INTEGER" property="unprocessedGrains"/>
+    <result column="mixed_beans" jdbcType="INTEGER" property="mixedBeans"/>
+    <result column="tuber" jdbcType="INTEGER" property="tuber"/>
+    <result column="general_vegetables" jdbcType="INTEGER" property="generalVegetables"/>
+    <result column="dark_vegetables" jdbcType="INTEGER" property="darkVegetables"/>
+    <result column="fruit" jdbcType="INTEGER" property="fruit"/>
+    <result column="meat" jdbcType="INTEGER" property="meat"/>
+    <result column="poultry" jdbcType="INTEGER" property="poultry"/>
+    <result column="aquatic" jdbcType="INTEGER" property="aquatic"/>
+    <result column="egg" jdbcType="INTEGER" property="egg"/>
+    <result column="dairy" jdbcType="INTEGER" property="dairy"/>
+    <result column="soybean" jdbcType="INTEGER" property="soybean"/>
+    <result column="nut" jdbcType="INTEGER" property="nut"/>
+    <result column="oil" jdbcType="INTEGER" property="oil"/>
+    <result column="salt" jdbcType="INTEGER" property="salt"/>
+    <result column="goal" jdbcType="TINYINT" property="goal"/>
+    <result column="model_status" jdbcType="TINYINT" property="modelStatus"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
   </resultMap>
   <sql id="Base_Column_List">
     id, uuid, calorie, processed_grains, unprocessed_grains, mixed_beans, tuber, general_vegetables, 
     dark_vegetables, fruit, meat, poultry, aquatic, egg, dairy, soybean, nut, oil, salt, 
-    goal, create_time
+    goal, model_status, create_time
   </sql>
-  <select id="selectLastByUuid" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <update id="updateModelStatusByUuidAndCreateTime">
+    update user_category_intakes_model set model_status = #{model_status} where uuid = #{uuid} and create_time = #{createTime}
+  </update>
+  <select id="selectUsingModelByUuid" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
     from user_category_intakes_model
-    where uuid = #{uuid} order by create_time desc limit 1
+    where uuid = #{uuid} and model_status = 0
   </select>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nutrition.nutritionservice.vo.user.UserCategoryIntakesModelVo" useGeneratedKeys="true">
+  <select id="selectCountByCalorieAndGoal" resultType="java.lang.Integer">
+    select count(*) from user_category_intakes_model where calorie = #{calorie} and goal = #{goal} and model_status = 0
+  </select>
+  <insert id="insert" keyColumn="id" keyProperty="id"
+          parameterType="com.nutrition.nutritionservice.vo.user.UserCategoryIntakesModelVo" useGeneratedKeys="true">
     insert into user_category_intakes_model (uuid, calorie, processed_grains, 
       unprocessed_grains, mixed_beans, tuber, 
       general_vegetables, dark_vegetables, fruit, 
       meat, poultry, aquatic, 
       egg, dairy, soybean, 
-      nut, oil, salt, goal)
+      nut, oil, salt, goal, modelStatus)
     values (#{uuid,jdbcType=VARCHAR}, #{calorie,jdbcType=INTEGER}, #{processedGrains,jdbcType=INTEGER}, 
       #{unprocessedGrains,jdbcType=INTEGER}, #{mixedBeans,jdbcType=INTEGER}, #{tuber,jdbcType=INTEGER}, 
       #{generalVegetables,jdbcType=INTEGER}, #{darkVegetables,jdbcType=INTEGER}, #{fruit,jdbcType=INTEGER}, 
       #{meat,jdbcType=INTEGER}, #{poultry,jdbcType=INTEGER}, #{aquatic,jdbcType=INTEGER}, 
       #{egg,jdbcType=INTEGER}, #{dairy,jdbcType=INTEGER}, #{soybean,jdbcType=INTEGER}, 
-      #{nut,jdbcType=INTEGER}, #{oil,jdbcType=INTEGER}, #{salt,jdbcType=INTEGER}, #{goal,jdbcType=TINYINT})
+      #{nut,jdbcType=INTEGER}, #{oil,jdbcType=INTEGER}, #{salt,jdbcType=INTEGER}, #{goal,jdbcType=TINYINT}, #{modelStatus,jdbcType=TINYINT})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nutrition.nutritionservice.vo.user.UserCategoryIntakesModelVo" useGeneratedKeys="true">
     insert into user_category_intakes_model
@@ -109,6 +117,9 @@
       <if test="goal != null">
         goal
       </if>
+      <if test="modelStatus != null">
+        model_status
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="uuid != null">
@@ -167,6 +178,9 @@
       </if>
       <if test="goal != null">
         #{goal,jdbcType=TINYINT}
+      </if>
+      <if test="modelStatus != null">
+        #{model_status,jdbcType=TINYINT}
       </if>
     </trim>
   </insert>

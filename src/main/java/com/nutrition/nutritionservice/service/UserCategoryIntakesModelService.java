@@ -3,6 +3,7 @@ package com.nutrition.nutritionservice.service;
 import com.nutrition.nutritionservice.dao.UserCategoryIntakesModelDao;
 import com.nutrition.nutritionservice.vo.user.UserCategoryIntakesModelVo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -18,12 +19,25 @@ public class UserCategoryIntakesModelService {
     @Resource
     private UserCategoryIntakesModelDao userCategoryIntakesModelDao;
 
+    @Transactional(rollbackFor = Exception.class)
     public void saveUserModel(UserCategoryIntakesModelVo userModelVo) {
-        userCategoryIntakesModelDao.insert(userModelVo);
+        UserCategoryIntakesModelVo oldUserModelVo = userCategoryIntakesModelDao
+                .selectUsingModelByUuid(userModelVo.getUuid());
+        if (oldUserModelVo == null) {
+            userCategoryIntakesModelDao.insert(userModelVo);
+        } else {
+            userCategoryIntakesModelDao.updateModelStatusByUuidAndCreateTime(userModelVo.getUuid(), 1,
+                    userModelVo.getCreateTime());
+            userCategoryIntakesModelDao.insert(userModelVo);
+        }
     }
 
     public UserCategoryIntakesModelVo selectLastByUuid(String uuid) {
-        return userCategoryIntakesModelDao.selectLastByUuid(uuid);
+        return userCategoryIntakesModelDao.selectUsingModelByUuid(uuid);
+    }
+
+    public int countByCalorieAndGoal(int calorie, int goal) {
+        return userCategoryIntakesModelDao.selectCountByCalorieAndGoal(calorie, goal);
     }
 
 

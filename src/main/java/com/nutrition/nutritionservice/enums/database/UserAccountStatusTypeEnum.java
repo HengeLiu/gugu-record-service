@@ -1,4 +1,6 @@
-package com.nutrition.nutritionservice.enums;
+package com.nutrition.nutritionservice.enums.database;
+
+import com.nutrition.nutritionservice.enums.CodeEnum;
 
 /**
  * 用户状态枚举。

@@ -35,4 +35,7 @@
         from model_ingredient_intakes
         where calorie = #{calorie} and goal = #{goal}
     </select>
+    <select id="selectAll" resultType="com.nutrition.nutritionservice.vo.modeldata.ModelIngredientIntakesVo">
+        select * from model_ingredient_intakes
+    </select>
 </mapper>

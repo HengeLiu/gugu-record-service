@@ -1,6 +1,6 @@
 package com.nutrition.nutritionservice.common;
 
-import com.nutrition.nutritionservice.enums.StateCodeEnum;
+import com.nutrition.nutritionservice.enums.HttpStateCodeEnum;
 import lombok.Data;
 
 /**
@@ -28,15 +28,15 @@ public class Response {
     /**
      * code码
      *
-     * @see StateCodeEnum
+     * @see HttpStateCodeEnum
      */
     private int state;
 
     public static Response success() {
-        return success(StateCodeEnum.SUCCESS, "");
+        return success(HttpStateCodeEnum.SUCCESS, "");
     }
 
-    public static Response success(StateCodeEnum state, String msg) {
+    public static Response success(HttpStateCodeEnum state, String msg) {
         Response response = new Response();
         response.setResult(true);
         response.setState(state.getCode());
@@ -45,10 +45,10 @@ public class Response {
     }
 
     public static Response success(Object data) {
-        return success(StateCodeEnum.SUCCESS, "", data);
+        return success(HttpStateCodeEnum.SUCCESS, "", data);
     }
 
-    public static Response success(StateCodeEnum state, String msg, Object data) {
+    public static Response success(HttpStateCodeEnum state, String msg, Object data) {
         Response response = new Response();
         response.setResult(true);
         response.setState(state.getCode());
@@ -58,10 +58,10 @@ public class Response {
     }
 
     public static Response failure(String errorMessage) {
-        return failure(StateCodeEnum.SYSTEM_ERROR, errorMessage);
+        return failure(HttpStateCodeEnum.SYSTEM_ERROR, errorMessage);
     }
 
-    public static Response failure(StateCodeEnum state, String msg) {
+    public static Response failure(HttpStateCodeEnum state, String msg) {
         Response response = new Response();
         response.setResult(false);
         response.setState(state.getCode());
@@ -70,10 +70,10 @@ public class Response {
     }
 
     public static Response failure(Object data) {
-        return failure(StateCodeEnum.SYSTEM_ERROR, "", data);
+        return failure(HttpStateCodeEnum.SYSTEM_ERROR, "", data);
     }
 
-    public static Response failure(StateCodeEnum state, String msg, Object data) {
+    public static Response failure(HttpStateCodeEnum state, String msg, Object data) {
         Response response = new Response();
         response.setResult(false);
         response.setState(state.getCode());

@@ -1,22 +1,24 @@
-package com.nutrition.nutritionservice.enums;
+package com.nutrition.nutritionservice.enums.database;
+
+import com.nutrition.nutritionservice.enums.CodeEnum;
 
 /**
- * 职业活动水平枚举。
- * 
+ * 运动习惯枚举。
+ *
  * @author heng.liu
  * @since 2020/12/18
  */
-public enum ProfeCharEnum implements CodeEnum<Integer> {
+public enum SportHabitEnum implements CodeEnum<Integer> {
 
     UNKNOWN(0, "未知", 0),
 
-    ALWAYS_SITTING(1, "久坐", 0),
+    NEVER(1, "从不运动", 0),
 
-    BALANCED(2, "坐站均衡", 1),
+    OCCASIONAL_ACTIVITY(2, "偶尔活动身体", 1),
 
-    ALWAYS_STANDING(3, "久站", 2),
+    OCCASIONAL_EXERCISE(3, "偶尔运动", 2),
 
-    HEAVY_WORK(4, "重体力劳动", 3)
+    FREQUENT_EXERCISE(4, "经常运动", 3),
 
     ;
 
@@ -26,7 +28,7 @@ public enum ProfeCharEnum implements CodeEnum<Integer> {
 
     private final int score;
 
-    ProfeCharEnum(int code, String desc, int score) {
+    SportHabitEnum(int code, String desc, int score) {
         this.code = code;
         this.desc = desc;
         this.score = score;

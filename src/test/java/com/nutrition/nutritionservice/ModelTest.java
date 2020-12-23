@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author heng.liu
@@ -51,7 +52,21 @@ public class ModelTest {
             userModel.setUuid(String.valueOf(uuid));
             userCategoryIntakesModelService.saveUserModel(userModel);
         }
+    }
 
+    @Test
+    public void calculateAllModelSimilarity() {
+        List<ModelIngredientIntakesVo> modelList = modelIngredientIntakesService.listAllModels();
+        for (ModelIngredientIntakesVo model1 : modelList) {
+            System.out.print("" + model1.getCalorie() + "," + model1.getGoal());
+            for (ModelIngredientIntakesVo model2 : modelList) {
+                double euclidDistance = modelIngredientIntakesService.calculateEuclidDistance(model1, model2);
+                System.out.print("," + euclidDistance);
+//                double cosineSimilarity = modelIngredientIntakesService.calculateCosineSimilarity(model1, model2);
+//                System.out.print("," + cosineSimilarity);
+            }
+            System.out.println("");
+        }
     }
 
 }

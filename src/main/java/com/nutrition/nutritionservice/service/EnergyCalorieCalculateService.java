@@ -1,8 +1,8 @@
 package com.nutrition.nutritionservice.service;
 
 import com.nutrition.nutritionservice.enums.CodeEnums;
-import com.nutrition.nutritionservice.enums.ProfeCharEnum;
-import com.nutrition.nutritionservice.enums.SportHabitEnum;
+import com.nutrition.nutritionservice.enums.database.ProfeCharEnum;
+import com.nutrition.nutritionservice.enums.database.SportHabitEnum;
 import com.nutrition.nutritionservice.dao.ModelBasicMetabolicRateDao;
 import com.nutrition.nutritionservice.vo.ModelParamVo;
 import com.nutrition.nutritionservice.vo.user.UserInfoVo;

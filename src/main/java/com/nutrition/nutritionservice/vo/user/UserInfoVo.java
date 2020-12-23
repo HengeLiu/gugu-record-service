@@ -1,6 +1,7 @@
 package com.nutrition.nutritionservice.vo.user;
 
 import com.nutrition.nutritionservice.vo.TimeBasedVo;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -12,6 +13,7 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Builder
 public class UserInfoVo extends TimeBasedVo {
 
     private long id;

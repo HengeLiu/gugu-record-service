@@ -43,8 +43,17 @@ public class VectorUtils {
         return c;
     }
 
-    public static double cos(int[] a, int[] b) {
+    public static double cosineSimilarity(int[] a, int[] b) {
         return dotProduct(a, b) / (magnitude(a) * magnitude(b));
+    }
+
+    public static double euclidDistance(int[] a, int[] b) {
+        checkLength(a, b);
+        long squareDistance = 0;
+        for (int i = 0; i < a.length; i++) {
+            squareDistance += Math.pow(a[i] - b[i], 2);
+        }
+        return Math.pow(squareDistance, 0.5);
     }
 
     private static void checkLength(int[] a, int[] b) {

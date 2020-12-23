@@ -8,11 +8,11 @@ import lombok.Data;
 /**
  * user_category_intakes_model
  * 
- * @author
+ * @author heng.liu
  */
 @Data
 public class UserCategoryIntakesModelVo implements Serializable {
-    private Integer id;
+    private int id;
 
     /**
      * 用户唯一标识
@@ -22,92 +22,97 @@ public class UserCategoryIntakesModelVo implements Serializable {
     /**
      * 日需热量水平
      */
-    private Integer calorie;
+    private int calorie;
 
     /**
      * 精制谷物
      */
-    private Integer processedGrains;
+    private int processedGrains;
 
     /**
      * 全谷物
      */
-    private Integer unprocessedGrains;
+    private int unprocessedGrains;
 
     /**
      * 杂豆
      */
-    private Integer mixedBeans;
+    private int mixedBeans;
 
     /**
      * 薯类
      */
-    private Integer tuber;
+    private int tuber;
 
     /**
      * 一般蔬菜
      */
-    private Integer generalVegetables;
+    private int generalVegetables;
 
     /**
      * 深色蔬菜
      */
-    private Integer darkVegetables;
+    private int darkVegetables;
 
     /**
      * 水果
      */
-    private Integer fruit;
+    private int fruit;
 
     /**
      * 禽肉
      */
-    private Integer meat;
+    private int meat;
 
     /**
      * 禽肉
      */
-    private Integer poultry;
+    private int poultry;
 
     /**
      * 水产品
      */
-    private Integer aquatic;
+    private int aquatic;
 
     /**
      * 蛋
      */
-    private Integer egg;
+    private int egg;
 
     /**
      * 乳
      */
-    private Integer dairy;
+    private int dairy;
 
     /**
      * 大豆
      */
-    private Integer soybean;
+    private int soybean;
 
     /**
      * 坚果
      */
-    private Integer nut;
+    private int nut;
 
     /**
      * 烹调油
      */
-    private Integer oil;
+    private int oil;
 
     /**
      * 食盐
      */
-    private Integer salt;
+    private int salt;
 
     /**
      * 0,未知;1,平衡;2,减脂;3,增肌
      */
-    private Byte goal;
+    private byte goal;
+
+    /**
+     * 模型状态.0,使用中;1,已过期.
+     */
+    private byte modelStatus;
 
     /**
      * 创建时间

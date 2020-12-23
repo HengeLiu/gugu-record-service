@@ -1,6 +1,6 @@
 package com.nutrition.nutritionservice.vo.user;
 
-import com.nutrition.nutritionservice.enums.UserAccountStatusTypeEnum;
+import com.nutrition.nutritionservice.enums.database.UserAccountStatusTypeEnum;
 import com.nutrition.nutritionservice.vo.TimeBasedVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

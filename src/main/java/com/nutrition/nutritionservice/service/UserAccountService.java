@@ -1,6 +1,6 @@
 package com.nutrition.nutritionservice.service;
 
-import com.nutrition.nutritionservice.enums.UserAccountTypeEnum;
+import com.nutrition.nutritionservice.enums.database.UserAccountTypeEnum;
 import com.nutrition.nutritionservice.dao.UserAccountDao;
 import com.nutrition.nutritionservice.vo.user.UserAccountVo;
 import org.springframework.security.core.userdetails.UserDetails;
