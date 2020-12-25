@@ -8,23 +8,27 @@
 
 </script>
 <body>
-<form th:action="@{/test}" method="post" th:object="${cuisine}">
-		<div>
-			<label class="category_name_label">精制谷物</label>
-			<label>
-				<select class="category_select" th:field="*{processedGrains}">
-					<option class="disable_option" value="" style="color: #b6b6b6" selected>--请选择食材--</option>
-					<option class="ingredient_option"
-							th:each="ingredient:${ingredientCategoryMap.getOrDefault('processed_grains',0)}"
-							th:value="${ingredient.code}"
-							th:text="${ingredient.name}+(${ingredient.specifications}==null?'':'('+${ingredient.specifications}+')')"
-							value=""></option>
-				</select>
-			</label>
-			<label class="category_weight_label"
-				   th:text="${recommendedCategoryWeightMap.get('processed_grains')}+'克'"></label>
-		</div>
+<form th:action="@{/cuisine/create}" method="post" th:object="${cuisine}">
 	<div>
+		<label class="category_name_label">推荐目标</label>
+		<label></label>
+	</div>
+	<div th:if="${recommendedCategoryWeightMap.getOrDefault('processed_grains',0)}!=0">
+		<label class="category_name_label">精制谷物</label>
+		<label>
+			<select class="category_select" th:field="*{processedGrains}">
+				<option class="disable_option" value="" style="color: #b6b6b6" selected>--请选择食材--</option>
+				<option class="ingredient_option"
+						th:each="ingredient:${ingredientCategoryMap.getOrDefault('processed_grains',0)}"
+						th:value="${ingredient.code}"
+						th:text="${ingredient.name}+(${ingredient.specifications}==null?'':'('+${ingredient.specifications}+')')"
+						value=""></option>
+			</select>
+		</label>
+		<label class="category_weight_label"
+			   th:text="${recommendedCategoryWeightMap.get('processed_grains')}+'克'"></label>
+	</div>
+	<div th:if="${recommendedCategoryWeightMap.getOrDefault('unprocessed_grains',0)}!=0">
 		<label class="category_name_label">全谷物</label>
 		<label>
 			<select class="category_select" th:field="*{unprocessedGrains}">
@@ -39,7 +43,7 @@
 		<label class="category_weight_label"
 			   th:text="${recommendedCategoryWeightMap.get('unprocessed_grains')}+'克'"></label>
 	</div>
-	<div>
+	<div th:if="${recommendedCategoryWeightMap.getOrDefault('mixed_beans',0)}!=0">
 		<label class="category_name_label">杂豆</label>
 		<label>
 			<select class="category_select" th:field="*{mixedBeans}">
@@ -54,7 +58,7 @@
 		<label class="category_weight_label"
 			   th:text="${recommendedCategoryWeightMap.get('mixed_beans')}+'克'"></label>
 	</div>
-	<div>
+	<div th:if="${recommendedCategoryWeightMap.getOrDefault('tuber',0)}!=0">
 		<label class="category_name_label">薯类</label>
 		<label>
 			<select class="category_select" th:field="*{tuber}">
@@ -69,7 +73,7 @@
 		<label class="category_weight_label"
 			   th:text="${recommendedCategoryWeightMap.get('tuber')}+'克'"></label>
 	</div>
-	<div>
+	<div th:if="${recommendedCategoryWeightMap.getOrDefault('general_vegetables',0)}!=0">
 		<label class="category_name_label">一般蔬菜</label>
 		<label>
 			<select class="category_select" th:field="*{generalVegetables}">
@@ -84,7 +88,7 @@
 		<label class="category_weight_label"
 			   th:text="${recommendedCategoryWeightMap.get('general_vegetables')}+'克'"></label>
 	</div>
-	<div>
+	<div th:if="${recommendedCategoryWeightMap.getOrDefault('dark_vegetables',0)}!=0">
 		<label class="category_name_label">深色蔬菜</label>
 		<label>
 			<select class="category_select" th:field="*{darkVegetables}">
@@ -99,7 +103,7 @@
 		<label class="category_weight_label"
 			   th:text="${recommendedCategoryWeightMap.get('dark_vegetables')}+'克'"></label>
 	</div>
-	<div>
+	<div th:if="${recommendedCategoryWeightMap.getOrDefault('fruits',0)}!=0">
 		<label class="category_name_label">水果</label>
 		<label>
 			<select class="category_select" th:field="*{fruit}">
@@ -114,7 +118,7 @@
 		<label class="category_weight_label"
 			   th:text="${recommendedCategoryWeightMap.get('fruits')}+'克'"></label>
 	</div>
-	<div>
+	<div th:if="${recommendedCategoryWeightMap.getOrDefault('meat',0)}!=0">
 		<label class="category_name_label">畜肉</label>
 		<label>
 			<select class="category_select" th:field="*{meat}">
@@ -129,7 +133,7 @@
 		<label class="category_weight_label"
 			   th:text="${recommendedCategoryWeightMap.get('meat')}+'克'"></label>
 	</div>
-	<div>
+	<div th:if="${recommendedCategoryWeightMap.getOrDefault('poultry',0)}!=0">
 		<label class="category_name_label">禽肉</label>
 		<label>
 			<select class="category_select" th:field="*{poultry}">
@@ -144,7 +148,7 @@
 		<label class="category_weight_label"
 			   th:text="${recommendedCategoryWeightMap.get('poultry')}+'克'"></label>
 	</div>
-	<div>
+	<div th:if="${recommendedCategoryWeightMap.getOrDefault('aquatic',0)}!=0">
 		<label class="category_name_label">水产品</label>
 		<label>
 			<select class="category_select" th:field="*{aquatic}">
@@ -159,7 +163,7 @@
 		<label class="category_weight_label"
 			   th:text="${recommendedCategoryWeightMap.get('aquatic')}+'克'"></label>
 	</div>
-	<div>
+	<div th:if="${recommendedCategoryWeightMap.getOrDefault('egg',0)}!=0">
 		<label class="category_name_label">蛋</label>
 		<label>
 			<select class="category_select" th:field="*{egg}">
@@ -174,7 +178,7 @@
 		<label class="category_weight_label"
 			   th:text="${recommendedCategoryWeightMap.get('egg')}+'克'"></label>
 	</div>
-	<div>
+	<div th:if="${recommendedCategoryWeightMap.getOrDefault('dairy',0)}!=0">
 		<label class="category_name_label">乳</label>
 		<label>
 			<select class="category_select" th:field="*{dairy}">
@@ -189,7 +193,7 @@
 		<label class="category_weight_label"
 			   th:text="${recommendedCategoryWeightMap.get('dairy')}+'克'"></label>
 	</div>
-	<div>
+	<div th:if="${recommendedCategoryWeightMap.getOrDefault('soybean',0)}!=0">
 		<label class="category_name_label">大豆</label>
 		<label>
 			<select class="category_select" th:field="*{soybean}">
@@ -204,7 +208,7 @@
 		<label class="category_weight_label"
 			   th:text="${recommendedCategoryWeightMap.get('soybean')}+'克'"></label>
 	</div>
-	<div>
+	<div th:if="${recommendedCategoryWeightMap.getOrDefault('nut',0)}!=0">
 		<label class="category_name_label">坚果</label>
 		<label>
 			<select class="category_select" th:field="*{nut}">
@@ -219,7 +223,7 @@
 		<label class="category_weight_label"
 			   th:text="${recommendedCategoryWeightMap.get('nut')}+'克'"></label>
 	</div>
-	<div>
+	<div th:if="${recommendedCategoryWeightMap.getOrDefault('oil',0)}!=0">
 		<label class="category_name_label">烹调油</label>
 		<label>
 			<select class="category_select" th:field="*{oil}">
@@ -234,7 +238,7 @@
 		<label class="category_weight_label"
 			   th:text="${recommendedCategoryWeightMap.get('oil')}+'克'"></label>
 	</div>
-	<div>
+	<div th:if="${recommendedCategoryWeightMap.getOrDefault('salt',0)}!=0">
 		<label class="category_name_label">食盐</label>
 		<label>
 			<select class="category_select" th:field="*{salt}">

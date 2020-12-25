@@ -12,6 +12,7 @@ import com.nutrition.nutritionservice.service.IngredientService;
 import com.nutrition.nutritionservice.vo.DineRecommendedRateVo;
 import com.nutrition.nutritionservice.vo.IngredientVo;
 import com.nutrition.nutritionservice.vo.modeldata.IntakesModelVo;
+import com.nutrition.nutritionservice.vo.store.CuisineWebAo;
 
 import javax.annotation.Resource;
 import java.util.List;

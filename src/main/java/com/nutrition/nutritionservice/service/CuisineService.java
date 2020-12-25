@@ -1,7 +1,10 @@
 package com.nutrition.nutritionservice.service;
 
 import com.nutrition.nutritionservice.dao.CuisineDao;
+import com.nutrition.nutritionservice.dao.CuisineIngredientRelDao;
+import com.nutrition.nutritionservice.vo.store.CuisineWebAo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -17,6 +20,9 @@ public class CuisineService {
     @Resource
     private CuisineDao cuisineDao;
 
+    @Resource
+    private CuisineIngredientRelDao cuisineIngredientRelDao;
+
     /**
      * 统计指定热量返回和目标的菜品数量。
      * 
@@ -26,6 +32,12 @@ public class CuisineService {
      */
     public int countByCalorieAndGoal(int minCalorie, int maxCalorie, int goal) {
         return cuisineDao.selectCountByCalorieAndGoal(minCalorie, maxCalorie, goal);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void saveNewCuisine(CuisineWebAo cuisineWebAo) {
+        cuisineDao.insert(cuisineWebAo.getCuisineVo());
+        cuisineIngredientRelDao.batchInsert(cuisineWebAo.getCuisineIngredientRelList());
     }
 
 }

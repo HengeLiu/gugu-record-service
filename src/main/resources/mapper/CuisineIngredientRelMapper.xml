@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nutrition.nutritionservice.dao.CuisineIngredientRelDao">
+    <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="cuisine_code" jdbcType="VARCHAR" property="cuisineCode"/>
+        <result column="ingredient_code" jdbcType="VARCHAR" property="ingredientCode"/>
+        <result column="weight" jdbcType="INTEGER" property="weight"/>
+        <result column="process" jdbcType="TINYINT" property="process"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, cuisine_code, ingredient_code, weight, `process`, create_time, update_time
+  </sql>
+    <sql id="Insert_Column_List">
+    cuisine_code, ingredient_code, weight, `process`
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from cuisine_ingredient_rel
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from cuisine_ingredient_rel where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id"
+            parameterType="com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo" useGeneratedKeys="true">
+    insert into cuisine_ingredient_rel (cuisine_code, ingredient_code, weight, 
+      `process`, create_time, update_time
+      )
+    values (#{cuisineCode,jdbcType=VARCHAR}, #{ingredientCode,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER}, 
+      #{process,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id"
+            parameterType="com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo" useGeneratedKeys="true">
+        insert into cuisine_ingredient_rel
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cuisineCode != null">
+                cuisine_code,
+            </if>
+            <if test="ingredientCode != null">
+                ingredient_code,
+            </if>
+            <if test="weight != null">
+                weight,
+            </if>
+            <if test="process != null">
+                `process`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cuisineCode != null">
+                #{cuisineCode,jdbcType=VARCHAR},
+            </if>
+            <if test="ingredientCode != null">
+                #{ingredientCode,jdbcType=VARCHAR},
+            </if>
+            <if test="weight != null">
+                #{weight,jdbcType=INTEGER},
+            </if>
+            <if test="process != null">
+                #{process,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+    <insert id="batchInsert">
+        insert into cuisine_ingredient_rel
+        (<include refid="Insert_Column_List"/>)
+        values
+        <foreach collection="relList" item="rel" index="index" separator=",">
+            (
+            #{cuisineCode,jdbcType=VARCHAR},
+            #{ingredientCode,jdbcType=VARCHAR},
+            #{weight,jdbcType=INTEGER},
+            #{process,jdbcType=TINYINT}
+            )
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKeySelective"
+            parameterType="com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo">
+        update cuisine_ingredient_rel
+        <set>
+            <if test="cuisineCode != null">
+                cuisine_code = #{cuisineCode,jdbcType=VARCHAR},
+            </if>
+            <if test="ingredientCode != null">
+                ingredient_code = #{ingredientCode,jdbcType=VARCHAR},
+            </if>
+            <if test="weight != null">
+                weight = #{weight,jdbcType=INTEGER},
+            </if>
+            <if test="process != null">
+                `process` = #{process,jdbcType=TINYINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo">
+    update
+    cuisine_ingredient_rel
+    set
+    cuisine_code = #{cuisineCode,jdbcType=VARCHAR},
+    ingredient_code = #{ingredientCode,jdbcType=VARCHAR},
+    weight = #{weight,jdbcType=INTEGER},
+    `process` = #{process,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

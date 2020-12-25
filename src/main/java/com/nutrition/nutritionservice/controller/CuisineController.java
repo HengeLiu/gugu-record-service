@@ -4,8 +4,11 @@ import com.nutrition.nutritionservice.biz.CuisineBiz;
 import com.nutrition.nutritionservice.vo.store.CuisineWebAo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -28,6 +31,13 @@ public class CuisineController {
         model.addObject("recommendedCategoryWeightMap", cuisineBiz.queryRecommendedCategoryWeightMap(dineCode));
         model.addObject("cuisine", CuisineWebAo.builder().build());
         return model;
+    }
+
+    @PostMapping("/create")
+    @ResponseBody
+    public String create(@ModelAttribute("cuisine") CuisineWebAo cuisineWebAo) {
+
+        return "Create success";
     }
 
 }

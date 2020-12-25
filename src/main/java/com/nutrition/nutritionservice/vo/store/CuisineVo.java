@@ -2,13 +2,17 @@ package com.nutrition.nutritionservice.vo.store;
 
 import java.io.Serializable;
 import java.util.Date;
+
+import lombok.Builder;
 import lombok.Data;
 
 /**
  * cuisine
- * @author 
+ * @author heng.liu
+ * @since 2020/12/25
  */
 @Data
+@Builder
 public class CuisineVo implements Serializable {
     private Integer id;
 
