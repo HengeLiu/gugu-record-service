@@ -9,210 +9,261 @@
 </script>
 <body>
 <form th:action="@{/test}" method="post" th:object="${cuisine}">
-	<div>
 		<div>
 			<label class="category_name_label">精制谷物</label>
-			<select class="category_select" th:field="*{processedGrains}">
-				<option class="disable_option" value="" style="color: #b6b6b6" selected>--请选择食材--</option>
-				<option class="ingredient_option" th:each="ingredient:${ingredientCategoryMap.get('processed_grains')}"
-						th:value="${ingredient.code}" th:text="${ingredient.name}"
-						value=""></option>
-			</select>
+			<label>
+				<select class="category_select" th:field="*{processedGrains}">
+					<option class="disable_option" value="" style="color: #b6b6b6" selected>--请选择食材--</option>
+					<option class="ingredient_option"
+							th:each="ingredient:${ingredientCategoryMap.get('processed_grains')}"
+							th:value="${ingredient.code}"
+							th:text="${ingredient.name}+(${ingredient.specifications}==null?'':'('+${ingredient.specifications}+')')"
+							value=""></option>
+				</select>
+			</label>
 			<label class="category_weight_label"
 				   th:text="${recommendedCategoryMap.get('processed_grains')}+'克'"></label>
 		</div>
-		<div>
-			<label class="category_name_label">全谷物</label>
+	<div>
+		<label class="category_name_label">全谷物</label>
+		<label>
 			<select class="category_select" th:field="*{unprocessedGrains}">
 				<option class="disable_option" value="" style="color: #b6b6b6" selected>--请选择食材--</option>
 				<option class="ingredient_option"
 						th:each="ingredient:${ingredientCategoryMap.get('unprocessed_grains')}"
-						th:value="${ingredient.code}" th:text="${ingredient.name}"
+						th:value="${ingredient.code}"
+						th:text="${ingredient.name}+(${ingredient.specifications}==null?'':'('+${ingredient.specifications}+')')"
 						value=""></option>
 			</select>
-			<label class="category_weight_label"
-				   th:text="${recommendedCategoryMap.get('unprocessed_grains')}+'克'"></label>
-		</div>
-		<div>
-			<label class="category_name_label">杂豆</label>
+		</label>
+		<label class="category_weight_label"
+			   th:text="${recommendedCategoryMap.get('unprocessed_grains')}+'克'"></label>
+	</div>
+	<div>
+		<label class="category_name_label">杂豆</label>
+		<label>
 			<select class="category_select" th:field="*{mixedBeans}">
 				<option class="disable_option" value="" style="color: #b6b6b6" selected>--请选择食材--</option>
 				<option class="ingredient_option"
 						th:each="ingredient:${ingredientCategoryMap.get('mixed_beans')}"
-						th:value="${ingredient.code}" th:text="${ingredient.name}"
+						th:value="${ingredient.code}"
+						th:text="${ingredient.name}+(${ingredient.specifications}==null?'':'('+${ingredient.specifications}+')')"
 						value=""></option>
 			</select>
-			<label class="category_weight_label"
-				   th:text="${recommendedCategoryMap.get('mixed_beans')}+'克'"></label>
-		</div>
-		<div>
-			<label class="category_name_label">薯类</label>
+		</label>
+		<label class="category_weight_label"
+			   th:text="${recommendedCategoryMap.get('mixed_beans')}+'克'"></label>
+	</div>
+	<div>
+		<label class="category_name_label">薯类</label>
+		<label>
 			<select class="category_select" th:field="*{tuber}">
 				<option class="disable_option" value="" style="color: #b6b6b6" selected>--请选择食材--</option>
 				<option class="ingredient_option"
 						th:each="ingredient:${ingredientCategoryMap.get('tuber')}"
-						th:value="${ingredient.code}" th:text="${ingredient.name}"
+						th:value="${ingredient.code}"
+						th:text="${ingredient.name}+(${ingredient.specifications}==null?'':'('+${ingredient.specifications}+')')"
 						value=""></option>
 			</select>
-			<label class="category_weight_label"
-				   th:text="${recommendedCategoryMap.get('tuber')}+'克'"></label>
-		</div>
-		<div>
-			<label class="category_name_label">一般蔬菜</label>
+		</label>
+		<label class="category_weight_label"
+			   th:text="${recommendedCategoryMap.get('tuber')}+'克'"></label>
+	</div>
+	<div>
+		<label class="category_name_label">一般蔬菜</label>
+		<label>
 			<select class="category_select" th:field="*{generalVegetables}">
 				<option class="disable_option" value="" style="color: #b6b6b6" selected>--请选择食材--</option>
 				<option class="ingredient_option"
 						th:each="ingredient:${ingredientCategoryMap.get('general_vegetables')}"
-						th:value="${ingredient.code}" th:text="${ingredient.name}"
+						th:value="${ingredient.code}"
+						th:text="${ingredient.name}+(${ingredient.specifications}==null?'':'('+${ingredient.specifications}+')')"
 						value=""></option>
 			</select>
-			<label class="category_weight_label"
-				   th:text="${recommendedCategoryMap.get('general_vegetables')}+'克'"></label>
-		</div>
-		<div>
-			<label class="category_name_label">深色蔬菜</label>
+		</label>
+		<label class="category_weight_label"
+			   th:text="${recommendedCategoryMap.get('general_vegetables')}+'克'"></label>
+	</div>
+	<div>
+		<label class="category_name_label">深色蔬菜</label>
+		<label>
 			<select class="category_select" th:field="*{darkVegetables}">
 				<option class="disable_option" value="" style="color: #b6b6b6" selected>--请选择食材--</option>
 				<option class="ingredient_option"
 						th:each="ingredient:${ingredientCategoryMap.get('dark_vegetables')}"
-						th:value="${ingredient.code}" th:text="${ingredient.name}"
+						th:value="${ingredient.code}"
+						th:text="${ingredient.name}+(${ingredient.specifications}==null?'':'('+${ingredient.specifications}+')')"
 						value=""></option>
 			</select>
-			<label class="category_weight_label"
-				   th:text="${recommendedCategoryMap.get('dark_vegetables')}+'克'"></label>
-		</div>
-		<div>
-			<label class="category_name_label">水果</label>
+		</label>
+		<label class="category_weight_label"
+			   th:text="${recommendedCategoryMap.get('dark_vegetables')}+'克'"></label>
+	</div>
+	<div>
+		<label class="category_name_label">水果</label>
+		<label>
 			<select class="category_select" th:field="*{fruit}">
 				<option class="disable_option" value="" style="color: #b6b6b6" selected>--请选择食材--</option>
 				<option class="ingredient_option"
 						th:each="ingredient:${ingredientCategoryMap.get('fruit')}"
-						th:value="${ingredient.code}" th:text="${ingredient.name}"
+						th:value="${ingredient.code}"
+						th:text="${ingredient.name}+(${ingredient.specifications}==null?'':'('+${ingredient.specifications}+')')"
 						value=""></option>
 			</select>
-			<label class="category_weight_label"
-				   th:text="${recommendedCategoryMap.get('fruit')}+'克'"></label>
-		</div>
-		<div>
-			<label class="category_name_label">畜肉</label>
+		</label>
+		<label class="category_weight_label"
+			   th:text="${recommendedCategoryMap.get('fruit')}+'克'"></label>
+	</div>
+	<div>
+		<label class="category_name_label">畜肉</label>
+		<label>
 			<select class="category_select" th:field="*{meat}">
 				<option class="disable_option" value="" style="color: #b6b6b6" selected>--请选择食材--</option>
 				<option class="ingredient_option"
 						th:each="ingredient:${ingredientCategoryMap.get('meat')}"
-						th:value="${ingredient.code}" th:text="${ingredient.name}"
+						th:value="${ingredient.code}"
+						th:text="${ingredient.name}+(${ingredient.specifications}==null?'':'('+${ingredient.specifications}+')')"
 						value=""></option>
 			</select>
-			<label class="category_weight_label"
-				   th:text="${recommendedCategoryMap.get('meat')}+'克'"></label>
-		</div>
-		<div>
-			<label class="category_name_label">禽肉</label>
+		</label>
+		<label class="category_weight_label"
+			   th:text="${recommendedCategoryMap.get('meat')}+'克'"></label>
+	</div>
+	<div>
+		<label class="category_name_label">禽肉</label>
+		<label>
 			<select class="category_select" th:field="*{poultry}">
 				<option class="disable_option" value="" style="color: #b6b6b6" selected>--请选择食材--</option>
 				<option class="ingredient_option"
 						th:each="ingredient:${ingredientCategoryMap.get('poultry')}"
-						th:value="${ingredient.code}" th:text="${ingredient.name}"
+						th:value="${ingredient.code}"
+						th:text="${ingredient.name}+(${ingredient.specifications}==null?'':'('+${ingredient.specifications}+')')"
 						value=""></option>
 			</select>
-			<label class="category_weight_label"
-				   th:text="${recommendedCategoryMap.get('poultry')}+'克'"></label>
-		</div>
-		<div>
-			<label class="category_name_label">水产品</label>
+		</label>
+		<label class="category_weight_label"
+			   th:text="${recommendedCategoryMap.get('poultry')}+'克'"></label>
+	</div>
+	<div>
+		<label class="category_name_label">水产品</label>
+		<label>
 			<select class="category_select" th:field="*{aquatic}">
 				<option class="disable_option" value="" style="color: #b6b6b6" selected>--请选择食材--</option>
 				<option class="ingredient_option"
 						th:each="ingredient:${ingredientCategoryMap.get('aquatic')}"
-						th:value="${ingredient.code}" th:text="${ingredient.name}"
+						th:value="${ingredient.code}"
+						th:text="${ingredient.name}+(${ingredient.specifications}==null?'':'('+${ingredient.specifications}+')')"
 						value=""></option>
 			</select>
-			<label class="category_weight_label"
-				   th:text="${recommendedCategoryMap.get('aquatic')}+'克'"></label>
-		</div>
-		<div>
-			<label class="category_name_label">蛋</label>
+		</label>
+		<label class="category_weight_label"
+			   th:text="${recommendedCategoryMap.get('aquatic')}+'克'"></label>
+	</div>
+	<div>
+		<label class="category_name_label">蛋</label>
+		<label>
 			<select class="category_select" th:field="*{egg}">
 				<option class="disable_option" value="" style="color: #b6b6b6" selected>--请选择食材--</option>
 				<option class="ingredient_option"
 						th:each="ingredient:${ingredientCategoryMap.get('egg')}"
-						th:value="${ingredient.code}" th:text="${ingredient.name}"
+						th:value="${ingredient.code}"
+						th:text="${ingredient.name}+(${ingredient.specifications}==null?'':'('+${ingredient.specifications}+')')"
 						value=""></option>
 			</select>
-			<label class="category_weight_label"
-				   th:text="${recommendedCategoryMap.get('egg')}+'克'"></label>
-		</div>
-		<div>
-			<label class="category_name_label">乳</label>
+		</label>
+		<label class="category_weight_label"
+			   th:text="${recommendedCategoryMap.get('egg')}+'克'"></label>
+	</div>
+	<div>
+		<label class="category_name_label">乳</label>
+		<label>
 			<select class="category_select" th:field="*{dairy}">
 				<option class="disable_option" value="" style="color: #b6b6b6" selected>--请选择食材--</option>
 				<option class="ingredient_option"
 						th:each="ingredient:${ingredientCategoryMap.get('dairy')}"
-						th:value="${ingredient.code}" th:text="${ingredient.name}"
+						th:value="${ingredient.code}"
+						th:text="${ingredient.name}+(${ingredient.specifications}==null?'':'('+${ingredient.specifications}+')')"
 						value=""></option>
 			</select>
-			<label class="category_weight_label"
-				   th:text="${recommendedCategoryMap.get('dairy')}+'克'"></label>
-		</div>
-		<div>
-			<label class="category_name_label">大豆</label>
+		</label>
+		<label class="category_weight_label"
+			   th:text="${recommendedCategoryMap.get('dairy')}+'克'"></label>
+	</div>
+	<div>
+		<label class="category_name_label">大豆</label>
+		<label>
 			<select class="category_select" th:field="*{soybean}">
 				<option class="disable_option" value="" style="color: #b6b6b6" selected>--请选择食材--</option>
 				<option class="ingredient_option"
 						th:each="ingredient:${ingredientCategoryMap.get('soybean')}"
-						th:value="${ingredient.code}" th:text="${ingredient.name}"
+						th:value="${ingredient.code}"
+						th:text="${ingredient.name}+(${ingredient.specifications}==null?'':'('+${ingredient.specifications}+')')"
 						value=""></option>
 			</select>
-			<label class="category_weight_label"
-				   th:text="${recommendedCategoryMap.get('soybean')}+'克'"></label>
-		</div>
-		<div>
-			<label class="category_name_label">坚果</label>
+		</label>
+		<label class="category_weight_label"
+			   th:text="${recommendedCategoryMap.get('soybean')}+'克'"></label>
+	</div>
+	<div>
+		<label class="category_name_label">坚果</label>
+		<label>
 			<select class="category_select" th:field="*{nut}">
 				<option class="disable_option" value="" style="color: #b6b6b6" selected>--请选择食材--</option>
 				<option class="ingredient_option"
 						th:each="ingredient:${ingredientCategoryMap.get('nut')}"
-						th:value="${ingredient.code}" th:text="${ingredient.name}"
+						th:value="${ingredient.code}"
+						th:text="${ingredient.name}+(${ingredient.specifications}==null?'':'('+${ingredient.specifications}+')')"
 						value=""></option>
 			</select>
-			<label class="category_weight_label"
-				   th:text="${recommendedCategoryMap.get('nut')}+'克'"></label>
-		</div>
-		<div>
-			<label class="category_name_label">烹调油</label>
+		</label>
+		<label class="category_weight_label"
+			   th:text="${recommendedCategoryMap.get('nut')}+'克'"></label>
+	</div>
+	<div>
+		<label class="category_name_label">烹调油</label>
+		<label>
 			<select class="category_select" th:field="*{oil}">
 				<option class="disable_option" value="" style="color: #b6b6b6" selected>--请选择食材--</option>
 				<option class="ingredient_option"
 						th:each="ingredient:${ingredientCategoryMap.get('oil')}"
-						th:value="${ingredient.code}" th:text="${ingredient.name}"
+						th:value="${ingredient.code}"
+						th:text="${ingredient.name}+(${ingredient.specifications}==null?'':'('+${ingredient.specifications}+')')"
 						value=""></option>
 			</select>
-			<label class="category_weight_label"
-				   th:text="${recommendedCategoryMap.get('oil')}+'克'"></label>
-		</div>
-		<div>
-			<label class="category_name_label">食盐</label>
+		</label>
+		<label class="category_weight_label"
+			   th:text="${recommendedCategoryMap.get('oil')}+'克'"></label>
+	</div>
+	<div>
+		<label class="category_name_label">食盐</label>
+		<label>
 			<select class="category_select" th:field="*{salt}">
 				<option class="disable_option" value="" style="color: #b6b6b6" selected>--请选择食材--</option>
 				<option class="ingredient_option"
 						th:each="ingredient:${ingredientCategoryMap.get('salt')}"
-						th:value="${ingredient.code}" th:text="${ingredient.name}"
+						th:value="${ingredient.code}"
+						th:text="${ingredient.name}+(${ingredient.specifications}==null?'':'('+${ingredient.specifications}+')')"
 						value=""></option>
 			</select>
-			<label class="category_weight_label"
-				   th:text="${recommendedCategoryMap.get('salt')}+'克'"></label>
-		</div>
-		<div>
-			<label class="category_name_label">糖</label>
+		</label>
+		<label class="category_weight_label"
+			   th:text="${recommendedCategoryMap.get('salt')}+'克'"></label>
+	</div>
+	<div>
+		<label class="category_name_label">糖</label>
+		<label>
 			<select class="category_select" th:field="*{sugar}">
 				<option class="disable_option" value="" style="color: #b6b6b6" selected>--请选择食材--</option>
 				<option class="ingredient_option"
 						th:each="ingredient:${ingredientCategoryMap.get('sugar')}"
-						th:value="${ingredient.code}" th:text="${ingredient.name}"
+						th:value="${ingredient.code}"
+						th:text="${ingredient.name}+(${ingredient.specifications}==null?'':'('+${ingredient.specifications}+')')"
 						value=""></option>
 			</select>
-			<label class="category_weight_label"
-				   th:text="${recommendedCategoryMap.get('sugar')}+'克'"></label>
-		</div>
+		</label>
+		<label class="category_weight_label"
+			   th:text="${recommendedCategoryMap.get('sugar')}+'克'"></label>
+	</div>
 		<input type="submit" value="保存">
 </form>
 </body>
