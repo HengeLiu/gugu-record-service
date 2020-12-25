@@ -110,11 +110,6 @@ public class DineRecommendedRateVo implements Serializable {
     private double salt;
 
     /**
-     * 糖比例
-     */
-    private double sugar;
-
-    /**
      * 创建时间
      */
     private LocalDateTime createTime;

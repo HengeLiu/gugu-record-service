@@ -21,12 +21,11 @@
         <result column="oil" jdbcType="INTEGER" property="oil"/>
         <result column="salt" jdbcType="INTEGER" property="salt"/>
         <result column="goal" jdbcType="TINYINT" property="goal"/>
-        <result column="version" jdbcType="INTEGER" property="version"/>
     </resultMap>
     <sql id="Base_Column_List">
     id, calorie, processed_grains, unprocessed_grains, mixed_beans, tuber, general_vegetables, 
     dark_vegetables, fruit, meat, poultry, aquatic, egg, dairy, soybean, nut, oil, salt, 
-    goal, version
+    goal
   </sql>
     <select id="selectByCalorieGoal"
             resultType="com.nutrition.nutritionservice.vo.modeldata.IntakesModelVo">
@@ -36,6 +35,8 @@
         where calorie = #{calorie} and goal = #{goal}
     </select>
     <select id="selectAll" resultType="com.nutrition.nutritionservice.vo.modeldata.IntakesModelVo">
-        select * from model_ingredient_intakes
+        select
+        <include refid="Base_Column_List"/>
+        from model_ingredient_intakes
     </select>
 </mapper>

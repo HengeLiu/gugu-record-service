@@ -1,6 +1,6 @@
 package com.nutrition.nutritionservice;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.PropertyNamingStrategy;
 import com.nutrition.nutritionservice.biz.IntakesModelBiz;
 import com.nutrition.nutritionservice.converter.IntakesModel2UserModelConverter;
 import com.nutrition.nutritionservice.service.EnergyCalorieCalculateService;
@@ -78,8 +78,8 @@ public class ModelTest {
     @Test
     public void testJson() {
         IntakesModelVo mostNeededModel = intakesModelBiz.queryMostNeededModel();
-        Map<String, Object> jsonObject = JSONObject.parseObject(JSONObject.toJSONString(mostNeededModel));
         System.out.println();
     }
+
 
 }

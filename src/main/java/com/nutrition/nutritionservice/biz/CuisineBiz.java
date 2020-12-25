@@ -1,6 +1,7 @@
 package com.nutrition.nutritionservice.biz;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.PropertyNamingStrategy;
+import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.google.common.collect.Maps;
 import com.nutrition.nutritionservice.annotation.Biz;
 import com.nutrition.nutritionservice.converter.ModelConverter;
@@ -11,12 +12,10 @@ import com.nutrition.nutritionservice.service.IngredientService;
 import com.nutrition.nutritionservice.vo.DineRecommendedRateVo;
 import com.nutrition.nutritionservice.vo.IngredientVo;
 import com.nutrition.nutritionservice.vo.modeldata.IntakesModelVo;
-import com.sun.javafx.collections.MappingChange;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 菜品。
@@ -48,15 +47,21 @@ public class CuisineBiz {
         return ingredientCategoryMap;
     }
 
-    public Map<String, Integer> queryRecommendedWeightMap(int dineTime) {
+    public Map<String, Integer> queryRecommendedCategoryWeightMap(int dineTime) {
+        SerializeConfig config = new SerializeConfig();
+        config.propertyNamingStrategy = PropertyNamingStrategy.SnakeCase;
         IntakesModelVo mostNeededModel = intakesModelBiz.queryMostNeededModel();
-        Map<String, Object> jsonObject = JSONObject.parseObject(JSONObject.toJSONString(mostNeededModel));
+        Map<IngredientCategoryEnum, Integer> ingredientCategoryWeightMap = ModelConverter.INSTANCE
+                .categoryWeightToMap(mostNeededModel);
         DineRecommendedRateVo dineRecommendedRateVo = dineRecommendedRateService
                 .selectByCalorieGoalDine(mostNeededModel.getCalorie(), mostNeededModel.getGoal(), dineTime);
-        Map<IngredientCategoryEnum, Integer> categoryEnumMap = ModelConverter.INSTANCE
-                .modelToCategoryMap(mostNeededModel);
-        return categoryEnumMap.entrySet().stream()
-                .collect(Collectors.toMap(entry -> entry.getKey().getNameEn(), Map.Entry::getValue));
+        Map<IngredientCategoryEnum, Double> dineRateMap = ModelConverter.INSTANCE
+                .categoryRateToMap(dineRecommendedRateVo);
+        Map<String, Integer> dineRecommendedWeightMap = Maps.newHashMap();
+        ingredientCategoryWeightMap.forEach((key, value) -> {
+            dineRecommendedWeightMap.put(key.getNameEn(), (int) (value * dineRateMap.getOrDefault(key, 0.0)));
+        });
+        return dineRecommendedWeightMap;
     }
 
 }

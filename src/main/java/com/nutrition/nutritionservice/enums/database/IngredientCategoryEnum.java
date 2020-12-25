@@ -42,7 +42,7 @@ public enum IngredientCategoryEnum implements CodeEnum<Integer> {
 
     SALT(16, "salt", "食盐", IngredientSuperCategoryEnum.CONDIMENTS),
 
-    SUGAR(17, "sugar", "糖", IngredientSuperCategoryEnum.CONDIMENTS),
+//    SUGAR(17, "sugar", "糖", IngredientSuperCategoryEnum.CONDIMENTS),
 
     ;
 

@@ -2,6 +2,7 @@ package com.nutrition.nutritionservice.converter;
 
 import com.google.common.collect.Maps;
 import com.nutrition.nutritionservice.enums.database.IngredientCategoryEnum;
+import com.nutrition.nutritionservice.vo.DineRecommendedRateVo;
 import com.nutrition.nutritionservice.vo.modeldata.IntakesModelVo;
 
 import java.util.Map;
@@ -17,7 +18,7 @@ public class ModelConverter {
     private ModelConverter() {
     }
 
-    public Map<IngredientCategoryEnum, Integer> modelToCategoryMap(IntakesModelVo intakesModelVo){
+    public Map<IngredientCategoryEnum, Integer> categoryWeightToMap(IntakesModelVo intakesModelVo) {
         Map<IngredientCategoryEnum, Integer> modelCategoryMap = Maps.newHashMap();
         modelCategoryMap.put(IngredientCategoryEnum.PROCESSED_GRAINS, intakesModelVo.getProcessedGrains());
         modelCategoryMap.put(IngredientCategoryEnum.UNPROCESSED_GRAINS, intakesModelVo.getUnprocessedGrains());
@@ -35,6 +36,27 @@ public class ModelConverter {
         modelCategoryMap.put(IngredientCategoryEnum.NUT, intakesModelVo.getNut());
         modelCategoryMap.put(IngredientCategoryEnum.OIL, intakesModelVo.getOil());
         modelCategoryMap.put(IngredientCategoryEnum.SALT, intakesModelVo.getSalt());
+        return modelCategoryMap;
+    }
+
+    public Map<IngredientCategoryEnum, Double> categoryRateToMap(DineRecommendedRateVo recommendedRateVo) {
+        Map<IngredientCategoryEnum, Double> modelCategoryMap = Maps.newHashMap();
+        modelCategoryMap.put(IngredientCategoryEnum.PROCESSED_GRAINS, recommendedRateVo.getProcessedGrains());
+        modelCategoryMap.put(IngredientCategoryEnum.UNPROCESSED_GRAINS, recommendedRateVo.getUnprocessedGrains());
+        modelCategoryMap.put(IngredientCategoryEnum.MIXED_BEANS, recommendedRateVo.getMixedBeans());
+        modelCategoryMap.put(IngredientCategoryEnum.TUBER, recommendedRateVo.getTuber());
+        modelCategoryMap.put(IngredientCategoryEnum.GENERAL_VEGETABLES, recommendedRateVo.getGeneralVegetables());
+        modelCategoryMap.put(IngredientCategoryEnum.DARK_VEGETABLES, recommendedRateVo.getDarkVegetables());
+        modelCategoryMap.put(IngredientCategoryEnum.FRUITS, recommendedRateVo.getFruit());
+        modelCategoryMap.put(IngredientCategoryEnum.MEAT, recommendedRateVo.getMeat());
+        modelCategoryMap.put(IngredientCategoryEnum.POULTRY, recommendedRateVo.getPoultry());
+        modelCategoryMap.put(IngredientCategoryEnum.AQUATIC, recommendedRateVo.getAquatic());
+        modelCategoryMap.put(IngredientCategoryEnum.EGGS, recommendedRateVo.getEgg());
+        modelCategoryMap.put(IngredientCategoryEnum.DAIRY, recommendedRateVo.getDairy());
+        modelCategoryMap.put(IngredientCategoryEnum.SOYBEAN, recommendedRateVo.getSoybean());
+        modelCategoryMap.put(IngredientCategoryEnum.NUT, recommendedRateVo.getNut());
+        modelCategoryMap.put(IngredientCategoryEnum.OIL, recommendedRateVo.getOil());
+        modelCategoryMap.put(IngredientCategoryEnum.SALT, recommendedRateVo.getSalt());
         return modelCategoryMap;
     }
 

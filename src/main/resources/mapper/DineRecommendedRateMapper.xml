@@ -22,19 +22,18 @@
         <result column="nut" jdbcType="DOUBLE" property="nut"/>
         <result column="oil" jdbcType="DOUBLE" property="oil"/>
         <result column="salt" jdbcType="DOUBLE" property="salt"/>
-        <result column="sugar" jdbcType="DOUBLE" property="sugar"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     </resultMap>
     <sql id="Base_Column_List">
     id, calorie, goal, dine_time, processed_grains, unprocessed_grains, mixed_beans, 
     tuber, general_vegetables, dark_vegetables, fruit, meat, poultry, aquatic, egg, dairy, 
-    soybean, nut, oil, salt, suger, create_time
+    soybean, nut, oil, salt, create_time
   </sql>
     <select id="selectByCalorieGoalDine" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from dine_recommended_rate
-        where calorie = #{calorie} and goal = #{goal} and dine = #{dine}
+        where calorie = #{calorie} and goal = #{goal} and dine_time = #{dineTime}
     </select>
 
 </mapper>

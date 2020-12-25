@@ -25,7 +25,7 @@ public class CuisineController {
     public ModelAndView designer(@RequestParam("dine") Integer dineCode) {
         ModelAndView model = new ModelAndView("cuisine_designer");
         model.addObject("ingredientCategoryMap", cuisineBiz.queryIngredientCategoryMap());
-        model.addObject("recommendedCategoryMap", cuisineBiz.queryRecommendedWeightMap(dineCode));
+        model.addObject("recommendedCategoryWeightMap", cuisineBiz.queryRecommendedCategoryWeightMap(dineCode));
         model.addObject("cuisine", CuisineWebAo.builder().build());
         return model;
     }

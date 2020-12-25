@@ -4,6 +4,6 @@ import com.nutrition.nutritionservice.vo.DineRecommendedRateVo;
 
 public interface DineRecommendedRateDao {
 
-    DineRecommendedRateVo selectByCalorieGoalDine(int calorie, int goal, int dine);
+    DineRecommendedRateVo selectByCalorieGoalDine(int calorie, int goal, int dineTime);
 
 }
