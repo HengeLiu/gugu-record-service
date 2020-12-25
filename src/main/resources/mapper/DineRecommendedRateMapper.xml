@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nutrition.nutritionservice.dao.DineRecommendedRateDao">
+    <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.DineRecommendedRateVo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="calorie" jdbcType="INTEGER" property="calorie"/>
+        <result column="goal" jdbcType="TINYINT" property="goal"/>
+        <result column="dine_time" jdbcType="TINYINT" property="dineTime"/>
+        <result column="processed_grains" jdbcType="DOUBLE" property="processedGrains"/>
+        <result column="unprocessed_grains" jdbcType="DOUBLE" property="unprocessedGrains"/>
+        <result column="mixed_beans" jdbcType="DOUBLE" property="mixedBeans"/>
+        <result column="tuber" jdbcType="DOUBLE" property="tuber"/>
+        <result column="general_vegetables" jdbcType="DOUBLE" property="generalVegetables"/>
+        <result column="dark_vegetables" jdbcType="DOUBLE" property="darkVegetables"/>
+        <result column="fruit" jdbcType="DOUBLE" property="fruit"/>
+        <result column="meat" jdbcType="DOUBLE" property="meat"/>
+        <result column="poultry" jdbcType="DOUBLE" property="poultry"/>
+        <result column="aquatic" jdbcType="DOUBLE" property="aquatic"/>
+        <result column="egg" jdbcType="DOUBLE" property="egg"/>
+        <result column="dairy" jdbcType="DOUBLE" property="dairy"/>
+        <result column="soybean" jdbcType="DOUBLE" property="soybean"/>
+        <result column="nut" jdbcType="DOUBLE" property="nut"/>
+        <result column="oil" jdbcType="DOUBLE" property="oil"/>
+        <result column="salt" jdbcType="DOUBLE" property="salt"/>
+        <result column="sugar" jdbcType="DOUBLE" property="sugar"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, calorie, goal, dine_time, processed_grains, unprocessed_grains, mixed_beans, 
+    tuber, general_vegetables, dark_vegetables, fruit, meat, poultry, aquatic, egg, dairy, 
+    soybean, nut, oil, salt, suger, create_time
+  </sql>
+    <select id="selectByCalorieGoalDine" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from dine_recommended_rate
+        where calorie = #{calorie} and goal = #{goal} and dine = #{dine}
+    </select>
+
+</mapper>
