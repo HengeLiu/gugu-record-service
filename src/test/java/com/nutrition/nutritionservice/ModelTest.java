@@ -1,5 +1,7 @@
 package com.nutrition.nutritionservice;
 
+import com.alibaba.fastjson.JSONObject;
+import com.nutrition.nutritionservice.biz.IntakesModelBiz;
 import com.nutrition.nutritionservice.converter.IntakesModel2UserModelConverter;
 import com.nutrition.nutritionservice.service.EnergyCalorieCalculateService;
 import com.nutrition.nutritionservice.service.ModelIngredientIntakesService;
@@ -14,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author heng.liu
@@ -34,6 +37,9 @@ public class ModelTest {
 
     @Resource
     private UserCategoryIntakesModelService userCategoryIntakesModelService;
+
+    @Resource
+    private IntakesModelBiz intakesModelBiz;
 
     @Test
     public void recalculateAllUserCalorieAndModel() {
@@ -67,6 +73,13 @@ public class ModelTest {
             }
             System.out.println("");
         }
+    }
+
+    @Test
+    public void testJson() {
+        IntakesModelVo mostNeededModel = intakesModelBiz.queryMostNeededModel();
+        Map<String, Object> jsonObject = JSONObject.parseObject(JSONObject.toJSONString(mostNeededModel));
+        System.out.println();
     }
 
 }

@@ -5,6 +5,7 @@ import com.nutrition.nutritionservice.vo.store.CuisineWebAo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -21,10 +22,10 @@ public class CuisineController {
     private CuisineBiz cuisineBiz;
 
     @GetMapping("/designer")
-    public ModelAndView designer() {
+    public ModelAndView designer(@RequestParam("dine") Integer dineCode) {
         ModelAndView model = new ModelAndView("cuisine_designer");
         model.addObject("ingredientCategoryMap", cuisineBiz.queryIngredientCategoryMap());
-        model.addObject("recommendedCategoryMap", cuisineBiz.queryRecommendedCategoryMap());
+        model.addObject("recommendedCategoryMap", cuisineBiz.queryRecommendedWeightMap(dineCode));
         model.addObject("cuisine", CuisineWebAo.builder().build());
         return model;
     }

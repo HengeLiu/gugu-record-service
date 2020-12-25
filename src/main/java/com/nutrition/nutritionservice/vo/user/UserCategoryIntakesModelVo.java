@@ -105,6 +105,11 @@ public class UserCategoryIntakesModelVo implements Serializable {
     private int salt;
 
     /**
+     * 糖
+     */
+    private int sugar;
+
+    /**
      * 0,未知;1,平衡;2,减脂;3,增肌
      */
     private byte goal;

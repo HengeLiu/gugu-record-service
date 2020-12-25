@@ -1,13 +1,17 @@
 package com.nutrition.nutritionservice.biz;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
 import com.nutrition.nutritionservice.annotation.Biz;
 import com.nutrition.nutritionservice.converter.ModelConverter;
 import com.nutrition.nutritionservice.enums.database.IngredientCategoryEnum;
 import com.nutrition.nutritionservice.service.CuisineService;
+import com.nutrition.nutritionservice.service.DineRecommendedRateService;
 import com.nutrition.nutritionservice.service.IngredientService;
+import com.nutrition.nutritionservice.vo.DineRecommendedRateVo;
 import com.nutrition.nutritionservice.vo.IngredientVo;
 import com.nutrition.nutritionservice.vo.modeldata.IntakesModelVo;
+import com.sun.javafx.collections.MappingChange;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -30,6 +34,9 @@ public class CuisineBiz {
     private IngredientService ingredientService;
 
     @Resource
+    private DineRecommendedRateService dineRecommendedRateService;
+
+    @Resource
     private IntakesModelBiz intakesModelBiz;
 
     public Map<String, List<IngredientVo>> queryIngredientCategoryMap() {
@@ -41,8 +48,11 @@ public class CuisineBiz {
         return ingredientCategoryMap;
     }
 
-    public Map<String, Integer> queryRecommendedCategoryMap() {
+    public Map<String, Integer> queryRecommendedWeightMap(int dineTime) {
         IntakesModelVo mostNeededModel = intakesModelBiz.queryMostNeededModel();
+        Map<String, Object> jsonObject = JSONObject.parseObject(JSONObject.toJSONString(mostNeededModel));
+        DineRecommendedRateVo dineRecommendedRateVo = dineRecommendedRateService
+                .selectByCalorieGoalDine(mostNeededModel.getCalorie(), mostNeededModel.getGoal(), dineTime);
         Map<IngredientCategoryEnum, Integer> categoryEnumMap = ModelConverter.INSTANCE
                 .modelToCategoryMap(mostNeededModel);
         return categoryEnumMap.entrySet().stream()
