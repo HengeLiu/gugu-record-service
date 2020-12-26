@@ -30,6 +30,17 @@
         from ingredient
         where category_code = #{categoryCode}
     </select>
+    <select id="selectByCodeList" resultType="com.nutrition.nutritionservice.vo.IngredientVo">
+        select
+        <include refid="Base_Column_List"/>
+        from ingredient
+        where code in
+        (
+        <foreach collection="codeList" item="code" index="index" separator=",">
+            #{code}
+        </foreach>
+        )
+    </select>
     <delete id="deleteByCode" parameterType="java.lang.String">
     delete from ingredient
     where code = #{code}

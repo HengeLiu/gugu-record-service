@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CuisineWebAo implements Serializable {
+public class CuisineAssemblyAo implements Serializable {
 
     private static final long serialVersionUID = 2127886022694767504L;
 

@@ -2,7 +2,7 @@ package com.nutrition.nutritionservice.service;
 
 import com.nutrition.nutritionservice.dao.CuisineDao;
 import com.nutrition.nutritionservice.dao.CuisineIngredientRelDao;
-import com.nutrition.nutritionservice.vo.store.CuisineWebAo;
+import com.nutrition.nutritionservice.vo.store.CuisineAssemblyAo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,9 +35,9 @@ public class CuisineService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void saveNewCuisine(CuisineWebAo cuisineWebAo) {
-        cuisineDao.insert(cuisineWebAo.getCuisineVo());
-        cuisineIngredientRelDao.batchInsert(cuisineWebAo.getCuisineIngredientRelList());
+    public void saveNewCuisine(CuisineAssemblyAo cuisineAssemblyAo) {
+        cuisineDao.insert(cuisineAssemblyAo.getCuisineVo());
+        cuisineIngredientRelDao.batchInsert(cuisineAssemblyAo.getCuisineIngredientRelList());
     }
 
 }

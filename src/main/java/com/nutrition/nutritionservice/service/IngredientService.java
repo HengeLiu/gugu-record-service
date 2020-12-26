@@ -21,4 +21,12 @@ public class IngredientService {
         return ingredientDao.selectByCategoryCode(categoryCode);
     }
 
+    public IngredientVo queryByCode(String ingredientCode) {
+        return ingredientDao.selectByCode(ingredientCode);
+    }
+
+    public List<IngredientVo> queryByCodeList(List<String> ingredientCodeList) {
+        return ingredientDao.selectByCodeList(ingredientCodeList);
+    }
+
 }

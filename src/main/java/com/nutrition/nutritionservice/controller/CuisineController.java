@@ -1,7 +1,8 @@
 package com.nutrition.nutritionservice.controller;
 
 import com.nutrition.nutritionservice.biz.CuisineBiz;
-import com.nutrition.nutritionservice.vo.store.CuisineWebAo;
+import com.nutrition.nutritionservice.biz.IntakesModelBiz;
+import com.nutrition.nutritionservice.vo.store.CuisineAssemblyAo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -24,18 +25,22 @@ public class CuisineController {
     @Resource
     private CuisineBiz cuisineBiz;
 
+    @Resource
+    private IntakesModelBiz intakesModelBiz;
+
     @GetMapping("/designer")
     public ModelAndView designer(@RequestParam("dine") Integer dineCode) {
         ModelAndView model = new ModelAndView("cuisine_designer");
         model.addObject("ingredientCategoryMap", cuisineBiz.queryIngredientCategoryMap());
-        model.addObject("recommendedCategoryWeightMap", cuisineBiz.queryRecommendedCategoryWeightMap(dineCode));
-        model.addObject("cuisine", CuisineWebAo.builder().build());
+        model.addObject("recommendedCategoryWeightMap",
+                cuisineBiz.queryRecommendedCategoryWeightMap(intakesModelBiz.queryMostNeededModel(), dineCode));
+        model.addObject("cuisine", CuisineAssemblyAo.builder().build());
         return model;
     }
 
     @PostMapping("/create")
     @ResponseBody
-    public String create(@ModelAttribute("cuisine") CuisineWebAo cuisineWebAo) {
+    public String create(@ModelAttribute("cuisine") CuisineAssemblyAo cuisineAssemblyAo) {
 
         return "Create success";
     }

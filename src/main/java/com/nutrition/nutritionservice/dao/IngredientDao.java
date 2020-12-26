@@ -13,7 +13,9 @@ public interface IngredientDao {
 
     int insertSelective(IngredientVo record);
 
-    IngredientVo selectByCode(Integer id);
+    IngredientVo selectByCode(String code);
+
+    List<IngredientVo> selectByCodeList(List<String> codeList);
 
     int updateByCodeSelective(IngredientVo record);
 

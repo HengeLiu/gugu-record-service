@@ -27,13 +27,13 @@
   </delete>
     <insert id="insert" keyColumn="id" keyProperty="id"
             parameterType="com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo" useGeneratedKeys="true">
-    insert into cuisine_ingredient_rel (cuisine_code, ingredient_code, weight, 
-      `process`, create_time, update_time
-      )
-    values (#{cuisineCode,jdbcType=VARCHAR}, #{ingredientCode,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER}, 
-      #{process,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
-      )
-  </insert>
+        insert into cuisine_ingredient_rel (
+        <include refid="Insert_Column_List"/>
+        )
+        values (#{cuisineCode,jdbcType=VARCHAR}, #{ingredientCode,jdbcType=VARCHAR}, #{weight,jdbcType=INTEGER},
+        #{process,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
     <insert id="insertSelective" keyColumn="id" keyProperty="id"
             parameterType="com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo" useGeneratedKeys="true">
         insert into cuisine_ingredient_rel
@@ -72,10 +72,10 @@
         values
         <foreach collection="relList" item="rel" index="index" separator=",">
             (
-            #{cuisineCode,jdbcType=VARCHAR},
-            #{ingredientCode,jdbcType=VARCHAR},
-            #{weight,jdbcType=INTEGER},
-            #{process,jdbcType=TINYINT}
+            #{rel.cuisineCode,jdbcType=VARCHAR},
+            #{rel.ingredientCode,jdbcType=VARCHAR},
+            #{rel.weight,jdbcType=INTEGER},
+            #{rel.process,jdbcType=TINYINT}
             )
         </foreach>
     </insert>

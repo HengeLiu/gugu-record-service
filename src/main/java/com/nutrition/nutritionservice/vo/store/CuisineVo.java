@@ -1,7 +1,7 @@
 package com.nutrition.nutritionservice.vo.store;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +14,7 @@ import lombok.Data;
 @Data
 @Builder
 public class CuisineVo implements Serializable {
-    private Integer id;
+    private int id;
 
     /**
      * 菜品编码
@@ -34,37 +34,37 @@ public class CuisineVo implements Serializable {
     /**
      * 菜品热量
      */
-    private Integer calorie;
+    private int calorie;
 
     /**
      * 推荐目标
      */
-    private Byte goal;
+    private int goal;
 
     /**
      * 菜品种类
      */
-    private Byte cuisineType;
+    private int cuisineType;
 
     /**
      * 用餐时段
      */
-    private Byte dineTime;
+    private int dineTime;
 
     /**
      * 菜温
      */
-    private Byte warm;
+    private int warm;
 
     /**
-     * 0.正常;1.无货;2.暂停售卖;3.下架
+     * 菜品状态
      */
-    private Byte status;
+    private int status;
 
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     private static final long serialVersionUID = 1L;
 }
