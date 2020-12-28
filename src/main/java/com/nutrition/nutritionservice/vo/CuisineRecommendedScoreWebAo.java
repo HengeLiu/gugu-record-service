@@ -1,5 +1,6 @@
 package com.nutrition.nutritionservice.vo;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.io.Serializable;
  * @since 2020/12/28
  */
 @Data
+@Builder
 public class CuisineRecommendedScoreWebAo implements Serializable {
 
     private static final long serialVersionUID = 8807420157667227578L;

@@ -43,6 +43,15 @@ public class ConfigPropertiesService {
     @Value("${costumer_default_sports_habits_male}")
     private int costumerDefaultSportsHabitsMale;
 
+    @Value("${recommended.cuisine.model.rate}")
+    private double recommendedCuisineModelRate;
+    @Value("${recommended.cuisine.taste.rate}")
+    private double recommendedCuisineTasteRate;
+    @Value("${recommended.cuisine.dine.rate}")
+    private double recommendedCuisineDineRate;
+    @Value("${recommended.cuisine.preference.rate}")
+    private double recommendedCuisinePreferenceRate;
+
     public UserInfoVo getDefaultUserInfo(GenderEnum genderEnum) {
         if (genderEnum == null || genderEnum == GenderEnum.FEMALE) {
             return UserInfoVo.builder().gender(GenderEnum.FEMALE.getCode()).goal(costumerDefaultGoalFemale)

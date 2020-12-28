@@ -2,16 +2,16 @@ package com.nutrition.nutritionservice.dao;
 
 import com.nutrition.nutritionservice.vo.CuisineHistoricalTasteVo;
 
+import java.util.List;
+
 public interface CuisineHistoricalTasteDao {
-    int deleteByPrimaryKey(Integer id);
 
     int insert(CuisineHistoricalTasteVo record);
 
-    int insertSelective(CuisineHistoricalTasteVo record);
 
-    CuisineHistoricalTasteVo selectByCuisineCode(Integer id);
+    List<CuisineHistoricalTasteVo> selectByCuisineCode(String cuisineCode);
 
-    int updateByCuisineCodeAndTasteSelective(CuisineHistoricalTasteVo record);
+    List<CuisineHistoricalTasteVo> batchElectByCuisineCode(List<String> cuisineCodeList);
 
-    int updateByCuisineCodeAndTaste(CuisineHistoricalTasteVo record);
+    int updateCountByCuisineCodeAndTaste(CuisineHistoricalTasteVo record);
 }
