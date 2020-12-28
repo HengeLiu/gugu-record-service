@@ -2,7 +2,6 @@ package com.nutrition.nutritionservice.biz;
 
 import com.alibaba.fastjson.PropertyNamingStrategy;
 import com.alibaba.fastjson.serializer.SerializeConfig;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.nutrition.nutritionservice.annotation.Biz;
 import com.nutrition.nutritionservice.converter.ModelConverter;
@@ -10,16 +9,17 @@ import com.nutrition.nutritionservice.enums.database.IngredientCategoryEnum;
 import com.nutrition.nutritionservice.service.CuisineService;
 import com.nutrition.nutritionservice.service.DineRecommendedRateService;
 import com.nutrition.nutritionservice.service.IngredientService;
+import com.nutrition.nutritionservice.service.ModelIngredientIntakesService;
 import com.nutrition.nutritionservice.vo.DineRecommendedRateVo;
 import com.nutrition.nutritionservice.vo.IngredientVo;
+import com.nutrition.nutritionservice.vo.UserHistoricalWeightSumDailyVo;
 import com.nutrition.nutritionservice.vo.modeldata.IntakesModelVo;
-import com.nutrition.nutritionservice.vo.store.CuisineAssemblyAo;
-import com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo;
+import com.nutrition.nutritionservice.vo.store.CuisineVo;
+import com.nutrition.nutritionservice.vo.user.UserCategoryIntakesModelVo;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 菜品。
@@ -42,6 +42,9 @@ public class CuisineBiz {
     @Resource
     private IntakesModelBiz intakesModelBiz;
 
+    @Resource
+    private ModelIngredientIntakesService modelIngredientIntakesService;
+
     public Map<String, List<IngredientVo>> queryIngredientCategoryMap() {
         Map<String, List<IngredientVo>> ingredientCategoryMap = Maps.newHashMap();
         for (IngredientCategoryEnum categoryEnum : IngredientCategoryEnum.values()) {
@@ -61,10 +64,14 @@ public class CuisineBiz {
         Map<IngredientCategoryEnum, Double> dineRateMap = ModelConverter.INSTANCE
                 .categoryRateToMap(dineRecommendedRateVo);
         Map<String, Integer> dineRecommendedWeightMap = Maps.newHashMap();
-        ingredientCategoryWeightMap.forEach((key, value) -> {
-            dineRecommendedWeightMap.put(key.getNameEn(), (int) (value * dineRateMap.getOrDefault(key, 0.0)));
-        });
+        ingredientCategoryWeightMap.forEach((key, value) -> dineRecommendedWeightMap.put(key.getNameEn(),
+                (int) (value * dineRateMap.getOrDefault(key, 0.0))));
         return dineRecommendedWeightMap;
     }
 
+    public List<CuisineVo> queryRecommendedCuisineList(UserCategoryIntakesModelVo userModel,
+            UserHistoricalWeightSumDailyVo historicalWeightSumDaily, int dineTime) {
+
+        return null;
+    }
 }

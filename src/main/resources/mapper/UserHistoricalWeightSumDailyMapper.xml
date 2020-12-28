@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nutrition.nutritionservice.dao.UserHistoricalWeightSumDailyDao">
+  <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.UserHistoricalWeightSumDailyVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="uuid" jdbcType="VARCHAR" property="uuid" />
+    <result column="date" jdbcType="DATE" property="date" />
+    <result column="processed_grains" jdbcType="INTEGER" property="processedGrains" />
+    <result column="unprocessed_grains" jdbcType="INTEGER" property="unprocessedGrains" />
+    <result column="mixed_beans" jdbcType="INTEGER" property="mixedBeans" />
+    <result column="tuber" jdbcType="INTEGER" property="tuber" />
+    <result column="general_vegetables" jdbcType="INTEGER" property="generalVegetables" />
+    <result column="dark_vegetables" jdbcType="INTEGER" property="darkVegetables" />
+    <result column="fruit" jdbcType="INTEGER" property="fruit" />
+    <result column="meat" jdbcType="INTEGER" property="meat" />
+    <result column="poultry" jdbcType="INTEGER" property="poultry" />
+    <result column="aquatic" jdbcType="INTEGER" property="aquatic" />
+    <result column="egg" jdbcType="INTEGER" property="egg" />
+    <result column="dairy" jdbcType="INTEGER" property="dairy" />
+    <result column="soybean" jdbcType="INTEGER" property="soybean" />
+    <result column="nut" jdbcType="INTEGER" property="nut" />
+    <result column="oil" jdbcType="INTEGER" property="oil" />
+    <result column="salt" jdbcType="INTEGER" property="salt" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, uuid, `date`, processed_grains, unprocessed_grains, mixed_beans, tuber, general_vegetables, 
+    dark_vegetables, fruit, meat, poultry, aquatic, egg, dairy, soybean, nut, oil, salt, 
+    create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_historical_weight_sum_daily
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user_historical_weight_sum_daily
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nutrition.nutritionservice.vo.UserHistoricalWeightSumDailyVo" useGeneratedKeys="true">
+    insert into user_historical_weight_sum_daily (uuid, `date`, processed_grains, 
+      unprocessed_grains, mixed_beans, tuber, 
+      general_vegetables, dark_vegetables, fruit, 
+      meat, poultry, aquatic, 
+      egg, dairy, soybean, 
+      nut, oil, salt, create_time, 
+      update_time)
+    values (#{uuid,jdbcType=VARCHAR}, #{date,jdbcType=DATE}, #{processedGrains,jdbcType=INTEGER}, 
+      #{unprocessedGrains,jdbcType=INTEGER}, #{mixedBeans,jdbcType=INTEGER}, #{tuber,jdbcType=INTEGER}, 
+      #{generalVegetables,jdbcType=INTEGER}, #{darkVegetables,jdbcType=INTEGER}, #{fruit,jdbcType=INTEGER}, 
+      #{meat,jdbcType=INTEGER}, #{poultry,jdbcType=INTEGER}, #{aquatic,jdbcType=INTEGER}, 
+      #{egg,jdbcType=INTEGER}, #{dairy,jdbcType=INTEGER}, #{soybean,jdbcType=INTEGER}, 
+      #{nut,jdbcType=INTEGER}, #{oil,jdbcType=INTEGER}, #{salt,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nutrition.nutritionservice.vo.UserHistoricalWeightSumDailyVo" useGeneratedKeys="true">
+    insert into user_historical_weight_sum_daily
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uuid != null">
+        uuid,
+      </if>
+      <if test="date != null">
+        `date`,
+      </if>
+      <if test="processedGrains != null">
+        processed_grains,
+      </if>
+      <if test="unprocessedGrains != null">
+        unprocessed_grains,
+      </if>
+      <if test="mixedBeans != null">
+        mixed_beans,
+      </if>
+      <if test="tuber != null">
+        tuber,
+      </if>
+      <if test="generalVegetables != null">
+        general_vegetables,
+      </if>
+      <if test="darkVegetables != null">
+        dark_vegetables,
+      </if>
+      <if test="fruit != null">
+        fruit,
+      </if>
+      <if test="meat != null">
+        meat,
+      </if>
+      <if test="poultry != null">
+        poultry,
+      </if>
+      <if test="aquatic != null">
+        aquatic,
+      </if>
+      <if test="egg != null">
+        egg,
+      </if>
+      <if test="dairy != null">
+        dairy,
+      </if>
+      <if test="soybean != null">
+        soybean,
+      </if>
+      <if test="nut != null">
+        nut,
+      </if>
+      <if test="oil != null">
+        oil,
+      </if>
+      <if test="salt != null">
+        salt,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uuid != null">
+        #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=DATE},
+      </if>
+      <if test="processedGrains != null">
+        #{processedGrains,jdbcType=INTEGER},
+      </if>
+      <if test="unprocessedGrains != null">
+        #{unprocessedGrains,jdbcType=INTEGER},
+      </if>
+      <if test="mixedBeans != null">
+        #{mixedBeans,jdbcType=INTEGER},
+      </if>
+      <if test="tuber != null">
+        #{tuber,jdbcType=INTEGER},
+      </if>
+      <if test="generalVegetables != null">
+        #{generalVegetables,jdbcType=INTEGER},
+      </if>
+      <if test="darkVegetables != null">
+        #{darkVegetables,jdbcType=INTEGER},
+      </if>
+      <if test="fruit != null">
+        #{fruit,jdbcType=INTEGER},
+      </if>
+      <if test="meat != null">
+        #{meat,jdbcType=INTEGER},
+      </if>
+      <if test="poultry != null">
+        #{poultry,jdbcType=INTEGER},
+      </if>
+      <if test="aquatic != null">
+        #{aquatic,jdbcType=INTEGER},
+      </if>
+      <if test="egg != null">
+        #{egg,jdbcType=INTEGER},
+      </if>
+      <if test="dairy != null">
+        #{dairy,jdbcType=INTEGER},
+      </if>
+      <if test="soybean != null">
+        #{soybean,jdbcType=INTEGER},
+      </if>
+      <if test="nut != null">
+        #{nut,jdbcType=INTEGER},
+      </if>
+      <if test="oil != null">
+        #{oil,jdbcType=INTEGER},
+      </if>
+      <if test="salt != null">
+        #{salt,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nutrition.nutritionservice.vo.UserHistoricalWeightSumDailyVo">
+    update user_historical_weight_sum_daily
+    <set>
+      <if test="uuid != null">
+        uuid = #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null">
+        `date` = #{date,jdbcType=DATE},
+      </if>
+      <if test="processedGrains != null">
+        processed_grains = #{processedGrains,jdbcType=INTEGER},
+      </if>
+      <if test="unprocessedGrains != null">
+        unprocessed_grains = #{unprocessedGrains,jdbcType=INTEGER},
+      </if>
+      <if test="mixedBeans != null">
+        mixed_beans = #{mixedBeans,jdbcType=INTEGER},
+      </if>
+      <if test="tuber != null">
+        tuber = #{tuber,jdbcType=INTEGER},
+      </if>
+      <if test="generalVegetables != null">
+        general_vegetables = #{generalVegetables,jdbcType=INTEGER},
+      </if>
+      <if test="darkVegetables != null">
+        dark_vegetables = #{darkVegetables,jdbcType=INTEGER},
+      </if>
+      <if test="fruit != null">
+        fruit = #{fruit,jdbcType=INTEGER},
+      </if>
+      <if test="meat != null">
+        meat = #{meat,jdbcType=INTEGER},
+      </if>
+      <if test="poultry != null">
+        poultry = #{poultry,jdbcType=INTEGER},
+      </if>
+      <if test="aquatic != null">
+        aquatic = #{aquatic,jdbcType=INTEGER},
+      </if>
+      <if test="egg != null">
+        egg = #{egg,jdbcType=INTEGER},
+      </if>
+      <if test="dairy != null">
+        dairy = #{dairy,jdbcType=INTEGER},
+      </if>
+      <if test="soybean != null">
+        soybean = #{soybean,jdbcType=INTEGER},
+      </if>
+      <if test="nut != null">
+        nut = #{nut,jdbcType=INTEGER},
+      </if>
+      <if test="oil != null">
+        oil = #{oil,jdbcType=INTEGER},
+      </if>
+      <if test="salt != null">
+        salt = #{salt,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nutrition.nutritionservice.vo.UserHistoricalWeightSumDailyVo">
+    update user_historical_weight_sum_daily
+    set uuid = #{uuid,jdbcType=VARCHAR},
+      `date` = #{date,jdbcType=DATE},
+      processed_grains = #{processedGrains,jdbcType=INTEGER},
+      unprocessed_grains = #{unprocessedGrains,jdbcType=INTEGER},
+      mixed_beans = #{mixedBeans,jdbcType=INTEGER},
+      tuber = #{tuber,jdbcType=INTEGER},
+      general_vegetables = #{generalVegetables,jdbcType=INTEGER},
+      dark_vegetables = #{darkVegetables,jdbcType=INTEGER},
+      fruit = #{fruit,jdbcType=INTEGER},
+      meat = #{meat,jdbcType=INTEGER},
+      poultry = #{poultry,jdbcType=INTEGER},
+      aquatic = #{aquatic,jdbcType=INTEGER},
+      egg = #{egg,jdbcType=INTEGER},
+      dairy = #{dairy,jdbcType=INTEGER},
+      soybean = #{soybean,jdbcType=INTEGER},
+      nut = #{nut,jdbcType=INTEGER},
+      oil = #{oil,jdbcType=INTEGER},
+      salt = #{salt,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

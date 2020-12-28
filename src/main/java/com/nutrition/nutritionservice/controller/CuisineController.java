@@ -1,8 +1,12 @@
 package com.nutrition.nutritionservice.controller;
 
+import com.google.common.collect.Lists;
 import com.nutrition.nutritionservice.biz.CuisineBiz;
 import com.nutrition.nutritionservice.biz.IntakesModelBiz;
+import com.nutrition.nutritionservice.vo.UserHistoricalWeightSumDailyVo;
 import com.nutrition.nutritionservice.vo.store.CuisineAssemblyAo;
+import com.nutrition.nutritionservice.vo.store.CuisineVo;
+import com.nutrition.nutritionservice.vo.user.UserCategoryIntakesModelVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @author heng.liu
@@ -41,8 +46,16 @@ public class CuisineController {
     @PostMapping("/create")
     @ResponseBody
     public String create(@ModelAttribute("cuisine") CuisineAssemblyAo cuisineAssemblyAo) {
-
         return "Create success";
+    }
+
+    @PostMapping("/recommendedList")
+    @ResponseBody
+    public List<CuisineVo> queryRecommendedCuisineList(UserCategoryIntakesModelVo userModel,
+            UserHistoricalWeightSumDailyVo historicalWeightSumDaily, int dineTime) {
+        cuisineBiz.queryRecommendedCuisineList(userModel, historicalWeightSumDaily, dineTime);
+
+        return null;
     }
 
 }

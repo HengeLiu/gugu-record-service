@@ -1,12 +1,12 @@
 package com.nutrition.nutritionservice;
 
-import com.alibaba.fastjson.PropertyNamingStrategy;
 import com.nutrition.nutritionservice.biz.IntakesModelBiz;
 import com.nutrition.nutritionservice.converter.IntakesModel2UserModelConverter;
 import com.nutrition.nutritionservice.service.EnergyCalorieCalculateService;
 import com.nutrition.nutritionservice.service.ModelIngredientIntakesService;
 import com.nutrition.nutritionservice.service.UserCategoryIntakesModelService;
 import com.nutrition.nutritionservice.service.UserInfoService;
+import com.nutrition.nutritionservice.util.ModelUtil;
 import com.nutrition.nutritionservice.vo.modeldata.IntakesModelVo;
 import com.nutrition.nutritionservice.vo.user.UserCategoryIntakesModelVo;
 import com.nutrition.nutritionservice.vo.user.UserInfoVo;
@@ -16,7 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author heng.liu
@@ -66,7 +65,7 @@ public class ModelTest {
         for (IntakesModelVo model1 : modelList) {
             System.out.print("" + model1.getCalorie() + "," + model1.getGoal());
             for (IntakesModelVo model2 : modelList) {
-                double euclidDistance = modelIngredientIntakesService.calculateEuclidDistance(model1, model2);
+                double euclidDistance = ModelUtil.calculateEuclidDistance(model1, model2);
                 System.out.print("," + euclidDistance);
 //                double cosineSimilarity = modelIngredientIntakesService.calculateCosineSimilarity(model1, model2);
 //                System.out.print("," + cosineSimilarity);

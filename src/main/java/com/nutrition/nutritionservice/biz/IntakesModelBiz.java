@@ -10,6 +10,7 @@ import com.nutrition.nutritionservice.service.EnergyCalorieCalculateService;
 import com.nutrition.nutritionservice.service.ModelIngredientIntakesService;
 import com.nutrition.nutritionservice.service.UserCategoryIntakesModelService;
 import com.nutrition.nutritionservice.service.UserInfoService;
+import com.nutrition.nutritionservice.util.ModelUtil;
 import com.nutrition.nutritionservice.vo.ModelParamVo;
 import com.nutrition.nutritionservice.vo.modeldata.IntakesModelVo;
 import com.nutrition.nutritionservice.vo.user.UserInfoVo;
@@ -114,7 +115,7 @@ public class IntakesModelBiz {
         double minEuclidDistance = Double.MAX_VALUE;
         IntakesModelVo bestModel = null;
         for (IntakesModelVo model : mostNeededModelList) {
-            double modelEuclidDistance = modelIngredientIntakesService.calculateEuclidDistance(model, defaultUserModel);
+            double modelEuclidDistance = ModelUtil.calculateEuclidDistance(model, defaultUserModel);
             log.debug("model calorie {}, goal {}, Euclid Distance to default model {}.", model.getCalorie(),
                     model.getGoal(), modelEuclidDistance);
             if (modelEuclidDistance < minEuclidDistance) {
