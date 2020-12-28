@@ -2,41 +2,37 @@ package com.nutrition.nutritionservice.vo;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 import com.nutrition.nutritionservice.vo.modeldata.CategoryModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * dine_recommended_rate
+ * cuisine_category_wight
  * 
  * @author heng.liu
- * @since 2020/12/25
+ * @since 2020/12/28
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class DineRecommendedRateVo extends CategoryModel<Double> implements Serializable {
+public class CuisineCategoryWightVo extends CategoryModel<Integer> implements Serializable {
     private Integer id;
 
     /**
-     * 日需热量水平
+     * 菜品编码
      */
-    private int calorie;
-
-    /**
-     * 0,未知;1,平衡;2,减脂;3,增肌
-     */
-    private byte goal;
-
-    /**
-     * 用餐时段
-     */
-    private byte dineTime;
+    private String cuisineCode;
 
     /**
      * 创建时间
      */
     private LocalDateTime createTime;
+
+    /**
+     * 更新时间
+     */
+    private LocalDateTime updateTime;
 
     private static final long serialVersionUID = 1L;
 }

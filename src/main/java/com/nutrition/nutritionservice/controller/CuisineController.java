@@ -1,8 +1,9 @@
 package com.nutrition.nutritionservice.controller;
 
-import com.google.common.collect.Lists;
 import com.nutrition.nutritionservice.biz.CuisineBiz;
 import com.nutrition.nutritionservice.biz.IntakesModelBiz;
+import com.nutrition.nutritionservice.vo.CuisineRecommendedScoreWebAo;
+import com.nutrition.nutritionservice.vo.IDPageParamVo;
 import com.nutrition.nutritionservice.vo.UserHistoricalWeightSumDailyVo;
 import com.nutrition.nutritionservice.vo.store.CuisineAssemblyAo;
 import com.nutrition.nutritionservice.vo.store.CuisineVo;
@@ -49,13 +50,18 @@ public class CuisineController {
         return "Create success";
     }
 
-    @PostMapping("/recommendedList")
+    @PostMapping("/recommendedList/dine")
     @ResponseBody
-    public List<CuisineVo> queryRecommendedCuisineList(UserCategoryIntakesModelVo userModel,
-            UserHistoricalWeightSumDailyVo historicalWeightSumDaily, int dineTime) {
-        cuisineBiz.queryRecommendedCuisineList(userModel, historicalWeightSumDaily, dineTime);
+    public List<CuisineRecommendedScoreWebAo> queryRecommendedCuisineList(UserCategoryIntakesModelVo userModel,
+            int dineTime, IDPageParamVo pageParam) {
+        return cuisineBiz.queryRecommendedCuisineListByDineTime(userModel, dineTime, pageParam);
+    }
 
-        return null;
+    @PostMapping("/recommendedList/historical")
+    @ResponseBody
+    public List<CuisineRecommendedScoreWebAo> queryRecommendedCuisineList(UserCategoryIntakesModelVo userModel,
+            UserHistoricalWeightSumDailyVo historicalWeightSumDaily, IDPageParamVo pageParam) {
+        return cuisineBiz.queryRecommendedCuisineListByHistorical(userModel, historicalWeightSumDaily, pageParam);
     }
 
 }

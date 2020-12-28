@@ -27,6 +27,12 @@
     <select id="selectCountByCalorieAndGoal" resultType="java.lang.Integer">
         select count(*) from cuisine where goal = #{goal} and calorie &gt;= #{minCalorie} and calorie &lt; #{maxCalorie}
     </select>
+    <select id="selectFromIdWithLimit" resultType="com.nutrition.nutritionservice.vo.store.CuisineVo">
+        select
+        <include refid="Base_Column_List"/>
+        from cuisine
+        where id >= #{id} limit #{limit}
+    </select>
     <insert id="insert" parameterType="com.nutrition.nutritionservice.vo.store.CuisineVo">
     insert into cuisine (code, `name`, store_code, 
       calorie, goal, cuisine_type, 
