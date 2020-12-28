@@ -3,21 +3,22 @@ package com.nutrition.nutritionservice.vo;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
-
-import com.nutrition.nutritionservice.vo.modeldata.CategoryModel;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
- * cuisine_category_wight
+ * user_historical_cuisine
  * 
  * @author heng.liu
  * @since 2020/12/28
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
-public class CuisineCategoryWightVo extends CategoryModel<Integer> implements Serializable {
-    private Integer id;
+public class UserHistoricalCuisineVo implements Serializable {
+    private long id;
+
+    /**
+     * 用户唯一标识
+     */
+    private String uuid;
 
     /**
      * 菜品编码
@@ -25,13 +26,17 @@ public class CuisineCategoryWightVo extends CategoryModel<Integer> implements Se
     private String cuisineCode;
 
     /**
-     * 创建时间
+     * 味道评分
      */
-    private LocalDateTime createTime;
+    private byte tasteScore;
 
     /**
-     * 更新时间
+     * 菜品记录状态.0,正常;1,已删除.
      */
+    private byte status;
+
+    private LocalDateTime createTime;
+
     private LocalDateTime updateTime;
 
     private static final long serialVersionUID = 1L;

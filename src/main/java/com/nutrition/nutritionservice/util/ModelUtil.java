@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.nutrition.nutritionservice.enums.database.IngredientCategoryEnum;
 import com.nutrition.nutritionservice.vo.modeldata.CategoryModel;
 import com.nutrition.nutritionservice.vo.modeldata.IntakesModelVo;
+import org.springframework.util.NumberUtils;
 
 import java.util.Map;
 import java.util.Vector;
@@ -37,15 +38,16 @@ public class ModelUtil {
         return v;
     }
 
-    public static double calculateCosineSimilarity(IntakesModelVo model1, IntakesModelVo model2) {
-        Vector<Integer> v1 = ModelUtil.modelToVector(model1);
-        Vector<Integer> v2 = ModelUtil.modelToVector(model2);
+    public static double calculateCosineSimilarity(CategoryModel<? extends Number> model1,
+            CategoryModel<? extends Number> model2) {
+        Vector<? extends Number> v1 = ModelUtil.modelToVector(model1);
+        Vector<? extends Number> v2 = ModelUtil.modelToVector(model2);
         return VectorUtil.cosineSimilarity(v1, v2);
     }
 
-    public static double calculateEuclidDistance(IntakesModelVo model1, IntakesModelVo model2) {
-        Vector<Integer> v1 = ModelUtil.modelToVector(model1);
-        Vector<Integer> v2 = ModelUtil.modelToVector(model2);
+    public static <T extends Number> double calculateEuclidDistance(CategoryModel<T> model1, CategoryModel<T> model2) {
+        Vector<T> v1 = ModelUtil.modelToVector(model1);
+        Vector<T> v2 = ModelUtil.modelToVector(model2);
         return VectorUtil.euclidDistance(v1, v2);
     }
 

@@ -4,13 +4,17 @@ import com.alibaba.fastjson.PropertyNamingStrategy;
 import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.google.common.collect.Maps;
 import com.nutrition.nutritionservice.annotation.Biz;
+import com.nutrition.nutritionservice.enums.database.CuisineTasteEnum;
 import com.nutrition.nutritionservice.enums.database.IngredientCategoryEnum;
+import com.nutrition.nutritionservice.service.CuisineCategoryWeightService;
 import com.nutrition.nutritionservice.service.CuisineService;
 import com.nutrition.nutritionservice.service.DineRecommendedRateService;
 import com.nutrition.nutritionservice.service.IngredientService;
 import com.nutrition.nutritionservice.service.ModelIngredientIntakesService;
+import com.nutrition.nutritionservice.service.UserHistoricalCuisineService;
 import com.nutrition.nutritionservice.util.ModelUtil;
 import com.nutrition.nutritionservice.util.VectorUtil;
+import com.nutrition.nutritionservice.vo.CuisineCategoryWeightVo;
 import com.nutrition.nutritionservice.vo.CuisineRecommendedScoreWebAo;
 import com.nutrition.nutritionservice.vo.DineRecommendedRateVo;
 import com.nutrition.nutritionservice.vo.IDPageParamVo;
@@ -25,6 +29,7 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+import java.util.stream.Collectors;
 
 /**
  * 菜品。
@@ -49,6 +54,12 @@ public class CuisineBiz {
 
     @Resource
     private ModelIngredientIntakesService modelIngredientIntakesService;
+
+    @Resource
+    private CuisineCategoryWeightService cuisineCategoryWeightService;
+
+    @Resource
+    private UserHistoricalCuisineService userHistoricalCuisineService;
 
     public void saveNewCuisine(CuisineAssemblyAo cuisineAssemblyAo) {
         cuisineService.saveNewCuisine(cuisineAssemblyAo);
@@ -85,6 +96,11 @@ public class CuisineBiz {
         Vector<Double> dineRateVector = ModelUtil.modelToVector(dineRecommendedRateVo);
         Vector<Double> recommendedWeightVector = VectorUtil.crossProduct(userModelVector, dineRateVector);
         List<CuisineVo> cuisineList = cuisineService.queryPageCuisineList(pageParamVo);
+        List<CuisineCategoryWeightVo> cuisineCategoryWeightList = cuisineCategoryWeightService
+                .queryCategoryWeightList(cuisineList.stream().map(CuisineVo::getCode).collect(Collectors.toList()));
+        Map<String, Double> cosineSimilarityMap = cuisineCategoryWeightList.stream()
+                .collect(Collectors.toMap(CuisineCategoryWeightVo::getCuisineCode, cuisineCategoryWeight -> VectorUtil
+                        .cosineSimilarity(recommendedWeightVector, ModelUtil.modelToVector(cuisineCategoryWeight))));
 
         return null;
     }
@@ -96,8 +112,23 @@ public class CuisineBiz {
         Vector<Integer> historicalWeightVector = ModelUtil.modelToVector(historicalWeightSumDaily);
         Vector<Double> subtractionVector = VectorUtil.subtraction(userModelVector, historicalWeightVector);
         List<CuisineVo> cuisineList = cuisineService.queryPageCuisineList(pageParamVo);
+        List<CuisineCategoryWeightVo> cuisineCategoryWeightList = cuisineCategoryWeightService
+                .queryCategoryWeightList(cuisineList.stream().map(CuisineVo::getCode).collect(Collectors.toList()));
+        Map<String, Double> cosineSimilarityMap = cuisineCategoryWeightList.stream()
+                .collect(Collectors.toMap(CuisineCategoryWeightVo::getCuisineCode, cuisineCategoryWeight -> VectorUtil
+                        .cosineSimilarity(subtractionVector, ModelUtil.modelToVector(cuisineCategoryWeight))));
 
         return null;
     }
 
+    private double calculateTasteScore(CuisineVo cuisineVo) {
+        int unknownCount = userHistoricalCuisineService.countByCuisineCodeAndTaste(cuisineVo.getCode(),
+                CuisineTasteEnum.UNKNOWN.getCode());
+        int yummyCount = userHistoricalCuisineService.countByCuisineCodeAndTaste(cuisineVo.getCode(),
+                CuisineTasteEnum.YUMMY.getCode());
+        int unpalatableCount = userHistoricalCuisineService.countByCuisineCodeAndTaste(cuisineVo.getCode(),
+                CuisineTasteEnum.UNPALATABLE.getCode());
+        return unknownCount * CuisineTasteEnum.UNKNOWN.getScore() + yummyCount * CuisineTasteEnum.UNKNOWN.getScore()
+                + unpalatableCount * CuisineTasteEnum.UNPALATABLE.getScore();
+    }
 }

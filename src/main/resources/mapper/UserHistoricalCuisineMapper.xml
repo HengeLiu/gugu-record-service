@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nutrition.nutritionservice.dao.UserHistoricalCuisineDao">
+    <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.UserHistoricalCuisineVo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="uuid" jdbcType="VARCHAR" property="uuid"/>
+        <result column="cuisine_code" jdbcType="VARCHAR" property="cuisineCode"/>
+        <result column="taste_score" jdbcType="TINYINT" property="tasteScore"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, uuid, cuisine_code, taste_score, `status`, create_time, update_time
+  </sql>
+    <sql id="Insert_Column_List">
+    uuid, cuisine_code, taste_score, `status`
+  </sql>
+    <select id="selectByUuid" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_historical_cuisine
+        where uuid = #{uuid}
+    </select>
+    <select id="selectByUuidAndCuisineCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_historical_cuisine
+        where uuid = #{uuid} and cuisine_code = #{cuisineCode}
+    </select>
+    <select id="countByCuisineCodeAndTaste" resultType="java.lang.Integer">
+        select count(*) from user_historical_cuisine where cuisine_code = #{cuisineCode} and taste = #{taste}
+    </select>
+
+    <insert id="insert" keyColumn="id" keyProperty="id"
+            parameterType="com.nutrition.nutritionservice.vo.UserHistoricalCuisineVo" useGeneratedKeys="true">
+        insert into user_historical_cuisine (
+        <include refid="Insert_Column_List"/>
+        )
+        values (#{uuid,jdbcType=VARCHAR}, #{cuisineCode,jdbcType=VARCHAR}, #{tasteScore,jdbcType=TINYINT},
+        #{status,jdbcType=TINYINT}
+        )
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id"
+            parameterType="com.nutrition.nutritionservice.vo.UserHistoricalCuisineVo" useGeneratedKeys="true">
+        insert into user_historical_cuisine
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">
+                uuid,
+            </if>
+            <if test="cuisineCode != null">
+                cuisine_code,
+            </if>
+            <if test="tasteScore != null">
+                taste_score,
+            </if>
+            <if test="status != null">
+                `status`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">
+                #{uuid,jdbcType=VARCHAR},
+            </if>
+            <if test="cuisineCode != null">
+                #{cuisineCode,jdbcType=VARCHAR},
+            </if>
+            <if test="tasteScore != null">
+                #{tasteScore,jdbcType=TINYINT},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByUuidAndCuisineCodeSelective"
+            parameterType="com.nutrition.nutritionservice.vo.UserHistoricalCuisineVo">
+        update user_historical_cuisine
+        <set>
+            <if test="uuid != null">
+                uuid = #{uuid,jdbcType=VARCHAR},
+            </if>
+            <if test="cuisineCode != null">
+                cuisine_code = #{cuisineCode,jdbcType=VARCHAR},
+            </if>
+            <if test="tasteScore != null">
+                taste_score = #{tasteScore,jdbcType=TINYINT},
+            </if>
+            <if test="status != null">
+                `status` = #{status,jdbcType=TINYINT},
+            </if>
+
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByUuidAndCuisineCode" parameterType="com.nutrition.nutritionservice.vo.UserHistoricalCuisineVo">
+    update user_historical_cuisine
+    set uuid = #{uuid,jdbcType=VARCHAR},
+      cuisine_code = #{cuisineCode,jdbcType=VARCHAR},
+      taste_score = #{tasteScore,jdbcType=TINYINT},
+      `status` = #{status,jdbcType=TINYINT}
+    where uuid = #{uuid} and cuisine_code = #{cuisineCode}
+  </update>
+</mapper>
