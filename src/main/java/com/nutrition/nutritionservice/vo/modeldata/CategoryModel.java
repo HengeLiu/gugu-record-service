@@ -14,81 +14,81 @@ public class CategoryModel<T> {
     /**
      * 精制谷物
      */
-    private T processedGrains;
+    protected T processedGrains;
 
     /**
      * 全谷物
      */
-    private T unprocessedGrains;
+    protected T unprocessedGrains;
 
     /**
      * 杂豆
      */
-    private T mixedBeans;
+    protected T mixedBeans;
 
     /**
      * 薯类
      */
-    private T tuber;
+    protected T tuber;
 
     /**
      * 一般蔬菜
      */
-    private T generalVegetables;
+    protected T generalVegetables;
 
     /**
      * 深色蔬菜
      */
-    private T darkVegetables;
+    protected T darkVegetables;
 
     /**
      * 水果
      */
-    private T fruit;
+    protected T fruit;
 
     /**
      * 禽肉
      */
-    private T meat;
+    protected T meat;
 
     /**
      * 禽肉
      */
-    private T poultry;
+    protected T poultry;
 
     /**
      * 水产品
      */
-    private T aquatic;
+    protected T aquatic;
 
     /**
      * 蛋
      */
-    private T egg;
+    protected T egg;
 
     /**
      * 乳
      */
-    private T dairy;
+    protected T dairy;
 
     /**
      * 大豆
      */
-    private T soybean;
+    protected T soybean;
 
     /**
      * 坚果
      */
-    private T nut;
+    protected T nut;
 
     /**
      * 烹调油
      */
-    private T oil;
+    protected T oil;
 
     /**
      * 食盐
      */
-    private T salt;
+    protected T salt;
 
 }

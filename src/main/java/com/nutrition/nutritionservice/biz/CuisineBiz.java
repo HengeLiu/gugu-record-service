@@ -10,6 +10,7 @@ import com.nutrition.nutritionservice.enums.database.IngredientCategoryEnum;
 import com.nutrition.nutritionservice.service.ConfigPropertiesService;
 import com.nutrition.nutritionservice.service.CuisineCategoryWeightService;
 import com.nutrition.nutritionservice.service.CuisineHistoricalTasteService;
+import com.nutrition.nutritionservice.service.CuisineIngredientRelService;
 import com.nutrition.nutritionservice.service.CuisineService;
 import com.nutrition.nutritionservice.service.DineRecommendedRateService;
 import com.nutrition.nutritionservice.service.IngredientService;
@@ -26,12 +27,14 @@ import com.nutrition.nutritionservice.vo.modeldata.IntakesModelVo;
 import com.nutrition.nutritionservice.vo.store.CuisineAssemblyAo;
 import com.nutrition.nutritionservice.vo.store.CuisineVo;
 import com.nutrition.nutritionservice.vo.user.UserCategoryIntakesModelVo;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.Vector;
 import java.util.stream.Collectors;
 
@@ -60,10 +63,27 @@ public class CuisineBiz {
     private CuisineHistoricalTasteService cuisineHistoricalTasteService;
 
     @Resource
+    private CuisineIngredientRelService cuisineIngredientRelService;
+
+    @Resource
     private ConfigPropertiesService configPropertiesService;
 
+    @Resource
+    private IngredientBiz ingredientBiz;
+
+    @Transactional(rollbackFor = Exception.class)
     public void saveNewCuisine(CuisineAssemblyAo cuisineAssemblyAo) {
-        cuisineService.saveNewCuisine(cuisineAssemblyAo);
+        String cuisineCode = UUID.randomUUID().toString().replace("-", "");
+        cuisineAssemblyAo.getCuisineVo().setCode(cuisineCode);
+        cuisineAssemblyAo.getCuisineVo()
+                .setCalorie(ingredientBiz.calculateCalorie(cuisineAssemblyAo.getCuisineIngredientRelList()));
+        cuisineService.add(cuisineAssemblyAo.getCuisineVo());
+        cuisineAssemblyAo.getCuisineIngredientRelList()
+                .forEach(cuisineIngredientRelVo -> cuisineIngredientRelVo.setCuisineCode(cuisineCode));
+        cuisineIngredientRelService.addBatch(cuisineAssemblyAo.getCuisineIngredientRelList());
+        CuisineCategoryWeightVo cuisineCategoryWeightVo = cuisineCategoryWeightService
+                .calculateCuisineCategoryWight(cuisineAssemblyAo);
+        cuisineCategoryWeightService.add(cuisineCategoryWeightVo);
     }
 
     public Map<String, List<IngredientVo>> queryIngredientCategoryMap() {
@@ -102,7 +122,7 @@ public class CuisineBiz {
         Map<String, Double> modelSimilarityMap = cuisineCategoryWeightList.stream()
                 .collect(Collectors.toMap(CuisineCategoryWeightVo::getCuisineCode, cuisineCategoryWeight -> VectorUtil
                         .cosineSimilarity(recommendedWeightVector, ModelUtil.modelToVector(cuisineCategoryWeight))));
-        return calculateScore(cuisineList, modelSimilarityMap);
+        return calculateRecommendedScore(cuisineList, modelSimilarityMap);
     }
 
     public List<CuisineRecommendedScoreWebAo> queryRecommendedCuisineListByHistorical(
@@ -117,10 +137,10 @@ public class CuisineBiz {
         Map<String, Double> modelSimilarityMap = cuisineCategoryWeightList.stream()
                 .collect(Collectors.toMap(CuisineCategoryWeightVo::getCuisineCode, cuisineCategoryWeight -> VectorUtil
                         .cosineSimilarity(subtractionVector, ModelUtil.modelToVector(cuisineCategoryWeight))));
-        return calculateScore(cuisineList, modelSimilarityMap);
+        return calculateRecommendedScore(cuisineList, modelSimilarityMap);
     }
 
-    private List<CuisineRecommendedScoreWebAo> calculateScore(List<CuisineVo> cuisineList,
+    private List<CuisineRecommendedScoreWebAo> calculateRecommendedScore(List<CuisineVo> cuisineList,
             Map<String, Double> modelSimilarityMap) {
         Map<String, Double> cuisineTasteScore = calculateTasteScore(cuisineList);
         double modelRate = configPropertiesService.getRecommendedCuisineModelRate();
@@ -137,15 +157,20 @@ public class CuisineBiz {
     private Map<String, Double> calculateTasteScore(List<CuisineVo> cuisineVoList) {
         List<CuisineHistoricalTasteVo> cuisineHistoricalTasteVoList = cuisineHistoricalTasteService
                 .queryByCuisineCodeList(cuisineVoList.stream().map(CuisineVo::getCode).collect(Collectors.toList()));
+        Map<String, Long> cuisineTasteCountMap = cuisineHistoricalTasteVoList.stream()
+                .collect(Collectors.groupingBy(CuisineHistoricalTasteVo::getCuisineCode, Collectors.counting()));
         Map<String, Integer> cuisineTasteOriginScoreMap = cuisineHistoricalTasteVoList.stream()
                 .collect(Collectors.groupingBy(CuisineHistoricalTasteVo::getCuisineCode,
                         Collectors.summingInt(cuisineTasteVo -> Objects
                                 .requireNonNull(CodeEnums.valueOf(CuisineTasteEnum.class, cuisineTasteVo.getTaste()))
                                 .getScore() * cuisineTasteVo.getCount())));
-        double maxScore = cuisineTasteOriginScoreMap.values().stream().max(Comparator.comparingInt(Integer::intValue))
-                .orElse(0);
-        return cuisineTasteOriginScoreMap.entrySet().stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue() / maxScore));
+        Map<String, Double> cuisineTasteScorePercentMap = cuisineTasteOriginScoreMap.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        entry -> entry.getValue() / (double) cuisineTasteCountMap.get(entry.getKey())));
+        double maxScorePercent = cuisineTasteScorePercentMap.values().stream()
+                .max(Comparator.comparingDouble(Double::doubleValue)).orElse(0.0);
+        return cuisineTasteScorePercentMap.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue() / maxScorePercent));
 
     }
 }

@@ -30,12 +30,12 @@ public class IngredientBiz {
                 Collectors.toMap(CuisineIngredientRelVo::getIngredientCode, CuisineIngredientRelVo::getWeight));
         List<IngredientVo> ingredientVoList = ingredientService
                 .queryByCodeList(Lists.newArrayList(ingredientWeightMap.keySet()));
-        int cuisineCalorie = 0;
+        double cuisineCalorie = 0;
         for (IngredientVo ingredient : ingredientVoList) {
-            cuisineCalorie += (ingredientWeightMap.getOrDefault(ingredient.getCode(), 0) / 100)
+            cuisineCalorie += (ingredientWeightMap.getOrDefault(ingredient.getCode(), 0) / 100.0)
                     * ingredient.getCalorie();
         }
-        return cuisineCalorie;
+        return (int) cuisineCalorie;
     }
 
 }

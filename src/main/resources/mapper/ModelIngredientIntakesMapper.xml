@@ -31,12 +31,12 @@
             resultType="com.nutrition.nutritionservice.vo.modeldata.IntakesModelVo">
         select
         <include refid="Base_Column_List"/>
-        from model_ingredient_intakes
+        from model_category_intakes
         where calorie = #{calorie} and goal = #{goal}
     </select>
     <select id="selectAll" resultType="com.nutrition.nutritionservice.vo.modeldata.IntakesModelVo">
         select
         <include refid="Base_Column_List"/>
-        from model_ingredient_intakes
+        from model_category_intakes
     </select>
 </mapper>

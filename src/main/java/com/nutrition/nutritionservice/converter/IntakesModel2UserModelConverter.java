@@ -42,7 +42,7 @@ public class IntakesModel2UserModelConverter
 
     @Override
     protected IntakesModelVo doBackward(UserCategoryIntakesModelVo userCategoryIntakesModelVo) {
-        IntakesModelVo intakesModelVo = IntakesModelVo.builder().build();
+        IntakesModelVo intakesModelVo = new IntakesModelVo();
         intakesModelVo.setId(userCategoryIntakesModelVo.getId());
         intakesModelVo.setCalorie(userCategoryIntakesModelVo.getCalorie());
         intakesModelVo.setProcessedGrains(userCategoryIntakesModelVo.getProcessedGrains());

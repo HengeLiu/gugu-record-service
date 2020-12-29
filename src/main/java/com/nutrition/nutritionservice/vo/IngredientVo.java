@@ -1,16 +1,18 @@
 package com.nutrition.nutritionservice.vo;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import lombok.Data;
 
 /**
  * ingredient
- * @author 
+ * 
+ * @author heng.liu
+ * @since 2020/12/28
  */
 @Data
 public class IngredientVo implements Serializable {
-    private Integer id;
+    private int id;
 
     /**
      * 食材编码
@@ -25,12 +27,12 @@ public class IngredientVo implements Serializable {
     /**
      * 每100克热量
      */
-    private Integer calorie;
+    private int calorie;
 
     /**
      * 食材分类码
      */
-    private Byte categoryCode;
+    private int categoryCode;
 
     /**
      * 食材分类名称
@@ -52,9 +54,9 @@ public class IngredientVo implements Serializable {
      */
     private String ingredientType;
 
-    private Date createTime;
+    private LocalDateTime createTime;
 
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     private static final long serialVersionUID = 1L;
 }

@@ -10,9 +10,7 @@ public interface CuisineCategoryWeightDao {
 
     int insert(CuisineCategoryWeightVo record);
 
-    int insertSelective(CuisineCategoryWeightVo record);
-
-    CuisineCategoryWeightVo selectByCuisineCode(Integer id);
+    CuisineCategoryWeightVo selectByCuisineCode(String cuisineCode);
 
     int updateByCuisineCodeSelective(CuisineCategoryWeightVo record);
 

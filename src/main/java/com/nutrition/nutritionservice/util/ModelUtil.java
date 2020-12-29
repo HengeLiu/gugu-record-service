@@ -3,8 +3,6 @@ package com.nutrition.nutritionservice.util;
 import com.google.common.collect.Maps;
 import com.nutrition.nutritionservice.enums.database.IngredientCategoryEnum;
 import com.nutrition.nutritionservice.vo.modeldata.CategoryModel;
-import com.nutrition.nutritionservice.vo.modeldata.IntakesModelVo;
-import org.springframework.util.NumberUtils;
 
 import java.util.Map;
 import java.util.Vector;

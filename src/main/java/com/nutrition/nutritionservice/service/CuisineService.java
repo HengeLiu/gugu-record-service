@@ -23,9 +23,6 @@ public class CuisineService {
     @Resource
     private CuisineDao cuisineDao;
 
-    @Resource
-    private CuisineIngredientRelDao cuisineIngredientRelDao;
-
     /**
      * 统计指定热量返回和目标的菜品数量。
      * 
@@ -37,10 +34,8 @@ public class CuisineService {
         return cuisineDao.selectCountByCalorieAndGoal(minCalorie, maxCalorie, goal);
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    public void saveNewCuisine(CuisineAssemblyAo cuisineAssemblyAo) {
-        cuisineDao.insert(cuisineAssemblyAo.getCuisineVo());
-        cuisineIngredientRelDao.batchInsert(cuisineAssemblyAo.getCuisineIngredientRelList());
+    public void add(CuisineVo cuisineVo) {
+        cuisineDao.insert(cuisineVo);
     }
 
     public List<CuisineVo> queryPageCuisineList(IDPageParamVo paramVo) {

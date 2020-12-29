@@ -1,19 +1,18 @@
 package com.nutrition.nutritionservice.vo.modeldata;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * model_ingredient_intakes
+ * model_category_intakes
  * 
  * @author heng.liu
  * @since 2020/12/19
  */
 @EqualsAndHashCode(callSuper = true)
-@Builder
 @Data
 public class IntakesModelVo extends CategoryModel<Integer> {
+
     private int id;
 
     /**
