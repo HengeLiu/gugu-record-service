@@ -57,7 +57,7 @@ public class CuisineTest {
                     .cuisineVo(CuisineVo.builder()
                             .warm(cuisineWarmEnum.getCode()).status(CuisineStatusEnum.SALE.getCode())
                             .cuisineType(CuisineType.SET.getCode())
-                            .name("测试菜" + (40 + i)).dineTime(dineTimeEnum.getCode()).storeCode("100001")
+                            .name("测试菜" + (80 + i)).dineTime(dineTimeEnum.getCode()).storeCode("100001")
                             .goal(intakesModelVo.getGoal()).build())
                     .cuisineIngredientRelList(cuisineIngredientRelVoList).build());
         }

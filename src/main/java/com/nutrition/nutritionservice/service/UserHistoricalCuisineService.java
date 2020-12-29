@@ -1,6 +1,7 @@
 package com.nutrition.nutritionservice.service;
 
 import com.nutrition.nutritionservice.dao.UserHistoricalCuisineDao;
+import com.nutrition.nutritionservice.vo.UserHistoricalCuisineVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,6 +20,10 @@ public class UserHistoricalCuisineService {
 
     public int countByCuisineCodeAndTaste(String cuisineCode, int taste) {
         return userHistoricalCuisineDao.countByCuisineCodeAndTaste(cuisineCode, taste);
+    }
+
+    public void add(UserHistoricalCuisineVo userHistoricalCuisineVo) {
+        userHistoricalCuisineDao.insert(userHistoricalCuisineVo);
     }
 
 }

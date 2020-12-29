@@ -48,8 +48,12 @@ public class CuisineCategoryWeightService {
         return cuisineCategoryWeightVo;
     }
 
-    public List<CuisineCategoryWeightVo> queryCategoryWeightList(List<String> cuisineCodeList) {
+    public List<CuisineCategoryWeightVo> queryByCuisineCodeList(List<String> cuisineCodeList) {
         return cuisineCategoryWeightDao.batchSelectByCuisineCodeList(cuisineCodeList);
+    }
+
+    public CuisineCategoryWeightVo queryByCuisineCode(String cuisineCode) {
+        return cuisineCategoryWeightDao.selectByCuisineCode(cuisineCode);
     }
 
     public void add(CuisineCategoryWeightVo cuisineCategoryWeightVo) {

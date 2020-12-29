@@ -2,16 +2,15 @@ package com.nutrition.nutritionservice.dao;
 
 import com.nutrition.nutritionservice.vo.UserHistoricalWeightSumDailyVo;
 
-public interface UserHistoricalWeightSumDailyDao {
-    int deleteByPrimaryKey(Integer id);
+import java.time.LocalDate;
+import java.util.List;
 
+public interface UserHistoricalWeightSumDailyDao {
     int insert(UserHistoricalWeightSumDailyVo record);
 
-    int insertSelective(UserHistoricalWeightSumDailyVo record);
+    List<UserHistoricalWeightSumDailyVo> selectByUuid(String uuid);
 
-    UserHistoricalWeightSumDailyVo selectByPrimaryKey(Integer id);
+    UserHistoricalWeightSumDailyVo selectByUuidAndDate(String uuid, LocalDate date);
 
-    int updateByPrimaryKeySelective(UserHistoricalWeightSumDailyVo record);
-
-    int updateByPrimaryKey(UserHistoricalWeightSumDailyVo record);
+    int updateByUuidAndDate(UserHistoricalWeightSumDailyVo record);
 }

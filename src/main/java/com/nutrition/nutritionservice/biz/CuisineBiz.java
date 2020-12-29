@@ -28,8 +28,10 @@ import com.nutrition.nutritionservice.vo.store.CuisineAssemblyAo;
 import com.nutrition.nutritionservice.vo.store.CuisineVo;
 import com.nutrition.nutritionservice.vo.user.UserCategoryIntakesModelVo;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.util.ListUtils;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -116,9 +118,9 @@ public class CuisineBiz {
                 .selectByCalorieGoalDine(userModel.getCalorie(), userModel.getGoal(), dineTime);
         Vector<Double> dineRateVector = ModelUtil.modelToVector(dineRecommendedRateVo);
         Vector<Double> recommendedWeightVector = VectorUtil.crossProduct(userModelVector, dineRateVector);
-        List<CuisineVo> cuisineList = cuisineService.queryPageCuisineList(pageParamVo);
+        List<CuisineVo> cuisineList = cuisineService.queryPage(pageParamVo);
         List<CuisineCategoryWeightVo> cuisineCategoryWeightList = cuisineCategoryWeightService
-                .queryCategoryWeightList(cuisineList.stream().map(CuisineVo::getCode).collect(Collectors.toList()));
+                .queryByCuisineCodeList(cuisineList.stream().map(CuisineVo::getCode).collect(Collectors.toList()));
         Map<String, Double> modelSimilarityMap = cuisineCategoryWeightList.stream()
                 .collect(Collectors.toMap(CuisineCategoryWeightVo::getCuisineCode, cuisineCategoryWeight -> VectorUtil
                         .cosineSimilarity(recommendedWeightVector, ModelUtil.modelToVector(cuisineCategoryWeight))));
@@ -129,11 +131,11 @@ public class CuisineBiz {
             UserCategoryIntakesModelVo userModel, UserHistoricalWeightSumDailyVo historicalWeightSumDaily,
             IDPageParamVo pageParamVo) {
         Vector<Integer> userModelVector = ModelUtil.modelToVector(userModel);
-        Vector<Integer> historicalWeightVector = ModelUtil.modelToVector(historicalWeightSumDaily);
+        Vector<Double> historicalWeightVector = ModelUtil.modelToVector(historicalWeightSumDaily);
         Vector<Double> subtractionVector = VectorUtil.subtraction(userModelVector, historicalWeightVector);
-        List<CuisineVo> cuisineList = cuisineService.queryPageCuisineList(pageParamVo);
+        List<CuisineVo> cuisineList = cuisineService.queryPage(pageParamVo);
         List<CuisineCategoryWeightVo> cuisineCategoryWeightList = cuisineCategoryWeightService
-                .queryCategoryWeightList(cuisineList.stream().map(CuisineVo::getCode).collect(Collectors.toList()));
+                .queryByCuisineCodeList(cuisineList.stream().map(CuisineVo::getCode).collect(Collectors.toList()));
         Map<String, Double> modelSimilarityMap = cuisineCategoryWeightList.stream()
                 .collect(Collectors.toMap(CuisineCategoryWeightVo::getCuisineCode, cuisineCategoryWeight -> VectorUtil
                         .cosineSimilarity(subtractionVector, ModelUtil.modelToVector(cuisineCategoryWeight))));
@@ -146,17 +148,21 @@ public class CuisineBiz {
         double modelRate = configPropertiesService.getRecommendedCuisineModelRate();
         double tasteRate = configPropertiesService.getRecommendedCuisineTasteRate();
         return cuisineList.stream()
-                .map(cuisineVo -> CuisineRecommendedScoreWebAo.builder()
+                .map(cuisineVo -> CuisineRecommendedScoreWebAo.builder().cuisineCode(cuisineVo.getCode())
                         .recommendedScore(modelRate * modelSimilarityMap.get(cuisineVo.getCode())
-                                + tasteRate * cuisineTasteScore.get(cuisineVo.getCode()))
+                                + tasteRate * cuisineTasteScore.getOrDefault(cuisineVo.getCode(), 0.0))
                         .modelScore(modelSimilarityMap.get(cuisineVo.getCode()))
-                        .tasteScore(cuisineTasteScore.get(cuisineVo.getCode())).build())
+                        .tasteScore(cuisineTasteScore.getOrDefault(cuisineVo.getCode(), 0.0)).build())
+                .sorted(Comparator.comparingDouble(CuisineRecommendedScoreWebAo::getRecommendedScore).reversed())
                 .collect(Collectors.toList());
     }
 
     private Map<String, Double> calculateTasteScore(List<CuisineVo> cuisineVoList) {
         List<CuisineHistoricalTasteVo> cuisineHistoricalTasteVoList = cuisineHistoricalTasteService
                 .queryByCuisineCodeList(cuisineVoList.stream().map(CuisineVo::getCode).collect(Collectors.toList()));
+        if (ListUtils.isEmpty(cuisineHistoricalTasteVoList)) {
+            return Collections.emptyMap();
+        }
         Map<String, Long> cuisineTasteCountMap = cuisineHistoricalTasteVoList.stream()
                 .collect(Collectors.groupingBy(CuisineHistoricalTasteVo::getCuisineCode, Collectors.counting()));
         Map<String, Integer> cuisineTasteOriginScoreMap = cuisineHistoricalTasteVoList.stream()

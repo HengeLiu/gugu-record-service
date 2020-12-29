@@ -9,6 +9,10 @@ public interface CuisineDao {
 
     CuisineVo selectByCode(String code);
 
+    List<CuisineVo> selectByStoreCode(String storeCode);
+
+    List<CuisineVo> selectByDineTime(int dineTime);
+
     int updateStatusByCode(int code, int status);
 
     int selectCountByCalorieAndGoal(int minCalorie, int maxCalorie, int goal);

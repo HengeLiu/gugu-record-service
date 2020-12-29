@@ -23,16 +23,14 @@ public class UserCategoryIntakesModelService {
     public void saveUserModel(UserCategoryIntakesModelVo userModelVo) {
         UserCategoryIntakesModelVo oldUserModelVo = userCategoryIntakesModelDao
                 .selectUsingModelByUuid(userModelVo.getUuid());
-        if (oldUserModelVo == null) {
-            userCategoryIntakesModelDao.insert(userModelVo);
-        } else {
+        if (oldUserModelVo != null) {
             userCategoryIntakesModelDao.updateModelStatusByUuidAndCreateTime(userModelVo.getUuid(), 1,
                     userModelVo.getCreateTime());
-            userCategoryIntakesModelDao.insert(userModelVo);
         }
+        userCategoryIntakesModelDao.insert(userModelVo);
     }
 
-    public UserCategoryIntakesModelVo selectLastByUuid(String uuid) {
+    public UserCategoryIntakesModelVo querySelectLastByUuid(String uuid) {
         return userCategoryIntakesModelDao.selectUsingModelByUuid(uuid);
     }
 

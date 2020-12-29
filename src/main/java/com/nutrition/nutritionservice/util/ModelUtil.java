@@ -16,6 +16,9 @@ import java.util.Vector;
 public class ModelUtil {
 
     public static <T> Vector<T> modelToVector(CategoryModel<T> model) {
+        if (model == null) {
+            return new Vector<>();
+        }
         Vector<T> v = new Vector<>();
         v.add(0, model.getProcessedGrains());
         v.add(1, model.getUnprocessedGrains());
@@ -34,6 +37,29 @@ public class ModelUtil {
         v.add(14, model.getOil());
         v.add(15, model.getSalt());
         return v;
+    }
+
+    public static <T> void vectorToModel(Vector<T> vector, CategoryModel<T> targetModel) {
+        if (vector.size() != 16) {
+            throw new UnsupportedOperationException(
+                    "Model vector length error, length " + vector.size() + ", target length 16");
+        }
+        targetModel.setProcessedGrains(vector.get(0));
+        targetModel.setUnprocessedGrains(vector.get(1));
+        targetModel.setMixedBeans(vector.get(2));
+        targetModel.setTuber(vector.get(3));
+        targetModel.setGeneralVegetables(vector.get(4));
+        targetModel.setDarkVegetables(vector.get(5));
+        targetModel.setFruit(vector.get(6));
+        targetModel.setMeat(vector.get(7));
+        targetModel.setPoultry(vector.get(8));
+        targetModel.setAquatic(vector.get(9));
+        targetModel.setEgg(vector.get(10));
+        targetModel.setDairy(vector.get(11));
+        targetModel.setSoybean(vector.get(12));
+        targetModel.setNut(vector.get(13));
+        targetModel.setOil(vector.get(14));
+        targetModel.setSalt(vector.get(15));
     }
 
     public static double calculateCosineSimilarity(CategoryModel<? extends Number> model1,

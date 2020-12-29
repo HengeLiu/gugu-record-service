@@ -81,6 +81,15 @@ public class VectorUtil {
         return c;
     }
 
+    public static Vector<Double> addition(Vector<? extends Number> v1, Vector<? extends Number> v2) {
+        checkLength(v1, v2);
+        Vector<Double> crossProduct = new Vector<>();
+        for (int i = 0; i < v1.size(); i++) {
+            crossProduct.add(i, v1.get(i).doubleValue() + v2.get(i).doubleValue());
+        }
+        return crossProduct;
+    }
+
     public static double cosineSimilarity(Vector<? extends Number> v1, Vector<? extends Number> v2) {
         return dotProduct(v1, v2) / (magnitude(v1) * magnitude(v2));
     }

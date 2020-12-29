@@ -33,6 +33,18 @@
         from cuisine
         where id >= #{id} limit #{limit}
     </select>
+    <select id="selectByStoreCode" resultType="com.nutrition.nutritionservice.vo.store.CuisineVo">
+        select
+        <include refid="Base_Column_List"/>
+        from cuisine
+        where store_code = {storeCode}
+    </select>
+    <select id="selectByDineTime" resultType="com.nutrition.nutritionservice.vo.store.CuisineVo">
+        select
+        <include refid="Base_Column_List"/>
+        from cuisine
+        where dine_time = {dineTime}
+    </select>
     <insert id="insert" parameterType="com.nutrition.nutritionservice.vo.store.CuisineVo">
     insert into cuisine (code, `name`, store_code, 
       calorie, goal, cuisine_type, 

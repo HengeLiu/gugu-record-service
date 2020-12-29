@@ -12,11 +12,7 @@ public interface UserHistoricalCuisineDao {
 
     int insert(UserHistoricalCuisineVo record);
 
-    int insertSelective(UserHistoricalCuisineVo record);
+    List<UserHistoricalCuisineVo> selectByUuid(String uuid);
 
-    List<UserHistoricalCuisineVo> selectByUuid(Long id);
-
-    int updateByUuidAndCuisineCodeSelective(UserHistoricalCuisineVo record);
-
-    int updateByUuidAndCuisineCode(UserHistoricalCuisineVo record);
+    int updateStatusByUuidAndCuisineCode(String uuid, String cuisineCode, int status);
 }

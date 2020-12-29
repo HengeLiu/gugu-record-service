@@ -1,9 +1,12 @@
 package com.nutrition.nutritionservice.vo;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
-import lombok.Data;
 
 /**
  * user_historical_cuisine
@@ -12,6 +15,9 @@ import lombok.Data;
  * @since 2020/12/28
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserHistoricalCuisineVo implements Serializable {
     private long id;
 
@@ -28,12 +34,12 @@ public class UserHistoricalCuisineVo implements Serializable {
     /**
      * 味道评分
      */
-    private byte tasteScore;
+    private int tasteScore;
 
     /**
      * 菜品记录状态.0,正常;1,已删除.
      */
-    private byte status;
+    private int status;
 
     private LocalDateTime createTime;
 

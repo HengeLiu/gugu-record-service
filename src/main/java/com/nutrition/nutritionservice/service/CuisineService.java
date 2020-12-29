@@ -1,12 +1,9 @@
 package com.nutrition.nutritionservice.service;
 
 import com.nutrition.nutritionservice.dao.CuisineDao;
-import com.nutrition.nutritionservice.dao.CuisineIngredientRelDao;
 import com.nutrition.nutritionservice.vo.IDPageParamVo;
-import com.nutrition.nutritionservice.vo.store.CuisineAssemblyAo;
 import com.nutrition.nutritionservice.vo.store.CuisineVo;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -38,8 +35,19 @@ public class CuisineService {
         cuisineDao.insert(cuisineVo);
     }
 
-    public List<CuisineVo> queryPageCuisineList(IDPageParamVo paramVo) {
+    public List<CuisineVo> queryPage(IDPageParamVo paramVo) {
         return cuisineDao.selectFromIdWithLimit(paramVo.getFirstRowNumber(), paramVo.getRowNumber());
     }
 
+    public List<CuisineVo> queryByStoreCode(String storeCode) {
+        return cuisineDao.selectByStoreCode(storeCode);
+    }
+
+    public List<CuisineVo> queryByDineTime(int dineTime) {
+        return cuisineDao.selectByDineTime(dineTime);
+    }
+
+    public CuisineVo queryByCuisineCode(String cuisineCode) {
+        return cuisineDao.selectByCode(cuisineCode);
+    }
 }
