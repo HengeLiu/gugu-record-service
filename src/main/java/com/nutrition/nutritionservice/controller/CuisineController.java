@@ -4,7 +4,7 @@ import com.nutrition.nutritionservice.biz.CuisineBiz;
 import com.nutrition.nutritionservice.biz.IntakesModelBiz;
 import com.nutrition.nutritionservice.vo.CuisineRecommendedScoreWebAo;
 import com.nutrition.nutritionservice.vo.IDPageParamVo;
-import com.nutrition.nutritionservice.vo.UserHistoricalWeightSumDailyVo;
+import com.nutrition.nutritionservice.vo.user.UserHistoricalWeightSumDailyVo;
 import com.nutrition.nutritionservice.vo.store.CuisineAssemblyAo;
 import com.nutrition.nutritionservice.vo.user.UserCategoryIntakesModelVo;
 import org.springframework.stereotype.Controller;

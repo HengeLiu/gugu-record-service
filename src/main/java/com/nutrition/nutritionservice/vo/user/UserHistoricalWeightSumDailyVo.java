@@ -1,14 +1,12 @@
-package com.nutrition.nutritionservice.vo;
+package com.nutrition.nutritionservice.vo.user;
 
 import com.nutrition.nutritionservice.vo.modeldata.CategoryModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.With;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * user_historical_weight_sum_daily

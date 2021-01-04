@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nutrition.nutritionservice.dao.UserHistoricalWeightSumDailyDao">
-  <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.UserHistoricalWeightSumDailyVo">
+  <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.user.UserHistoricalWeightSumDailyVo">
     <id column="id" jdbcType="INTEGER" property="id"/>
     <result column="uuid" jdbcType="VARCHAR" property="uuid"/>
     <result column="date" jdbcType="DATE" property="date"/>
@@ -46,7 +46,7 @@
     where uuid = #{uuid} and `date` = #{date}
   </select>
   <insert id="insert" keyColumn="id" keyProperty="id"
-          parameterType="com.nutrition.nutritionservice.vo.UserHistoricalWeightSumDailyVo" useGeneratedKeys="true">
+          parameterType="com.nutrition.nutritionservice.vo.user.UserHistoricalWeightSumDailyVo" useGeneratedKeys="true">
     insert into user_historical_weight_sum_daily (
     <include refid="Insert_Column_List"/>
     )
@@ -57,7 +57,7 @@
     #{egg,jdbcType=INTEGER}, #{dairy,jdbcType=INTEGER}, #{soybean,jdbcType=INTEGER},
     #{nut,jdbcType=INTEGER}, #{oil,jdbcType=INTEGER}, #{salt,jdbcType=INTEGER})
   </insert>
-  <update id="updateByUuidAndDate" parameterType="com.nutrition.nutritionservice.vo.UserHistoricalWeightSumDailyVo">
+  <update id="updateByUuidAndDate" parameterType="com.nutrition.nutritionservice.vo.user.UserHistoricalWeightSumDailyVo">
     update user_historical_weight_sum_daily
     set uuid = #{uuid,jdbcType=VARCHAR},
       `date` = #{date,jdbcType=DATE},

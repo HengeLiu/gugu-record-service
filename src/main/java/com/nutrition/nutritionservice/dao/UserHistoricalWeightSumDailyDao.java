@@ -1,6 +1,6 @@
 package com.nutrition.nutritionservice.dao;
 
-import com.nutrition.nutritionservice.vo.UserHistoricalWeightSumDailyVo;
+import com.nutrition.nutritionservice.vo.user.UserHistoricalWeightSumDailyVo;
 
 import java.time.LocalDate;
 import java.util.List;

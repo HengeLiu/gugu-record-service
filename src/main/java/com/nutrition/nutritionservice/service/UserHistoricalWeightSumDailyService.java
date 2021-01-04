@@ -1,7 +1,7 @@
 package com.nutrition.nutritionservice.service;
 
 import com.nutrition.nutritionservice.dao.UserHistoricalWeightSumDailyDao;
-import com.nutrition.nutritionservice.vo.UserHistoricalWeightSumDailyVo;
+import com.nutrition.nutritionservice.vo.user.UserHistoricalWeightSumDailyVo;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

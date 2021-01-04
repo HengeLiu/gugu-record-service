@@ -1,4 +1,4 @@
-package com.nutrition.nutritionservice.vo;
+package com.nutrition.nutritionservice.vo.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

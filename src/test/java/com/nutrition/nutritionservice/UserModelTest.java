@@ -1,7 +1,6 @@
 package com.nutrition.nutritionservice;
 
 import com.nutrition.nutritionservice.biz.CuisineBiz;
-import com.nutrition.nutritionservice.dao.UserHistoricalWeightSumDailyDao;
 import com.nutrition.nutritionservice.enums.database.DineTimeEnum;
 import com.nutrition.nutritionservice.service.CuisineService;
 import com.nutrition.nutritionservice.service.UserCategoryIntakesModelService;
@@ -10,8 +9,7 @@ import com.nutrition.nutritionservice.service.UserHistoricalWeightSumDailyServic
 import com.nutrition.nutritionservice.service.UserInfoService;
 import com.nutrition.nutritionservice.vo.CuisineRecommendedScoreWebAo;
 import com.nutrition.nutritionservice.vo.IDPageParamVo;
-import com.nutrition.nutritionservice.vo.UserHistoricalWeightSumDailyVo;
-import com.nutrition.nutritionservice.vo.store.CuisineVo;
+import com.nutrition.nutritionservice.vo.user.UserHistoricalWeightSumDailyVo;
 import com.nutrition.nutritionservice.vo.user.UserCategoryIntakesModelVo;
 import com.nutrition.nutritionservice.vo.user.UserInfoVo;
 import lombok.extern.slf4j.Slf4j;

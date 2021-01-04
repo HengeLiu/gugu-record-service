@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nutrition.nutritionservice.dao.UserHistoricalCuisineDao">
-    <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.UserHistoricalCuisineVo">
+    <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.user.UserHistoricalCuisineVo">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="uuid" jdbcType="VARCHAR" property="uuid"/>
         <result column="cuisine_code" jdbcType="VARCHAR" property="cuisineCode"/>
@@ -33,7 +33,7 @@
     </select>
 
     <insert id="insert" keyColumn="id" keyProperty="id"
-            parameterType="com.nutrition.nutritionservice.vo.UserHistoricalCuisineVo" useGeneratedKeys="true">
+            parameterType="com.nutrition.nutritionservice.vo.user.UserHistoricalCuisineVo" useGeneratedKeys="true">
         insert into user_historical_cuisine (
         <include refid="Insert_Column_List"/>
         )

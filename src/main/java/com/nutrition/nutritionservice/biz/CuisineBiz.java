@@ -22,7 +22,7 @@ import com.nutrition.nutritionservice.vo.CuisineRecommendedScoreWebAo;
 import com.nutrition.nutritionservice.vo.DineRecommendedRateVo;
 import com.nutrition.nutritionservice.vo.IDPageParamVo;
 import com.nutrition.nutritionservice.vo.IngredientVo;
-import com.nutrition.nutritionservice.vo.UserHistoricalWeightSumDailyVo;
+import com.nutrition.nutritionservice.vo.user.UserHistoricalWeightSumDailyVo;
 import com.nutrition.nutritionservice.vo.modeldata.IntakesModelVo;
 import com.nutrition.nutritionservice.vo.store.CuisineAssemblyAo;
 import com.nutrition.nutritionservice.vo.store.CuisineVo;
