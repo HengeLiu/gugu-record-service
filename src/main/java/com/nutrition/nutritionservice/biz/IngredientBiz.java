@@ -25,7 +25,7 @@ public class IngredientBiz {
     @Resource
     private IngredientService ingredientService;
 
-    public int calculateCalorie(List<CuisineIngredientRelVo> cuisineIngredientRelList) {
+    public double calculateCalorie(List<CuisineIngredientRelVo> cuisineIngredientRelList) {
         Map<String, Integer> ingredientWeightMap = cuisineIngredientRelList.stream().collect(
                 Collectors.toMap(CuisineIngredientRelVo::getIngredientCode, CuisineIngredientRelVo::getWeight));
         List<IngredientVo> ingredientVoList = ingredientService
@@ -35,7 +35,7 @@ public class IngredientBiz {
             cuisineCalorie += (ingredientWeightMap.getOrDefault(ingredient.getCode(), 0) / 100.0)
                     * ingredient.getCalorie();
         }
-        return (int) cuisineCalorie;
+        return cuisineCalorie;
     }
 
 }

@@ -1,8 +1,12 @@
 package com.nutrition.nutritionservice.controller.ao;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 预加载数据
@@ -11,6 +15,9 @@ import java.io.Serializable;
  * @since 2021/1/4
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class PreloadDataAo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -36,6 +43,11 @@ public class PreloadDataAo implements Serializable {
     private UserSettingsAo userSettings;
 
     /**
+     * 系统默认点餐位置
+     */
+    private LocationAo systemDefaultOrderLocation;
+
+    /**
      * 上一次添加的餐品
      */
     private LastAddedCuisineAo lastAddedCuisine;
@@ -46,23 +58,13 @@ public class PreloadDataAo implements Serializable {
     private UserStatusInfoAo userStatusInfo;
 
     /**
-     * 用户食材分类模型
+     * 用户食材分类模型目标值及历史摄入量
      */
-    private IngredientModelTargetWeightAo userCategoryModel;
+    private List<SupperIngredientCategoryWeightAo> ingredientCategoryWeightList;
 
     /**
-     * 用户食材分类今日摄入历史
+     * 营养素摄入累计
      */
-    private IngredientModelHistoricalWeightAo historicalCategoryWeightDaily;
-
-    /**
-     * 用户营养素模型
-     */
-    private NutrientModelTargetWeightAo userNutrientModel;
-
-    /**
-     * 用户营养素今日摄入历史
-     */
-    private NutrientModelHistoricalWeightAo historicalNutrientWeightDaily;
+    private NutrientIntakesWeightAo userNutrientHistoricalIntakesDaily;
 
 }

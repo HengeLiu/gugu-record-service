@@ -18,8 +18,8 @@ public class ModelIngredientIntakesService {
     @Resource
     private ModelIngredientIntakesDao modelIngredientIntakesDao;
 
-    public IntakesModelVo getIntakesByCalorieGoal(int calorie, int goal) {
-        int calorieTmp = (calorie / 100) * 100;
+    public IntakesModelVo getIntakesByCalorieGoal(double calorie, int goal) {
+        double calorieTmp = (calorie / 100) * 100;
         if ((goal == ModelGoalEnum.BALANCE.getCode() || goal == ModelGoalEnum.INCREASED_MUSCLE.getCode())
                 && calorieTmp > 3000) {
             return modelIngredientIntakesDao.selectByCalorieGoal(3000, goal);

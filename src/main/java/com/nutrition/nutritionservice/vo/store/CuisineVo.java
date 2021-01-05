@@ -34,7 +34,7 @@ public class CuisineVo implements Serializable {
     /**
      * 菜品热量
      */
-    private int calorie;
+    private double calorie;
 
     /**
      * 推荐目标

@@ -27,7 +27,7 @@ public class IngredientVo implements Serializable {
     /**
      * 每100克热量
      */
-    private int calorie;
+    private double calorie;
 
     /**
      * 食材分类码

@@ -18,7 +18,7 @@ public class DineRecommendedRateService {
     @Resource
     private DineRecommendedRateDao dineRecommendedRateDao;
 
-    public DineRecommendedRateVo selectByCalorieGoalDine(int calorie, int goal, int dineTime) {
+    public DineRecommendedRateVo selectByCalorieGoalDine(double calorie, int goal, int dineTime) {
         return dineRecommendedRateDao.selectByCalorieGoalDine(calorie, goal, dineTime);
     }
 

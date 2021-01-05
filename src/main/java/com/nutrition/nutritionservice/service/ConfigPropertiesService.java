@@ -1,5 +1,7 @@
 package com.nutrition.nutritionservice.service;
 
+import com.nutrition.nutritionservice.controller.ao.LocationAo;
+import com.nutrition.nutritionservice.enums.CodeEnums;
 import com.nutrition.nutritionservice.enums.database.GenderEnum;
 import com.nutrition.nutritionservice.vo.user.UserInfoVo;
 import lombok.Getter;
@@ -18,6 +20,8 @@ import org.springframework.stereotype.Service;
 @Getter
 public class ConfigPropertiesService {
 
+    @Value("${costumer_default_gender}")
+    private int costumerDefaultGender;
     @Value("${costumer_default_goal_female}")
     private int costumerDefaultGoalFemale;
     @Value("${costumer_default_goal_male}")
@@ -43,14 +47,21 @@ public class ConfigPropertiesService {
     @Value("${costumer_default_sports_habits_male}")
     private int costumerDefaultSportsHabitsMale;
 
-    @Value("${recommended.cuisine.model.rate}")
+    @Value("${recommended_cuisine_model_rate}")
     private double recommendedCuisineModelRate;
-    @Value("${recommended.cuisine.taste.rate}")
+    @Value("${recommended_cuisine_taste_rate}")
     private double recommendedCuisineTasteRate;
-    @Value("${recommended.cuisine.dine.rate}")
+    @Value("${recommended_cuisine_dine_rate}")
     private double recommendedCuisineDineRate;
-    @Value("${recommended.cuisine.preference.rate}")
+    @Value("${recommended_cuisine_preference_rate}")
     private double recommendedCuisinePreferenceRate;
+
+    @Value("${system_default_order_address_title}")
+    private String systemDefaultOrderAddressTitle;
+    @Value("${system_default_order_address_latitude}")
+    private double systemDefaultOrderAddressLatitude;
+    @Value("${system_default_order_address_longitude}")
+    private double systemDefaultOrderAddressLongitude;
 
     public UserInfoVo getDefaultUserInfo(GenderEnum genderEnum) {
         if (genderEnum == null || genderEnum == GenderEnum.FEMALE) {
@@ -66,5 +77,13 @@ public class ConfigPropertiesService {
         }
     }
 
+    public UserInfoVo getDefaultUserInfo() {
+        return getDefaultUserInfo(CodeEnums.valueOf(GenderEnum.class, costumerDefaultGender));
+    }
+
+    public LocationAo getSystemDefaultLocation() {
+        return LocationAo.builder().title(systemDefaultOrderAddressTitle).latitude(systemDefaultOrderAddressLatitude)
+                .longitude(systemDefaultOrderAddressLongitude).build();
+    }
 
 }

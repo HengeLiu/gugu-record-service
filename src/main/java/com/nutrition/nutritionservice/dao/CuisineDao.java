@@ -15,7 +15,7 @@ public interface CuisineDao {
 
     int updateStatusByCode(int code, int status);
 
-    int selectCountByCalorieAndGoal(int minCalorie, int maxCalorie, int goal);
+    int selectCountByCalorieAndGoal(double minCalorie, double maxCalorie, int goal);
 
     List<CuisineVo> selectFromIdWithLimit(int id, int limit);
 

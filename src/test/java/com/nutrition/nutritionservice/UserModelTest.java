@@ -57,7 +57,7 @@ public class UserModelTest {
         UserInfoVo userInfo = userInfoService.selectByUuid(testUuid);
         log.info(userInfo.toString());
         UserCategoryIntakesModelVo userCategoryIntakesModel = userCategoryIntakesModelService
-                .querySelectLastByUuid(testUuid);
+                .queryLastByUuid(testUuid);
         List<CuisineRecommendedScoreWebAo> dineTimeRecommendedCuisineList = cuisineBiz
                 .queryRecommendedCuisineListByDineTime(userCategoryIntakesModel, dineTimeEnum.getCode(),
                         IDPageParamVo.builder().pageNumber(1).rowNumber(200).build());

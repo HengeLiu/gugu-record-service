@@ -27,7 +27,7 @@ public class CuisineService {
      * @param maxCalorie 热量最高值，不包含。
      * @param goal 菜品推荐目标。
      */
-    public int countByCalorieAndGoal(int minCalorie, int maxCalorie, int goal) {
+    public int countByCalorieAndGoal(double minCalorie, int maxCalorie, int goal) {
         return cuisineDao.selectCountByCalorieAndGoal(minCalorie, maxCalorie, goal);
     }
 

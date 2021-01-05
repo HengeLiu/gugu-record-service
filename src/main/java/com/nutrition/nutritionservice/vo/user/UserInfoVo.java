@@ -22,7 +22,7 @@ public class UserInfoVo extends TimeBasedVo {
 
     private int gender;
 
-    private int calorie;
+    private double calorie;
 
     private int goal;
 

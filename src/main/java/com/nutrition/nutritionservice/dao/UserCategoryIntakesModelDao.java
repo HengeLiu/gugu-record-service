@@ -15,7 +15,7 @@ public interface UserCategoryIntakesModelDao {
 
     UserCategoryIntakesModelVo selectUsingModelByUuid(String uuid);
 
-    int selectCountByCalorieAndGoal(@Param("calorie") int calorie, @Param("goal") int goal);
+    int selectCountByCalorieAndGoal(@Param("calorie") double calorie, @Param("goal") int goal);
 
     void updateModelStatusByUuidAndCreateTime(String uuid, int modelStatus, LocalDateTime createTime);
 

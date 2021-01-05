@@ -30,11 +30,11 @@ public class UserCategoryIntakesModelService {
         userCategoryIntakesModelDao.insert(userModelVo);
     }
 
-    public UserCategoryIntakesModelVo querySelectLastByUuid(String uuid) {
+    public UserCategoryIntakesModelVo queryLastByUuid(String uuid) {
         return userCategoryIntakesModelDao.selectUsingModelByUuid(uuid);
     }
 
-    public int countByCalorieAndGoal(int calorie, int goal) {
+    public int countByCalorieAndGoal(double calorie, int goal) {
         return userCategoryIntakesModelDao.selectCountByCalorieAndGoal(calorie, goal);
     }
 

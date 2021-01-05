@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nutrition.nutritionservice.dao.UserStatusInfoDao">
+  <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.UserStatusInfoVo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="uuid" jdbcType="VARCHAR" property="uuid" />
+    <result column="custom_info" jdbcType="TINYINT" property="customInfo" />
+    <result column="shown_info_collect_window" jdbcType="TINYINT" property="shownInfoCollectWindow" />
+    <result column="shown_process_window" jdbcType="TINYINT" property="shownProcessWindow" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, uuid, custom_info, shown_info_collect_window, shown_process_window, create_time, 
+    update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user_status_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from user_status_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nutrition.nutritionservice.vo.UserStatusInfoVo" useGeneratedKeys="true">
+    insert into user_status_info (uuid, custom_info, shown_info_collect_window, 
+      shown_process_window, create_time, update_time
+      )
+    values (#{uuid,jdbcType=VARCHAR}, #{customInfo,jdbcType=TINYINT}, #{shownInfoCollectWindow,jdbcType=TINYINT}, 
+      #{shownProcessWindow,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nutrition.nutritionservice.vo.UserStatusInfoVo" useGeneratedKeys="true">
+    insert into user_status_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uuid != null">
+        uuid,
+      </if>
+      <if test="customInfo != null">
+        custom_info,
+      </if>
+      <if test="shownInfoCollectWindow != null">
+        shown_info_collect_window,
+      </if>
+      <if test="shownProcessWindow != null">
+        shown_process_window,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uuid != null">
+        #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="customInfo != null">
+        #{customInfo,jdbcType=TINYINT},
+      </if>
+      <if test="shownInfoCollectWindow != null">
+        #{shownInfoCollectWindow,jdbcType=TINYINT},
+      </if>
+      <if test="shownProcessWindow != null">
+        #{shownProcessWindow,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.nutrition.nutritionservice.vo.UserStatusInfoVo">
+    update user_status_info
+    <set>
+      <if test="uuid != null">
+        uuid = #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="customInfo != null">
+        custom_info = #{customInfo,jdbcType=TINYINT},
+      </if>
+      <if test="shownInfoCollectWindow != null">
+        shown_info_collect_window = #{shownInfoCollectWindow,jdbcType=TINYINT},
+      </if>
+      <if test="shownProcessWindow != null">
+        shown_process_window = #{shownProcessWindow,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.nutrition.nutritionservice.vo.UserStatusInfoVo">
+    update user_status_info
+    set uuid = #{uuid,jdbcType=VARCHAR},
+      custom_info = #{customInfo,jdbcType=TINYINT},
+      shown_info_collect_window = #{shownInfoCollectWindow,jdbcType=TINYINT},
+      shown_process_window = #{shownProcessWindow,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

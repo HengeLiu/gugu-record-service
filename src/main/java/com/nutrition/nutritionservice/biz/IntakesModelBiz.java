@@ -49,13 +49,13 @@ public class IntakesModelBiz {
     private CuisineService cuisineService;
 
     public IntakesModelVo calculateIntakesModel(ModelParamVo paramVo) {
-        int dailyCalorie = energyCalorieCalculateService.calculate(paramVo);
+        double dailyCalorie = energyCalorieCalculateService.calculate(paramVo);
         return modelIngredientIntakesService.getIntakesByCalorieGoal(dailyCalorie, paramVo.getGoal());
     }
 
     public IntakesModelVo getDefaultUserModel() {
         UserInfoVo defaultUserInfo = configPropertiesService.getDefaultUserInfo(GenderEnum.FEMALE);
-        int dailyCalorie = energyCalorieCalculateService.calculateByUserInfo(defaultUserInfo);
+        double dailyCalorie = energyCalorieCalculateService.calculateByUserInfo(defaultUserInfo);
         return modelIngredientIntakesService.getIntakesByCalorieGoal(dailyCalorie, defaultUserInfo.getGoal());
     }
 
@@ -75,7 +75,7 @@ public class IntakesModelBiz {
         double userModelCountSum = 0;
         double cuisineCountSum = 0;
         for (IntakesModelVo model : allModelsList) {
-            int modelCalorie = model.getCalorie();
+            double modelCalorie = model.getCalorie();
             int goal = model.getGoal();
             int userModelCount = userCategoryIntakesModelService.countByCalorieAndGoal(modelCalorie, goal);
             int cuisineCount = cuisineService.countByCalorieAndGoal((int) (modelCalorie * 0.8),

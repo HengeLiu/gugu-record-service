@@ -67,7 +67,7 @@ public class CuisineRecommendedTest {
         LocalDate date = LocalDate.now();
         log.info(userInfo.toString());
         UserCategoryIntakesModelVo userCategoryIntakesModel = userCategoryIntakesModelService
-                .querySelectLastByUuid(testUuid);
+                .queryLastByUuid(testUuid);
         UserHistoricalWeightSumDailyVo userHistoricalWeightSumDaily = userHistoricalWeightSumDailyService
                 .queryByUuidAndDate(testUuid, LocalDate.now());
         userHistoricalWeightSumDaily = userHistoricalWeightSumDaily == null
@@ -85,7 +85,7 @@ public class CuisineRecommendedTest {
         log.info(userInfo.toString());
         LocalDate date = LocalDate.now();
         UserCategoryIntakesModelVo userCategoryIntakesModel = userCategoryIntakesModelService
-                .querySelectLastByUuid(testUuid);
+                .queryLastByUuid(testUuid);
         // 用户目标模型向量
         Vector<Integer> userModelVector = ModelUtil.modelToVector(userCategoryIntakesModel);
         log.info(userModelVector.toString());

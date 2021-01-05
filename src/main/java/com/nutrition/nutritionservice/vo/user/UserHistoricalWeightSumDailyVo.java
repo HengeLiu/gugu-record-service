@@ -30,6 +30,11 @@ public class UserHistoricalWeightSumDailyVo extends CategoryModel<Double> implem
     private LocalDate date;
 
     /**
+     * 当日累计摄入热量
+     */
+    private double calorie;
+
+    /**
      * 创建时间
      */
     private LocalDateTime createTime;
@@ -59,6 +64,7 @@ public class UserHistoricalWeightSumDailyVo extends CategoryModel<Double> implem
         emptyVo.setSalt(0.0);
         emptyVo.setUuid(uuid);
         emptyVo.setDate(date);
+        emptyVo.setCalorie(0);
         return emptyVo;
     }
 

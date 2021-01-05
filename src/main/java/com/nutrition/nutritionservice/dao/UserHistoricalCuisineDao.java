@@ -10,6 +10,8 @@ public interface UserHistoricalCuisineDao {
 
     UserHistoricalCuisineVo selectByUuidAndCuisineCode(String uuid, String cuisineCode);
 
+    UserHistoricalCuisineVo selectLastCuisineByUuid(String uuid);
+
     int insert(UserHistoricalCuisineVo record);
 
     List<UserHistoricalCuisineVo> selectByUuid(String uuid);

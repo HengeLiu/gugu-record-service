@@ -67,13 +67,13 @@ public class UserBiz {
 
     public void register(UserAccountVo userAccount) {
         if (userAccount.getPassword() == null) {
-            userAccount.setPassword("");
+//            userAccount.setPassword("");
         }
         userAccountService.addUserAccount(userAccount);
     }
 
     public void saveUserInfo(UserInfoVo userInfoVo) {
-        int calorie = energyCalorieCalculateService.calculateByUserInfo(userInfoVo);
+        double calorie = energyCalorieCalculateService.calculateByUserInfo(userInfoVo);
         userInfoVo.setCalorie(calorie);
         userInfoService.saveUserInfo(userInfoVo);
     }

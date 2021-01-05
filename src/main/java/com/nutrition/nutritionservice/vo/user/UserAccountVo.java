@@ -23,8 +23,6 @@ public class UserAccountVo extends TimeBasedVo implements UserDetails {
 
     private String uuid;
 
-    private String password;
-
     private int type;
 
     private String externalId;
@@ -38,7 +36,7 @@ public class UserAccountVo extends TimeBasedVo implements UserDetails {
 
     @Override
     public String getPassword() {
-        return password;
+        return "password";
     }
 
     @Override

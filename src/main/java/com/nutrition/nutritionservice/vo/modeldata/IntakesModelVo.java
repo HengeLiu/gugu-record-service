@@ -18,7 +18,7 @@ public class IntakesModelVo extends CategoryModel<Integer> {
     /**
      * 日需热量水平
      */
-    private int calorie;
+    private double calorie;
 
     /**
      * 0,未知;1,平衡;2,减脂;3,增肌

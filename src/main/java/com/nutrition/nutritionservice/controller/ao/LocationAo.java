@@ -1,6 +1,9 @@
 package com.nutrition.nutritionservice.controller.ao;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -11,6 +14,9 @@ import java.io.Serializable;
  * @since 2021/1/4
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class LocationAo implements Serializable {
 
     private static final long serialVersionUID = 1L;
