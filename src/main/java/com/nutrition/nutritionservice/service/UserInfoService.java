@@ -22,7 +22,7 @@ public class UserInfoService {
         return userInfoDao.selectByUuid(uuid);
     }
 
-    public int save(UserInfoVo userInfo) {
+    public int add(UserInfoVo userInfo) {
         return userInfoDao.insert(userInfo);
     }
 

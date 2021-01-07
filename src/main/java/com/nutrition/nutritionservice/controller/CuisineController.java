@@ -1,12 +1,12 @@
 package com.nutrition.nutritionservice.controller;
 
 import com.nutrition.nutritionservice.biz.CuisineBiz;
-import com.nutrition.nutritionservice.biz.IntakesModelBiz;
+import com.nutrition.nutritionservice.biz.UserIngredientModelBiz;
 import com.nutrition.nutritionservice.vo.CuisineRecommendedScoreWebAo;
 import com.nutrition.nutritionservice.vo.IDPageParamVo;
 import com.nutrition.nutritionservice.vo.user.UserHistoricalWeightSumDailyVo;
 import com.nutrition.nutritionservice.vo.store.CuisineAssemblyAo;
-import com.nutrition.nutritionservice.vo.user.UserCategoryIntakesModelVo;
+import com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -31,14 +31,14 @@ public class CuisineController {
     private CuisineBiz cuisineBiz;
 
     @Resource
-    private IntakesModelBiz intakesModelBiz;
+    private UserIngredientModelBiz userIngredientModelBiz;
 
     @GetMapping("/designer")
     public ModelAndView designer(@RequestParam("dine") Integer dineCode) {
         ModelAndView model = new ModelAndView("cuisine_designer");
         model.addObject("ingredientCategoryMap", cuisineBiz.queryIngredientCategoryMap());
         model.addObject("recommendedCategoryWeightMap",
-                cuisineBiz.queryRecommendedCategoryWeightMap(intakesModelBiz.queryMostNeededModel(), dineCode));
+                cuisineBiz.queryRecommendedCategoryWeightMap(userIngredientModelBiz.queryMostNeededModel(), dineCode));
         model.addObject("cuisine", CuisineAssemblyAo.builder().build());
         return model;
     }
@@ -51,15 +51,15 @@ public class CuisineController {
 
     @PostMapping("/recommendedList/dine")
     @ResponseBody
-    public List<CuisineRecommendedScoreWebAo> queryRecommendedCuisineList(UserCategoryIntakesModelVo userModel,
-            int dineTime, IDPageParamVo pageParam) {
+    public List<CuisineRecommendedScoreWebAo> queryRecommendedCuisineList(UserIngredientCategoryModelVo userModel,
+                                                                          int dineTime, IDPageParamVo pageParam) {
         return cuisineBiz.queryRecommendedCuisineListByDineTime(userModel, dineTime, pageParam);
     }
 
     @PostMapping("/recommendedList/historical")
     @ResponseBody
-    public List<CuisineRecommendedScoreWebAo> queryRecommendedCuisineList(UserCategoryIntakesModelVo userModel,
-            UserHistoricalWeightSumDailyVo historicalWeightSumDaily, IDPageParamVo pageParam) {
+    public List<CuisineRecommendedScoreWebAo> queryRecommendedCuisineList(UserIngredientCategoryModelVo userModel,
+                                                                          UserHistoricalWeightSumDailyVo historicalWeightSumDaily, IDPageParamVo pageParam) {
         return cuisineBiz.queryRecommendedCuisineListByHistorical(userModel, historicalWeightSumDaily, pageParam);
     }
 

@@ -2,14 +2,14 @@ package com.nutrition.nutritionservice;
 
 import com.google.common.collect.Lists;
 import com.nutrition.nutritionservice.biz.CuisineBiz;
-import com.nutrition.nutritionservice.biz.IntakesModelBiz;
+import com.nutrition.nutritionservice.biz.UserIngredientModelBiz;
 import com.nutrition.nutritionservice.enums.database.CuisineStatusEnum;
 import com.nutrition.nutritionservice.enums.database.CuisineType;
 import com.nutrition.nutritionservice.enums.database.CuisineWarmEnum;
 import com.nutrition.nutritionservice.enums.database.DineTimeEnum;
 import com.nutrition.nutritionservice.enums.database.IngredientProcessEnum;
 import com.nutrition.nutritionservice.vo.IngredientVo;
-import com.nutrition.nutritionservice.vo.modeldata.IntakesModelVo;
+import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientCategoryModelVo;
 import com.nutrition.nutritionservice.vo.store.CuisineAssemblyAo;
 import com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo;
 import com.nutrition.nutritionservice.vo.store.CuisineVo;
@@ -31,7 +31,7 @@ public class CuisineTest {
     private CuisineBiz cuisineBiz;
 
     @Resource
-    private IntakesModelBiz intakesModelBiz;
+    private UserIngredientModelBiz userIngredientModelBiz;
 
     @Test
     public void createNewCuisine() {
@@ -39,9 +39,9 @@ public class CuisineTest {
 //         DineTimeEnum dineTimeEnum = DineTimeEnum.LUNCH;
          DineTimeEnum dineTimeEnum = DineTimeEnum.DINNER;
         CuisineWarmEnum cuisineWarmEnum = CuisineWarmEnum.WARM;
-        IntakesModelVo intakesModelVo = intakesModelBiz.queryMostNeededModel();
+        ModelIngredientCategoryModelVo modelIngredientCategoryModelVo = userIngredientModelBiz.queryMostNeededModel();
         Map<String, Integer> recommendedWeightMap = cuisineBiz
-                .queryRecommendedCategoryWeightMap(intakesModelVo, dineTimeEnum.getCode());
+                .queryRecommendedCategoryWeightMap(modelIngredientCategoryModelVo, dineTimeEnum.getCode());
         Map<String, List<IngredientVo>> ingredientCategoryMap = cuisineBiz.queryIngredientCategoryMap();
         for (int i = 0; i < 10; i++) {
             List<CuisineIngredientRelVo> cuisineIngredientRelVoList = Lists.newArrayList();
@@ -58,7 +58,7 @@ public class CuisineTest {
                             .warm(cuisineWarmEnum.getCode()).status(CuisineStatusEnum.SALE.getCode())
                             .cuisineType(CuisineType.SET.getCode())
                             .name("测试菜" + (80 + i)).dineTime(dineTimeEnum.getCode()).storeCode("100001")
-                            .goal(intakesModelVo.getGoal()).build())
+                            .goal(modelIngredientCategoryModelVo.getGoal()).build())
                     .cuisineIngredientRelList(cuisineIngredientRelVoList).build());
         }
 

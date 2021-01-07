@@ -1,9 +1,9 @@
 package com.nutrition.nutritionservice;
 
 import com.alibaba.fastjson.JSON;
-import com.nutrition.nutritionservice.biz.IntakesModelBiz;
+import com.nutrition.nutritionservice.biz.UserIngredientModelBiz;
 import com.nutrition.nutritionservice.vo.ModelParamVo;
-import com.nutrition.nutritionservice.vo.modeldata.IntakesModelVo;
+import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientCategoryModelVo;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -14,16 +14,16 @@ import javax.annotation.Resource;
  * @since 2020/9/22
  */
 @SpringBootTest
-public class IntakesModelBizTests {
+public class UserIngredientModelBizTests {
 
     @Resource
-    private IntakesModelBiz intakesModelBiz;
+    private UserIngredientModelBiz userIngredientModelBiz;
 
     @Test
     public void calculateIntakesModel() {
-        IntakesModelVo intakesModelVo = intakesModelBiz.calculateIntakesModel(
+        ModelIngredientCategoryModelVo modelIngredientCategoryModelVo = userIngredientModelBiz.calculateIntakesModel(
                 ModelParamVo.builder().age(26).gender(1).sportHabits(0).profeChar(0).weight(60).goal(1).build());
-        System.out.println(JSON.toJSONString(intakesModelVo));
+        System.out.println(JSON.toJSONString(modelIngredientCategoryModelVo));
     }
 
 }

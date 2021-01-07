@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nutrition.nutritionservice.dao.UserCategoryIntakesModelDao">
-  <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.user.UserCategoryIntakesModelVo">
+  <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo">
     <id column="id" jdbcType="INTEGER" property="id"/>
     <result column="uuid" jdbcType="VARCHAR" property="uuid"/>
     <result column="calorie" jdbcType="INTEGER" property="calorie"/>
@@ -31,20 +31,20 @@
     goal, model_status, create_time
   </sql>
   <update id="updateModelStatusByUuidAndCreateTime">
-    update user_category_intakes_model set model_status = #{model_status} where uuid = #{uuid} and create_time = #{createTime}
+    update user_ingredient_category_model set model_status = #{model_status} where uuid = #{uuid} and create_time = #{createTime}
   </update>
   <select id="selectUsingModelByUuid" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
-    from user_category_intakes_model
+    from user_ingredient_category_model
     where uuid = #{uuid} and model_status = 0
   </select>
   <select id="selectCountByCalorieAndGoal" resultType="java.lang.Integer">
-    select count(*) from user_category_intakes_model where calorie = #{calorie} and goal = #{goal} and model_status = 0
+    select count(*) from user_ingredient_category_model where calorie = #{calorie} and goal = #{goal} and model_status = 0
   </select>
   <insert id="insert" keyColumn="id" keyProperty="id"
-          parameterType="com.nutrition.nutritionservice.vo.user.UserCategoryIntakesModelVo" useGeneratedKeys="true">
-    insert into user_category_intakes_model (uuid, calorie, processed_grains, 
+          parameterType="com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo" useGeneratedKeys="true">
+    insert into user_ingredient_category_model (uuid, calorie, processed_grains, 
       unprocessed_grains, mixed_beans, tuber, 
       general_vegetables, dark_vegetables, fruit, 
       meat, poultry, aquatic, 
@@ -56,132 +56,5 @@
       #{meat,jdbcType=INTEGER}, #{poultry,jdbcType=INTEGER}, #{aquatic,jdbcType=INTEGER}, 
       #{egg,jdbcType=INTEGER}, #{dairy,jdbcType=INTEGER}, #{soybean,jdbcType=INTEGER}, 
       #{nut,jdbcType=INTEGER}, #{oil,jdbcType=INTEGER}, #{salt,jdbcType=INTEGER}, #{goal,jdbcType=TINYINT}, #{modelStatus,jdbcType=TINYINT})
-  </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nutrition.nutritionservice.vo.user.UserCategoryIntakesModelVo" useGeneratedKeys="true">
-    insert into user_category_intakes_model
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="uuid != null">
-        uuid,
-      </if>
-      <if test="calorie != null">
-        calorie,
-      </if>
-      <if test="processedGrains != null">
-        processed_grains,
-      </if>
-      <if test="unprocessedGrains != null">
-        unprocessed_grains,
-      </if>
-      <if test="mixedBeans != null">
-        mixed_beans,
-      </if>
-      <if test="tuber != null">
-        tuber,
-      </if>
-      <if test="generalVegetables != null">
-        general_vegetables,
-      </if>
-      <if test="darkVegetables != null">
-        dark_vegetables,
-      </if>
-      <if test="fruit != null">
-        fruit,
-      </if>
-      <if test="meat != null">
-        meat,
-      </if>
-      <if test="poultry != null">
-        poultry,
-      </if>
-      <if test="aquatic != null">
-        aquatic,
-      </if>
-      <if test="egg != null">
-        egg,
-      </if>
-      <if test="dairy != null">
-        dairy,
-      </if>
-      <if test="soybean != null">
-        soybean,
-      </if>
-      <if test="nut != null">
-        nut,
-      </if>
-      <if test="oil != null">
-        oil,
-      </if>
-      <if test="salt != null">
-        salt,
-      </if>
-      <if test="goal != null">
-        goal
-      </if>
-      <if test="modelStatus != null">
-        model_status
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="uuid != null">
-        #{uuid,jdbcType=VARCHAR},
-      </if>
-      <if test="calorie != null">
-        #{calorie,jdbcType=INTEGER},
-      </if>
-      <if test="processedGrains != null">
-        #{processedGrains,jdbcType=INTEGER},
-      </if>
-      <if test="unprocessedGrains != null">
-        #{unprocessedGrains,jdbcType=INTEGER},
-      </if>
-      <if test="mixedBeans != null">
-        #{mixedBeans,jdbcType=INTEGER},
-      </if>
-      <if test="tuber != null">
-        #{tuber,jdbcType=INTEGER},
-      </if>
-      <if test="generalVegetables != null">
-        #{generalVegetables,jdbcType=INTEGER},
-      </if>
-      <if test="darkVegetables != null">
-        #{darkVegetables,jdbcType=INTEGER},
-      </if>
-      <if test="fruit != null">
-        #{fruit,jdbcType=INTEGER},
-      </if>
-      <if test="meat != null">
-        #{meat,jdbcType=INTEGER},
-      </if>
-      <if test="poultry != null">
-        #{poultry,jdbcType=INTEGER},
-      </if>
-      <if test="aquatic != null">
-        #{aquatic,jdbcType=INTEGER},
-      </if>
-      <if test="egg != null">
-        #{egg,jdbcType=INTEGER},
-      </if>
-      <if test="dairy != null">
-        #{dairy,jdbcType=INTEGER},
-      </if>
-      <if test="soybean != null">
-        #{soybean,jdbcType=INTEGER},
-      </if>
-      <if test="nut != null">
-        #{nut,jdbcType=INTEGER},
-      </if>
-      <if test="oil != null">
-        #{oil,jdbcType=INTEGER},
-      </if>
-      <if test="salt != null">
-        #{salt,jdbcType=INTEGER},
-      </if>
-      <if test="goal != null">
-        #{goal,jdbcType=TINYINT}
-      </if>
-      <if test="modelStatus != null">
-        #{model_status,jdbcType=TINYINT}
-      </if>
-    </trim>
   </insert>
 </mapper>

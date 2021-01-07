@@ -8,13 +8,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * user_category_intakes_model
+ * user_ingredient_model
  * 
  * @author heng.liu
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class UserCategoryIntakesModelVo extends CategoryModel<Integer> implements Serializable {
+public class UserIngredientCategoryModelVo extends CategoryModel<Integer> implements Serializable {
     private int id;
 
     /**
@@ -30,12 +30,12 @@ public class UserCategoryIntakesModelVo extends CategoryModel<Integer> implement
     /**
      * 0,未知;1,平衡;2,减脂;3,增肌
      */
-    private byte goal;
+    private int goal;
 
     /**
      * 模型状态.0,使用中;1,已过期.
      */
-    private byte modelStatus;
+    private int modelStatus;
 
     /**
      * 创建时间

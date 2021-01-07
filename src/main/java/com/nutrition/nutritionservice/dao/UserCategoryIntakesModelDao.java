@@ -1,6 +1,6 @@
 package com.nutrition.nutritionservice.dao;
 
-import com.nutrition.nutritionservice.vo.user.UserCategoryIntakesModelVo;
+import com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -9,11 +9,9 @@ import java.time.LocalDateTime;
 @Repository
 public interface UserCategoryIntakesModelDao {
 
-    int insert(UserCategoryIntakesModelVo record);
+    long insert(UserIngredientCategoryModelVo record);
 
-    int insertSelective(UserCategoryIntakesModelVo record);
-
-    UserCategoryIntakesModelVo selectUsingModelByUuid(String uuid);
+    UserIngredientCategoryModelVo selectUsingModelByUuid(String uuid);
 
     int selectCountByCalorieAndGoal(@Param("calorie") double calorie, @Param("goal") int goal);
 

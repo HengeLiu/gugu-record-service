@@ -6,7 +6,7 @@ import com.nutrition.nutritionservice.controller.ao.SupperIngredientCategoryWeig
 import com.nutrition.nutritionservice.enums.database.IngredientCategoryEnum;
 import com.nutrition.nutritionservice.enums.database.IngredientSuperCategoryEnum;
 import com.nutrition.nutritionservice.vo.modeldata.CategoryModel;
-import com.nutrition.nutritionservice.vo.user.UserCategoryIntakesModelVo;
+import com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo;
 import com.nutrition.nutritionservice.vo.user.UserHistoricalWeightSumDailyVo;
 
 import java.util.List;
@@ -123,8 +123,8 @@ public class ModelUtil {
         return modelCategoryMap;
     }
 
-    public static List<SupperIngredientCategoryWeightAo> modelHistoryToWeightAo(UserCategoryIntakesModelVo targetModel,
-            UserHistoricalWeightSumDailyVo historicalModel) {
+    public static List<SupperIngredientCategoryWeightAo> modelHistoryToWeightAo(UserIngredientCategoryModelVo targetModel,
+                                                                                UserHistoricalWeightSumDailyVo historicalModel) {
         Map<IngredientCategoryEnum, Integer> targetMap = modelToCategoryEnumMap(targetModel);
         Map<IngredientCategoryEnum, Double> historicalMap = modelToCategoryEnumMap(historicalModel);
         return targetMap.entrySet().stream().collect(Collectors.groupingBy(entry -> entry.getKey().getParentCategory()))

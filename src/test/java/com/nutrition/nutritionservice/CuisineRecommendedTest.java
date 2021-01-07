@@ -6,7 +6,7 @@ import com.nutrition.nutritionservice.enums.database.DineTimeEnum;
 import com.nutrition.nutritionservice.enums.database.UserHistoricalCuisineStatusEnum;
 import com.nutrition.nutritionservice.service.CuisineCategoryWeightService;
 import com.nutrition.nutritionservice.service.CuisineService;
-import com.nutrition.nutritionservice.service.UserCategoryIntakesModelService;
+import com.nutrition.nutritionservice.service.UserIngredientCategoryModelService;
 import com.nutrition.nutritionservice.service.UserHistoricalCuisineService;
 import com.nutrition.nutritionservice.service.UserHistoricalWeightSumDailyService;
 import com.nutrition.nutritionservice.service.UserInfoService;
@@ -18,7 +18,7 @@ import com.nutrition.nutritionservice.vo.IDPageParamVo;
 import com.nutrition.nutritionservice.vo.user.UserHistoricalCuisineVo;
 import com.nutrition.nutritionservice.vo.user.UserHistoricalWeightSumDailyVo;
 import com.nutrition.nutritionservice.vo.store.CuisineVo;
-import com.nutrition.nutritionservice.vo.user.UserCategoryIntakesModelVo;
+import com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo;
 import com.nutrition.nutritionservice.vo.user.UserInfoVo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -52,7 +52,7 @@ public class CuisineRecommendedTest {
     private CuisineBiz cuisineBiz;
 
     @Resource
-    private UserCategoryIntakesModelService userCategoryIntakesModelService;
+    private UserIngredientCategoryModelService userIngredientCategoryModelService;
 
     @Resource
     private UserInfoService userInfoService;
@@ -66,7 +66,7 @@ public class CuisineRecommendedTest {
         UserInfoVo userInfo = userInfoService.selectByUuid(testUuid);
         LocalDate date = LocalDate.now();
         log.info(userInfo.toString());
-        UserCategoryIntakesModelVo userCategoryIntakesModel = userCategoryIntakesModelService
+        UserIngredientCategoryModelVo userCategoryIntakesModel = userIngredientCategoryModelService
                 .queryLastByUuid(testUuid);
         UserHistoricalWeightSumDailyVo userHistoricalWeightSumDaily = userHistoricalWeightSumDailyService
                 .queryByUuidAndDate(testUuid, LocalDate.now());
@@ -84,7 +84,7 @@ public class CuisineRecommendedTest {
         UserInfoVo userInfo = userInfoService.selectByUuid(testUuid);
         log.info(userInfo.toString());
         LocalDate date = LocalDate.now();
-        UserCategoryIntakesModelVo userCategoryIntakesModel = userCategoryIntakesModelService
+        UserIngredientCategoryModelVo userCategoryIntakesModel = userIngredientCategoryModelService
                 .queryLastByUuid(testUuid);
         // 用户目标模型向量
         Vector<Integer> userModelVector = ModelUtil.modelToVector(userCategoryIntakesModel);

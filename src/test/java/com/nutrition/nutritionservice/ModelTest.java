@@ -1,15 +1,16 @@
 package com.nutrition.nutritionservice;
 
-import com.nutrition.nutritionservice.biz.IntakesModelBiz;
-import com.nutrition.nutritionservice.converter.IntakesModel2UserModelConverter;
+import com.nutrition.nutritionservice.biz.UserIngredientModelBiz;
+import com.nutrition.nutritionservice.converter.Model2UserModelConverter;
 import com.nutrition.nutritionservice.dao.UserInfoDao;
+import com.nutrition.nutritionservice.enums.database.UserIngredientModelStatusEnum;
 import com.nutrition.nutritionservice.service.EnergyCalorieCalculateService;
 import com.nutrition.nutritionservice.service.ModelIngredientIntakesService;
-import com.nutrition.nutritionservice.service.UserCategoryIntakesModelService;
+import com.nutrition.nutritionservice.service.UserIngredientCategoryModelService;
 import com.nutrition.nutritionservice.service.UserInfoService;
 import com.nutrition.nutritionservice.util.ModelUtil;
-import com.nutrition.nutritionservice.vo.modeldata.IntakesModelVo;
-import com.nutrition.nutritionservice.vo.user.UserCategoryIntakesModelVo;
+import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientCategoryModelVo;
+import com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo;
 import com.nutrition.nutritionservice.vo.user.UserInfoVo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -36,10 +37,10 @@ public class ModelTest {
     private ModelIngredientIntakesService modelIngredientIntakesService;
 
     @Resource
-    private UserCategoryIntakesModelService userCategoryIntakesModelService;
+    private UserIngredientCategoryModelService userIngredientCategoryModelService;
 
     @Resource
-    private IntakesModelBiz intakesModelBiz;
+    private UserIngredientModelBiz userIngredientModelBiz;
 
     @Resource
     private UserInfoDao userInfoDao;
@@ -53,22 +54,22 @@ public class ModelTest {
             if (userInfoVo.getCalorie() == 0) {
                 int calorie = energyCalorieCalculateService.calculateByUserInfo(userInfoVo);
                 userInfoVo.setCalorie((double) calorie);
-                userInfoService.save(userInfoVo);
+                userInfoService.add(userInfoVo);
             }
-            IntakesModelVo intakesModel = modelIngredientIntakesService
+            ModelIngredientCategoryModelVo intakesModel = modelIngredientIntakesService
                     .getIntakesByCalorieGoal(userInfoVo.getCalorie(), userInfoVo.getGoal());
-            UserCategoryIntakesModelVo userModel = IntakesModel2UserModelConverter.INSTANCE.convert(intakesModel);
-            userModel.setUuid(String.valueOf(uuid));
-            userCategoryIntakesModelService.saveUserModel(userModel);
+            UserIngredientCategoryModelVo userModel = Model2UserModelConverter.convert(intakesModel,
+                    String.valueOf(uuid), UserIngredientModelStatusEnum.USING);
+            userIngredientCategoryModelService.add(userModel);
         }
     }
 
     @Test
     public void calculateAllModelSimilarity() {
-        List<IntakesModelVo> modelList = modelIngredientIntakesService.listAllModels();
-        for (IntakesModelVo model1 : modelList) {
+        List<ModelIngredientCategoryModelVo> modelList = modelIngredientIntakesService.listAllModels();
+        for (ModelIngredientCategoryModelVo model1 : modelList) {
             System.out.print("" + model1.getCalorie() + "," + model1.getGoal());
-            for (IntakesModelVo model2 : modelList) {
+            for (ModelIngredientCategoryModelVo model2 : modelList) {
                 double euclidDistance = ModelUtil.calculateEuclidDistance(model1, model2);
                 System.out.print("," + euclidDistance);
 //                double cosineSimilarity = modelIngredientIntakesService.calculateCosineSimilarity(model1, model2);
@@ -80,7 +81,7 @@ public class ModelTest {
 
     @Test
     public void testJson() {
-        IntakesModelVo mostNeededModel = intakesModelBiz.queryMostNeededModel();
+        ModelIngredientCategoryModelVo mostNeededModel = userIngredientModelBiz.queryMostNeededModel();
         System.out.println();
     }
 
@@ -88,13 +89,13 @@ public class ModelTest {
     public void saveModelIdToUserInfo() {
         List<UserInfoVo> userInfoList = userInfoDao.selectAll();
         for (UserInfoVo userInfoVo : userInfoList) {
-            UserCategoryIntakesModelVo userCategoryIntakesModelVo = userCategoryIntakesModelService
+            UserIngredientCategoryModelVo userIngredientCategoryModelVo = userIngredientCategoryModelService
                     .queryLastByUuid(userInfoVo.getUuid());
-            if (userCategoryIntakesModelVo == null) {
+            if (userIngredientCategoryModelVo == null) {
                 log.info("user {} has no model.", userInfoVo.getUuid());
                 continue;
             }
-            int userModelId = userCategoryIntakesModelVo.getId();
+            int userModelId = userIngredientCategoryModelVo.getId();
             userInfoVo.setActiveModelId((long) userModelId);
             userInfoService.updateSelective(userInfoVo);
         }

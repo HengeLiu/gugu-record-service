@@ -23,10 +23,10 @@ import com.nutrition.nutritionservice.vo.DineRecommendedRateVo;
 import com.nutrition.nutritionservice.vo.IDPageParamVo;
 import com.nutrition.nutritionservice.vo.IngredientVo;
 import com.nutrition.nutritionservice.vo.user.UserHistoricalWeightSumDailyVo;
-import com.nutrition.nutritionservice.vo.modeldata.IntakesModelVo;
+import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientCategoryModelVo;
 import com.nutrition.nutritionservice.vo.store.CuisineAssemblyAo;
 import com.nutrition.nutritionservice.vo.store.CuisineVo;
-import com.nutrition.nutritionservice.vo.user.UserCategoryIntakesModelVo;
+import com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.util.ListUtils;
 
@@ -97,13 +97,13 @@ public class CuisineBiz {
         return ingredientCategoryMap;
     }
 
-    public Map<String, Integer> queryRecommendedCategoryWeightMap(IntakesModelVo intakesModelVo, int dineTime) {
+    public Map<String, Integer> queryRecommendedCategoryWeightMap(ModelIngredientCategoryModelVo modelIngredientCategoryModelVo, int dineTime) {
         SerializeConfig config = new SerializeConfig();
         config.propertyNamingStrategy = PropertyNamingStrategy.SnakeCase;
         Map<IngredientCategoryEnum, Integer> ingredientCategoryWeightMap = ModelUtil
-                .modelToCategoryEnumMap(intakesModelVo);
+                .modelToCategoryEnumMap(modelIngredientCategoryModelVo);
         DineRecommendedRateVo dineRecommendedRateVo = dineRecommendedRateService
-                .selectByCalorieGoalDine(intakesModelVo.getCalorie(), intakesModelVo.getGoal(), dineTime);
+                .selectByCalorieGoalDine(modelIngredientCategoryModelVo.getCalorie(), modelIngredientCategoryModelVo.getGoal(), dineTime);
         Map<IngredientCategoryEnum, Double> dineRateMap = ModelUtil.modelToCategoryEnumMap(dineRecommendedRateVo);
         Map<String, Integer> dineRecommendedWeightMap = Maps.newHashMap();
         ingredientCategoryWeightMap.forEach((key, value) -> dineRecommendedWeightMap.put(key.getNameEn(),
@@ -112,7 +112,7 @@ public class CuisineBiz {
     }
 
     public List<CuisineRecommendedScoreWebAo> queryRecommendedCuisineListByDineTime(
-            UserCategoryIntakesModelVo userModel, int dineTime, IDPageParamVo pageParamVo) {
+            UserIngredientCategoryModelVo userModel, int dineTime, IDPageParamVo pageParamVo) {
         Vector<Integer> userModelVector = ModelUtil.modelToVector(userModel);
         DineRecommendedRateVo dineRecommendedRateVo = dineRecommendedRateService
                 .selectByCalorieGoalDine(userModel.getCalorie(), userModel.getGoal(), dineTime);
@@ -128,7 +128,7 @@ public class CuisineBiz {
     }
 
     public List<CuisineRecommendedScoreWebAo> queryRecommendedCuisineListByHistorical(
-            UserCategoryIntakesModelVo userModel, UserHistoricalWeightSumDailyVo historicalWeightSumDaily,
+            UserIngredientCategoryModelVo userModel, UserHistoricalWeightSumDailyVo historicalWeightSumDaily,
             IDPageParamVo pageParamVo) {
         Vector<Integer> userModelVector = ModelUtil.modelToVector(userModel);
         Vector<Double> historicalWeightVector = ModelUtil.modelToVector(historicalWeightSumDaily);

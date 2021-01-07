@@ -1,8 +1,8 @@
 package com.nutrition.nutritionservice.controller;
 
-import com.nutrition.nutritionservice.biz.IntakesModelBiz;
+import com.nutrition.nutritionservice.biz.UserIngredientModelBiz;
 import com.nutrition.nutritionservice.vo.ModelParamVo;
-import com.nutrition.nutritionservice.vo.modeldata.IntakesModelVo;
+import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientCategoryModelVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,28 +19,22 @@ import javax.annotation.Resource;
  * @since 2020/9/13
  */
 @RestController
-@RequestMapping("/model")
+@RequestMapping("/user-model")
 @Slf4j
-public class IntakesModelController {
+public class UserIngredientModelController {
 
     @Resource
-    private IntakesModelBiz intakesModelBiz;
+    private UserIngredientModelBiz userIngredientModelBiz;
 
     @PostMapping("/calculate-by-param")
-    public IntakesModelVo calculateIntakesModel(@RequestBody ModelParamVo param) {
+    public ModelIngredientCategoryModelVo calculateIntakesModel(@RequestBody ModelParamVo param) {
         log.info("Calculate model, model param {}", param);
-        return intakesModelBiz.calculateIntakesModel(param);
-    }
-
-    @PostMapping("/calculate-by-uuid")
-    public IntakesModelVo calculateIntakesModel(@RequestBody String uuid) {
-        log.info("Calculate model, model param {}", uuid);
-        return intakesModelBiz.calculateIntakesModelByUuid(uuid);
+        return userIngredientModelBiz.calculateIntakesModel(param);
     }
 
     @GetMapping("/query-most-needed")
-    public IntakesModelVo queryMostNeededModel() {
-        return intakesModelBiz.queryMostNeededModel();
+    public ModelIngredientCategoryModelVo queryMostNeededModel() {
+        return userIngredientModelBiz.queryMostNeededModel();
     }
 
 }
