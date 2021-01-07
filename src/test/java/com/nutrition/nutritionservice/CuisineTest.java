@@ -2,7 +2,7 @@ package com.nutrition.nutritionservice;
 
 import com.google.common.collect.Lists;
 import com.nutrition.nutritionservice.biz.CuisineBiz;
-import com.nutrition.nutritionservice.biz.UserIngredientModelBiz;
+import com.nutrition.nutritionservice.biz.ModelIngredientIntakesBiz;
 import com.nutrition.nutritionservice.enums.database.CuisineStatusEnum;
 import com.nutrition.nutritionservice.enums.database.CuisineType;
 import com.nutrition.nutritionservice.enums.database.CuisineWarmEnum;
@@ -31,7 +31,7 @@ public class CuisineTest {
     private CuisineBiz cuisineBiz;
 
     @Resource
-    private UserIngredientModelBiz userIngredientModelBiz;
+    private ModelIngredientIntakesBiz modelIngredientIntakesBiz;
 
     @Test
     public void createNewCuisine() {
@@ -39,7 +39,7 @@ public class CuisineTest {
 //         DineTimeEnum dineTimeEnum = DineTimeEnum.LUNCH;
          DineTimeEnum dineTimeEnum = DineTimeEnum.DINNER;
         CuisineWarmEnum cuisineWarmEnum = CuisineWarmEnum.WARM;
-        ModelIngredientCategoryModelVo modelIngredientCategoryModelVo = userIngredientModelBiz.queryMostNeededModel();
+        ModelIngredientCategoryModelVo modelIngredientCategoryModelVo = modelIngredientIntakesBiz.queryMostNeededModel();
         Map<String, Integer> recommendedWeightMap = cuisineBiz
                 .queryRecommendedCategoryWeightMap(modelIngredientCategoryModelVo, dineTimeEnum.getCode());
         Map<String, List<IngredientVo>> ingredientCategoryMap = cuisineBiz.queryIngredientCategoryMap();

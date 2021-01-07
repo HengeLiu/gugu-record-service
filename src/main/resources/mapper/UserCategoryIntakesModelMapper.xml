@@ -49,7 +49,7 @@
       general_vegetables, dark_vegetables, fruit, 
       meat, poultry, aquatic, 
       egg, dairy, soybean, 
-      nut, oil, salt, goal, modelStatus)
+      nut, oil, salt, goal, model_status)
     values (#{uuid,jdbcType=VARCHAR}, #{calorie,jdbcType=INTEGER}, #{processedGrains,jdbcType=INTEGER}, 
       #{unprocessedGrains,jdbcType=INTEGER}, #{mixedBeans,jdbcType=INTEGER}, #{tuber,jdbcType=INTEGER}, 
       #{generalVegetables,jdbcType=INTEGER}, #{darkVegetables,jdbcType=INTEGER}, #{fruit,jdbcType=INTEGER}, 

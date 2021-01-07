@@ -81,7 +81,7 @@ public class ProgramLoadDataBiz {
     private ConfigPropertiesService configPropertiesService;
 
     @Resource
-    private UserIngredientModelBiz userIngredientModelBiz;
+    private ModelIngredientIntakesBiz modelIngredientIntakesBiz;
 
     @Resource
     private UserNutrientWeightSumDailyBiz userNutrientWeightSumDailyBiz;
@@ -108,13 +108,14 @@ public class ProgramLoadDataBiz {
             userInfoVo = configPropertiesService.getDefaultUserInfo();
 
             userIngredientCategoryModelVo = Model2UserModelConverter.convert(
-                    userIngredientModelBiz.calculateIntakesModelByUserInfo(userInfoVo), uuid,
+                    modelIngredientIntakesBiz.calculateIntakesModel(userInfoVo), uuid,
                     UserIngredientModelStatusEnum.USING);
             // 创建用户模型
             long userModelId = userIngredientCategoryModelService.add(userIngredientCategoryModelVo);
 
             userInfoVo.setUuid(uuid);
             userInfoVo.setActiveModelId(userModelId);
+            userInfoVo.setCalorie(userIngredientCategoryModelVo.getCalorie());
             // 创建用户信息
             userInfoService.add(userInfoVo);
 

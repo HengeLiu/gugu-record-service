@@ -22,7 +22,7 @@
     active_model_id, create_time, update_time
   </sql>
     <sql id="Insert_Column_List">
-    id, uuid, gender, calorie, goal, nickname, age, height, weight, profe_char, sports_habits,
+    uuid, gender, calorie, goal, nickname, age, height, weight, profe_char, sports_habits,
     active_model_id
   </sql>
     <select id="selectByUuid" resultMap="BaseResultMap">

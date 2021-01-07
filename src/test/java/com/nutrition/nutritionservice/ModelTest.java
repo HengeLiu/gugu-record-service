@@ -1,6 +1,6 @@
 package com.nutrition.nutritionservice;
 
-import com.nutrition.nutritionservice.biz.UserIngredientModelBiz;
+import com.nutrition.nutritionservice.biz.ModelIngredientIntakesBiz;
 import com.nutrition.nutritionservice.converter.Model2UserModelConverter;
 import com.nutrition.nutritionservice.dao.UserInfoDao;
 import com.nutrition.nutritionservice.enums.database.UserIngredientModelStatusEnum;
@@ -40,7 +40,7 @@ public class ModelTest {
     private UserIngredientCategoryModelService userIngredientCategoryModelService;
 
     @Resource
-    private UserIngredientModelBiz userIngredientModelBiz;
+    private ModelIngredientIntakesBiz modelIngredientIntakesBiz;
 
     @Resource
     private UserInfoDao userInfoDao;
@@ -81,7 +81,7 @@ public class ModelTest {
 
     @Test
     public void testJson() {
-        ModelIngredientCategoryModelVo mostNeededModel = userIngredientModelBiz.queryMostNeededModel();
+        ModelIngredientCategoryModelVo mostNeededModel = modelIngredientIntakesBiz.queryMostNeededModel();
         System.out.println();
     }
 

@@ -4,13 +4,13 @@
     <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.UserSettingVo">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="uuid" jdbcType="VARCHAR" property="uuid"/>
-        <result column="takeawayCode" jdbcType="TINYINT" property="takeawayCode"/>
+        <result column="takeaway_code" jdbcType="TINYINT" property="takeawayCode"/>
         <result column="location_id" jdbcType="BIGINT" property="locationId"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, uuid, takeawayCode, location_id, create_time, update_time
+    id, uuid, takeaway_code, location_id, create_time, update_time
   </sql>
     <sql id="Insert_Column_List">
     id, uuid, takeawayCode, location_id

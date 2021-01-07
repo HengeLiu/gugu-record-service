@@ -1,7 +1,7 @@
 package com.nutrition.nutritionservice;
 
 import com.alibaba.fastjson.JSON;
-import com.nutrition.nutritionservice.biz.UserIngredientModelBiz;
+import com.nutrition.nutritionservice.biz.ModelIngredientIntakesBiz;
 import com.nutrition.nutritionservice.vo.ModelParamVo;
 import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientCategoryModelVo;
 import org.junit.jupiter.api.Test;
@@ -17,12 +17,12 @@ import javax.annotation.Resource;
 public class UserIngredientModelBizTests {
 
     @Resource
-    private UserIngredientModelBiz userIngredientModelBiz;
+    private ModelIngredientIntakesBiz modelIngredientIntakesBiz;
 
     @Test
     public void calculateIntakesModel() {
-        ModelIngredientCategoryModelVo modelIngredientCategoryModelVo = userIngredientModelBiz.calculateIntakesModel(
-                ModelParamVo.builder().age(26).gender(1).sportHabits(0).profeChar(0).weight(60).goal(1).build());
+        ModelIngredientCategoryModelVo modelIngredientCategoryModelVo = modelIngredientIntakesBiz.calculateIntakesModel(
+                ModelParamVo.builder().age(26).gender(1).sportsHabits(0).profeChar(0).weight(60).goal(1).build());
         System.out.println(JSON.toJSONString(modelIngredientCategoryModelVo));
     }
 

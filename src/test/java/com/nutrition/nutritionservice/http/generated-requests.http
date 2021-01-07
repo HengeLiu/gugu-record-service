@@ -1,0 +1,7 @@
+###
+POST https://localhost/load/user-info
+Content-Type: application/json
+
+{
+  "openid": "test_openid_1235123"
+}

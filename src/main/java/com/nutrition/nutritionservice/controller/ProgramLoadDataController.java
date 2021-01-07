@@ -3,7 +3,9 @@ package com.nutrition.nutritionservice.controller;
 import com.nutrition.nutritionservice.biz.ProgramLoadDataBiz;
 import com.nutrition.nutritionservice.common.Response;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -22,7 +24,7 @@ public class ProgramLoadDataController {
     private ProgramLoadDataBiz programLoadDataBiz;
 
     @PostMapping("/user-info")
-    public Response loadUserInfo(String openid) {
+    public Response loadUserInfo(@RequestBody String openid) {
         return Response.success(programLoadDataBiz.loadUserInfo(openid));
     }
 

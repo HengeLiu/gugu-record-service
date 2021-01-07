@@ -33,7 +33,7 @@ public class EnergyCalorieCalculateService {
         }
 
         double sportLevelRatio = sportLevelRatio(CodeEnums.valueOf(ProfeCharEnum.class, modelBaseInfoVo.getProfeChar()),
-                CodeEnums.valueOf(SportHabitEnum.class, modelBaseInfoVo.getSportHabits()));
+                CodeEnums.valueOf(SportHabitEnum.class, modelBaseInfoVo.getSportsHabits()));
         double bee = surfaceArea * bmr * 24 * sportLevelRatio;
         return (int) bee;
     }
@@ -41,7 +41,7 @@ public class EnergyCalorieCalculateService {
     public int calculateByUserInfo(UserInfoVo userInfoVo) {
         ModelParamVo modelParamVo = ModelParamVo.builder().goal(userInfoVo.getGoal()).age(userInfoVo.getAge())
                 .gender(userInfoVo.getGender()).height(userInfoVo.getHeight()).weight(userInfoVo.getWeight())
-                .profeChar(userInfoVo.getProfeChar()).sportHabits(userInfoVo.getSportsHabits()).build();
+                .profeChar(userInfoVo.getProfeChar()).sportsHabits(userInfoVo.getSportsHabits()).build();
         return calculate(modelParamVo);
     }
 

@@ -19,7 +19,7 @@ public class ModelIngredientIntakesService {
     private ModelIngredientIntakesDao modelIngredientIntakesDao;
 
     public ModelIngredientCategoryModelVo getIntakesByCalorieGoal(double calorie, int goal) {
-        double calorieTmp = (calorie / 100) * 100;
+        int calorieTmp = (int) (calorie / 100) * 100;
         if ((goal == ModelGoalEnum.BALANCE.getCode() || goal == ModelGoalEnum.INCREASED_MUSCLE.getCode())
                 && calorieTmp > 3000) {
             return modelIngredientIntakesDao.selectByCalorieGoal(3000, goal);

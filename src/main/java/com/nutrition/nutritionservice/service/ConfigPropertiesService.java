@@ -16,7 +16,8 @@ import org.springframework.stereotype.Service;
  * @since 2020/9/21
  */
 @Service
-@PropertySource({"classpath:business-config.properties","classpath:system-config.properties"})
+@PropertySource(value = { "classpath:business-config.properties",
+        "classpath:system-config.properties" }, encoding = "UTF-8")
 @Getter
 public class ConfigPropertiesService {
 
