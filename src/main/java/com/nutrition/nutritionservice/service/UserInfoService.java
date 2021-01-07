@@ -22,8 +22,12 @@ public class UserInfoService {
         return userInfoDao.selectByUuid(uuid);
     }
 
-    public int saveUserInfo(UserInfoVo userInfo) {
-        return userInfoDao.insertOrUpdate(userInfo);
+    public int save(UserInfoVo userInfo) {
+        return userInfoDao.insert(userInfo);
+    }
+
+    public int updateSelective(UserInfoVo userInfo) {
+        return userInfoDao.updateByUuidSelective(userInfo);
     }
 
 }

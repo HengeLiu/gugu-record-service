@@ -2,6 +2,7 @@ package com.nutrition.nutritionservice;
 
 import com.nutrition.nutritionservice.biz.IntakesModelBiz;
 import com.nutrition.nutritionservice.converter.IntakesModel2UserModelConverter;
+import com.nutrition.nutritionservice.dao.UserInfoDao;
 import com.nutrition.nutritionservice.service.EnergyCalorieCalculateService;
 import com.nutrition.nutritionservice.service.ModelIngredientIntakesService;
 import com.nutrition.nutritionservice.service.UserCategoryIntakesModelService;
@@ -40,6 +41,9 @@ public class ModelTest {
     @Resource
     private IntakesModelBiz intakesModelBiz;
 
+    @Resource
+    private UserInfoDao userInfoDao;
+
     @Test
     public void recalculateAllUserCalorieAndModel() {
         int uuid = 100000;
@@ -48,8 +52,8 @@ public class ModelTest {
             UserInfoVo userInfoVo = userInfoService.selectByUuid(String.valueOf(uuid));
             if (userInfoVo.getCalorie() == 0) {
                 int calorie = energyCalorieCalculateService.calculateByUserInfo(userInfoVo);
-                userInfoVo.setCalorie(calorie);
-                userInfoService.saveUserInfo(userInfoVo);
+                userInfoVo.setCalorie((double) calorie);
+                userInfoService.save(userInfoVo);
             }
             IntakesModelVo intakesModel = modelIngredientIntakesService
                     .getIntakesByCalorieGoal(userInfoVo.getCalorie(), userInfoVo.getGoal());
@@ -78,6 +82,22 @@ public class ModelTest {
     public void testJson() {
         IntakesModelVo mostNeededModel = intakesModelBiz.queryMostNeededModel();
         System.out.println();
+    }
+
+    @Test
+    public void saveModelIdToUserInfo() {
+        List<UserInfoVo> userInfoList = userInfoDao.selectAll();
+        for (UserInfoVo userInfoVo : userInfoList) {
+            UserCategoryIntakesModelVo userCategoryIntakesModelVo = userCategoryIntakesModelService
+                    .queryLastByUuid(userInfoVo.getUuid());
+            if (userCategoryIntakesModelVo == null) {
+                log.info("user {} has no model.", userInfoVo.getUuid());
+                continue;
+            }
+            int userModelId = userCategoryIntakesModelVo.getId();
+            userInfoVo.setActiveModelId((long) userModelId);
+            userInfoService.updateSelective(userInfoVo);
+        }
     }
 
 

@@ -2,6 +2,7 @@ package com.nutrition.nutritionservice.service;
 
 import com.nutrition.nutritionservice.dao.UserHistoricalWeightSumDailyDao;
 import com.nutrition.nutritionservice.vo.user.UserHistoricalWeightSumDailyVo;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,6 +20,7 @@ public class UserHistoricalWeightSumDailyService {
     @Resource
     private UserHistoricalWeightSumDailyDao userHistoricalWeightSumDailyDao;
 
+    @Nullable
     public UserHistoricalWeightSumDailyVo queryByUuidAndDate(String uuid, LocalDate date) {
         return userHistoricalWeightSumDailyDao.selectByUuidAndDate(uuid, date);
     }

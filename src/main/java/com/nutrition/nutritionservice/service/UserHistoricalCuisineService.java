@@ -23,6 +23,7 @@ public class UserHistoricalCuisineService {
         return userHistoricalCuisineDao.countByCuisineCodeAndTaste(cuisineCode, taste);
     }
 
+    @Nullable
     public UserHistoricalCuisineVo queryLastAddedCuisine(String uuid) {
         return userHistoricalCuisineDao.selectLastCuisineByUuid(uuid);
     }

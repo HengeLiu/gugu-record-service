@@ -64,7 +64,7 @@ public class UserHistoricalWeightSumDailyVo extends CategoryModel<Double> implem
         emptyVo.setSalt(0.0);
         emptyVo.setUuid(uuid);
         emptyVo.setDate(date);
-        emptyVo.setCalorie(0);
+        emptyVo.setCalorie(0.0);
         return emptyVo;
     }
 

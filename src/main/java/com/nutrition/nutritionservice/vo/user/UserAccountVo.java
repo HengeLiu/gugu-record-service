@@ -2,8 +2,11 @@ package com.nutrition.nutritionservice.vo.user;
 
 import com.nutrition.nutritionservice.enums.database.UserAccountStatusTypeEnum;
 import com.nutrition.nutritionservice.vo.TimeBasedVo;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -17,6 +20,9 @@ import java.util.Collection;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserAccountVo extends TimeBasedVo implements UserDetails {
 
     private static final long serialVersionUID = -1106127018250012296L;

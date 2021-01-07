@@ -75,14 +75,14 @@ public class UserBiz {
     public void saveUserInfo(UserInfoVo userInfoVo) {
         double calorie = energyCalorieCalculateService.calculateByUserInfo(userInfoVo);
         userInfoVo.setCalorie(calorie);
-        userInfoService.saveUserInfo(userInfoVo);
+        userInfoService.save(userInfoVo);
     }
 
     public int calculateAndSaveUserCalorie(String uuid) {
         UserInfoVo userInfoVo = userInfoService.selectByUuid(uuid);
         int calorie = energyCalorieCalculateService.calculateByUserInfo(userInfoVo);
-        userInfoVo.setCalorie(calorie);
-        userInfoService.saveUserInfo(userInfoVo);
+        userInfoVo.setCalorie((double) calorie);
+        userInfoService.save(userInfoVo);
         return calorie;
     }
 

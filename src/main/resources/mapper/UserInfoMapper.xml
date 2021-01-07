@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nutrition.nutritionservice.dao.UserInfoDao">
+    <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.user.UserInfoVo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="uuid" jdbcType="VARCHAR" property="uuid"/>
+        <result column="gender" jdbcType="TINYINT" property="gender"/>
+        <result column="calorie" jdbcType="DOUBLE" property="calorie"/>
+        <result column="goal" jdbcType="TINYINT" property="goal"/>
+        <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
+        <result column="age" jdbcType="INTEGER" property="age"/>
+        <result column="height" jdbcType="INTEGER" property="height"/>
+        <result column="weight" jdbcType="INTEGER" property="weight"/>
+        <result column="profe_char" jdbcType="INTEGER" property="profeChar"/>
+        <result column="sports_habits" jdbcType="INTEGER" property="sportsHabits"/>
+        <result column="active_model_id" jdbcType="BIGINT" property="activeModelId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, uuid, gender, calorie, goal, nickname, age, height, weight, profe_char, sports_habits, 
+    active_model_id, create_time, update_time
+  </sql>
+    <sql id="Insert_Column_List">
+    id, uuid, gender, calorie, goal, nickname, age, height, weight, profe_char, sports_habits,
+    active_model_id
+  </sql>
+    <select id="selectByUuid" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_info
+        where uuid = #{uuid}
+    </select>
+    <select id="selectById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_info
+        where id = #{id}
+    </select>
+    <select id="selectAll" resultType="com.nutrition.nutritionservice.vo.user.UserInfoVo">
+        select
+        <include refid="Base_Column_List"/>
+        from user_info
+    </select>
+    <insert id="insert" keyColumn="id" keyProperty="id"
+            parameterType="com.nutrition.nutritionservice.vo.user.UserInfoVo" useGeneratedKeys="true">
+        insert into user_info (
+        <include refid="Insert_Column_List"/>
+        )
+        values (#{uuid,jdbcType=VARCHAR}, #{gender,jdbcType=TINYINT}, #{calorie,jdbcType=DOUBLE},
+        #{goal,jdbcType=TINYINT}, #{nickname,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER},
+        #{height,jdbcType=INTEGER}, #{weight,jdbcType=INTEGER}, #{profeChar,jdbcType=INTEGER},
+        #{sportsHabits,jdbcType=INTEGER}, #{activeModelId,jdbcType=BIGINT})
+    </insert>
+    <update id="updateByUuidSelective" parameterType="com.nutrition.nutritionservice.vo.user.UserInfoVo">
+        update user_info
+        <set>
+            <if test="gender != null">
+                gender = #{gender,jdbcType=TINYINT},
+            </if>
+            <if test="calorie != null">
+                calorie = #{calorie,jdbcType=DOUBLE},
+            </if>
+            <if test="goal != null">
+                goal = #{goal,jdbcType=TINYINT},
+            </if>
+            <if test="nickname != null">
+                nickname = #{nickname,jdbcType=VARCHAR},
+            </if>
+            <if test="age != null">
+                age = #{age,jdbcType=INTEGER},
+            </if>
+            <if test="height != null">
+                height = #{height,jdbcType=INTEGER},
+            </if>
+            <if test="weight != null">
+                weight = #{weight,jdbcType=INTEGER},
+            </if>
+            <if test="profeChar != null">
+                profe_char = #{profeChar,jdbcType=INTEGER},
+            </if>
+            <if test="sportsHabits != null">
+                sports_habits = #{sportsHabits,jdbcType=INTEGER},
+            </if>
+            <if test="activeModelId != null">
+                active_model_id = #{activeModelId,jdbcType=BIGINT},
+            </if>
+        </set>
+        where uuid = #{uuid}
+    </update>
+</mapper>

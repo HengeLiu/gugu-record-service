@@ -2,6 +2,7 @@ package com.nutrition.nutritionservice.service;
 
 import com.nutrition.nutritionservice.dao.UserSettingDao;
 import com.nutrition.nutritionservice.vo.UserSettingVo;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -18,6 +19,7 @@ public class UserSettingService {
     @Resource
     private UserSettingDao userSettingDao;
 
+    @Nullable
     public UserSettingVo queryByUuid(String uuid) {
         return userSettingDao.selectByUuid(uuid);
     }

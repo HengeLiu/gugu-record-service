@@ -30,12 +30,12 @@ public class PreloadDataAo implements Serializable {
     /**
      * 模型日需千卡热量
      */
-    private Integer modelCalorie;
+    private Double modelCalorie;
 
     /**
      * 今日千卡热量摄入历史
      */
-    private Integer historicalCalorieDaily;
+    private Double historicalCalorieDaily;
 
     /**
      * 用户设置
@@ -65,6 +65,6 @@ public class PreloadDataAo implements Serializable {
     /**
      * 营养素摄入累计
      */
-    private NutrientIntakesWeightAo userNutrientHistoricalIntakesDaily;
+    private List<NutrientIntakesWeightAo> userNutrientHistoricalIntakesDaily;
 
 }

@@ -29,8 +29,8 @@ public class UserAccountService implements UserDetailsService {
         return userAccountDao.selectByExternalIdAndType(externalId, typeEnum.getCode());
     }
 
-    public boolean addUserAccount(UserAccountVo userAccountVo) {
-        return userAccountDao.insert(userAccountVo) == 1;
+    public int addUserAccount(UserAccountVo userAccountVo) {
+        return userAccountDao.insert(userAccountVo);
     }
 
 }

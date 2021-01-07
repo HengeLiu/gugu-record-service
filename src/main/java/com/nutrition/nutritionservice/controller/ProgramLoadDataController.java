@@ -23,8 +23,7 @@ public class ProgramLoadDataController {
 
     @PostMapping("/user-info")
     public Response loadUserInfo(String openid) {
-        programLoadDataBiz.loadUserInfo(openid);
-        return Response.success();
+        return Response.success(programLoadDataBiz.loadUserInfo(openid));
     }
 
 }

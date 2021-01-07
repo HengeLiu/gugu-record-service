@@ -18,16 +18,16 @@ public class UserStatusInfoAo implements Serializable {
     /**
      * 是否已完成信息录入
      */
-    private Boolean customInfo;
+    private Integer customInfo;
 
     /**
      * 是否已展示「健康信息收集」浮窗
      */
-    private Boolean shownInfoCollectWindow;
+    private Integer shownInfoCollectWindow;
 
     /**
      * 是否已展示「使用流程」浮窗
      */
-    private Boolean shownProcessWindow;
+    private Integer shownProcessWindow;
 
 }

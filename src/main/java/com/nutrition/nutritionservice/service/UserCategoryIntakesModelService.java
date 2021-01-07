@@ -1,7 +1,9 @@
 package com.nutrition.nutritionservice.service;
 
 import com.nutrition.nutritionservice.dao.UserCategoryIntakesModelDao;
+import com.nutrition.nutritionservice.enums.database.UserIngredientModelStatusEnum;
 import com.nutrition.nutritionservice.vo.user.UserCategoryIntakesModelVo;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,12 +26,14 @@ public class UserCategoryIntakesModelService {
         UserCategoryIntakesModelVo oldUserModelVo = userCategoryIntakesModelDao
                 .selectUsingModelByUuid(userModelVo.getUuid());
         if (oldUserModelVo != null) {
-            userCategoryIntakesModelDao.updateModelStatusByUuidAndCreateTime(userModelVo.getUuid(), 1,
+            userCategoryIntakesModelDao.updateModelStatusByUuidAndCreateTime(userModelVo.getUuid(),
+                    UserIngredientModelStatusEnum.USING.getCode(),
                     userModelVo.getCreateTime());
         }
         userCategoryIntakesModelDao.insert(userModelVo);
     }
 
+    @Nullable
     public UserCategoryIntakesModelVo queryLastByUuid(String uuid) {
         return userCategoryIntakesModelDao.selectUsingModelByUuid(uuid);
     }
