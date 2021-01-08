@@ -1,5 +1,5 @@
 ###
-POST https://localhost/load/user-info
+POST https://www.nutrition-service.com/load/user-info
 Content-Type: application/json
 
 {
@@ -7,5 +7,5 @@ Content-Type: application/json
 }
 
 ###
-GET https://localhost/cuisine/cuisine-list?storeCode=100001&uuid=0
+GET https://www.nutrition-service.com/cuisine/cuisine-list?storeCode=100001&uuid=0
 Content-Type: application/json
