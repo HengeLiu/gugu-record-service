@@ -1,8 +1,12 @@
 package com.nutrition.nutritionservice.controller.ao;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 餐品预览
@@ -11,6 +15,9 @@ import java.io.Serializable;
  * @since 2021/1/4
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class CuisinePreviewAo implements Serializable {
 
     private static final long serialVersionUID = -7579564701414196237L;
@@ -26,53 +33,28 @@ public class CuisinePreviewAo implements Serializable {
     private String name;
 
     /**
-     * 价格
-     */
-    private Double price;
-
-    /**
-     * 总分
-     */
-    private Double totalScore;
-
-    /**
-     * 模型匹配度
-     */
-    private Double modelMatchingScore;
-
-    /**
-     * 评价分数
-     */
-    private Double ratingScore;
-
-    /**
-     * 月销量
-     */
-    private Integer monthlySales;
-
-    /**
      * 产品图片地址
      */
     private String imageUrl;
 
     /**
-     * 所属门店编码
+     * 上次添加日期时间
      */
-    private String storeCode;
+    private String lastAddedDateTime;
 
     /**
-     * 所属门店名称
+     * 主要食材名称列表
      */
-    private String storeName;
+    private List<String> mainIngredientList;
 
     /**
-     * 所属门店与当前查询位置距离，米
+     * 菜品排序信息
      */
-    private Double storeDistance;
+    private CuisineSortInfoAo cuisineSortInfo;
 
     /**
-     * 所属平均配送时间，分钟
+     * 所属门店信息
      */
-    private Double storeDeliveryTime;
+    private StorePreviewAo storeInfo;
 
 }

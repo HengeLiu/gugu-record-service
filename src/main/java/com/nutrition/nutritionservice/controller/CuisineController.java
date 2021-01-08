@@ -2,6 +2,8 @@ package com.nutrition.nutritionservice.controller;
 
 import com.nutrition.nutritionservice.biz.CuisineBiz;
 import com.nutrition.nutritionservice.biz.ModelIngredientIntakesBiz;
+import com.nutrition.nutritionservice.controller.ao.CuisinePreviewAo;
+import com.nutrition.nutritionservice.controller.ao.StoreCuisineListAo;
 import com.nutrition.nutritionservice.vo.CuisineRecommendedScoreWebAo;
 import com.nutrition.nutritionservice.vo.IDPageParamVo;
 import com.nutrition.nutritionservice.vo.user.UserHistoricalWeightSumDailyVo;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -61,6 +64,12 @@ public class CuisineController {
     public List<CuisineRecommendedScoreWebAo> queryRecommendedCuisineList(UserIngredientCategoryModelVo userModel,
                                                                           UserHistoricalWeightSumDailyVo historicalWeightSumDaily, IDPageParamVo pageParam) {
         return cuisineBiz.queryRecommendedCuisineListByHistorical(userModel, historicalWeightSumDaily, pageParam);
+    }
+
+    @GetMapping("/cuisine-list")
+    @ResponseBody
+    public StoreCuisineListAo queryCuisineList(@RequestParam String storeCode, @RequestParam String uuid) {
+        return cuisineBiz.queryCuisineList(storeCode);
     }
 
 }

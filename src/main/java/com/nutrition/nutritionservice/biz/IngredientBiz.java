@@ -26,7 +26,7 @@ public class IngredientBiz {
     private IngredientService ingredientService;
 
     public double calculateCalorie(List<CuisineIngredientRelVo> cuisineIngredientRelList) {
-        Map<String, Integer> ingredientWeightMap = cuisineIngredientRelList.stream().collect(
+        Map<Integer, Integer> ingredientWeightMap = cuisineIngredientRelList.stream().collect(
                 Collectors.toMap(CuisineIngredientRelVo::getIngredientCode, CuisineIngredientRelVo::getWeight));
         List<IngredientVo> ingredientVoList = ingredientService
                 .queryByCodeList(Lists.newArrayList(ingredientWeightMap.keySet()));

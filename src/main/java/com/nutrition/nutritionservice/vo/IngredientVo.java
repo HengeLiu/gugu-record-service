@@ -17,7 +17,7 @@ public class IngredientVo implements Serializable {
     /**
      * 食材编码
      */
-    private String code;
+    private int code;
 
     /**
      * 食材名称

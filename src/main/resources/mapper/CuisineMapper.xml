@@ -11,11 +11,12 @@
         <result column="cuisine_type" jdbcType="TINYINT" property="cuisineType"/>
         <result column="dine_time" jdbcType="TINYINT" property="dineTime"/>
         <result column="warm" jdbcType="TINYINT" property="warm"/>
+        <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
         <result column="status" jdbcType="TINYINT" property="status"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, code, `name`, store_code, calorie, goal, cuisine_type, dine_time, warm, `status`, 
+    id, code, `name`, store_code, calorie, goal, cuisine_type, dine_time, warm, image_url, `status`,
     create_time
   </sql>
     <select id="selectByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -37,13 +38,13 @@
         select
         <include refid="Base_Column_List"/>
         from cuisine
-        where store_code = {storeCode}
+        where store_code = #{storeCode}
     </select>
     <select id="selectByDineTime" resultType="com.nutrition.nutritionservice.vo.store.CuisineVo">
         select
         <include refid="Base_Column_List"/>
         from cuisine
-        where dine_time = {dineTime}
+        where dine_time = #{dineTime}
     </select>
     <insert id="insert" parameterType="com.nutrition.nutritionservice.vo.store.CuisineVo">
     insert into cuisine (code, `name`, store_code, 

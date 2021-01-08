@@ -5,3 +5,7 @@ Content-Type: application/json
 {
   "openid": "test_openid_1235123"
 }
+
+###
+GET https://localhost/cuisine/cuisine-list?storeCode=100001&uuid=0
+Content-Type: application/json

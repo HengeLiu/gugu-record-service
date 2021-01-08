@@ -8,7 +8,7 @@ import com.nutrition.nutritionservice.enums.CodeEnum;
  * @author heng.liu
  * @since 2020/12/26
  */
-public enum CuisineType implements CodeEnum<Integer> {
+public enum CuisineCategoryEnum implements CodeEnum<Integer> {
 
     UNKNOWN(0, "未知"),
 
@@ -18,11 +18,11 @@ public enum CuisineType implements CodeEnum<Integer> {
 
     private final int code;
 
-    private final String desc;
+    private final String name;
 
-    CuisineType(int code, String desc) {
+    CuisineCategoryEnum(int code, String name) {
         this.code = code;
-        this.desc = desc;
+        this.name = name;
     }
 
     @Override
@@ -30,7 +30,7 @@ public enum CuisineType implements CodeEnum<Integer> {
         return code;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getName() {
+        return name;
     }
 }

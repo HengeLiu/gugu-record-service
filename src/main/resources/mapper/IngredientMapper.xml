@@ -3,7 +3,7 @@
 <mapper namespace="com.nutrition.nutritionservice.dao.IngredientDao">
     <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.IngredientVo">
         <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="code" jdbcType="INTEGER" property="code"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="calorie" jdbcType="INTEGER" property="calorie"/>
         <result column="category_code" jdbcType="TINYINT" property="categoryCode"/>
@@ -18,7 +18,7 @@
     id, code, `name`, calorie, category_code, category_name, nicknames, specifications, 
     ingredient_type, create_time, update_time
   </sql>
-    <select id="selectByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <select id="selectByCode" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from ingredient
@@ -85,7 +85,7 @@
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="code != null">
-                #{code,jdbcType=VARCHAR},
+                #{code,jdbcType=INTEGER},
             </if>
             <if test="name != null">
                 #{name,jdbcType=VARCHAR},

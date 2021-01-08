@@ -30,14 +30,6 @@ public class CuisineHistoryPreviewAo implements Serializable {
      */
     private String imageUrl;
 
-    /**
-     * 添加日期时间
-     */
-    private String addedDateTime;
 
-    /**
-     * 主要食材名称列表
-     */
-    private List<String> mainIngredientList;
 
 }

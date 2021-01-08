@@ -5,7 +5,6 @@ import com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo;
 import java.util.List;
 
 public interface CuisineIngredientRelDao {
-    int deleteByPrimaryKey(Integer id);
 
     int insert(CuisineIngredientRelVo record);
 
@@ -13,9 +12,8 @@ public interface CuisineIngredientRelDao {
 
     int insertSelective(CuisineIngredientRelVo record);
 
-    CuisineIngredientRelVo selectByPrimaryKey(Integer id);
+    List<CuisineIngredientRelVo> selectByCuisineCode(String cuisineCode);
 
-    int updateByPrimaryKeySelective(CuisineIngredientRelVo record);
+    List<CuisineIngredientRelVo> batchSelectByCuisineCodeList(List<String> cuisineCodeList);
 
-    int updateByPrimaryKey(CuisineIngredientRelVo record);
 }

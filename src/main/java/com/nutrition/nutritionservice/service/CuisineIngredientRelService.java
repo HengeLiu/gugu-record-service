@@ -27,4 +27,12 @@ public class CuisineIngredientRelService {
         return cuisineIngredientRelDao.batchInsert(relList);
     }
 
+    public List<CuisineIngredientRelVo> queryByCuisineCode(String cuisineCode) {
+        return cuisineIngredientRelDao.selectByCuisineCode(cuisineCode);
+    }
+
+    public List<CuisineIngredientRelVo> queryByCuisineCodeList(List<String> cuisineCodeList) {
+        return cuisineIngredientRelDao.batchSelectByCuisineCodeList(cuisineCodeList);
+    }
+
 }

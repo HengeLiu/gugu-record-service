@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nutrition.nutritionservice.dao.StoreDao">
+  <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.StoreVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="manager_account_uuid" jdbcType="VARCHAR" property="managerAccountUuid" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, code, `name`, manager_account_uuid, create_time, update_time
+  </sql>
+  <sql id="Insert_Column_List">
+    id, code, `name`, manager_account_uuid
+  </sql>
+  <select id="selectByCode" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from store
+    where code = #{code}
+  </select>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nutrition.nutritionservice.vo.StoreVo" useGeneratedKeys="true">
+    insert into store (
+    <include refid="Insert_Column_List"/>
+    )
+    values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{managerAccountUuid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nutrition.nutritionservice.vo.StoreVo" useGeneratedKeys="true">
+    insert into store
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="code != null">
+        code,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="managerAccountUuid != null">
+        manager_account_uuid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="managerAccountUuid != null">
+        #{managerAccountUuid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+<!--  <update id="updateByPrimaryKeySelective" parameterType="com.nutrition.nutritionservice.vo.StoreVo">-->
+<!--    update store-->
+<!--    <set>-->
+<!--      <if test="code != null">-->
+<!--        code = #{code,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="name != null">-->
+<!--        `name` = #{name,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="managerAccountUuid != null">-->
+<!--        manager_account_uuid = #{managerAccountUuid,jdbcType=VARCHAR},-->
+<!--      </if>-->
+<!--      <if test="createTime != null">-->
+<!--        create_time = #{createTime,jdbcType=TIMESTAMP},-->
+<!--      </if>-->
+<!--      <if test="updateTime != null">-->
+<!--        update_time = #{updateTime,jdbcType=TIMESTAMP},-->
+<!--      </if>-->
+<!--    </set>-->
+<!--    where id = #{id,jdbcType=INTEGER}-->
+<!--  </update>-->
+<!--  <update id="updateByPrimaryKey" parameterType="com.nutrition.nutritionservice.vo.StoreVo">-->
+<!--    update store-->
+<!--    set code = #{code,jdbcType=VARCHAR},-->
+<!--      `name` = #{name,jdbcType=VARCHAR},-->
+<!--      manager_account_uuid = #{managerAccountUuid,jdbcType=VARCHAR},-->
+<!--      create_time = #{createTime,jdbcType=TIMESTAMP},-->
+<!--      update_time = #{updateTime,jdbcType=TIMESTAMP}-->
+<!--    where id = #{id,jdbcType=INTEGER}-->
+<!--  </update>-->
+</mapper>

@@ -25,7 +25,7 @@ public class CuisineIngredientRelVo implements Serializable {
     /**
      * 食材编码
      */
-    private String ingredientCode;
+    private int ingredientCode;
 
     /**
      * 每份菜品食材重量

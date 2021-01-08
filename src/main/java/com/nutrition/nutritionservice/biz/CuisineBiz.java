@@ -4,9 +4,14 @@ import com.alibaba.fastjson.PropertyNamingStrategy;
 import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.google.common.collect.Maps;
 import com.nutrition.nutritionservice.annotation.Biz;
+import com.nutrition.nutritionservice.controller.ao.CuisineCategoryAo;
+import com.nutrition.nutritionservice.controller.ao.CuisinePreviewAo;
+import com.nutrition.nutritionservice.controller.ao.StoreCuisineListAo;
 import com.nutrition.nutritionservice.enums.CodeEnums;
+import com.nutrition.nutritionservice.enums.database.CuisineCategoryEnum;
 import com.nutrition.nutritionservice.enums.database.CuisineTasteEnum;
 import com.nutrition.nutritionservice.enums.database.IngredientCategoryEnum;
+import com.nutrition.nutritionservice.exception.NutritionServiceException;
 import com.nutrition.nutritionservice.service.ConfigPropertiesService;
 import com.nutrition.nutritionservice.service.CuisineCategoryWeightService;
 import com.nutrition.nutritionservice.service.CuisineHistoricalTasteService;
@@ -14,6 +19,7 @@ import com.nutrition.nutritionservice.service.CuisineIngredientRelService;
 import com.nutrition.nutritionservice.service.CuisineService;
 import com.nutrition.nutritionservice.service.DineRecommendedRateService;
 import com.nutrition.nutritionservice.service.IngredientService;
+import com.nutrition.nutritionservice.service.StoreService;
 import com.nutrition.nutritionservice.util.ModelUtil;
 import com.nutrition.nutritionservice.util.VectorUtil;
 import com.nutrition.nutritionservice.vo.CuisineCategoryWeightVo;
@@ -22,12 +28,15 @@ import com.nutrition.nutritionservice.vo.CuisineRecommendedScoreWebAo;
 import com.nutrition.nutritionservice.vo.DineRecommendedRateVo;
 import com.nutrition.nutritionservice.vo.IDPageParamVo;
 import com.nutrition.nutritionservice.vo.IngredientVo;
+import com.nutrition.nutritionservice.vo.StoreVo;
+import com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo;
 import com.nutrition.nutritionservice.vo.user.UserHistoricalWeightSumDailyVo;
 import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientCategoryModelVo;
 import com.nutrition.nutritionservice.vo.store.CuisineAssemblyAo;
 import com.nutrition.nutritionservice.vo.store.CuisineVo;
 import com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.thymeleaf.util.ListUtils;
 
 import javax.annotation.Resource;
@@ -39,6 +48,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.Vector;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 菜品。
@@ -72,6 +82,9 @@ public class CuisineBiz {
 
     @Resource
     private IngredientBiz ingredientBiz;
+
+    @Resource
+    private StoreService storeService;
 
     @Transactional(rollbackFor = Exception.class)
     public void saveNewCuisine(CuisineAssemblyAo cuisineAssemblyAo) {
@@ -178,5 +191,54 @@ public class CuisineBiz {
         return cuisineTasteScorePercentMap.entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue() / maxScorePercent));
 
+    }
+
+    public StoreCuisineListAo queryCuisineList(String storeCode) {
+        StoreCuisineListAo.StoreCuisineListAoBuilder storeCuisineListAoBuilder = StoreCuisineListAo.builder();
+        StoreVo storeVo = storeService.queryByCode(storeCode);
+        if (storeVo == null) {
+            throw new NutritionServiceException("门店未找到，storeCode " + storeCode);
+        }
+        storeCuisineListAoBuilder.storeCode(storeCode);
+        storeCuisineListAoBuilder.storeName(storeVo.getName());
+
+        List<CuisineVo> cuisineVoList = cuisineService.queryByStoreCode(storeCode);
+        if (CollectionUtils.isEmpty(cuisineVoList)) {
+            storeCuisineListAoBuilder.cuisineCategoryList(Collections.emptyList());
+            return storeCuisineListAoBuilder.build();
+        }
+        List<CuisineIngredientRelVo> cuisineIngredientRelVoList = cuisineIngredientRelService
+                .queryByCuisineCodeList(cuisineVoList.stream().map(CuisineVo::getCode).collect(Collectors.toList()));
+        List<IngredientVo> ingredientVoList = ingredientService.queryByCodeList(cuisineIngredientRelVoList.stream()
+                .map(CuisineIngredientRelVo::getIngredientCode).distinct().collect(Collectors.toList()));
+        Map<Integer, String> ingredientCodeNameMap = ingredientVoList.stream()
+                .collect(Collectors.toMap(IngredientVo::getCode, IngredientVo::getName));
+        // 餐品食材名称列表
+        Map<String, List<String>> cuisineCodeIngredientNameMap = cuisineIngredientRelVoList.stream()
+                .collect(Collectors.groupingBy(CuisineIngredientRelVo::getCuisineCode)).entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey,
+                        entry -> entry.getValue().stream()
+                                .sorted(Comparator.comparingInt(CuisineIngredientRelVo::getWeight).reversed())
+                                .map(cuisineIngredientRelVo -> ingredientCodeNameMap
+                                        .get(cuisineIngredientRelVo.getIngredientCode()))
+                                .collect(Collectors.toList())));
+        Map<CuisineCategoryEnum, List<CuisineVo>> cuisineCategoryMap = cuisineVoList.stream().collect(Collectors
+                .groupingBy(cuisine -> CodeEnums.valueOf(CuisineCategoryEnum.class, cuisine.getCuisineType())));
+        // 餐品分类列表
+        List<CuisineCategoryAo> cuisineCategoryAoList = cuisineCategoryMap.entrySet().stream()
+                .map(cuisineCategoryEnumListEntry -> CuisineCategoryAo.builder()
+                        .categoryCode(cuisineCategoryEnumListEntry.getKey().getCode())
+                        .categoryName(cuisineCategoryEnumListEntry.getKey().getName())
+                        .cuisineList(cuisineCategoryEnumListEntry.getValue().stream()
+                                .map(cuisineVo -> CuisinePreviewAo.builder().code(cuisineVo.getCode())
+                                        .name(cuisineVo.getName()).imageUrl(cuisineVo.getImageUrl())
+                                        .mainIngredientList(cuisineCodeIngredientNameMap
+                                                .getOrDefault(cuisineVo.getCode(), Collections.emptyList()))
+                                        .build())
+                                .collect(Collectors.toList()))
+                        .build())
+                .collect(Collectors.toList());
+
+        return storeCuisineListAoBuilder.cuisineCategoryList(cuisineCategoryAoList).build();
     }
 }

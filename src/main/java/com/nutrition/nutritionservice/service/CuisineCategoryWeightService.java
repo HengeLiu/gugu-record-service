@@ -31,7 +31,7 @@ public class CuisineCategoryWeightService {
     private CuisineCategoryWeightDao cuisineCategoryWeightDao;
 
     public CuisineCategoryWeightVo calculateCuisineCategoryWight(CuisineAssemblyAo cuisineAssemblyAo) {
-        Map<String, Integer> ingredientWeightMap = cuisineAssemblyAo.getCuisineIngredientRelList().stream()
+        Map<Integer, Integer> ingredientWeightMap = cuisineAssemblyAo.getCuisineIngredientRelList().stream()
                 .collect(Collectors.toMap(CuisineIngredientRelVo::getIngredientCode, CuisineIngredientRelVo::getWeight,
                         Integer::sum));
         List<IngredientVo> ingredientVoList = ingredientService

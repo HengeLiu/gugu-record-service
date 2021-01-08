@@ -4,7 +4,7 @@ import com.google.common.collect.Lists;
 import com.nutrition.nutritionservice.biz.CuisineBiz;
 import com.nutrition.nutritionservice.biz.ModelIngredientIntakesBiz;
 import com.nutrition.nutritionservice.enums.database.CuisineStatusEnum;
-import com.nutrition.nutritionservice.enums.database.CuisineType;
+import com.nutrition.nutritionservice.enums.database.CuisineCategoryEnum;
 import com.nutrition.nutritionservice.enums.database.CuisineWarmEnum;
 import com.nutrition.nutritionservice.enums.database.DineTimeEnum;
 import com.nutrition.nutritionservice.enums.database.IngredientProcessEnum;
@@ -56,7 +56,7 @@ public class CuisineTest {
             cuisineBiz.saveNewCuisine(CuisineAssemblyAo.builder()
                     .cuisineVo(CuisineVo.builder()
                             .warm(cuisineWarmEnum.getCode()).status(CuisineStatusEnum.SALE.getCode())
-                            .cuisineType(CuisineType.SET.getCode())
+                            .cuisineType(CuisineCategoryEnum.SET.getCode())
                             .name("测试菜" + (80 + i)).dineTime(dineTimeEnum.getCode()).storeCode("100001")
                             .goal(modelIngredientCategoryModelVo.getGoal()).build())
                     .cuisineIngredientRelList(cuisineIngredientRelVoList).build());

@@ -57,6 +57,11 @@ public class CuisineVo implements Serializable {
     private int warm;
 
     /**
+     * 图片地址
+     */
+    private String imageUrl;
+
+    /**
      * 菜品状态
      */
     private int status;
