@@ -8,7 +8,7 @@ import com.nutrition.nutritionservice.service.CuisineCategoryWeightService;
 import com.nutrition.nutritionservice.service.CuisineService;
 import com.nutrition.nutritionservice.service.UserIngredientCategoryModelService;
 import com.nutrition.nutritionservice.service.UserHistoricalCuisineService;
-import com.nutrition.nutritionservice.service.UserHistoricalWeightSumDailyService;
+import com.nutrition.nutritionservice.service.UserIngredientWeightSumDailyService;
 import com.nutrition.nutritionservice.service.UserInfoService;
 import com.nutrition.nutritionservice.util.ModelUtil;
 import com.nutrition.nutritionservice.util.VectorUtil;
@@ -16,7 +16,7 @@ import com.nutrition.nutritionservice.vo.CuisineCategoryWeightVo;
 import com.nutrition.nutritionservice.vo.CuisineRecommendedScoreWebAo;
 import com.nutrition.nutritionservice.vo.IDPageParamVo;
 import com.nutrition.nutritionservice.vo.user.UserHistoricalCuisineVo;
-import com.nutrition.nutritionservice.vo.user.UserHistoricalWeightSumDailyVo;
+import com.nutrition.nutritionservice.vo.user.UserIngredientWeightSumDailyVo;
 import com.nutrition.nutritionservice.vo.store.CuisineVo;
 import com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo;
 import com.nutrition.nutritionservice.vo.user.UserInfoVo;
@@ -43,7 +43,7 @@ public class CuisineRecommendedTest {
     private UserHistoricalCuisineService userHistoricalCuisineService;
 
     @Resource
-    private UserHistoricalWeightSumDailyService userHistoricalWeightSumDailyService;
+    private UserIngredientWeightSumDailyService userIngredientWeightSumDailyService;
 
     @Resource
     private CuisineService cuisineService;
@@ -68,10 +68,10 @@ public class CuisineRecommendedTest {
         log.info(userInfo.toString());
         UserIngredientCategoryModelVo userCategoryIntakesModel = userIngredientCategoryModelService
                 .queryLastByUuid(testUuid);
-        UserHistoricalWeightSumDailyVo userHistoricalWeightSumDaily = userHistoricalWeightSumDailyService
+        UserIngredientWeightSumDailyVo userHistoricalWeightSumDaily = userIngredientWeightSumDailyService
                 .queryByUuidAndDate(testUuid, LocalDate.now());
         userHistoricalWeightSumDaily = userHistoricalWeightSumDaily == null
-                ? UserHistoricalWeightSumDailyVo.createEmpty(testUuid, date)
+                ? UserIngredientWeightSumDailyVo.createEmpty(testUuid, date)
                 : userHistoricalWeightSumDaily;
         List<CuisineRecommendedScoreWebAo> historicalRecommendedCuisineList = cuisineBiz
                 .queryRecommendedCuisineListByHistorical(userCategoryIntakesModel, userHistoricalWeightSumDaily,
@@ -101,13 +101,13 @@ public class CuisineRecommendedTest {
             userHistoricalCuisineService.add(UserHistoricalCuisineVo.builder().uuid(testUuid)
                     .cuisineCode(mostRecommendedCuisine.getCode()).tasteScore(CuisineTasteEnum.UNKNOWN.getCode())
                     .status(UserHistoricalCuisineStatusEnum.NORMAL.getCode()).build());
-            UserHistoricalWeightSumDailyVo userHistoricalWeightSumDailyVo = userHistoricalWeightSumDailyService
+            UserIngredientWeightSumDailyVo userIngredientWeightSumDailyVo = userIngredientWeightSumDailyService
                     .queryByUuidAndDate(testUuid, date);
-            userHistoricalWeightSumDailyVo = userHistoricalWeightSumDailyVo == null
-                    ? UserHistoricalWeightSumDailyVo.createEmpty(testUuid, date)
-                    : userHistoricalWeightSumDailyVo;
+            userIngredientWeightSumDailyVo = userIngredientWeightSumDailyVo == null
+                    ? UserIngredientWeightSumDailyVo.createEmpty(testUuid, date)
+                    : userIngredientWeightSumDailyVo;
             // 用户今日摄入记录向量
-            Vector<Double> userHistoricalWeightVector = ModelUtil.modelToVector(userHistoricalWeightSumDailyVo);
+            Vector<Double> userHistoricalWeightVector = ModelUtil.modelToVector(userIngredientWeightSumDailyVo);
             log.info("用户今日摄入记录向量 {}", userHistoricalWeightVector.toString());
             CuisineCategoryWeightVo cuisineCategoryWeightVo = cuisineCategoryWeightService
                     .queryByCuisineCode(mostRecommendedCuisine.getCode());
@@ -115,9 +115,9 @@ public class CuisineRecommendedTest {
             Vector<Integer> cuisineCategoryWeightVector = ModelUtil.modelToVector(cuisineCategoryWeightVo);
             log.info("菜品食材种类重量向量 {}", cuisineCategoryWeightVector.toString());
             ModelUtil.vectorToModel(VectorUtil.addition(cuisineCategoryWeightVector, userHistoricalWeightVector),
-                    userHistoricalWeightSumDailyVo);
-            userHistoricalWeightSumDailyService.insertOrUpdateByUuidAndDate(userHistoricalWeightSumDailyVo);
-            log.info("用户摄入后模型 {}", ModelUtil.modelToVector(userHistoricalWeightSumDailyVo).toString());
+                    userIngredientWeightSumDailyVo);
+            userIngredientWeightSumDailyService.insertOrUpdateByUuidAndDate(userIngredientWeightSumDailyVo);
+            log.info("用户摄入后模型 {}", ModelUtil.modelToVector(userIngredientWeightSumDailyVo).toString());
 
         }
 

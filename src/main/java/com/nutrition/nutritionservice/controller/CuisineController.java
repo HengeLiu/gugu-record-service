@@ -2,18 +2,16 @@ package com.nutrition.nutritionservice.controller;
 
 import com.nutrition.nutritionservice.biz.CuisineBiz;
 import com.nutrition.nutritionservice.biz.ModelIngredientIntakesBiz;
-import com.nutrition.nutritionservice.controller.ao.CuisinePreviewAo;
 import com.nutrition.nutritionservice.controller.ao.StoreCuisineListAo;
 import com.nutrition.nutritionservice.vo.CuisineRecommendedScoreWebAo;
 import com.nutrition.nutritionservice.vo.IDPageParamVo;
-import com.nutrition.nutritionservice.vo.user.UserHistoricalWeightSumDailyVo;
+import com.nutrition.nutritionservice.vo.user.UserIngredientWeightSumDailyVo;
 import com.nutrition.nutritionservice.vo.store.CuisineAssemblyAo;
 import com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -62,7 +60,7 @@ public class CuisineController {
     @PostMapping("/recommendedList/historical")
     @ResponseBody
     public List<CuisineRecommendedScoreWebAo> queryRecommendedCuisineList(UserIngredientCategoryModelVo userModel,
-                                                                          UserHistoricalWeightSumDailyVo historicalWeightSumDaily, IDPageParamVo pageParam) {
+                                                                          UserIngredientWeightSumDailyVo historicalWeightSumDaily, IDPageParamVo pageParam) {
         return cuisineBiz.queryRecommendedCuisineListByHistorical(userModel, historicalWeightSumDaily, pageParam);
     }
 

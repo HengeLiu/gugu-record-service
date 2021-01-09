@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.nutrition.nutritionservice.dao.UserHistoricalWeightSumDailyDao">
-  <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.user.UserHistoricalWeightSumDailyVo">
+<mapper namespace="com.nutrition.nutritionservice.dao.UserIngredientWeightSumDailyDao">
+  <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.user.UserIngredientWeightSumDailyVo">
     <id column="id" jdbcType="INTEGER" property="id"/>
     <result column="uuid" jdbcType="VARCHAR" property="uuid"/>
     <result column="date" jdbcType="DATE" property="date"/>
@@ -36,18 +36,18 @@
   <select id="selectByUuid" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
-    from user_historical_weight_sum_daily
+    from user_ingredient_weight_sum_daily
     where uuid = #{uuid}
   </select>
   <select id="selectByUuidAndDate" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
-    from user_historical_weight_sum_daily
+    from user_ingredient_weight_sum_daily
     where uuid = #{uuid} and `date` = #{date}
   </select>
   <insert id="insert" keyColumn="id" keyProperty="id"
-          parameterType="com.nutrition.nutritionservice.vo.user.UserHistoricalWeightSumDailyVo" useGeneratedKeys="true">
-    insert into user_historical_weight_sum_daily (
+          parameterType="com.nutrition.nutritionservice.vo.user.UserIngredientWeightSumDailyVo" useGeneratedKeys="true">
+    insert into user_ingredient_weight_sum_daily (
     <include refid="Insert_Column_List"/>
     )
     values (#{uuid,jdbcType=VARCHAR}, #{date,jdbcType=DATE}, #{processedGrains,jdbcType=INTEGER},
@@ -57,8 +57,8 @@
     #{egg,jdbcType=INTEGER}, #{dairy,jdbcType=INTEGER}, #{soybean,jdbcType=INTEGER},
     #{nut,jdbcType=INTEGER}, #{oil,jdbcType=INTEGER}, #{salt,jdbcType=INTEGER})
   </insert>
-  <update id="updateByUuidAndDate" parameterType="com.nutrition.nutritionservice.vo.user.UserHistoricalWeightSumDailyVo">
-    update user_historical_weight_sum_daily
+  <update id="updateByUuidAndDate" parameterType="com.nutrition.nutritionservice.vo.user.UserIngredientWeightSumDailyVo">
+    update user_ingredient_weight_sum_daily
     set uuid = #{uuid,jdbcType=VARCHAR},
       `date` = #{date,jdbcType=DATE},
       processed_grains = #{processedGrains,jdbcType=INTEGER},

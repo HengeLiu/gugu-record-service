@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class UserHistoricalWeightSumDailyVo extends CategoryModel<Double> implements Serializable {
+public class UserIngredientWeightSumDailyVo extends CategoryModel<Double> implements Serializable {
     private int id;
 
     /**
@@ -44,8 +44,8 @@ public class UserHistoricalWeightSumDailyVo extends CategoryModel<Double> implem
      */
     private LocalDateTime updateTime;
 
-    public static UserHistoricalWeightSumDailyVo createEmpty(String uuid, LocalDate date) {
-        UserHistoricalWeightSumDailyVo emptyVo = new UserHistoricalWeightSumDailyVo();
+    public static UserIngredientWeightSumDailyVo createEmpty(String uuid, LocalDate date) {
+        UserIngredientWeightSumDailyVo emptyVo = new UserIngredientWeightSumDailyVo();
         emptyVo.setProcessedGrains(0.0);
         emptyVo.setUnprocessedGrains(0.0);
         emptyVo.setMixedBeans(0.0);

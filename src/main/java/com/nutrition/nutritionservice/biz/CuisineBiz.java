@@ -30,7 +30,7 @@ import com.nutrition.nutritionservice.vo.IDPageParamVo;
 import com.nutrition.nutritionservice.vo.IngredientVo;
 import com.nutrition.nutritionservice.vo.StoreVo;
 import com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo;
-import com.nutrition.nutritionservice.vo.user.UserHistoricalWeightSumDailyVo;
+import com.nutrition.nutritionservice.vo.user.UserIngredientWeightSumDailyVo;
 import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientCategoryModelVo;
 import com.nutrition.nutritionservice.vo.store.CuisineAssemblyAo;
 import com.nutrition.nutritionservice.vo.store.CuisineVo;
@@ -48,7 +48,6 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.Vector;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * 菜品。
@@ -141,7 +140,7 @@ public class CuisineBiz {
     }
 
     public List<CuisineRecommendedScoreWebAo> queryRecommendedCuisineListByHistorical(
-            UserIngredientCategoryModelVo userModel, UserHistoricalWeightSumDailyVo historicalWeightSumDaily,
+            UserIngredientCategoryModelVo userModel, UserIngredientWeightSumDailyVo historicalWeightSumDaily,
             IDPageParamVo pageParamVo) {
         Vector<Integer> userModelVector = ModelUtil.modelToVector(userModel);
         Vector<Double> historicalWeightVector = ModelUtil.modelToVector(historicalWeightSumDaily);

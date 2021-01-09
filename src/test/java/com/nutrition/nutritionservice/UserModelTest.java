@@ -5,11 +5,11 @@ import com.nutrition.nutritionservice.enums.database.DineTimeEnum;
 import com.nutrition.nutritionservice.service.CuisineService;
 import com.nutrition.nutritionservice.service.UserIngredientCategoryModelService;
 import com.nutrition.nutritionservice.service.UserHistoricalCuisineService;
-import com.nutrition.nutritionservice.service.UserHistoricalWeightSumDailyService;
+import com.nutrition.nutritionservice.service.UserIngredientWeightSumDailyService;
 import com.nutrition.nutritionservice.service.UserInfoService;
 import com.nutrition.nutritionservice.vo.CuisineRecommendedScoreWebAo;
 import com.nutrition.nutritionservice.vo.IDPageParamVo;
-import com.nutrition.nutritionservice.vo.user.UserHistoricalWeightSumDailyVo;
+import com.nutrition.nutritionservice.vo.user.UserIngredientWeightSumDailyVo;
 import com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo;
 import com.nutrition.nutritionservice.vo.user.UserInfoVo;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +34,7 @@ public class UserModelTest {
     private UserHistoricalCuisineService userHistoricalCuisineService;
 
     @Resource
-    private UserHistoricalWeightSumDailyService userHistoricalWeightSumDailyService;
+    private UserIngredientWeightSumDailyService userIngredientWeightSumDailyService;
 
     @Resource
     private CuisineService cuisineService;
@@ -61,10 +61,10 @@ public class UserModelTest {
         List<CuisineRecommendedScoreWebAo> dineTimeRecommendedCuisineList = cuisineBiz
                 .queryRecommendedCuisineListByDineTime(userCategoryIntakesModel, dineTimeEnum.getCode(),
                         IDPageParamVo.builder().pageNumber(1).rowNumber(200).build());
-        UserHistoricalWeightSumDailyVo userHistoricalWeightSumDaily = userHistoricalWeightSumDailyService
+        UserIngredientWeightSumDailyVo userHistoricalWeightSumDaily = userIngredientWeightSumDailyService
                 .queryByUuidAndDate(testUuid, LocalDate.now());
         userHistoricalWeightSumDaily = userHistoricalWeightSumDaily == null
-                ? UserHistoricalWeightSumDailyVo.createEmpty(testUuid, LocalDate.now())
+                ? UserIngredientWeightSumDailyVo.createEmpty(testUuid, LocalDate.now())
                 : userHistoricalWeightSumDaily;
         List<CuisineRecommendedScoreWebAo> historicalRecommendedCuisineList = cuisineBiz
                 .queryRecommendedCuisineListByHistorical(userCategoryIntakesModel, userHistoricalWeightSumDaily,

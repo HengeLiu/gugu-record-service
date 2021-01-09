@@ -35,4 +35,10 @@ public class UserController {
         return Response.success();
     }
 
+    @GetMapping("/save-history")
+    public Response saveCuisineHistory(String uuid, String cuisineHistory) {
+
+        return null;
+    }
+
 }

@@ -4,11 +4,16 @@ import com.nutrition.nutritionservice.annotation.Biz;
 import com.nutrition.nutritionservice.enums.database.UserAccountStatusTypeEnum;
 import com.nutrition.nutritionservice.enums.database.UserAccountTypeEnum;
 import com.nutrition.nutritionservice.exception.NutritionServiceException;
+import com.nutrition.nutritionservice.service.CuisineService;
 import com.nutrition.nutritionservice.service.EnergyCalorieCalculateService;
 import com.nutrition.nutritionservice.service.UserAccountService;
 import com.nutrition.nutritionservice.service.UserInfoService;
+import com.nutrition.nutritionservice.service.UserIngredientWeightSumDailyService;
+import com.nutrition.nutritionservice.service.UserNutrientWeightSumDailyService;
 import com.nutrition.nutritionservice.service.WechatHttpApiService;
 import com.nutrition.nutritionservice.util.UUIDUtils;
+import com.nutrition.nutritionservice.vo.UserNutrientWeightSumDailyVo;
+import com.nutrition.nutritionservice.vo.store.CuisineVo;
 import com.nutrition.nutritionservice.vo.user.UserAccountVo;
 import com.nutrition.nutritionservice.vo.user.UserInfoVo;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +42,15 @@ public class UserBiz {
 
     @Resource
     private EnergyCalorieCalculateService energyCalorieCalculateService;
+
+    @Resource
+    private CuisineService cuisineService;
+
+    @Resource
+    private UserIngredientWeightSumDailyService userIngredientWeightSumDailyService;
+
+    @Resource
+    private UserNutrientWeightSumDailyService userNutrientWeightSumDailyService;
 
     private UserInfoVo queryUserInfo(String uuid) {
         return userInfoService.selectByUuid(uuid);
@@ -84,6 +98,11 @@ public class UserBiz {
         userInfoVo.setCalorie((double) calorie);
         userInfoService.add(userInfoVo);
         return calorie;
+    }
+
+    public void saveCuisineHistory(String uuid, String cuisineCode) {
+        CuisineVo cuisineVo = cuisineService.queryByCuisineCode(cuisineCode);
+
     }
 
 }

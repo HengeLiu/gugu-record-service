@@ -18,12 +18,13 @@ import com.nutrition.nutritionservice.exception.NutritionServiceException;
 import com.nutrition.nutritionservice.service.ConfigPropertiesService;
 import com.nutrition.nutritionservice.service.UserAccountService;
 import com.nutrition.nutritionservice.service.UserHistoricalCuisineService;
-import com.nutrition.nutritionservice.service.UserHistoricalWeightSumDailyService;
+import com.nutrition.nutritionservice.service.UserIngredientWeightSumDailyService;
 import com.nutrition.nutritionservice.service.UserInfoService;
 import com.nutrition.nutritionservice.service.UserIngredientCategoryModelService;
 import com.nutrition.nutritionservice.service.UserLocationService;
 import com.nutrition.nutritionservice.service.UserSettingService;
 import com.nutrition.nutritionservice.service.UserStatusInfoService;
+import com.nutrition.nutritionservice.service.WechatHttpApiService;
 import com.nutrition.nutritionservice.util.DateTimeUtil;
 import com.nutrition.nutritionservice.util.ModelUtil;
 import com.nutrition.nutritionservice.vo.UserLocationVo;
@@ -31,11 +32,12 @@ import com.nutrition.nutritionservice.vo.UserSettingVo;
 import com.nutrition.nutritionservice.vo.UserStatusInfoVo;
 import com.nutrition.nutritionservice.vo.user.UserAccountVo;
 import com.nutrition.nutritionservice.vo.user.UserHistoricalCuisineVo;
-import com.nutrition.nutritionservice.vo.user.UserHistoricalWeightSumDailyVo;
+import com.nutrition.nutritionservice.vo.user.UserIngredientWeightSumDailyVo;
 import com.nutrition.nutritionservice.vo.user.UserInfoVo;
 import com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
@@ -63,7 +65,7 @@ public class ProgramLoadDataBiz {
     private UserIngredientCategoryModelService userIngredientCategoryModelService;
 
     @Resource
-    private UserHistoricalWeightSumDailyService userHistoricalWeightSumDailyService;
+    private UserIngredientWeightSumDailyService userIngredientWeightSumDailyService;
 
     @Resource
     private UserSettingService userSettingService;
@@ -85,6 +87,9 @@ public class ProgramLoadDataBiz {
 
     @Resource
     private UserNutrientWeightSumDailyBiz userNutrientWeightSumDailyBiz;
+
+    @Resource
+    private WechatHttpApiService wechatHttpApiService;
 
     @Transactional(rollbackFor = Exception.class)
     public PreloadDataAo loadUserInfo(String openid) {
@@ -142,16 +147,16 @@ public class ProgramLoadDataBiz {
 
         /* 用户食材分类模型目标值及历史摄入量 */
         // 获取用户食材分类今日摄入历史
-        UserHistoricalWeightSumDailyVo userHistoricalWeightSumDailyVo = userHistoricalWeightSumDailyService
+        UserIngredientWeightSumDailyVo userIngredientWeightSumDailyVo = userIngredientWeightSumDailyService
                 .queryByUuidAndDate(uuid, LocalDate.now());
-        if (userHistoricalWeightSumDailyVo == null) {
-            userHistoricalWeightSumDailyVo = UserHistoricalWeightSumDailyVo.createEmpty(uuid, LocalDate.now());
+        if (userIngredientWeightSumDailyVo == null) {
+            userIngredientWeightSumDailyVo = UserIngredientWeightSumDailyVo.createEmpty(uuid, LocalDate.now());
         }
         List<SupperIngredientCategoryWeightAo> supperIngredientCategoryWeightAoList = ModelUtil
-                .modelHistoryToWeightAo(userIngredientCategoryModelVo, userHistoricalWeightSumDailyVo);
+                .modelHistoryToWeightAo(userIngredientCategoryModelVo, userIngredientWeightSumDailyVo);
         preloadDataAoBuilder.ingredientCategoryWeightList(supperIngredientCategoryWeightAoList);
 
-        double historicalCalorie = userHistoricalWeightSumDailyVo.getCalorie();
+        double historicalCalorie = userIngredientWeightSumDailyVo.getCalorie();
         preloadDataAoBuilder.historicalCalorieDaily(historicalCalorie);
 
         if (userSettingVo != null) {
@@ -185,5 +190,14 @@ public class ProgramLoadDataBiz {
         preloadDataAoBuilder.userNutrientHistoricalIntakesDaily(nutrientWeightList);
 
         return preloadDataAoBuilder.build();
+    }
+
+    public PreloadDataAo loadUserInfoByWxCodeCode(String jsCode) {
+        String wxOpenid = wechatHttpApiService.getUserOpenId(jsCode);
+        if (StringUtils.isEmpty(wxOpenid)) {
+            log.error("Cannot get wx.openid.");
+            throw new NutritionServiceException("未查询到用户的微信账号");
+        }
+        return loadUserInfo(wxOpenid);
     }
 }
