@@ -8,7 +8,7 @@ package com.nutrition.nutritionservice.enums;
  * @since 2020/9/28
  */
 public enum HttpStateCodeEnum implements CodeEnum<Integer> {
-    SUCCESS(0),
+    SUCCESS(200),
 
     BUSINESS_ERROR(400),
 
