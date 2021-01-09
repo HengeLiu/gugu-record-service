@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
- * user_historical_weight_sum_daily
+ * user_ingredient_weight_sum_daily
  * 
  * @author heng.liu
  * @since 20.020.0/12/28

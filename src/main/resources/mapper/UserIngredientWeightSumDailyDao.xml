@@ -4,7 +4,8 @@
   <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.user.UserIngredientWeightSumDailyVo">
     <id column="id" jdbcType="INTEGER" property="id"/>
     <result column="uuid" jdbcType="VARCHAR" property="uuid"/>
-    <result column="date" jdbcType="DATE" property="date"/>
+    <result column="date" jdbcType="DOUBLE" property="date"/>
+    <result column="calorie" jdbcType="DATE" property="calorie"/>
     <result column="processed_grains" jdbcType="INTEGER" property="processedGrains"/>
     <result column="unprocessed_grains" jdbcType="INTEGER" property="unprocessedGrains"/>
     <result column="mixed_beans" jdbcType="INTEGER" property="mixedBeans"/>
@@ -25,12 +26,12 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
   </resultMap>
   <sql id="Base_Column_List">
-    id, uuid, `date`, processed_grains, unprocessed_grains, mixed_beans, tuber, general_vegetables, 
+    id, uuid, `date`, calorie, processed_grains, unprocessed_grains, mixed_beans, tuber, general_vegetables,
     dark_vegetables, fruit, meat, poultry, aquatic, egg, dairy, soybean, nut, oil, salt, 
     create_time, update_time
   </sql>
   <sql id="Insert_Column_List">
-    uuid, `date`, processed_grains, unprocessed_grains, mixed_beans, tuber, general_vegetables,
+    uuid, `date`, calorie, processed_grains, unprocessed_grains, mixed_beans, tuber, general_vegetables,
     dark_vegetables, fruit, meat, poultry, aquatic, egg, dairy, soybean, nut, oil, salt
   </sql>
   <select id="selectByUuid" parameterType="java.lang.String" resultMap="BaseResultMap">
