@@ -1,10 +1,14 @@
 package com.nutrition.nutritionservice.vo;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import lombok.Data;
 
 /**
  * user_nutrient_weight_sum_daily
@@ -13,6 +17,9 @@ import lombok.Data;
  * @since 2021/1/5
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserNutrientWeightSumDailyVo implements Serializable {
     private Integer id;
 
@@ -34,7 +41,7 @@ public class UserNutrientWeightSumDailyVo implements Serializable {
     /**
      * 今日摄入重量
      */
-    private Integer weight;
+    private Double weight;
 
     private LocalDateTime createTime;
 

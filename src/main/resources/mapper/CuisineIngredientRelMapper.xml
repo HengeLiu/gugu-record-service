@@ -16,7 +16,7 @@
     <sql id="Insert_Column_List">
     cuisine_code, ingredient_code, weight, `process`
   </sql>
-    <select id="selectByCuisineCode" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="selectByCuisineCode" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from cuisine_ingredient_rel

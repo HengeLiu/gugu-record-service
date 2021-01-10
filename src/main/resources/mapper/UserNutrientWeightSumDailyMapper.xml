@@ -6,7 +6,7 @@
         <result column="uuid" jdbcType="VARCHAR" property="uuid"/>
         <result column="date" jdbcType="DATE" property="date"/>
         <result column="nutrient_code" jdbcType="INTEGER" property="nutrientCode"/>
-        <result column="weight" jdbcType="INTEGER" property="weight"/>
+        <result column="weight" jdbcType="DOUBLE" property="weight"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
@@ -14,7 +14,7 @@
     id, uuid, `date`, nutrient_code, weight, create_time, update_time
   </sql>
     <sql id="Insert_Column_List">
-    id, uuid, `date`, nutrient_code, weight
+    uuid, `date`, nutrient_code, weight
   </sql>
     <select id="selectByUuidAndDate" resultMap="BaseResultMap">
         select
@@ -27,7 +27,21 @@
         <include refid="Insert_Column_List"/>
         )
         values (#{uuid,jdbcType=VARCHAR}, #{date,jdbcType=DATE}, #{nutrientCode,jdbcType=INTEGER},
-        #{weight,jdbcType=INTEGER})
+        #{weight,jdbcType=DOUBLE})
+    </insert>
+    <insert id="batchInsert">
+        insert into user_nutrient_weight_sum_daily (
+        <include refid="Insert_Column_List"/>
+        )
+        values
+        <foreach collection="userNutrientWeightSumDailyVoList" item="item" index="index" separator=",">
+            (
+            #{item.uuid,jdbcType=VARCHAR},
+            #{item.date,jdbcType=DATE},
+            #{item.nutrientCode,jdbcType=INTEGER},
+            #{item.weight,jdbcType=DOUBLE}
+            )
+        </foreach>
     </insert>
     <update id="updateWeightByUuidDateAndNutrientCode"
             parameterType="com.nutrition.nutritionservice.vo.UserNutrientWeightSumDailyVo">
@@ -38,4 +52,14 @@
       `date` = #{date,jdbcType=DATE},
       nutrient_code = #{nutrientCode,jdbcType=INTEGER}
   </update>
+    <update id="batchUpdate" parameterType="java.util.List">
+        <foreach collection="userNutrientWeightSumDailyVoList" item="item" index="index" open="" close="" separator=";">
+            update user_nutrient_weight_sum_daily
+            set
+            weight = #{item.weight,jdbcType=INTEGER}
+            where uuid = #{item.uuid,jdbcType=VARCHAR},
+            `date` = #{item.date,jdbcType=DATE},
+            nutrient_code = #{item.nutrientCode,jdbcType=INTEGER}
+        </foreach>
+    </update>
 </mapper>

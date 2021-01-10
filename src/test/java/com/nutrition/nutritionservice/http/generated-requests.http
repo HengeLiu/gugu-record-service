@@ -1,11 +1,10 @@
 ###
-POST https://www.nutrition-service.com/load/user-info
+GET https://localhost/load/user-info?openid=test_openid_1235123
 Content-Type: application/json
-
-{
-  "openid": "test_openid_1235123"
-}
 
 ###
 GET https://www.nutrition-service.com/cuisine/cuisine-list?storeCode=100001&uuid=0
 Content-Type: application/json
+
+###
+GET https://localhost/user/save-history?uuid=b58700facd3b4118ac2a40d51b3ec070&cuisineCode=4c05d46ca4354808bb8f15fa52eaccfa

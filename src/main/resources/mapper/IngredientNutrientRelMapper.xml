@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nutrition.nutritionservice.dao.IngredientNutrientRelDao">
+    <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.IngredientNutrientRelVo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="ingredient_code" jdbcType="INTEGER" property="ingredientCode"/>
+        <result column="nutrient_code" jdbcType="INTEGER" property="nutrientCode"/>
+        <result column="nutrient_content" jdbcType="VARCHAR" property="nutrientContent"/>
+        <result column="content_unit" jdbcType="VARCHAR" property="contentUnit"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, ingredient_code, nutrient_code, nutrient_content, content_unit, create_time, 
+    update_time
+  </sql>
+    <sql id="Insert_Column_List">
+    ingredient_code, nutrient_code, nutrient_content, content_unit
+  </sql>
+    <select id="selectByIngredientCode" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ingredient_nutrient_rel
+        where ingredient_code = #{ingredientCode}
+    </select>
+    <select id="selectByIngredientCodeAndNutrientCode" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ingredient_nutrient_rel
+        where ingredient_code = #{ingredientCode} and nutrient_code = #{nutrientCode}
+    </select>
+    <select id="selectByIngredientCodeList"
+            resultType="com.nutrition.nutritionservice.vo.IngredientNutrientRelVo">
+        select
+        <include refid="Base_Column_List"/>
+        from ingredient_nutrient_rel
+        where ingredient_code in
+        (
+        <foreach collection="ingredientCodeList" separator="," item="ingredientCode">
+            #{ingredientCode}
+        </foreach>
+        )
+    </select>
+    <!--    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">-->
+    <!--    delete from ingredient_nutrient_rel-->
+    <!--    where id = #{id,jdbcType=INTEGER}-->
+    <!--  </delete>-->
+    <!--    <insert id="insert" keyColumn="id" keyProperty="id"-->
+    <!--            parameterType="com.nutrition.nutritionservice.vo.IngredientNutrientRelVo" useGeneratedKeys="true">-->
+    <!--    insert into ingredient_nutrient_rel (ingredient_code, nutrient_code, nutrient_content, -->
+    <!--      content_unit, create_time, update_time-->
+    <!--      )-->
+    <!--    values (#{ingredientCode,jdbcType=INTEGER}, #{nutrientCode,jdbcType=INTEGER}, #{nutrientContent,jdbcType=VARCHAR}, -->
+    <!--      #{contentUnit,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}-->
+    <!--      )-->
+    <!--  </insert>-->
+    <!--    <insert id="insertSelective" keyColumn="id" keyProperty="id"-->
+    <!--            parameterType="com.nutrition.nutritionservice.vo.IngredientNutrientRelVo" useGeneratedKeys="true">-->
+    <!--        insert into ingredient_nutrient_rel-->
+    <!--        <trim prefix="(" suffix=")" suffixOverrides=",">-->
+    <!--            <if test="ingredientCode != null">-->
+    <!--                ingredient_code,-->
+    <!--            </if>-->
+    <!--            <if test="nutrientCode != null">-->
+    <!--                nutrient_code,-->
+    <!--            </if>-->
+    <!--            <if test="nutrientContent != null">-->
+    <!--                nutrient_content,-->
+    <!--            </if>-->
+    <!--            <if test="contentUnit != null">-->
+    <!--                content_unit,-->
+    <!--            </if>-->
+    <!--            <if test="createTime != null">-->
+    <!--                create_time,-->
+    <!--            </if>-->
+    <!--            <if test="updateTime != null">-->
+    <!--                update_time,-->
+    <!--            </if>-->
+    <!--        </trim>-->
+    <!--        <trim prefix="values (" suffix=")" suffixOverrides=",">-->
+    <!--            <if test="ingredientCode != null">-->
+    <!--                #{ingredientCode,jdbcType=INTEGER},-->
+    <!--            </if>-->
+    <!--            <if test="nutrientCode != null">-->
+    <!--                #{nutrientCode,jdbcType=INTEGER},-->
+    <!--            </if>-->
+    <!--            <if test="nutrientContent != null">-->
+    <!--                #{nutrientContent,jdbcType=VARCHAR},-->
+    <!--            </if>-->
+    <!--            <if test="contentUnit != null">-->
+    <!--                #{contentUnit,jdbcType=VARCHAR},-->
+    <!--            </if>-->
+    <!--            <if test="createTime != null">-->
+    <!--                #{createTime,jdbcType=TIMESTAMP},-->
+    <!--            </if>-->
+    <!--            <if test="updateTime != null">-->
+    <!--                #{updateTime,jdbcType=TIMESTAMP},-->
+    <!--            </if>-->
+    <!--        </trim>-->
+    <!--    </insert>-->
+    <!--    <update id="updateByPrimaryKeySelective" parameterType="com.nutrition.nutritionservice.vo.IngredientNutrientRelVo">-->
+    <!--        update ingredient_nutrient_rel-->
+    <!--        <set>-->
+    <!--            <if test="ingredientCode != null">-->
+    <!--                ingredient_code = #{ingredientCode,jdbcType=INTEGER},-->
+    <!--            </if>-->
+    <!--            <if test="nutrientCode != null">-->
+    <!--                nutrient_code = #{nutrientCode,jdbcType=INTEGER},-->
+    <!--            </if>-->
+    <!--            <if test="nutrientContent != null">-->
+    <!--                nutrient_content = #{nutrientContent,jdbcType=VARCHAR},-->
+    <!--            </if>-->
+    <!--            <if test="contentUnit != null">-->
+    <!--                content_unit = #{contentUnit,jdbcType=VARCHAR},-->
+    <!--            </if>-->
+    <!--            <if test="createTime != null">-->
+    <!--                create_time = #{createTime,jdbcType=TIMESTAMP},-->
+    <!--            </if>-->
+    <!--            <if test="updateTime != null">-->
+    <!--                update_time = #{updateTime,jdbcType=TIMESTAMP},-->
+    <!--            </if>-->
+    <!--        </set>-->
+    <!--        where id = #{id,jdbcType=INTEGER}-->
+    <!--    </update>-->
+    <!--    <update id="updateByPrimaryKey" parameterType="com.nutrition.nutritionservice.vo.IngredientNutrientRelVo">-->
+    <!--    update ingredient_nutrient_rel-->
+    <!--    set ingredient_code = #{ingredientCode,jdbcType=INTEGER},-->
+    <!--      nutrient_code = #{nutrientCode,jdbcType=INTEGER},-->
+    <!--      nutrient_content = #{nutrientContent,jdbcType=VARCHAR},-->
+    <!--      content_unit = #{contentUnit,jdbcType=VARCHAR},-->
+    <!--      create_time = #{createTime,jdbcType=TIMESTAMP},-->
+    <!--      update_time = #{updateTime,jdbcType=TIMESTAMP}-->
+    <!--    where id = #{id,jdbcType=INTEGER}-->
+    <!--  </update>-->
+</mapper>

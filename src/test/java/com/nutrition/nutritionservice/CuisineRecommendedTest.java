@@ -99,7 +99,7 @@ public class CuisineRecommendedTest {
             CuisineVo mostRecommendedCuisine = cuisineService
                     .queryByCuisineCode(dineTimeRecommendedCuisineList.get(0).getCuisineCode());
             userHistoricalCuisineService.add(UserHistoricalCuisineVo.builder().uuid(testUuid)
-                    .cuisineCode(mostRecommendedCuisine.getCode()).tasteScore(CuisineTasteEnum.UNKNOWN.getCode())
+                    .cuisineCode(mostRecommendedCuisine.getCode()).tasteScore(CuisineTasteEnum.UNEVALUATED.getCode())
                     .status(UserHistoricalCuisineStatusEnum.NORMAL.getCode()).build());
             UserIngredientWeightSumDailyVo userIngredientWeightSumDailyVo = userIngredientWeightSumDailyService
                     .queryByUuidAndDate(testUuid, date);

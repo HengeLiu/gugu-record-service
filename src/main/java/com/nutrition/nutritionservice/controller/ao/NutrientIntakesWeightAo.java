@@ -29,7 +29,7 @@ public class NutrientIntakesWeightAo implements Serializable {
     /**
      * 摄入重量
      */
-    private Integer weight;
+    private Double weight;
 
     /**
      * 摄入热量

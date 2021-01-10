@@ -25,6 +25,11 @@ public class CuisineCategoryWeightVo extends CategoryModel<Integer> implements S
     private String cuisineCode;
 
     /**
+     * 餐品热量
+     */
+    private double calorie;
+
+    /**
      * 创建时间
      */
     private LocalDateTime createTime;

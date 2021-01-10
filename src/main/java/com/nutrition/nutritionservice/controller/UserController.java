@@ -36,9 +36,9 @@ public class UserController {
     }
 
     @GetMapping("/save-history")
-    public Response saveCuisineHistory(String uuid, String cuisineHistory) {
-
-        return null;
+    public Response saveCuisineHistory(@RequestParam String uuid, @RequestParam String cuisineCode) {
+        userBiz.saveCuisineHistory(uuid, cuisineCode);
+        return Response.success();
     }
 
 }

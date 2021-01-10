@@ -45,6 +45,7 @@ public class CuisineCategoryWeightService {
         CuisineCategoryWeightVo cuisineCategoryWeightVo = new CuisineCategoryWeightVo();
         ModelUtil.categoryEnumMapToModel(categoryWeightMap, cuisineCategoryWeightVo);
         cuisineCategoryWeightVo.setCuisineCode(cuisineAssemblyAo.getCuisineVo().getCode());
+        cuisineCategoryWeightVo.setCalorie(cuisineAssemblyAo.getCuisineVo().getCalorie());
         return cuisineCategoryWeightVo;
     }
 

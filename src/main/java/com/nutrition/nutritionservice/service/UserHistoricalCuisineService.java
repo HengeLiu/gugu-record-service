@@ -4,6 +4,7 @@ import com.nutrition.nutritionservice.dao.UserHistoricalCuisineDao;
 import com.nutrition.nutritionservice.vo.user.UserHistoricalCuisineVo;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -28,6 +29,7 @@ public class UserHistoricalCuisineService {
         return userHistoricalCuisineDao.selectLastCuisineByUuid(uuid);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void add(UserHistoricalCuisineVo userHistoricalCuisineVo) {
         userHistoricalCuisineDao.insert(userHistoricalCuisineVo);
     }

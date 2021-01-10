@@ -10,7 +10,7 @@ import com.nutrition.nutritionservice.enums.CodeEnum;
  */
 public enum CuisineTasteEnum implements CodeEnum<Integer> {
 
-    UNKNOWN(0, "未评价", 1),
+    UNEVALUATED(0, "未评价", 1),
 
     YUMMY(1, "好吃", 3),
 

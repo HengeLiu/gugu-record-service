@@ -3,6 +3,7 @@ package com.nutrition.nutritionservice.service;
 import com.nutrition.nutritionservice.dao.UserNutrientWeightSumDailyDao;
 import com.nutrition.nutritionservice.vo.UserNutrientWeightSumDailyVo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
@@ -22,6 +23,16 @@ public class UserNutrientWeightSumDailyService {
 
     public List<UserNutrientWeightSumDailyVo> queryByUuidAndDate(String uuid, LocalDate date) {
         return userNutrientWeightSumDailyDao.selectByUuidAndDate(uuid, date);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public int addAll(List<UserNutrientWeightSumDailyVo> userNutrientWeightSumDailyVoList) {
+        return userNutrientWeightSumDailyDao.batchInsert(userNutrientWeightSumDailyVoList);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public int updateAll(List<UserNutrientWeightSumDailyVo> userNutrientWeightSumDailyVoList) {
+        return userNutrientWeightSumDailyDao.batchUpdate(userNutrientWeightSumDailyVoList);
     }
 
 }

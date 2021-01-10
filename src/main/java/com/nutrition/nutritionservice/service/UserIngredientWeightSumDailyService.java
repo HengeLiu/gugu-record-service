@@ -4,6 +4,7 @@ import com.nutrition.nutritionservice.dao.UserIngredientWeightSumDailyDao;
 import com.nutrition.nutritionservice.vo.user.UserIngredientWeightSumDailyVo;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
@@ -25,6 +26,7 @@ public class UserIngredientWeightSumDailyService {
         return userIngredientWeightSumDailyDao.selectByUuidAndDate(uuid, date);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void insertOrUpdateByUuidAndDate(UserIngredientWeightSumDailyVo record) {
         if (userIngredientWeightSumDailyDao.selectByUuidAndDate(record.getUuid(), record.getDate()) == null) {
             userIngredientWeightSumDailyDao.insert(record);

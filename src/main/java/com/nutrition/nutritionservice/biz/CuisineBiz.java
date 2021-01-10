@@ -88,9 +88,9 @@ public class CuisineBiz {
     @Transactional(rollbackFor = Exception.class)
     public void saveNewCuisine(CuisineAssemblyAo cuisineAssemblyAo) {
         String cuisineCode = UUID.randomUUID().toString().replace("-", "");
+        double cuisineCalorie = ingredientBiz.calculateCalorie(cuisineAssemblyAo.getCuisineIngredientRelList());
         cuisineAssemblyAo.getCuisineVo().setCode(cuisineCode);
-        cuisineAssemblyAo.getCuisineVo()
-                .setCalorie(ingredientBiz.calculateCalorie(cuisineAssemblyAo.getCuisineIngredientRelList()));
+        cuisineAssemblyAo.getCuisineVo().setCalorie(cuisineCalorie);
         cuisineService.add(cuisineAssemblyAo.getCuisineVo());
         cuisineAssemblyAo.getCuisineIngredientRelList()
                 .forEach(cuisineIngredientRelVo -> cuisineIngredientRelVo.setCuisineCode(cuisineCode));

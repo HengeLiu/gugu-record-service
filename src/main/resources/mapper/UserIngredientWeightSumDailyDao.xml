@@ -4,8 +4,8 @@
   <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.user.UserIngredientWeightSumDailyVo">
     <id column="id" jdbcType="INTEGER" property="id"/>
     <result column="uuid" jdbcType="VARCHAR" property="uuid"/>
-    <result column="date" jdbcType="DOUBLE" property="date"/>
-    <result column="calorie" jdbcType="DATE" property="calorie"/>
+    <result column="date" jdbcType="DATE" property="date"/>
+    <result column="calorie" jdbcType="DOUBLE" property="calorie"/>
     <result column="processed_grains" jdbcType="INTEGER" property="processedGrains"/>
     <result column="unprocessed_grains" jdbcType="INTEGER" property="unprocessedGrains"/>
     <result column="mixed_beans" jdbcType="INTEGER" property="mixedBeans"/>
@@ -51,7 +51,7 @@
     insert into user_ingredient_weight_sum_daily (
     <include refid="Insert_Column_List"/>
     )
-    values (#{uuid,jdbcType=VARCHAR}, #{date,jdbcType=DATE}, #{processedGrains,jdbcType=INTEGER},
+    values (#{uuid,jdbcType=VARCHAR}, #{date,jdbcType=DATE}, #{calorie}, #{processedGrains,jdbcType=INTEGER},
     #{unprocessedGrains,jdbcType=INTEGER}, #{mixedBeans,jdbcType=INTEGER}, #{tuber,jdbcType=INTEGER},
     #{generalVegetables,jdbcType=INTEGER}, #{darkVegetables,jdbcType=INTEGER}, #{fruit,jdbcType=INTEGER},
     #{meat,jdbcType=INTEGER}, #{poultry,jdbcType=INTEGER}, #{aquatic,jdbcType=INTEGER},

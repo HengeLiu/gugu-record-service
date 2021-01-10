@@ -12,4 +12,10 @@ public interface UserNutrientWeightSumDailyDao {
     List<UserNutrientWeightSumDailyVo> selectByUuidAndDate(String uuid, LocalDate date);
 
     int updateWeightByUuidDateAndNutrientCode(UserNutrientWeightSumDailyVo record);
+
+    int batchUpdate(List<UserNutrientWeightSumDailyVo> userNutrientWeightSumDailyVoList);
+
+    int batchInsert(List<UserNutrientWeightSumDailyVo> userNutrientWeightSumDailyVoList);
+
+
 }

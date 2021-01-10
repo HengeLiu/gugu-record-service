@@ -5,6 +5,7 @@ import com.nutrition.nutritionservice.controller.ao.IngredientIntakesWeightAo;
 import com.nutrition.nutritionservice.controller.ao.SupperIngredientCategoryWeightAo;
 import com.nutrition.nutritionservice.enums.database.IngredientCategoryEnum;
 import com.nutrition.nutritionservice.enums.database.IngredientSuperCategoryEnum;
+import com.nutrition.nutritionservice.vo.CuisineCategoryWeightVo;
 import com.nutrition.nutritionservice.vo.modeldata.CategoryModel;
 import com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo;
 import com.nutrition.nutritionservice.vo.user.UserIngredientWeightSumDailyVo;

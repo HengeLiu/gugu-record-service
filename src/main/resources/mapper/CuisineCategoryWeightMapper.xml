@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.CuisineCategoryWeightVo">
     <id column="id" jdbcType="INTEGER" property="id"/>
     <result column="cuisine_code" jdbcType="VARCHAR" property="cuisineCode"/>
+    <result column="calorie" jdbcType="DOUBLE" property="calorie"/>
     <result column="processed_grains" jdbcType="INTEGER" property="processedGrains"/>
     <result column="unprocessed_grains" jdbcType="INTEGER" property="unprocessedGrains"/>
     <result column="mixed_beans" jdbcType="INTEGER" property="mixedBeans"/>
@@ -24,12 +25,12 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
   </resultMap>
   <sql id="Base_Column_List">
-    id, cuisine_code, processed_grains, unprocessed_grains, mixed_beans, tuber, general_vegetables, 
+    id, cuisine_code, calorie, processed_grains, unprocessed_grains, mixed_beans, tuber, general_vegetables,
     dark_vegetables, fruit, meat, poultry, aquatic, egg, dairy, soybean, nut, oil, salt, 
     create_time, update_time
   </sql>
   <sql id="Insert_Column_List">
-    cuisine_code, processed_grains, unprocessed_grains, mixed_beans, tuber, general_vegetables,
+    cuisine_code, calorie, processed_grains, unprocessed_grains, mixed_beans, tuber, general_vegetables,
     dark_vegetables, fruit, meat, poultry, aquatic, egg, dairy, soybean, nut, oil, salt
   </sql>
   <select id="selectByCuisineCode" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -66,6 +67,9 @@
     <set>
       <if test="cuisineCode != null">
         cuisine_code = #{cuisineCode,jdbcType=VARCHAR},
+      </if>
+      <if test="calorie != null">
+        calorie = #{calorie,jdbcType=DOUBLE},
       </if>
       <if test="processedGrains != null">
         processed_grains = #{processedGrains,jdbcType=INTEGER},
@@ -121,6 +125,7 @@
   <update id="updateByCuisineCode" parameterType="com.nutrition.nutritionservice.vo.CuisineCategoryWeightVo">
     update cuisine_category_weight
     set cuisine_code = #{cuisineCode,jdbcType=VARCHAR},
+      calorie = #{calorie,jdbcType=DOUBLE},
       processed_grains = #{processedGrains,jdbcType=INTEGER},
       unprocessed_grains = #{unprocessedGrains,jdbcType=INTEGER},
       mixed_beans = #{mixedBeans,jdbcType=INTEGER},
