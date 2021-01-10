@@ -1,10 +1,10 @@
 package com.nutrition.nutritionservice.vo.store;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import lombok.Builder;
 import lombok.Data;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * cuisine_ingredient_rel
@@ -28,7 +28,7 @@ public class CuisineIngredientRelVo implements Serializable {
     private int ingredientCode;
 
     /**
-     * 每份菜品食材重量
+     * 每份菜品食材重量，克
      */
     private int weight;
 

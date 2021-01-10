@@ -2,13 +2,13 @@ package com.nutrition.nutritionservice.biz;
 
 import com.google.common.collect.Lists;
 import com.nutrition.nutritionservice.annotation.Biz;
+import com.nutrition.nutritionservice.enums.UnitEnum;
 import com.nutrition.nutritionservice.enums.database.CuisineTasteEnum;
 import com.nutrition.nutritionservice.enums.database.UserAccountStatusTypeEnum;
 import com.nutrition.nutritionservice.enums.database.UserAccountTypeEnum;
 import com.nutrition.nutritionservice.exception.NutritionServiceException;
 import com.nutrition.nutritionservice.service.CuisineCategoryWeightService;
 import com.nutrition.nutritionservice.service.CuisineIngredientRelService;
-import com.nutrition.nutritionservice.service.CuisineService;
 import com.nutrition.nutritionservice.service.EnergyCalorieCalculateService;
 import com.nutrition.nutritionservice.service.IngredientNutrientRelService;
 import com.nutrition.nutritionservice.service.UserAccountService;
@@ -59,9 +59,6 @@ public class UserBiz {
 
     @Resource
     private EnergyCalorieCalculateService energyCalorieCalculateService;
-
-    @Resource
-    private CuisineService cuisineService;
 
     @Resource
     private UserIngredientWeightSumDailyService userIngredientWeightSumDailyService;
@@ -180,12 +177,16 @@ public class UserBiz {
             }
             for (IngredientNutrientRelVo ingredientNutrientRelVo : ingredientNutrientRelList) {
                 if ("none".equals(ingredientNutrientRelVo.getNutrientContent())
-                        || "tr".equals(ingredientNutrientRelVo.getNutrientContent())) {
+                        || "tr".equals(ingredientNutrientRelVo.getNutrientContent())
+                        || UnitEnum.PERCENT.getName().equals(ingredientNutrientRelVo.getContentUnit())) {
                     continue;
                 }
+                double nutrientWeight = Double.parseDouble(ingredientNutrientRelVo.getNutrientContent());
+                if (UnitEnum.MG.getName().equals(ingredientNutrientRelVo.getContentUnit())) {
+                    nutrientWeight /= 1000;
+                }
                 historicalNutrientCodeWeightMap.put(ingredientNutrientRelVo.getNutrientCode(),
-                        (Double.parseDouble(ingredientNutrientRelVo.getNutrientContent()) * ingredientWeight / 100)
-                                + historicalNutrientCodeWeightMap
+                        (nutrientWeight * ingredientWeight / 100) + historicalNutrientCodeWeightMap
                                         .getOrDefault(ingredientNutrientRelVo.getNutrientCode(), 0.0));
             }
         }
