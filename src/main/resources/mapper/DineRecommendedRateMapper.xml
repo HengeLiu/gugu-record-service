@@ -3,7 +3,7 @@
 <mapper namespace="com.nutrition.nutritionservice.dao.DineRecommendedRateDao">
     <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.DineRecommendedRateVo">
         <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="calorie" jdbcType="INTEGER" property="calorie"/>
+        <result column="calorie" jdbcType="DOUBLE" property="calorie"/>
         <result column="goal" jdbcType="TINYINT" property="goal"/>
         <result column="dine_time" jdbcType="TINYINT" property="dineTime"/>
         <result column="processed_grains" jdbcType="DOUBLE" property="processedGrains"/>
@@ -29,7 +29,7 @@
     tuber, general_vegetables, dark_vegetables, fruit, meat, poultry, aquatic, egg, dairy, 
     soybean, nut, oil, salt, create_time
   </sql>
-    <select id="selectByCalorieGoalDine" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="selectByCalorieGoalDine" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from dine_recommended_rate

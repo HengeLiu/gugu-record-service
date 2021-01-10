@@ -128,6 +128,7 @@ public class UserBiz {
 
     @Transactional(rollbackFor = Exception.class)
     public void saveCuisineHistory(String uuid, String cuisineCode) {
+
         /* 更新餐品记录 */
         userHistoricalCuisineService.add(UserHistoricalCuisineVo.builder().uuid(uuid).cuisineCode(cuisineCode)
                 .status(CuisineTasteEnum.UNEVALUATED.getCode()).build());

@@ -55,7 +55,8 @@
     insert into cuisine_category_weight (
     <include refid="Insert_Column_List"/>
     )
-    values (#{cuisineCode,jdbcType=VARCHAR}, #{processedGrains,jdbcType=INTEGER}, #{unprocessedGrains,jdbcType=INTEGER},
+    values (#{cuisineCode,jdbcType=VARCHAR}, #{calorie}, #{processedGrains,jdbcType=INTEGER},
+    #{unprocessedGrains,jdbcType=INTEGER},
     #{mixedBeans,jdbcType=INTEGER}, #{tuber,jdbcType=INTEGER}, #{generalVegetables,jdbcType=INTEGER},
     #{darkVegetables,jdbcType=INTEGER}, #{fruit,jdbcType=INTEGER}, #{meat,jdbcType=INTEGER},
     #{poultry,jdbcType=INTEGER}, #{aquatic,jdbcType=INTEGER}, #{egg,jdbcType=INTEGER},

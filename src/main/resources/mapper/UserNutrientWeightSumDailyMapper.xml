@@ -47,18 +47,18 @@
             parameterType="com.nutrition.nutritionservice.vo.UserNutrientWeightSumDailyVo">
     update user_nutrient_weight_sum_daily
     set
-      weight = #{weight,jdbcType=INTEGER}
-    where uuid = #{uuid,jdbcType=VARCHAR},
-      `date` = #{date,jdbcType=DATE},
+      weight = #{weight}
+    where uuid = #{uuid,jdbcType=VARCHAR} and
+      `date` = #{date,jdbcType=DATE} and
       nutrient_code = #{nutrientCode,jdbcType=INTEGER}
   </update>
     <update id="batchUpdate" parameterType="java.util.List">
         <foreach collection="userNutrientWeightSumDailyVoList" item="item" index="index" open="" close="" separator=";">
             update user_nutrient_weight_sum_daily
             set
-            weight = #{item.weight,jdbcType=INTEGER}
-            where uuid = #{item.uuid,jdbcType=VARCHAR},
-            `date` = #{item.date,jdbcType=DATE},
+            weight = #{item.weight}
+            where uuid = #{item.uuid,jdbcType=VARCHAR} and
+            `date` = #{item.date,jdbcType=DATE} and
             nutrient_code = #{item.nutrientCode,jdbcType=INTEGER}
         </foreach>
     </update>

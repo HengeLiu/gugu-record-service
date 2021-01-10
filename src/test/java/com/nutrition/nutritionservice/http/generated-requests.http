@@ -1,4 +1,4 @@
-###
+### 加载用户信息
 GET https://localhost/load/user-info?openid=test_openid_1235123
 Content-Type: application/json
 
@@ -6,5 +6,5 @@ Content-Type: application/json
 GET https://www.nutrition-service.com/cuisine/cuisine-list?storeCode=100001&uuid=0
 Content-Type: application/json
 
-###
-GET https://localhost/user/save-history?uuid=b58700facd3b4118ac2a40d51b3ec070&cuisineCode=4c05d46ca4354808bb8f15fa52eaccfa
+### 添加饮食记录
+GET https://localhost/user/save-history?uuid=b58700facd3b4118ac2a40d51b3ec070&cuisineCode=1a219e3a71f34d8ebc2af9c3d2d6eef8

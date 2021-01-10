@@ -62,6 +62,7 @@
     update user_ingredient_weight_sum_daily
     set uuid = #{uuid,jdbcType=VARCHAR},
       `date` = #{date,jdbcType=DATE},
+      calorie = #{calorie},
       processed_grains = #{processedGrains,jdbcType=INTEGER},
       unprocessed_grains = #{unprocessedGrains,jdbcType=INTEGER},
       mixed_beans = #{mixedBeans,jdbcType=INTEGER},
