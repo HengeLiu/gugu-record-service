@@ -30,17 +30,17 @@ public class UserNutrientWeightSumDailyBiz {
 
     /**
      * 计算用户营养素每日摄入历史重量。
-     * 
-     * @param uuid 用户唯一标识
-     * @param date 日期
+     *
      * @param targetCalorie 所有营养素素总热量，将根据该热量处理计算误差。
-     * @param nutrientCodeCalorieMap 需要展示或计算热量的营养素，key: 营养素编码，value: 营养素的热量。
      * @return 营养素摄入历史列表
      */
-    public List<NutrientIntakesWeightAo> queryUserNutrientWeightSumDaily(String uuid, LocalDate date,
-            Double targetCalorie, Map<Integer, Double> nutrientCodeCalorieMap) {
-        List<UserNutrientWeightSumDailyVo> userNutrientWeightSumDailyVoList = userNutrientWeightSumDailyService
-                .queryByUuidAndDate(uuid, date);
+    public List<NutrientIntakesWeightAo> calculateToAo(Double targetCalorie,
+            List<UserNutrientWeightSumDailyVo> userNutrientWeightSumDailyVoList) {
+        // 需要展示或计算热量的营养素，key: 营养素编码，value: 营养素的热量。
+        Map<Integer, Double> nutrientCodeCalorieMap = Maps.newHashMap();
+        nutrientCodeCalorieMap.put(NutrientEnum.CHO.getCode(), 4.0);
+        nutrientCodeCalorieMap.put(NutrientEnum.Fat.getCode(), 9.0);
+        nutrientCodeCalorieMap.put(NutrientEnum.Protein.getCode(), 4.0);
         if (CollectionUtils.isEmpty(userNutrientWeightSumDailyVoList)) {
             return Collections.emptyList();
         }
@@ -72,4 +72,10 @@ public class UserNutrientWeightSumDailyBiz {
 
     }
 
+    public List<NutrientIntakesWeightAo> queryUserNutrientWeightSumDaily(String uuid, Double targetCalorie,
+            LocalDate date) {
+        List<UserNutrientWeightSumDailyVo> userNutrientWeightSumDailyVoList = userNutrientWeightSumDailyService
+                .queryByUuidAndDate(uuid, date);
+        return this.calculateToAo(targetCalorie, userNutrientWeightSumDailyVoList);
+    }
 }

@@ -1,7 +1,9 @@
 package com.nutrition.nutritionservice.biz;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.nutrition.nutritionservice.annotation.Biz;
+import com.nutrition.nutritionservice.controller.ao.LastAddedCuisineAo;
 import com.nutrition.nutritionservice.enums.UnitEnum;
 import com.nutrition.nutritionservice.enums.database.CuisineTasteEnum;
 import com.nutrition.nutritionservice.enums.database.UserAccountStatusTypeEnum;
@@ -14,9 +16,12 @@ import com.nutrition.nutritionservice.service.IngredientNutrientRelService;
 import com.nutrition.nutritionservice.service.UserAccountService;
 import com.nutrition.nutritionservice.service.UserHistoricalCuisineService;
 import com.nutrition.nutritionservice.service.UserInfoService;
+import com.nutrition.nutritionservice.service.UserIngredientCategoryModelService;
 import com.nutrition.nutritionservice.service.UserIngredientWeightSumDailyService;
 import com.nutrition.nutritionservice.service.UserNutrientWeightSumDailyService;
 import com.nutrition.nutritionservice.service.WechatHttpApiService;
+import com.nutrition.nutritionservice.util.DateTimeUtil;
+import com.nutrition.nutritionservice.util.ModelUtil;
 import com.nutrition.nutritionservice.util.UUIDUtils;
 import com.nutrition.nutritionservice.vo.CuisineCategoryWeightVo;
 import com.nutrition.nutritionservice.vo.IngredientNutrientRelVo;
@@ -33,6 +38,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -70,6 +76,9 @@ public class UserBiz {
     private UserHistoricalCuisineService userHistoricalCuisineService;
 
     @Resource
+    private UserIngredientCategoryModelService userIngredientCategoryModelService;
+
+    @Resource
     private CuisineCategoryWeightService cuisineCategoryWeightService;
 
     @Resource
@@ -77,6 +86,9 @@ public class UserBiz {
 
     @Resource
     private IngredientNutrientRelService ingredientNutrientRelService;
+
+    @Resource
+    private UserNutrientWeightSumDailyBiz userNutrientWeightSumDailyBiz;
 
     private UserInfoVo queryUserInfo(String uuid) {
         return userInfoService.selectByUuid(uuid);
@@ -127,11 +139,15 @@ public class UserBiz {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void saveCuisineHistory(String uuid, String cuisineCode) {
+    public Map<String, Object> saveCuisineHistory(String uuid, String cuisineCode) {
+
+        Map<String, Object> resultParamMap = Maps.newHashMap();
 
         /* 更新餐品记录 */
         userHistoricalCuisineService.add(UserHistoricalCuisineVo.builder().uuid(uuid).cuisineCode(cuisineCode)
                 .status(CuisineTasteEnum.UNEVALUATED.getCode()).build());
+        resultParamMap.put("lastAddedCuisine", LastAddedCuisineAo.builder().cuisineCode(cuisineCode)
+                .addedTime(DateTimeUtil.YMDHMS.format(LocalDateTime.now())).build());
 
         // 是否是当天第一条记录
         boolean dailyFirstRecode = false;
@@ -146,6 +162,8 @@ public class UserBiz {
         }
         userIngredientWeightSumDailyVo.addCuisineCategoryWeight(cuisineCategoryWeightVo);
         userIngredientWeightSumDailyService.insertOrUpdateByUuidAndDate(userIngredientWeightSumDailyVo);
+        resultParamMap.put("ingredientCategoryWeightList", ModelUtil.modelHistoryToWeightAo(
+                userIngredientCategoryModelService.queryLastByUuid(uuid), userIngredientWeightSumDailyVo));
 
         /* 更新营养素摄入历史记录 */
         List<CuisineIngredientRelVo> cuisineIngredientRelVoList = cuisineIngredientRelService
@@ -200,6 +218,10 @@ public class UserBiz {
         } else {
             userNutrientWeightSumDailyService.updateAll(newUserNutrientWeightSumDailyVoList);
         }
+        resultParamMap.put("userNutrientHistoricalIntakesDaily", userNutrientWeightSumDailyBiz
+                .calculateToAo(userIngredientWeightSumDailyVo.getCalorie(), newUserNutrientWeightSumDailyVoList));
+
+        return resultParamMap;
     }
 
 }

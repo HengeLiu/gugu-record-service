@@ -48,14 +48,14 @@ public class PreloadDataAo implements Serializable {
     private LocationAo systemDefaultOrderLocation;
 
     /**
-     * 上一次添加的餐品
-     */
-    private LastAddedCuisineAo lastAddedCuisine;
-
-    /**
      * 用户状态信息
      */
     private UserStatusInfoAo userStatusInfo;
+
+    /**
+     * 上一次添加的餐品
+     */
+    private LastAddedCuisineAo lastAddedCuisine;
 
     /**
      * 用户食材分类模型目标值及历史摄入量

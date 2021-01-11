@@ -1,6 +1,5 @@
 package com.nutrition.nutritionservice.biz;
 
-import com.google.common.collect.Maps;
 import com.nutrition.nutritionservice.annotation.Biz;
 import com.nutrition.nutritionservice.controller.ao.LastAddedCuisineAo;
 import com.nutrition.nutritionservice.controller.ao.LocationAo;
@@ -10,7 +9,6 @@ import com.nutrition.nutritionservice.controller.ao.SupperIngredientCategoryWeig
 import com.nutrition.nutritionservice.controller.ao.UserSettingsAo;
 import com.nutrition.nutritionservice.converter.Model2UserModelConverter;
 import com.nutrition.nutritionservice.converter.UserStatusInfoVo2AoConverter;
-import com.nutrition.nutritionservice.enums.database.NutrientEnum;
 import com.nutrition.nutritionservice.enums.database.UserAccountStatusTypeEnum;
 import com.nutrition.nutritionservice.enums.database.UserAccountTypeEnum;
 import com.nutrition.nutritionservice.enums.database.UserIngredientModelStatusEnum;
@@ -18,9 +16,9 @@ import com.nutrition.nutritionservice.exception.NutritionServiceException;
 import com.nutrition.nutritionservice.service.ConfigPropertiesService;
 import com.nutrition.nutritionservice.service.UserAccountService;
 import com.nutrition.nutritionservice.service.UserHistoricalCuisineService;
-import com.nutrition.nutritionservice.service.UserIngredientWeightSumDailyService;
 import com.nutrition.nutritionservice.service.UserInfoService;
 import com.nutrition.nutritionservice.service.UserIngredientCategoryModelService;
+import com.nutrition.nutritionservice.service.UserIngredientWeightSumDailyService;
 import com.nutrition.nutritionservice.service.UserLocationService;
 import com.nutrition.nutritionservice.service.UserSettingService;
 import com.nutrition.nutritionservice.service.UserStatusInfoService;
@@ -32,9 +30,9 @@ import com.nutrition.nutritionservice.vo.UserSettingVo;
 import com.nutrition.nutritionservice.vo.UserStatusInfoVo;
 import com.nutrition.nutritionservice.vo.user.UserAccountVo;
 import com.nutrition.nutritionservice.vo.user.UserHistoricalCuisineVo;
-import com.nutrition.nutritionservice.vo.user.UserIngredientWeightSumDailyVo;
 import com.nutrition.nutritionservice.vo.user.UserInfoVo;
 import com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo;
+import com.nutrition.nutritionservice.vo.user.UserIngredientWeightSumDailyVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -42,7 +40,6 @@ import org.springframework.util.StringUtils;
 import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -181,12 +178,8 @@ public class ProgramLoadDataBiz {
         }
 
         /* 获取用户营养素今日摄入历史 */
-        Map<Integer, Double> nutrientCodeCalorieMap = Maps.newHashMap();
-        nutrientCodeCalorieMap.put(NutrientEnum.CHO.getCode(), 4.0);
-        nutrientCodeCalorieMap.put(NutrientEnum.Fat.getCode(), 9.0);
-        nutrientCodeCalorieMap.put(NutrientEnum.Protein.getCode(), 4.0);
         List<NutrientIntakesWeightAo> nutrientWeightList = userNutrientWeightSumDailyBiz
-                .queryUserNutrientWeightSumDaily(uuid, LocalDate.now(), historicalCalorie, nutrientCodeCalorieMap);
+                .queryUserNutrientWeightSumDaily(uuid, historicalCalorie, LocalDate.now());
         preloadDataAoBuilder.userNutrientHistoricalIntakesDaily(nutrientWeightList);
 
         return preloadDataAoBuilder.build();
