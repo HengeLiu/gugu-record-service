@@ -6,7 +6,7 @@ import com.nutrition.nutritionservice.annotation.Biz;
 import com.nutrition.nutritionservice.service.ConfigPropertiesService;
 import com.nutrition.nutritionservice.service.CuisineService;
 import com.nutrition.nutritionservice.service.EnergyCalorieCalculateService;
-import com.nutrition.nutritionservice.service.ModelIngredientIntakesService;
+import com.nutrition.nutritionservice.service.ModelIngredientCategoryModelService;
 import com.nutrition.nutritionservice.service.UserIngredientCategoryModelService;
 import com.nutrition.nutritionservice.util.ModelUtil;
 import com.nutrition.nutritionservice.vo.ModelParamVo;
@@ -25,7 +25,7 @@ import java.util.Map;
  */
 @Biz
 @Slf4j
-public class ModelIngredientIntakesBiz {
+public class ModelIngredientCategoryModelBiz {
 
     @Resource
     private ConfigPropertiesService configPropertiesService;
@@ -34,7 +34,7 @@ public class ModelIngredientIntakesBiz {
     private EnergyCalorieCalculateService energyCalorieCalculateService;
 
     @Resource
-    private ModelIngredientIntakesService modelIngredientIntakesService;
+    private ModelIngredientCategoryModelService modelIngredientCategoryModelService;
 
     @Resource
     private UserIngredientCategoryModelService userIngredientCategoryModelService;
@@ -42,13 +42,13 @@ public class ModelIngredientIntakesBiz {
     @Resource
     private CuisineService cuisineService;
 
-    public ModelIngredientCategoryModelVo calculateIntakesModel(ModelParamVo paramVo) {
-        double dailyCalorie = energyCalorieCalculateService.calculate(paramVo);
-        return modelIngredientIntakesService.getIntakesByCalorieGoal(dailyCalorie, paramVo.getGoal());
+    public ModelIngredientCategoryModelVo calculateIngredientModel(ModelParamVo paramVo) {
+        double dailyCalorie = energyCalorieCalculateService.calculateCalorie(paramVo);
+        return modelIngredientCategoryModelService.queryModelByCalorieGoal(dailyCalorie, paramVo.getGoal());
     }
 
     public ModelIngredientCategoryModelVo queryMostNeededModel() {
-        List<ModelIngredientCategoryModelVo> allModelsList = modelIngredientIntakesService.listAllModels();
+        List<ModelIngredientCategoryModelVo> allModelsList = modelIngredientCategoryModelService.listAllModels();
         List<ModelIngredientCategoryModelVo> mostNeededModelList = Lists.newArrayList();
         Map<String, Integer> userModelCountMap = Maps.newHashMap();
         Map<String, Integer> cuisineCountMap = Maps.newHashMap();
@@ -57,7 +57,7 @@ public class ModelIngredientIntakesBiz {
         for (ModelIngredientCategoryModelVo model : allModelsList) {
             double modelCalorie = model.getCalorie();
             int goal = model.getGoal();
-            int userModelCount = userIngredientCategoryModelService.countByCalorieAndGoal(modelCalorie, goal);
+            int userModelCount = userIngredientCategoryModelService.countActiveByCalorieAndGoal(modelCalorie, goal);
             int cuisineCount = cuisineService.countByCalorieAndGoal((int) (modelCalorie * 0.8),
                     (int) (modelCalorie * 1.2), goal);
             log.debug("model calorie {}, user model count {}, cuisine count {}.", modelCalorie, userModelCount,
@@ -86,7 +86,7 @@ public class ModelIngredientIntakesBiz {
         if (mostNeededModelList.size() == 1) {
             return mostNeededModelList.get(0);
         }
-        ModelIngredientCategoryModelVo defaultUserModel = calculateIntakesModel(
+        ModelIngredientCategoryModelVo defaultUserModel = calculateIngredientModel(
                 configPropertiesService.getDefaultUserInfo());
         if (mostNeededModelList.size() == 0) {
             log.info("no most needed model found.");

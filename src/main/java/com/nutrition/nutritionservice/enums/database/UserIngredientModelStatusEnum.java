@@ -10,7 +10,7 @@ import com.nutrition.nutritionservice.enums.CodeEnum;
  */
 public enum UserIngredientModelStatusEnum implements CodeEnum<Integer> {
 
-    USING(0, "使用中"),
+    ACTIVE(0, "使用中"),
 
     DEPRECATED(1, "已过期"),
 

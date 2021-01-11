@@ -4,10 +4,15 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.nutrition.nutritionservice.annotation.Biz;
 import com.nutrition.nutritionservice.controller.ao.LastAddedCuisineAo;
+import com.nutrition.nutritionservice.controller.ao.UserInfoAo;
+import com.nutrition.nutritionservice.converter.Model2UserModelConverter;
+import com.nutrition.nutritionservice.converter.UserInfoAo2VoConverter;
+import com.nutrition.nutritionservice.enums.BooleanEnum;
 import com.nutrition.nutritionservice.enums.UnitEnum;
 import com.nutrition.nutritionservice.enums.database.CuisineTasteEnum;
 import com.nutrition.nutritionservice.enums.database.UserAccountStatusTypeEnum;
 import com.nutrition.nutritionservice.enums.database.UserAccountTypeEnum;
+import com.nutrition.nutritionservice.enums.database.UserIngredientModelStatusEnum;
 import com.nutrition.nutritionservice.exception.NutritionServiceException;
 import com.nutrition.nutritionservice.service.CuisineCategoryWeightService;
 import com.nutrition.nutritionservice.service.CuisineIngredientRelService;
@@ -19,6 +24,7 @@ import com.nutrition.nutritionservice.service.UserInfoService;
 import com.nutrition.nutritionservice.service.UserIngredientCategoryModelService;
 import com.nutrition.nutritionservice.service.UserIngredientWeightSumDailyService;
 import com.nutrition.nutritionservice.service.UserNutrientWeightSumDailyService;
+import com.nutrition.nutritionservice.service.UserStatusInfoService;
 import com.nutrition.nutritionservice.service.WechatHttpApiService;
 import com.nutrition.nutritionservice.util.DateTimeUtil;
 import com.nutrition.nutritionservice.util.ModelUtil;
@@ -26,10 +32,12 @@ import com.nutrition.nutritionservice.util.UUIDUtils;
 import com.nutrition.nutritionservice.vo.CuisineCategoryWeightVo;
 import com.nutrition.nutritionservice.vo.IngredientNutrientRelVo;
 import com.nutrition.nutritionservice.vo.UserNutrientWeightSumDailyVo;
+import com.nutrition.nutritionservice.vo.UserStatusInfoVo;
 import com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo;
 import com.nutrition.nutritionservice.vo.user.UserAccountVo;
 import com.nutrition.nutritionservice.vo.user.UserHistoricalCuisineVo;
 import com.nutrition.nutritionservice.vo.user.UserInfoVo;
+import com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo;
 import com.nutrition.nutritionservice.vo.user.UserIngredientWeightSumDailyVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -90,6 +98,12 @@ public class UserBiz {
     @Resource
     private UserNutrientWeightSumDailyBiz userNutrientWeightSumDailyBiz;
 
+    @Resource
+    private ModelIngredientCategoryModelBiz modelIngredientCategoryModelBiz;
+
+    @Resource
+    private UserStatusInfoService userStatusInfoService;
+
     private UserInfoVo queryUserInfo(String uuid) {
         return userInfoService.selectByUuid(uuid);
     }
@@ -124,16 +138,48 @@ public class UserBiz {
         userAccountService.addUserAccount(userAccount);
     }
 
-    public void saveUserInfo(UserInfoVo userInfoVo) {
-        double calorie = energyCalorieCalculateService.calculateByUserInfo(userInfoVo);
-        userInfoVo.setCalorie(calorie);
+    @Transactional(rollbackFor = Exception.class)
+    public Map<String, Object> saveUserInfo(UserInfoAo userInfoAo) {
+        String uuid = userInfoAo.getUuid();
+        UserIngredientCategoryModelVo userIngredientCategoryModelVo = Model2UserModelConverter.convert(
+                modelIngredientCategoryModelBiz.calculateIngredientModel(userInfoAo), uuid,
+                UserIngredientModelStatusEnum.ACTIVE);
+        long activeModelId = userIngredientCategoryModelService.save(userIngredientCategoryModelVo);
+        UserInfoVo userInfoVo = UserInfoAo2VoConverter.convert(userInfoAo, userIngredientCategoryModelVo.getCalorie(),
+                activeModelId);
         userInfoService.add(userInfoVo);
+        UserIngredientWeightSumDailyVo userIngredientWeightSumDailyVo = userIngredientWeightSumDailyService
+                .queryByUuidAndDate(uuid, LocalDate.now());
+        if (userIngredientWeightSumDailyVo == null) {
+            userIngredientWeightSumDailyVo = UserIngredientWeightSumDailyVo.createEmpty(uuid, LocalDate.now());
+        }
+
+        UserStatusInfoVo userStatusInfoVo = userStatusInfoService.queryBuUuid(uuid);
+        if (userStatusInfoVo == null) {
+            throw new NutritionServiceException("User status info can not null, uui " + uuid);
+        }
+        userStatusInfoVo.setShownInfoCollectWindow(BooleanEnum.TRUE.getCode());
+        if (userInfoAo.isSkip()) {
+            userStatusInfoVo.setCustomInfo(BooleanEnum.FALSE.getCode());
+        } else {
+            userStatusInfoVo.setCustomInfo(BooleanEnum.TRUE.getCode());
+        }
+        userStatusInfoService.updateByUuidSelective(userStatusInfoVo);
+
+        Map<String, Object> resultParamMap = Maps.newHashMap();
+
+        resultParamMap.put("userStatusInfo", userStatusInfoVo);
+        resultParamMap.put("ingredientCategoryWeightList",
+                ModelUtil.modelHistoryToWeightAo(
+                        userIngredientCategoryModelService.queryById(userInfoVo.getActiveModelId()),
+                        userIngredientWeightSumDailyVo));
+        return resultParamMap;
     }
 
-    public int calculateAndSaveUserCalorie(String uuid) {
+    public double calculateAndSaveUserCalorie(String uuid) {
         UserInfoVo userInfoVo = userInfoService.selectByUuid(uuid);
-        int calorie = energyCalorieCalculateService.calculateByUserInfo(userInfoVo);
-        userInfoVo.setCalorie((double) calorie);
+        double calorie = energyCalorieCalculateService.calculateCalorieByUserInfo(userInfoVo);
+        userInfoVo.setCalorie(calorie);
         userInfoService.add(userInfoVo);
         return calorie;
     }
@@ -162,8 +208,13 @@ public class UserBiz {
         }
         userIngredientWeightSumDailyVo.addCuisineCategoryWeight(cuisineCategoryWeightVo);
         userIngredientWeightSumDailyService.insertOrUpdateByUuidAndDate(userIngredientWeightSumDailyVo);
+        UserInfoVo userInfoVo = userInfoService.selectByUuid(uuid);
+        if (userInfoVo == null) {
+            throw new NutritionServiceException("User info can not null, uuid " + uuid);
+        }
         resultParamMap.put("ingredientCategoryWeightList", ModelUtil.modelHistoryToWeightAo(
-                userIngredientCategoryModelService.queryLastByUuid(uuid), userIngredientWeightSumDailyVo));
+                userIngredientCategoryModelService.queryById(userInfoVo.getActiveModelId()),
+                userIngredientWeightSumDailyVo));
 
         /* 更新营养素摄入历史记录 */
         List<CuisineIngredientRelVo> cuisineIngredientRelVoList = cuisineIngredientRelService

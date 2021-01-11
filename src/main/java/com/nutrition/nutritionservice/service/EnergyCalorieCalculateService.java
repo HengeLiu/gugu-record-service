@@ -22,7 +22,7 @@ public class EnergyCalorieCalculateService {
     @Resource
     private ModelBasicMetabolicRateDao modelBasicMetabolicRateDao;
 
-    public int calculate(ModelParamVo modelBaseInfoVo) {
+    public double calculateCalorie(ModelParamVo modelBaseInfoVo) {
         double surfaceArea = 0.006 * modelBaseInfoVo.getHeight() + 0.0126 * modelBaseInfoVo.getWeight() - 0.1603;
         double bmr;
         if (modelBaseInfoVo.getAge() > 45) {
@@ -34,15 +34,14 @@ public class EnergyCalorieCalculateService {
 
         double sportLevelRatio = sportLevelRatio(CodeEnums.valueOf(ProfeCharEnum.class, modelBaseInfoVo.getProfeChar()),
                 CodeEnums.valueOf(SportHabitEnum.class, modelBaseInfoVo.getSportsHabits()));
-        double bee = surfaceArea * bmr * 24 * sportLevelRatio;
-        return (int) bee;
+        return surfaceArea * bmr * 24 * sportLevelRatio;
     }
 
-    public int calculateByUserInfo(UserInfoVo userInfoVo) {
+    public double calculateCalorieByUserInfo(UserInfoVo userInfoVo) {
         ModelParamVo modelParamVo = ModelParamVo.builder().goal(userInfoVo.getGoal()).age(userInfoVo.getAge())
                 .gender(userInfoVo.getGender()).height(userInfoVo.getHeight()).weight(userInfoVo.getWeight())
                 .profeChar(userInfoVo.getProfeChar()).sportsHabits(userInfoVo.getSportsHabits()).build();
-        return calculate(modelParamVo);
+        return calculateCalorie(modelParamVo);
     }
 
     private double sportLevelRatio(ProfeCharEnum profeCharEnum, SportHabitEnum sportHabitEnum) {

@@ -1,11 +1,11 @@
 package com.nutrition.nutritionservice.vo.user;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import com.nutrition.nutritionservice.vo.modeldata.CategoryModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * user_ingredient_model
@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class UserIngredientCategoryModelVo extends CategoryModel<Integer> implements Serializable {
-    private int id;
+    private long id;
 
     /**
      * 用户唯一标识
@@ -41,6 +41,11 @@ public class UserIngredientCategoryModelVo extends CategoryModel<Integer> implem
      * 创建时间
      */
     private LocalDateTime createTime;
+
+    /**
+     * 更新时间
+     */
+    private LocalDateTime updateTime;
 
     private static final long serialVersionUID = 1L;
 }

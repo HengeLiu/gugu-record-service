@@ -1,6 +1,6 @@
 package com.nutrition.nutritionservice.service;
 
-import com.nutrition.nutritionservice.dao.UserCategoryIntakesModelDao;
+import com.nutrition.nutritionservice.dao.UserIngredientCategoryModelDao;
 import com.nutrition.nutritionservice.enums.database.UserIngredientModelStatusEnum;
 import com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -20,24 +20,25 @@ import javax.annotation.Resource;
 public class UserIngredientCategoryModelService {
 
     @Resource
-    private UserCategoryIntakesModelDao userCategoryIntakesModelDao;
+    private UserIngredientCategoryModelDao userIngredientCategoryModelDao;
 
     public long add(UserIngredientCategoryModelVo userModelVo) {
-        return userCategoryIntakesModelDao.insert(userModelVo);
+        return userIngredientCategoryModelDao.insert(userModelVo);
     }
 
-    public void updateModelStatusByUuidAndCreateTime(UserIngredientCategoryModelVo userModelVo) {
-        userCategoryIntakesModelDao.updateModelStatusByUuidAndCreateTime(userModelVo.getUuid(),
-                UserIngredientModelStatusEnum.USING.getCode(), userModelVo.getCreateTime());
+    public long save(UserIngredientCategoryModelVo userModelVo) {
+        userIngredientCategoryModelDao.updateModelStatusByUuid(userModelVo.getUuid(),
+                UserIngredientModelStatusEnum.DEPRECATED.getCode());
+        return userIngredientCategoryModelDao.insert(userModelVo);
     }
 
     @Nullable
-    public UserIngredientCategoryModelVo queryLastByUuid(String uuid) {
-        return userCategoryIntakesModelDao.selectUsingModelByUuid(uuid);
+    public UserIngredientCategoryModelVo queryById(long id) {
+        return userIngredientCategoryModelDao.selectById(id);
     }
 
-    public int countByCalorieAndGoal(double calorie, int goal) {
-        return userCategoryIntakesModelDao.selectCountByCalorieAndGoal(calorie, goal);
+    public int countActiveByCalorieAndGoal(double calorie, int goal) {
+        return userIngredientCategoryModelDao.selectActiveCountByCalorieAndGoal(calorie, goal);
     }
 
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.nutrition.nutritionservice.dao.UserCategoryIntakesModelDao">
+<mapper namespace="com.nutrition.nutritionservice.dao.UserIngredientCategoryModelDao">
   <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo">
     <id column="id" jdbcType="INTEGER" property="id"/>
     <result column="uuid" jdbcType="VARCHAR" property="uuid"/>
@@ -24,37 +24,47 @@
     <result column="goal" jdbcType="TINYINT" property="goal"/>
     <result column="model_status" jdbcType="TINYINT" property="modelStatus"/>
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
   </resultMap>
   <sql id="Base_Column_List">
     id, uuid, calorie, processed_grains, unprocessed_grains, mixed_beans, tuber, general_vegetables, 
     dark_vegetables, fruit, meat, poultry, aquatic, egg, dairy, soybean, nut, oil, salt, 
-    goal, model_status, create_time
+    goal, model_status, create_time, update_time
   </sql>
-  <update id="updateModelStatusByUuidAndCreateTime">
-    update user_ingredient_category_model set model_status = #{model_status} where uuid = #{uuid} and create_time = #{createTime}
+  <sql id="Insert_Column_List">
+    uuid, calorie, processed_grains, unprocessed_grains, mixed_beans, tuber, general_vegetables,
+    dark_vegetables, fruit, meat, poultry, aquatic, egg, dairy, soybean, nut, oil, salt,
+    goal, model_status
+  </sql>
+  <update id="updateModelStatusByUuid">
+    update user_ingredient_category_model set model_status = #{model_status} where uuid = #{uuid}
   </update>
-  <select id="selectUsingModelByUuid" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectActiveModelByUuid" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
     from user_ingredient_category_model
     where uuid = #{uuid} and model_status = 0
   </select>
-  <select id="selectCountByCalorieAndGoal" resultType="java.lang.Integer">
+  <select id="selectActiveCountByCalorieAndGoal" resultType="java.lang.Integer">
     select count(*) from user_ingredient_category_model where calorie = #{calorie} and goal = #{goal} and model_status = 0
+  </select>
+  <select id="selectById" resultType="com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo">
+    select
+    <include refid="Base_Column_List"/>
+    from user_ingredient_category_model
+    where id = #{id}
   </select>
   <insert id="insert" keyColumn="id" keyProperty="id"
           parameterType="com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo" useGeneratedKeys="true">
-    insert into user_ingredient_category_model (uuid, calorie, processed_grains, 
-      unprocessed_grains, mixed_beans, tuber, 
-      general_vegetables, dark_vegetables, fruit, 
-      meat, poultry, aquatic, 
-      egg, dairy, soybean, 
-      nut, oil, salt, goal, model_status)
-    values (#{uuid,jdbcType=VARCHAR}, #{calorie,jdbcType=INTEGER}, #{processedGrains,jdbcType=INTEGER}, 
-      #{unprocessedGrains,jdbcType=INTEGER}, #{mixedBeans,jdbcType=INTEGER}, #{tuber,jdbcType=INTEGER}, 
-      #{generalVegetables,jdbcType=INTEGER}, #{darkVegetables,jdbcType=INTEGER}, #{fruit,jdbcType=INTEGER}, 
-      #{meat,jdbcType=INTEGER}, #{poultry,jdbcType=INTEGER}, #{aquatic,jdbcType=INTEGER}, 
-      #{egg,jdbcType=INTEGER}, #{dairy,jdbcType=INTEGER}, #{soybean,jdbcType=INTEGER}, 
-      #{nut,jdbcType=INTEGER}, #{oil,jdbcType=INTEGER}, #{salt,jdbcType=INTEGER}, #{goal,jdbcType=TINYINT}, #{modelStatus,jdbcType=TINYINT})
+    insert into user_ingredient_category_model (
+    <include refid="Insert_Column_List"/>
+    )
+    values (#{uuid,jdbcType=VARCHAR}, #{calorie,jdbcType=INTEGER}, #{processedGrains,jdbcType=INTEGER},
+    #{unprocessedGrains,jdbcType=INTEGER}, #{mixedBeans,jdbcType=INTEGER}, #{tuber,jdbcType=INTEGER},
+    #{generalVegetables,jdbcType=INTEGER}, #{darkVegetables,jdbcType=INTEGER}, #{fruit,jdbcType=INTEGER},
+    #{meat,jdbcType=INTEGER}, #{poultry,jdbcType=INTEGER}, #{aquatic,jdbcType=INTEGER},
+    #{egg,jdbcType=INTEGER}, #{dairy,jdbcType=INTEGER}, #{soybean,jdbcType=INTEGER},
+    #{nut,jdbcType=INTEGER}, #{oil,jdbcType=INTEGER}, #{salt,jdbcType=INTEGER}, #{goal,jdbcType=TINYINT},
+    #{modelStatus,jdbcType=TINYINT})
   </insert>
 </mapper>

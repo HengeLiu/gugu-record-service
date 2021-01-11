@@ -1,11 +1,12 @@
 package com.nutrition.nutritionservice;
 
-import com.nutrition.nutritionservice.biz.ModelIngredientIntakesBiz;
+import com.nutrition.nutritionservice.biz.ModelIngredientCategoryModelBiz;
 import com.nutrition.nutritionservice.converter.Model2UserModelConverter;
+import com.nutrition.nutritionservice.dao.UserIngredientCategoryModelDao;
 import com.nutrition.nutritionservice.dao.UserInfoDao;
 import com.nutrition.nutritionservice.enums.database.UserIngredientModelStatusEnum;
 import com.nutrition.nutritionservice.service.EnergyCalorieCalculateService;
-import com.nutrition.nutritionservice.service.ModelIngredientIntakesService;
+import com.nutrition.nutritionservice.service.ModelIngredientCategoryModelService;
 import com.nutrition.nutritionservice.service.UserIngredientCategoryModelService;
 import com.nutrition.nutritionservice.service.UserInfoService;
 import com.nutrition.nutritionservice.util.ModelUtil;
@@ -34,16 +35,19 @@ public class ModelTest {
     private EnergyCalorieCalculateService energyCalorieCalculateService;
 
     @Resource
-    private ModelIngredientIntakesService modelIngredientIntakesService;
+    private ModelIngredientCategoryModelService modelIngredientCategoryModelService;
 
     @Resource
     private UserIngredientCategoryModelService userIngredientCategoryModelService;
 
     @Resource
-    private ModelIngredientIntakesBiz modelIngredientIntakesBiz;
+    private ModelIngredientCategoryModelBiz modelIngredientCategoryModelBiz;
 
     @Resource
     private UserInfoDao userInfoDao;
+
+    @Resource
+    private UserIngredientCategoryModelDao userIngredientCategoryModelDao;
 
     @Test
     public void recalculateAllUserCalorieAndModel() {
@@ -52,21 +56,21 @@ public class ModelTest {
             System.out.println(uuid);
             UserInfoVo userInfoVo = userInfoService.selectByUuid(String.valueOf(uuid));
             if (userInfoVo.getCalorie() == 0) {
-                int calorie = energyCalorieCalculateService.calculateByUserInfo(userInfoVo);
-                userInfoVo.setCalorie((double) calorie);
+                double calorie = energyCalorieCalculateService.calculateCalorie(userInfoVo);
+                userInfoVo.setCalorie(calorie);
                 userInfoService.add(userInfoVo);
             }
-            ModelIngredientCategoryModelVo intakesModel = modelIngredientIntakesService
-                    .getIntakesByCalorieGoal(userInfoVo.getCalorie(), userInfoVo.getGoal());
+            ModelIngredientCategoryModelVo intakesModel = modelIngredientCategoryModelService
+                    .queryModelByCalorieGoal(userInfoVo.getCalorie(), userInfoVo.getGoal());
             UserIngredientCategoryModelVo userModel = Model2UserModelConverter.convert(intakesModel,
-                    String.valueOf(uuid), UserIngredientModelStatusEnum.USING);
+                    String.valueOf(uuid), UserIngredientModelStatusEnum.ACTIVE);
             userIngredientCategoryModelService.add(userModel);
         }
     }
 
     @Test
     public void calculateAllModelSimilarity() {
-        List<ModelIngredientCategoryModelVo> modelList = modelIngredientIntakesService.listAllModels();
+        List<ModelIngredientCategoryModelVo> modelList = modelIngredientCategoryModelService.listAllModels();
         for (ModelIngredientCategoryModelVo model1 : modelList) {
             System.out.print("" + model1.getCalorie() + "," + model1.getGoal());
             for (ModelIngredientCategoryModelVo model2 : modelList) {
@@ -81,7 +85,7 @@ public class ModelTest {
 
     @Test
     public void testJson() {
-        ModelIngredientCategoryModelVo mostNeededModel = modelIngredientIntakesBiz.queryMostNeededModel();
+        ModelIngredientCategoryModelVo mostNeededModel = modelIngredientCategoryModelBiz.queryMostNeededModel();
         System.out.println();
     }
 
@@ -89,14 +93,13 @@ public class ModelTest {
     public void saveModelIdToUserInfo() {
         List<UserInfoVo> userInfoList = userInfoDao.selectAll();
         for (UserInfoVo userInfoVo : userInfoList) {
-            UserIngredientCategoryModelVo userIngredientCategoryModelVo = userIngredientCategoryModelService
-                    .queryLastByUuid(userInfoVo.getUuid());
+            UserIngredientCategoryModelVo userIngredientCategoryModelVo = userIngredientCategoryModelDao
+                    .selectActiveModelByUuid(userInfoVo.getUuid());
             if (userIngredientCategoryModelVo == null) {
                 log.info("user {} has no model.", userInfoVo.getUuid());
                 continue;
             }
-            int userModelId = userIngredientCategoryModelVo.getId();
-            userInfoVo.setActiveModelId((long) userModelId);
+            userInfoVo.setActiveModelId(userIngredientCategoryModelVo.getId());
             userInfoService.updateSelective(userInfoVo);
         }
     }

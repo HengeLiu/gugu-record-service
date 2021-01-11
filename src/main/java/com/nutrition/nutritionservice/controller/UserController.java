@@ -2,7 +2,7 @@ package com.nutrition.nutritionservice.controller;
 
 import com.nutrition.nutritionservice.biz.UserBiz;
 import com.nutrition.nutritionservice.common.Response;
-import com.nutrition.nutritionservice.vo.user.UserInfoVo;
+import com.nutrition.nutritionservice.controller.ao.UserInfoAo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,9 +30,8 @@ public class UserController {
     }
 
     @PostMapping("/wechat/save/userinfo")
-    public Response saveUserInfo(UserInfoVo userInfoVo) {
-        userBiz.saveUserInfo(userInfoVo);
-        return Response.success();
+    public Response saveUserInfo(UserInfoAo userInfoVo) {
+        return Response.success(userBiz.saveUserInfo(userInfoVo));
     }
 
     @GetMapping("/save-history")

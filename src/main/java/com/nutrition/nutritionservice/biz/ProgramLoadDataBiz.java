@@ -80,7 +80,7 @@ public class ProgramLoadDataBiz {
     private ConfigPropertiesService configPropertiesService;
 
     @Resource
-    private ModelIngredientIntakesBiz modelIngredientIntakesBiz;
+    private ModelIngredientCategoryModelBiz modelIngredientCategoryModelBiz;
 
     @Resource
     private UserNutrientWeightSumDailyBiz userNutrientWeightSumDailyBiz;
@@ -110,10 +110,11 @@ public class ProgramLoadDataBiz {
             userInfoVo = configPropertiesService.getDefaultUserInfo();
 
             userIngredientCategoryModelVo = Model2UserModelConverter.convert(
-                    modelIngredientIntakesBiz.calculateIntakesModel(userInfoVo), uuid,
-                    UserIngredientModelStatusEnum.USING);
+                    modelIngredientCategoryModelBiz.calculateIngredientModel(userInfoVo), uuid,
+                    UserIngredientModelStatusEnum.ACTIVE);
             // 创建用户模型
             long userModelId = userIngredientCategoryModelService.add(userIngredientCategoryModelVo);
+            userIngredientCategoryModelVo.setId(userModelId);
 
             userInfoVo.setUuid(uuid);
             userInfoVo.setActiveModelId(userModelId);
@@ -124,12 +125,13 @@ public class ProgramLoadDataBiz {
             userStatusInfoVo = UserStatusInfoVo.builder().uuid(uuid).customInfo(0)
                     .shownInfoCollectWindow(0).shownProcessWindow(0).build();
             // 创建用户状态
-            userStatusInfoService.save(userStatusInfoVo);
+            userStatusInfoService.add(userStatusInfoVo);
 
         } else {
             uuid = userAccount.getUuid();
+            userInfoVo = userInfoService.selectByUuid(uuid);
             // 获取用户食材分类模型目标值
-            userIngredientCategoryModelVo = userIngredientCategoryModelService.queryLastByUuid(uuid);
+            userIngredientCategoryModelVo = userIngredientCategoryModelService.queryById(userInfoVo.getActiveModelId());
             if (userIngredientCategoryModelVo == null) {
                 throw new NutritionServiceException("User model can not be null.");
             }

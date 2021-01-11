@@ -1,6 +1,6 @@
 package com.nutrition.nutritionservice.controller;
 
-import com.nutrition.nutritionservice.biz.ModelIngredientIntakesBiz;
+import com.nutrition.nutritionservice.biz.ModelIngredientCategoryModelBiz;
 import com.nutrition.nutritionservice.vo.ModelParamVo;
 import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientCategoryModelVo;
 import lombok.extern.slf4j.Slf4j;
@@ -24,17 +24,17 @@ import javax.annotation.Resource;
 public class UserIngredientModelController {
 
     @Resource
-    private ModelIngredientIntakesBiz modelIngredientIntakesBiz;
+    private ModelIngredientCategoryModelBiz modelIngredientCategoryModelBiz;
 
     @PostMapping("/calculate-by-param")
     public ModelIngredientCategoryModelVo calculateIntakesModel(@RequestBody ModelParamVo param) {
         log.info("Calculate model, model param {}", param);
-        return modelIngredientIntakesBiz.calculateIntakesModel(param);
+        return modelIngredientCategoryModelBiz.calculateIngredientModel(param);
     }
 
     @GetMapping("/query-most-needed")
     public ModelIngredientCategoryModelVo queryMostNeededModel() {
-        return modelIngredientIntakesBiz.queryMostNeededModel();
+        return modelIngredientCategoryModelBiz.queryMostNeededModel();
     }
 
 }

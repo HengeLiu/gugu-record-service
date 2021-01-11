@@ -1,7 +1,7 @@
 package com.nutrition.nutritionservice.controller;
 
 import com.nutrition.nutritionservice.biz.CuisineBiz;
-import com.nutrition.nutritionservice.biz.ModelIngredientIntakesBiz;
+import com.nutrition.nutritionservice.biz.ModelIngredientCategoryModelBiz;
 import com.nutrition.nutritionservice.controller.ao.StoreCuisineListAo;
 import com.nutrition.nutritionservice.vo.CuisineRecommendedScoreWebAo;
 import com.nutrition.nutritionservice.vo.IDPageParamVo;
@@ -32,14 +32,14 @@ public class CuisineController {
     private CuisineBiz cuisineBiz;
 
     @Resource
-    private ModelIngredientIntakesBiz modelIngredientIntakesBiz;
+    private ModelIngredientCategoryModelBiz modelIngredientCategoryModelBiz;
 
     @GetMapping("/designer")
     public ModelAndView designer(@RequestParam("dine") Integer dineCode) {
         ModelAndView model = new ModelAndView("cuisine_designer");
         model.addObject("ingredientCategoryMap", cuisineBiz.queryIngredientCategoryMap());
         model.addObject("recommendedCategoryWeightMap",
-                cuisineBiz.queryRecommendedCategoryWeightMap(modelIngredientIntakesBiz.queryMostNeededModel(), dineCode));
+                cuisineBiz.queryRecommendedCategoryWeightMap(modelIngredientCategoryModelBiz.queryMostNeededModel(), dineCode));
         model.addObject("cuisine", CuisineAssemblyAo.builder().build());
         return model;
     }

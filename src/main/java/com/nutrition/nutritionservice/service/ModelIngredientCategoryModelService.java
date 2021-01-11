@@ -1,6 +1,6 @@
 package com.nutrition.nutritionservice.service;
 
-import com.nutrition.nutritionservice.dao.ModelIngredientIntakesDao;
+import com.nutrition.nutritionservice.dao.ModelIngredientCategoryModelDao;
 import com.nutrition.nutritionservice.enums.database.ModelGoalEnum;
 import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientCategoryModelVo;
 import org.springframework.stereotype.Service;
@@ -13,25 +13,25 @@ import java.util.List;
  * @since 2020/12/19
  */
 @Service
-public class ModelIngredientIntakesService {
+public class ModelIngredientCategoryModelService {
 
     @Resource
-    private ModelIngredientIntakesDao modelIngredientIntakesDao;
+    private ModelIngredientCategoryModelDao modelIngredientCategoryModelDao;
 
-    public ModelIngredientCategoryModelVo getIntakesByCalorieGoal(double calorie, int goal) {
+    public ModelIngredientCategoryModelVo queryModelByCalorieGoal(double calorie, int goal) {
         int calorieTmp = (int) (calorie / 100) * 100;
         if ((goal == ModelGoalEnum.BALANCE.getCode() || goal == ModelGoalEnum.INCREASED_MUSCLE.getCode())
                 && calorieTmp > 3000) {
-            return modelIngredientIntakesDao.selectByCalorieGoal(3000, goal);
+            return modelIngredientCategoryModelDao.selectByCalorieGoal(3000, goal);
         }
         if (goal == ModelGoalEnum.LOSE_WEIGHT.getCode() && calorie > 3800) {
-            return modelIngredientIntakesDao.selectByCalorieGoal(3800, goal);
+            return modelIngredientCategoryModelDao.selectByCalorieGoal(3800, goal);
         }
-        return modelIngredientIntakesDao.selectByCalorieGoal(calorieTmp, goal);
+        return modelIngredientCategoryModelDao.selectByCalorieGoal(calorieTmp, goal);
     }
 
     public List<ModelIngredientCategoryModelVo> listAllModels() {
-        return modelIngredientIntakesDao.selectAll();
+        return modelIngredientCategoryModelDao.selectAll();
     }
 
 }
