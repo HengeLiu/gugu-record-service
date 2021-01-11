@@ -4,7 +4,6 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * 食材摄入重量
@@ -14,7 +13,7 @@ import java.util.List;
  */
 @Data
 @Builder
-public class IngredientIntakesWeightAo implements Serializable {
+public class IngredientCategoryWeightAo implements Serializable {
 
     private static final long serialVersionUID = 7240322673991946852L;
     /**

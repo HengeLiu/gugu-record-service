@@ -1,5 +1,7 @@
-package com.nutrition.nutritionservice.vo.store;
+package com.nutrition.nutritionservice.controller.ao;
 
+import com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo;
+import com.nutrition.nutritionservice.vo.store.CuisineVo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,6 +11,8 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
+ * 餐品设计
+ * 
  * @author heng.liu
  * @since 2020/12/23
  */
@@ -16,7 +20,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CuisineAssemblyAo implements Serializable {
+public class CuisineDesignerAo implements Serializable {
 
     private static final long serialVersionUID = 2127886022694767504L;
 

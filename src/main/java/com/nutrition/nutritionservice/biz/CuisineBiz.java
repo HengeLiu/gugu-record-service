@@ -32,7 +32,7 @@ import com.nutrition.nutritionservice.vo.StoreVo;
 import com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo;
 import com.nutrition.nutritionservice.vo.user.UserIngredientWeightSumDailyVo;
 import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientCategoryModelVo;
-import com.nutrition.nutritionservice.vo.store.CuisineAssemblyAo;
+import com.nutrition.nutritionservice.controller.ao.CuisineDesignerAo;
 import com.nutrition.nutritionservice.vo.store.CuisineVo;
 import com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo;
 import org.springframework.transaction.annotation.Transactional;
@@ -86,17 +86,17 @@ public class CuisineBiz {
     private StoreService storeService;
 
     @Transactional(rollbackFor = Exception.class)
-    public void saveNewCuisine(CuisineAssemblyAo cuisineAssemblyAo) {
+    public void saveNewCuisine(CuisineDesignerAo cuisineDesignerAo) {
         String cuisineCode = UUID.randomUUID().toString().replace("-", "");
-        double cuisineCalorie = ingredientBiz.calculateCalorie(cuisineAssemblyAo.getCuisineIngredientRelList());
-        cuisineAssemblyAo.getCuisineVo().setCode(cuisineCode);
-        cuisineAssemblyAo.getCuisineVo().setCalorie(cuisineCalorie);
-        cuisineService.add(cuisineAssemblyAo.getCuisineVo());
-        cuisineAssemblyAo.getCuisineIngredientRelList()
+        double cuisineCalorie = ingredientBiz.calculateCalorie(cuisineDesignerAo.getCuisineIngredientRelList());
+        cuisineDesignerAo.getCuisineVo().setCode(cuisineCode);
+        cuisineDesignerAo.getCuisineVo().setCalorie(cuisineCalorie);
+        cuisineService.add(cuisineDesignerAo.getCuisineVo());
+        cuisineDesignerAo.getCuisineIngredientRelList()
                 .forEach(cuisineIngredientRelVo -> cuisineIngredientRelVo.setCuisineCode(cuisineCode));
-        cuisineIngredientRelService.addBatch(cuisineAssemblyAo.getCuisineIngredientRelList());
+        cuisineIngredientRelService.addBatch(cuisineDesignerAo.getCuisineIngredientRelList());
         CuisineCategoryWeightVo cuisineCategoryWeightVo = cuisineCategoryWeightService
-                .calculateCuisineCategoryWight(cuisineAssemblyAo);
+                .calculateCuisineCategoryWight(cuisineDesignerAo);
         cuisineCategoryWeightService.add(cuisineCategoryWeightVo);
     }
 
@@ -239,5 +239,9 @@ public class CuisineBiz {
                 .collect(Collectors.toList());
 
         return storeCuisineListAoBuilder.cuisineCategoryList(cuisineCategoryAoList).build();
+    }
+
+    public StoreCuisineListAo queryCuisineDetails(String cuisineCode) {
+        return null;
     }
 }

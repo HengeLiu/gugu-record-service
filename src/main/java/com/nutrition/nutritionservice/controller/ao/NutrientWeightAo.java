@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @Data
 @Builder
-public class NutrientIntakesWeightAo implements Serializable {
+public class NutrientWeightAo implements Serializable {
     private static final long serialVersionUID = 6382911904487410846L;
 
     /**

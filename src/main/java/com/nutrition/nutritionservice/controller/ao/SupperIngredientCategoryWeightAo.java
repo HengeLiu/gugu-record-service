@@ -21,26 +21,26 @@ public class SupperIngredientCategoryWeightAo implements Serializable {
     /**
      * 食材大类目标重量
      */
-    private Integer supperIngredientCategoryTargetWeight;
+    private Integer supperCategoryTargetWeight;
 
     /**
      * 食材大类历史摄入重量
      */
-    private Integer supperIngredientCategoryHistoricalWeight;
+    private Integer supperCategoryHistoricalWeight;
 
     /**
      * 食材大类名称
      */
-    private String supperIngredientCategoryName;
+    private String supperCategoryName;
 
     /**
      * 食材大类编码
      */
-    private Integer supperIngredientCategoryCode;
+    private Integer supperCategoryCode;
 
     /**
      * 分类列表
      */
-    private List<IngredientIntakesWeightAo> ingredientCategoryWeightList;
+    private List<IngredientCategoryWeightAo> categoryWeightList;
 
 }

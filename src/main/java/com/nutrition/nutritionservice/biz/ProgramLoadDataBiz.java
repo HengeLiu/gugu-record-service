@@ -3,7 +3,7 @@ package com.nutrition.nutritionservice.biz;
 import com.nutrition.nutritionservice.annotation.Biz;
 import com.nutrition.nutritionservice.controller.ao.LastAddedCuisineAo;
 import com.nutrition.nutritionservice.controller.ao.LocationAo;
-import com.nutrition.nutritionservice.controller.ao.NutrientIntakesWeightAo;
+import com.nutrition.nutritionservice.controller.ao.NutrientWeightAo;
 import com.nutrition.nutritionservice.controller.ao.PreloadDataAo;
 import com.nutrition.nutritionservice.controller.ao.SupperIngredientCategoryWeightAo;
 import com.nutrition.nutritionservice.controller.ao.UserSettingsAo;
@@ -180,7 +180,7 @@ public class ProgramLoadDataBiz {
         }
 
         /* 获取用户营养素今日摄入历史 */
-        List<NutrientIntakesWeightAo> nutrientWeightList = userNutrientWeightSumDailyBiz
+        List<NutrientWeightAo> nutrientWeightList = userNutrientWeightSumDailyBiz
                 .queryUserNutrientWeightSumDaily(uuid, historicalCalorie, LocalDate.now());
         preloadDataAoBuilder.userNutrientHistoricalIntakesDaily(nutrientWeightList);
 

@@ -6,7 +6,7 @@ import com.nutrition.nutritionservice.enums.database.IngredientCategoryEnum;
 import com.nutrition.nutritionservice.util.ModelUtil;
 import com.nutrition.nutritionservice.vo.CuisineCategoryWeightVo;
 import com.nutrition.nutritionservice.vo.IngredientVo;
-import com.nutrition.nutritionservice.vo.store.CuisineAssemblyAo;
+import com.nutrition.nutritionservice.controller.ao.CuisineDesignerAo;
 import com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo;
 import org.springframework.stereotype.Service;
 
@@ -30,12 +30,12 @@ public class CuisineCategoryWeightService {
     @Resource
     private CuisineCategoryWeightDao cuisineCategoryWeightDao;
 
-    public CuisineCategoryWeightVo calculateCuisineCategoryWight(CuisineAssemblyAo cuisineAssemblyAo) {
-        Map<Integer, Integer> ingredientWeightMap = cuisineAssemblyAo.getCuisineIngredientRelList().stream()
+    public CuisineCategoryWeightVo calculateCuisineCategoryWight(CuisineDesignerAo cuisineDesignerAo) {
+        Map<Integer, Integer> ingredientWeightMap = cuisineDesignerAo.getCuisineIngredientRelList().stream()
                 .collect(Collectors.toMap(CuisineIngredientRelVo::getIngredientCode, CuisineIngredientRelVo::getWeight,
                         Integer::sum));
         List<IngredientVo> ingredientVoList = ingredientService
-                .queryByCodeList(cuisineAssemblyAo.getCuisineIngredientRelList().stream()
+                .queryByCodeList(cuisineDesignerAo.getCuisineIngredientRelList().stream()
                         .map(CuisineIngredientRelVo::getIngredientCode).collect(Collectors.toList()));
         Map<IngredientCategoryEnum, Integer> categoryWeightMap = ingredientVoList.stream()
                 .collect(Collectors.groupingBy(ingredientVo -> CodeEnums.valueOf(IngredientCategoryEnum.class,
@@ -44,8 +44,8 @@ public class CuisineCategoryWeightService {
                                 .summingInt(ingredient -> ingredientWeightMap.getOrDefault(ingredient.getCode(), 0))));
         CuisineCategoryWeightVo cuisineCategoryWeightVo = new CuisineCategoryWeightVo();
         ModelUtil.categoryEnumMapToModel(categoryWeightMap, cuisineCategoryWeightVo);
-        cuisineCategoryWeightVo.setCuisineCode(cuisineAssemblyAo.getCuisineVo().getCode());
-        cuisineCategoryWeightVo.setCalorie(cuisineAssemblyAo.getCuisineVo().getCalorie());
+        cuisineCategoryWeightVo.setCuisineCode(cuisineDesignerAo.getCuisineVo().getCode());
+        cuisineCategoryWeightVo.setCalorie(cuisineDesignerAo.getCuisineVo().getCalorie());
         return cuisineCategoryWeightVo;
     }
 

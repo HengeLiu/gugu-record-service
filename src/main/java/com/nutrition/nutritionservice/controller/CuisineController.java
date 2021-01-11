@@ -6,7 +6,7 @@ import com.nutrition.nutritionservice.controller.ao.StoreCuisineListAo;
 import com.nutrition.nutritionservice.vo.CuisineRecommendedScoreWebAo;
 import com.nutrition.nutritionservice.vo.IDPageParamVo;
 import com.nutrition.nutritionservice.vo.user.UserIngredientWeightSumDailyVo;
-import com.nutrition.nutritionservice.vo.store.CuisineAssemblyAo;
+import com.nutrition.nutritionservice.controller.ao.CuisineDesignerAo;
 import com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,13 +40,13 @@ public class CuisineController {
         model.addObject("ingredientCategoryMap", cuisineBiz.queryIngredientCategoryMap());
         model.addObject("recommendedCategoryWeightMap",
                 cuisineBiz.queryRecommendedCategoryWeightMap(modelIngredientCategoryModelBiz.queryMostNeededModel(), dineCode));
-        model.addObject("cuisine", CuisineAssemblyAo.builder().build());
+        model.addObject("cuisine", CuisineDesignerAo.builder().build());
         return model;
     }
 
     @PostMapping("/create")
     @ResponseBody
-    public String create(@ModelAttribute("cuisine") CuisineAssemblyAo cuisineAssemblyAo) {
+    public String create(@ModelAttribute("cuisine") CuisineDesignerAo cuisineDesignerAo) {
         return "Create success";
     }
 
@@ -68,6 +68,12 @@ public class CuisineController {
     @ResponseBody
     public StoreCuisineListAo queryCuisineList(@RequestParam String storeCode, @RequestParam String uuid) {
         return cuisineBiz.queryCuisineList(storeCode);
+    }
+
+    @GetMapping("/query-details")
+    @ResponseBody
+    public StoreCuisineListAo queryCuisineDetails(@RequestParam String cuisineCode) {
+        return cuisineBiz.queryCuisineDetails(cuisineCode);
     }
 
 }

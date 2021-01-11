@@ -65,6 +65,6 @@ public class PreloadDataAo implements Serializable {
     /**
      * 营养素摄入累计
      */
-    private List<NutrientIntakesWeightAo> userNutrientHistoricalIntakesDaily;
+    private List<NutrientWeightAo> userNutrientHistoricalIntakesDaily;
 
 }

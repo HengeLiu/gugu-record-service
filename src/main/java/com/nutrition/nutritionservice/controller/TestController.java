@@ -1,6 +1,6 @@
 package com.nutrition.nutritionservice.controller;
 
-import com.nutrition.nutritionservice.vo.store.CuisineAssemblyAo;
+import com.nutrition.nutritionservice.controller.ao.CuisineDesignerAo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +27,7 @@ public class TestController {
     }
 
     @RequestMapping("/test")
-    public String test(@ModelAttribute("cuisine") CuisineAssemblyAo cuisineAssemblyAo, Model model, String name) {
+    public String test(@ModelAttribute("cuisine") CuisineDesignerAo cuisineDesignerAo, Model model, String name) {
         return "home";
     }
 

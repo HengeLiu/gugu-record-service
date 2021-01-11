@@ -1,11 +1,10 @@
 package com.nutrition.nutritionservice.util;
 
 import com.google.common.collect.Maps;
-import com.nutrition.nutritionservice.controller.ao.IngredientIntakesWeightAo;
+import com.nutrition.nutritionservice.controller.ao.IngredientCategoryWeightAo;
 import com.nutrition.nutritionservice.controller.ao.SupperIngredientCategoryWeightAo;
 import com.nutrition.nutritionservice.enums.database.IngredientCategoryEnum;
 import com.nutrition.nutritionservice.enums.database.IngredientSuperCategoryEnum;
-import com.nutrition.nutritionservice.vo.CuisineCategoryWeightVo;
 import com.nutrition.nutritionservice.vo.modeldata.CategoryModel;
 import com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo;
 import com.nutrition.nutritionservice.vo.user.UserIngredientWeightSumDailyVo;
@@ -130,26 +129,26 @@ public class ModelUtil {
         Map<IngredientCategoryEnum, Double> historicalMap = modelToCategoryEnumMap(historicalModel);
         return targetMap.entrySet().stream().collect(Collectors.groupingBy(entry -> entry.getKey().getParentCategory()))
                 .entrySet().stream().map(superCategoryEntry -> {
-                    List<IngredientIntakesWeightAo> ingredientIntakesWeightAoList = superCategoryEntry.getValue()
+                    List<IngredientCategoryWeightAo> ingredientCategoryWeightAoList = superCategoryEntry.getValue()
                             .stream().map(categoryEntry -> {
                                 IngredientCategoryEnum categoryEnum = categoryEntry.getKey();
-                                return IngredientIntakesWeightAo.builder().categoryName(categoryEnum.getNameZh())
+                                return IngredientCategoryWeightAo.builder().categoryName(categoryEnum.getNameZh())
                                         .categoryCode(categoryEnum.getCode()).targetWeight(categoryEntry.getValue())
                                         .historicalWeight(historicalMap.get(categoryEnum).intValue())
                                         .commonIngredientNameListStr(categoryEnum.getCommonIngredientNameArrayStr())
                                         .build();
                             }).collect(Collectors.toList());
-                    int targetWeight = ingredientIntakesWeightAoList.stream()
-                            .mapToInt(IngredientIntakesWeightAo::getTargetWeight).sum();
-                    int historicalWeight = ingredientIntakesWeightAoList.stream()
-                            .mapToInt(IngredientIntakesWeightAo::getHistoricalWeight).sum();
+                    int targetWeight = ingredientCategoryWeightAoList.stream()
+                            .mapToInt(IngredientCategoryWeightAo::getTargetWeight).sum();
+                    int historicalWeight = ingredientCategoryWeightAoList.stream()
+                            .mapToInt(IngredientCategoryWeightAo::getHistoricalWeight).sum();
                     IngredientSuperCategoryEnum superCategoryEnum = superCategoryEntry.getKey();
                     return SupperIngredientCategoryWeightAo.builder()
-                            .supperIngredientCategoryName(superCategoryEnum.getNameZh())
-                            .supperIngredientCategoryCode(superCategoryEnum.getCode())
-                            .supperIngredientCategoryTargetWeight(targetWeight)
-                            .supperIngredientCategoryHistoricalWeight(historicalWeight)
-                            .ingredientCategoryWeightList(ingredientIntakesWeightAoList).build();
+                            .supperCategoryName(superCategoryEnum.getNameZh())
+                            .supperCategoryCode(superCategoryEnum.getCode())
+                            .supperCategoryTargetWeight(targetWeight)
+                            .supperCategoryHistoricalWeight(historicalWeight)
+                            .categoryWeightList(ingredientCategoryWeightAoList).build();
                 }).collect(Collectors.toList());
     }
 }

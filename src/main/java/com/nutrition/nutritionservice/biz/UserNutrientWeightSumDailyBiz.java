@@ -2,7 +2,7 @@ package com.nutrition.nutritionservice.biz;
 
 import com.google.common.collect.Maps;
 import com.nutrition.nutritionservice.annotation.Biz;
-import com.nutrition.nutritionservice.controller.ao.NutrientIntakesWeightAo;
+import com.nutrition.nutritionservice.controller.ao.NutrientWeightAo;
 import com.nutrition.nutritionservice.enums.CodeEnums;
 import com.nutrition.nutritionservice.enums.database.NutrientEnum;
 import com.nutrition.nutritionservice.service.UserNutrientWeightSumDailyService;
@@ -34,8 +34,8 @@ public class UserNutrientWeightSumDailyBiz {
      * @param targetCalorie 所有营养素素总热量，将根据该热量处理计算误差。
      * @return 营养素摄入历史列表
      */
-    public List<NutrientIntakesWeightAo> calculateToAo(Double targetCalorie,
-            List<UserNutrientWeightSumDailyVo> userNutrientWeightSumDailyVoList) {
+    public List<NutrientWeightAo> calculateToAo(Double targetCalorie,
+                                                List<UserNutrientWeightSumDailyVo> userNutrientWeightSumDailyVoList) {
         // 需要展示或计算热量的营养素，key: 营养素编码，value: 营养素的热量。
         Map<Integer, Double> nutrientCodeCalorieMap = Maps.newHashMap();
         nutrientCodeCalorieMap.put(NutrientEnum.CHO.getCode(), 4.0);
@@ -44,7 +44,7 @@ public class UserNutrientWeightSumDailyBiz {
         if (CollectionUtils.isEmpty(userNutrientWeightSumDailyVoList)) {
             return Collections.emptyList();
         }
-        List<NutrientIntakesWeightAo> nutrientWeightList = userNutrientWeightSumDailyVoList.stream()
+        List<NutrientWeightAo> nutrientWeightList = userNutrientWeightSumDailyVoList.stream()
                 .filter(nutrientWeight -> nutrientCodeCalorieMap.containsKey(nutrientWeight.getNutrientCode()))
                 .map(nutrientWeight -> {
                     NutrientEnum nutrientEnum = CodeEnums.valueOf(NutrientEnum.class, nutrientWeight.getNutrientCode());
@@ -52,12 +52,12 @@ public class UserNutrientWeightSumDailyBiz {
                         throw new IllegalArgumentException(
                                 "Nutrient not exist, code " + nutrientWeight.getNutrientCode());
                     }
-                    return NutrientIntakesWeightAo.builder().nutrientCode(nutrientEnum.getCode())
+                    return NutrientWeightAo.builder().nutrientCode(nutrientEnum.getCode())
                             .nutrientName(nutrientEnum.getNameZh()).weight(nutrientWeight.getWeight())
                             .calorie(nutrientWeight.getWeight() * nutrientCodeCalorieMap.get(nutrientEnum.getCode()))
                             .build();
                 }).collect(Collectors.toList());
-        double calorieSum = nutrientWeightList.stream().mapToDouble(NutrientIntakesWeightAo::getCalorie).sum();
+        double calorieSum = nutrientWeightList.stream().mapToDouble(NutrientWeightAo::getCalorie).sum();
         if (targetCalorie != null) {
             // 热量计算误差处理
             nutrientWeightList.forEach(nutrientWeight -> {
@@ -72,8 +72,8 @@ public class UserNutrientWeightSumDailyBiz {
 
     }
 
-    public List<NutrientIntakesWeightAo> queryUserNutrientWeightSumDaily(String uuid, Double targetCalorie,
-            LocalDate date) {
+    public List<NutrientWeightAo> queryUserNutrientWeightSumDaily(String uuid, Double targetCalorie,
+                                                                  LocalDate date) {
         List<UserNutrientWeightSumDailyVo> userNutrientWeightSumDailyVoList = userNutrientWeightSumDailyService
                 .queryByUuidAndDate(uuid, date);
         return this.calculateToAo(targetCalorie, userNutrientWeightSumDailyVoList);

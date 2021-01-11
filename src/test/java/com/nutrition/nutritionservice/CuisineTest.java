@@ -10,7 +10,7 @@ import com.nutrition.nutritionservice.enums.database.DineTimeEnum;
 import com.nutrition.nutritionservice.enums.database.IngredientProcessEnum;
 import com.nutrition.nutritionservice.vo.IngredientVo;
 import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientCategoryModelVo;
-import com.nutrition.nutritionservice.vo.store.CuisineAssemblyAo;
+import com.nutrition.nutritionservice.controller.ao.CuisineDesignerAo;
 import com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo;
 import com.nutrition.nutritionservice.vo.store.CuisineVo;
 import org.junit.jupiter.api.Test;
@@ -53,7 +53,7 @@ public class CuisineTest {
                         .process(IngredientProcessEnum.STEW.getCode())
                         .weight(recommendedWeightMap.getOrDefault(categoryCode, 0)).build());
             });
-            cuisineBiz.saveNewCuisine(CuisineAssemblyAo.builder()
+            cuisineBiz.saveNewCuisine(CuisineDesignerAo.builder()
                     .cuisineVo(CuisineVo.builder()
                             .warm(cuisineWarmEnum.getCode()).status(CuisineStatusEnum.SALE.getCode())
                             .cuisineType(CuisineCategoryEnum.SET.getCode())
