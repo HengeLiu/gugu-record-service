@@ -1,6 +1,5 @@
 package com.nutrition.nutritionservice.biz;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.nutrition.nutritionservice.annotation.Biz;
 import com.nutrition.nutritionservice.controller.ao.LastAddedCuisineAo;
@@ -9,16 +8,16 @@ import com.nutrition.nutritionservice.converter.Model2UserModelConverter;
 import com.nutrition.nutritionservice.converter.NutrientWeightVo2AoConverter;
 import com.nutrition.nutritionservice.converter.UserInfoAo2VoConverter;
 import com.nutrition.nutritionservice.enums.BooleanEnum;
-import com.nutrition.nutritionservice.enums.UnitEnum;
 import com.nutrition.nutritionservice.enums.database.CuisineTasteEnum;
+import com.nutrition.nutritionservice.enums.database.NutrientEnum;
 import com.nutrition.nutritionservice.enums.database.UserAccountStatusTypeEnum;
 import com.nutrition.nutritionservice.enums.database.UserAccountTypeEnum;
 import com.nutrition.nutritionservice.enums.database.UserIngredientModelStatusEnum;
 import com.nutrition.nutritionservice.exception.NutritionServiceException;
 import com.nutrition.nutritionservice.service.CuisineIngredientCategoryWeightService;
 import com.nutrition.nutritionservice.service.CuisineIngredientRelService;
+import com.nutrition.nutritionservice.service.CuisineNutrientWeightService;
 import com.nutrition.nutritionservice.service.EnergyCalorieCalculateService;
-import com.nutrition.nutritionservice.service.IngredientNutrientRelService;
 import com.nutrition.nutritionservice.service.UserAccountService;
 import com.nutrition.nutritionservice.service.UserHistoricalCuisineService;
 import com.nutrition.nutritionservice.service.UserInfoService;
@@ -31,7 +30,7 @@ import com.nutrition.nutritionservice.util.DateTimeUtil;
 import com.nutrition.nutritionservice.util.ModelUtil;
 import com.nutrition.nutritionservice.util.UUIDUtils;
 import com.nutrition.nutritionservice.vo.CuisineIngredientCategoryWeightVo;
-import com.nutrition.nutritionservice.vo.IngredientNutrientRelVo;
+import com.nutrition.nutritionservice.vo.CuisineNutrientWeightVo;
 import com.nutrition.nutritionservice.vo.UserNutrientWeightSumDailyVo;
 import com.nutrition.nutritionservice.vo.UserStatusInfoVo;
 import com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo;
@@ -94,16 +93,13 @@ public class UserBiz {
     private CuisineIngredientRelService cuisineIngredientRelService;
 
     @Resource
-    private IngredientNutrientRelService ingredientNutrientRelService;
-
-    @Resource
-    private UserNutrientWeightSumDailyBiz userNutrientWeightSumDailyBiz;
-
-    @Resource
     private ModelIngredientCategoryModelBiz modelIngredientCategoryModelBiz;
 
     @Resource
     private UserStatusInfoService userStatusInfoService;
+
+    @Resource
+    private CuisineNutrientWeightService cuisineNutrientWeightService;
 
     private UserInfoVo queryUserInfo(String uuid) {
         return userInfoService.selectByUuid(uuid);
@@ -229,44 +225,26 @@ public class UserBiz {
             throw new NutritionServiceException(
                     "Cuisine ingredient list can not be empty, cuisine code " + cuisineCode);
         }
-        // 餐品食材重量
-        Map<Integer, Integer> ingredientCodeWeightMap = cuisineIngredientRelVoList.stream().collect(
-                Collectors.toMap(CuisineIngredientRelVo::getIngredientCode, CuisineIngredientRelVo::getWeight));
-        // 食材营养素含量
-        Map<Integer, List<IngredientNutrientRelVo>> ingredientNutrientMap = ingredientNutrientRelService
-                .queryByIngredientCodeList(Lists.newArrayList(ingredientCodeWeightMap.keySet())).stream()
-                .collect(Collectors.groupingBy(IngredientNutrientRelVo::getIngredientCode));
 
+        // 餐品营养素含量
+        Map<Integer, Double> cuisineNutrientCodeWeightMap = cuisineNutrientWeightService.queryByCuisineCode(cuisineCode)
+                .stream().collect(
+                        Collectors.toMap(CuisineNutrientWeightVo::getNutrientCode, CuisineNutrientWeightVo::getWeight));
         List<UserNutrientWeightSumDailyVo> userNutrientWeightSumDailyVoList = dailyFirstRecode ? Collections.emptyList()
                 : userNutrientWeightSumDailyService.queryByUuidAndDate(uuid, LocalDate.now());
-        // 用户营养素历史摄入量
-        Map<Integer, Double> historicalNutrientCodeWeightMap = userNutrientWeightSumDailyVoList.stream()
+        Map<Integer, Double> userNutrientCodeWeightSumDailyMap = userNutrientWeightSumDailyVoList.stream()
                 .collect(Collectors.toMap(UserNutrientWeightSumDailyVo::getNutrientCode,
                         UserNutrientWeightSumDailyVo::getWeight));
-        for (Map.Entry<Integer, Integer> ingredientWeightEntry : ingredientCodeWeightMap.entrySet()) {
-            Integer ingredientCode = ingredientWeightEntry.getKey();
-            Integer ingredientWeight = ingredientWeightEntry.getValue();
-            List<IngredientNutrientRelVo> ingredientNutrientRelList = ingredientNutrientMap.get(ingredientCode);
-            if (CollectionUtils.isEmpty(ingredientNutrientRelList)) {
-                log.error("Ingredient nutrient info is empty {}", ingredientCode);
-                continue;
-            }
-            for (IngredientNutrientRelVo ingredientNutrientRelVo : ingredientNutrientRelList) {
-                if ("none".equals(ingredientNutrientRelVo.getNutrientContent())
-                        || "tr".equals(ingredientNutrientRelVo.getNutrientContent())
-                        || UnitEnum.PERCENT.getName().equals(ingredientNutrientRelVo.getContentUnit())) {
-                    continue;
-                }
-                double nutrientWeight = Double.parseDouble(ingredientNutrientRelVo.getNutrientContent());
-                if (UnitEnum.MG.getName().equals(ingredientNutrientRelVo.getContentUnit())) {
-                    nutrientWeight /= 1000;
-                }
-                historicalNutrientCodeWeightMap.put(ingredientNutrientRelVo.getNutrientCode(),
-                        (nutrientWeight * ingredientWeight / 100) + historicalNutrientCodeWeightMap
-                                        .getOrDefault(ingredientNutrientRelVo.getNutrientCode(), 0.0));
+        // 用户营养素历史摄入量
+        Map<Integer, Double> userHistoricalNutrientCodeWeightMap = Maps.newHashMap();
+        for (NutrientEnum nutrientEnum : NutrientEnum.values()) {
+            double historicalNutrientCodeWeight = cuisineNutrientCodeWeightMap.getOrDefault(nutrientEnum.getCode(), 0.0)
+                    + userNutrientCodeWeightSumDailyMap.getOrDefault(nutrientEnum.getCode(), 0.0);
+            if (historicalNutrientCodeWeight != 0) {
+                userHistoricalNutrientCodeWeightMap.put(nutrientEnum.getCode(), historicalNutrientCodeWeight);
             }
         }
-        List<UserNutrientWeightSumDailyVo> newUserNutrientWeightSumDailyVoList = historicalNutrientCodeWeightMap
+        List<UserNutrientWeightSumDailyVo> newUserNutrientWeightSumDailyVoList = userHistoricalNutrientCodeWeightMap
                 .entrySet().stream().map(entry -> UserNutrientWeightSumDailyVo.builder().uuid(uuid)
                         .nutrientCode(entry.getKey()).weight(entry.getValue()).date(LocalDate.now()).build())
                 .collect(Collectors.toList());
