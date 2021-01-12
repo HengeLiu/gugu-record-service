@@ -3,14 +3,18 @@ package com.nutrition.nutritionservice;
 import com.google.common.collect.Lists;
 import com.nutrition.nutritionservice.biz.CuisineBiz;
 import com.nutrition.nutritionservice.biz.ModelIngredientCategoryModelBiz;
-import com.nutrition.nutritionservice.enums.database.CuisineStatusEnum;
+import com.nutrition.nutritionservice.controller.ao.CuisineDesignerAo;
 import com.nutrition.nutritionservice.enums.database.CuisineCategoryEnum;
+import com.nutrition.nutritionservice.enums.database.CuisineStatusEnum;
 import com.nutrition.nutritionservice.enums.database.CuisineWarmEnum;
 import com.nutrition.nutritionservice.enums.database.DineTimeEnum;
 import com.nutrition.nutritionservice.enums.database.IngredientProcessEnum;
+import com.nutrition.nutritionservice.service.CuisineIngredientRelService;
+import com.nutrition.nutritionservice.service.CuisineNutrientWeightService;
+import com.nutrition.nutritionservice.service.CuisineService;
+import com.nutrition.nutritionservice.vo.CuisineNutrientWeightVo;
 import com.nutrition.nutritionservice.vo.IngredientVo;
 import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientCategoryModelVo;
-import com.nutrition.nutritionservice.controller.ao.CuisineDesignerAo;
 import com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo;
 import com.nutrition.nutritionservice.vo.store.CuisineVo;
 import org.junit.jupiter.api.Test;
@@ -31,7 +35,16 @@ public class CuisineTest {
     private CuisineBiz cuisineBiz;
 
     @Resource
+    private CuisineService cuisineService;
+
+    @Resource
     private ModelIngredientCategoryModelBiz modelIngredientCategoryModelBiz;
+
+    @Resource
+    private CuisineIngredientRelService cuisineIngredientRelService;
+
+    @Resource
+    private CuisineNutrientWeightService cuisineNutrientWeightService;
 
     @Test
     public void createNewCuisine() {
@@ -62,6 +75,17 @@ public class CuisineTest {
                     .cuisineIngredientRelList(cuisineIngredientRelVoList).build());
         }
 
+    }
+
+    @Test
+//    @Transactional(rollbackFor = Exception.class)
+    public void saveCuisineNutrient() {
+        List<CuisineVo> cuisineVos = cuisineService.queryByStoreCode("100001");
+        for (CuisineVo cuisineVo : cuisineVos) {
+            List<CuisineNutrientWeightVo> cuisineNutrientWeightVoList = cuisineBiz.calculateNutrientWeight(
+                    cuisineIngredientRelService.queryByCuisineCode(cuisineVo.getCode()), cuisineVo.getCode());
+            cuisineNutrientWeightService.addAll(cuisineNutrientWeightVoList);
+        }
     }
 
 }

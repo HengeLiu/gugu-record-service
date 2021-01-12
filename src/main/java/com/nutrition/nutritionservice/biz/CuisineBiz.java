@@ -103,6 +103,9 @@ public class CuisineBiz {
     private ConfigPropertiesService configPropertiesService;
 
     @Resource
+    private CuisineAdditionalInfoService cuisineAdditionalInfoService;
+
+    @Resource
     private IngredientBiz ingredientBiz;
 
     @Resource
@@ -117,8 +120,7 @@ public class CuisineBiz {
     @Resource
     private UserInfoService userInfoService;
 
-    @Resource
-    private CuisineAdditionalInfoService cuisineAdditionalInfoService;
+
 
     @Resource
     private IngredientNutrientRelService ingredientNutrientRelService;
@@ -148,7 +150,7 @@ public class CuisineBiz {
         cuisineNutrientWeightService.addAll(this.calculateNutrientWeight(cuisineIngredientRelList, cuisineCode));
     }
 
-    private List<CuisineNutrientWeightVo> calculateNutrientWeight(
+    public List<CuisineNutrientWeightVo> calculateNutrientWeight(
             List<CuisineIngredientRelVo> cuisineIngredientRelVoList, String cuisineCode) {
         // 餐品食材重量
         Map<Integer, Integer> ingredientCodeWeightMap = cuisineIngredientRelVoList.stream().collect(
@@ -157,7 +159,7 @@ public class CuisineBiz {
         Map<Integer, List<IngredientNutrientRelVo>> ingredientNutrientMap = ingredientNutrientRelService
                 .queryByIngredientCodeList(Lists.newArrayList(ingredientCodeWeightMap.keySet())).stream()
                 .collect(Collectors.groupingBy(IngredientNutrientRelVo::getIngredientCode));
-        List<CuisineNutrientWeightVo> cuisineNutrientWeightVoList = Lists.newArrayList();
+        Map<Integer, Double> nutrientCodeWeightMap = Maps.newHashMap();
         for (Map.Entry<Integer, Integer> ingredientWeightEntry : ingredientCodeWeightMap.entrySet()) {
             Integer ingredientCode = ingredientWeightEntry.getKey();
             Integer ingredientWeight = ingredientWeightEntry.getValue();
@@ -177,12 +179,15 @@ public class CuisineBiz {
                 if (UnitEnum.MG.getName().equals(ingredientNutrientRelVo.getContentUnit())) {
                     ingredientNutrientWeight /= 1000;
                 }
-                cuisineNutrientWeightVoList.add(CuisineNutrientWeightVo.builder().cuisineCode(cuisineCode)
-                        .nutrientCode(ingredientNutrientRelVo.getNutrientCode()).weight(ingredientNutrientWeight)
-                        .build());
+                nutrientCodeWeightMap.put(ingredientNutrientRelVo.getNutrientCode(), ingredientNutrientWeight
+                        + nutrientCodeWeightMap.getOrDefault(ingredientNutrientRelVo.getNutrientCode(), 0.0));
             }
         }
-        return cuisineNutrientWeightVoList;
+        return nutrientCodeWeightMap.entrySet().stream()
+                .map(nutrientCodeWeightEntry -> CuisineNutrientWeightVo.builder().cuisineCode(cuisineCode)
+                        .nutrientCode(nutrientCodeWeightEntry.getKey()).weight(nutrientCodeWeightEntry.getValue())
+                        .build())
+                .collect(Collectors.toList());
     }
 
     public Map<String, List<IngredientVo>> queryIngredientCategoryMap() {
@@ -367,7 +372,7 @@ public class CuisineBiz {
         cuisineDetailsAoBuilder.modelMatchingScore(cosineSimilarity);
 
         Map<Integer, Integer> ingredientCodeWeightMap = cuisineIngredientRelService.queryByCuisineCode(cuisineCode)
-                .stream().collect(
+                .stream().filter(cuisineIngredientRelVo -> cuisineIngredientRelVo.getWeight() > 0).collect(
                         Collectors.toMap(CuisineIngredientRelVo::getIngredientCode, CuisineIngredientRelVo::getWeight));
         Map<Integer, IngredientVo> ingredientCodeMap = ingredientService
                 .queryByCodeList(Lists.newArrayList(ingredientCodeWeightMap.keySet())).stream()
