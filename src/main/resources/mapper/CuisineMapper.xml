@@ -5,6 +5,7 @@
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="code" jdbcType="VARCHAR" property="code"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="price" jdbcType="DOUBLE" property="price"/>
         <result column="store_code" jdbcType="VARCHAR" property="storeCode"/>
         <result column="calorie" jdbcType="INTEGER" property="calorie"/>
         <result column="goal" jdbcType="TINYINT" property="goal"/>
@@ -14,10 +15,14 @@
         <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
         <result column="status" jdbcType="TINYINT" property="status"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, code, `name`, store_code, calorie, goal, cuisine_type, dine_time, warm, image_url, `status`,
-    create_time
+    id, code, `name`, price, store_code, calorie, goal, cuisine_type, dine_time, warm, image_url, `status`,
+    create_time, update_time
+  </sql>
+    <sql id="Insert_Column_List">
+    code, `name`, price, store_code, calorie, goal, cuisine_type, dine_time, warm, image_url, `status`
   </sql>
     <select id="selectByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
@@ -47,13 +52,13 @@
         where dine_time = #{dineTime}
     </select>
     <insert id="insert" parameterType="com.nutrition.nutritionservice.vo.store.CuisineVo">
-    insert into cuisine (code, `name`, store_code, 
-      calorie, goal, cuisine_type, 
-      dine_time, warm, `status`)
-    values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{storeCode,jdbcType=VARCHAR}, 
-      #{calorie,jdbcType=INTEGER}, #{goal,jdbcType=TINYINT}, #{cuisineType,jdbcType=TINYINT}, 
-      #{dineTime,jdbcType=TINYINT}, #{warm,jdbcType=TINYINT}, #{status,jdbcType=TINYINT})
-  </insert>
+        insert into cuisine (
+        <include refid="Insert_Column_List"/>
+        )
+        values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{price}, #{storeCode,jdbcType=VARCHAR},
+        #{calorie,jdbcType=INTEGER}, #{goal,jdbcType=TINYINT}, #{cuisineType,jdbcType=TINYINT},
+        #{dineTime,jdbcType=TINYINT}, #{warm,jdbcType=TINYINT}, #{status,jdbcType=TINYINT})
+    </insert>
     <update id="updateStatusByCode" parameterType="java.lang.String">
     update cuisine set status = #{status} where code = #{code}
   </update>

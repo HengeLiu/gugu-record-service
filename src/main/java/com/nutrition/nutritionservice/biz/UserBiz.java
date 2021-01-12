@@ -6,6 +6,7 @@ import com.nutrition.nutritionservice.annotation.Biz;
 import com.nutrition.nutritionservice.controller.ao.LastAddedCuisineAo;
 import com.nutrition.nutritionservice.controller.ao.UserInfoAo;
 import com.nutrition.nutritionservice.converter.Model2UserModelConverter;
+import com.nutrition.nutritionservice.converter.NutrientWeightVo2AoConverter;
 import com.nutrition.nutritionservice.converter.UserInfoAo2VoConverter;
 import com.nutrition.nutritionservice.enums.BooleanEnum;
 import com.nutrition.nutritionservice.enums.UnitEnum;
@@ -14,7 +15,7 @@ import com.nutrition.nutritionservice.enums.database.UserAccountStatusTypeEnum;
 import com.nutrition.nutritionservice.enums.database.UserAccountTypeEnum;
 import com.nutrition.nutritionservice.enums.database.UserIngredientModelStatusEnum;
 import com.nutrition.nutritionservice.exception.NutritionServiceException;
-import com.nutrition.nutritionservice.service.CuisineCategoryWeightService;
+import com.nutrition.nutritionservice.service.CuisineIngredientCategoryWeightService;
 import com.nutrition.nutritionservice.service.CuisineIngredientRelService;
 import com.nutrition.nutritionservice.service.EnergyCalorieCalculateService;
 import com.nutrition.nutritionservice.service.IngredientNutrientRelService;
@@ -29,7 +30,7 @@ import com.nutrition.nutritionservice.service.WechatHttpApiService;
 import com.nutrition.nutritionservice.util.DateTimeUtil;
 import com.nutrition.nutritionservice.util.ModelUtil;
 import com.nutrition.nutritionservice.util.UUIDUtils;
-import com.nutrition.nutritionservice.vo.CuisineCategoryWeightVo;
+import com.nutrition.nutritionservice.vo.CuisineIngredientCategoryWeightVo;
 import com.nutrition.nutritionservice.vo.IngredientNutrientRelVo;
 import com.nutrition.nutritionservice.vo.UserNutrientWeightSumDailyVo;
 import com.nutrition.nutritionservice.vo.UserStatusInfoVo;
@@ -87,7 +88,7 @@ public class UserBiz {
     private UserIngredientCategoryModelService userIngredientCategoryModelService;
 
     @Resource
-    private CuisineCategoryWeightService cuisineCategoryWeightService;
+    private CuisineIngredientCategoryWeightService cuisineIngredientCategoryWeightService;
 
     @Resource
     private CuisineIngredientRelService cuisineIngredientRelService;
@@ -199,14 +200,19 @@ public class UserBiz {
         boolean dailyFirstRecode = false;
 
         /* 更新食材摄入历史记录 */
-        CuisineCategoryWeightVo cuisineCategoryWeightVo = cuisineCategoryWeightService.queryByCuisineCode(cuisineCode);
+        CuisineIngredientCategoryWeightVo cuisineIngredientCategoryWeightVo = cuisineIngredientCategoryWeightService
+                .queryByCuisineCode(cuisineCode);
+        if (cuisineIngredientCategoryWeightVo == null) {
+            throw new NutritionServiceException(
+                    "Cuisine ingredient category weight can not null, cuisine code " + cuisineCode);
+        }
         UserIngredientWeightSumDailyVo userIngredientWeightSumDailyVo = userIngredientWeightSumDailyService
                 .queryByUuidAndDate(uuid, LocalDate.now());
         if (userIngredientWeightSumDailyVo == null) {
             dailyFirstRecode = true;
             userIngredientWeightSumDailyVo = UserIngredientWeightSumDailyVo.createEmpty(uuid, LocalDate.now());
         }
-        userIngredientWeightSumDailyVo.addCuisineCategoryWeight(cuisineCategoryWeightVo);
+        userIngredientWeightSumDailyVo.addCuisineCategoryWeight(cuisineIngredientCategoryWeightVo);
         userIngredientWeightSumDailyService.insertOrUpdateByUuidAndDate(userIngredientWeightSumDailyVo);
         UserInfoVo userInfoVo = userInfoService.selectByUuid(uuid);
         if (userInfoVo == null) {
@@ -269,8 +275,8 @@ public class UserBiz {
         } else {
             userNutrientWeightSumDailyService.updateAll(newUserNutrientWeightSumDailyVoList);
         }
-        resultParamMap.put("userNutrientHistoricalIntakesDaily", userNutrientWeightSumDailyBiz
-                .calculateToAo(userIngredientWeightSumDailyVo.getCalorie(), newUserNutrientWeightSumDailyVoList));
+        resultParamMap.put("userNutrientHistoricalIntakesDaily", NutrientWeightVo2AoConverter
+                .convert(userIngredientWeightSumDailyVo.getCalorie(), newUserNutrientWeightSumDailyVoList));
 
         return resultParamMap;
     }

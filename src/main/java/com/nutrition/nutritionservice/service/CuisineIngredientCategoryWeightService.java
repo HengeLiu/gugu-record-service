@@ -1,15 +1,16 @@
 package com.nutrition.nutritionservice.service;
 
-import com.nutrition.nutritionservice.dao.CuisineCategoryWeightDao;
+import com.nutrition.nutritionservice.dao.CuisineIngredientCategoryWeightDao;
 import com.nutrition.nutritionservice.enums.CodeEnums;
 import com.nutrition.nutritionservice.enums.database.IngredientCategoryEnum;
 import com.nutrition.nutritionservice.util.ModelUtil;
-import com.nutrition.nutritionservice.vo.CuisineCategoryWeightVo;
+import com.nutrition.nutritionservice.vo.CuisineIngredientCategoryWeightVo;
 import com.nutrition.nutritionservice.vo.IngredientVo;
 import com.nutrition.nutritionservice.controller.ao.CuisineDesignerAo;
 import com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Nullable;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
@@ -22,15 +23,15 @@ import java.util.stream.Collectors;
  * @since 2020/12/28
  */
 @Service
-public class CuisineCategoryWeightService {
+public class CuisineIngredientCategoryWeightService {
 
     @Resource
     private IngredientService ingredientService;
 
     @Resource
-    private CuisineCategoryWeightDao cuisineCategoryWeightDao;
+    private CuisineIngredientCategoryWeightDao cuisineIngredientCategoryWeightDao;
 
-    public CuisineCategoryWeightVo calculateCuisineCategoryWight(CuisineDesignerAo cuisineDesignerAo) {
+    public CuisineIngredientCategoryWeightVo calculateCuisineCategoryWight(CuisineDesignerAo cuisineDesignerAo) {
         Map<Integer, Integer> ingredientWeightMap = cuisineDesignerAo.getCuisineIngredientRelList().stream()
                 .collect(Collectors.toMap(CuisineIngredientRelVo::getIngredientCode, CuisineIngredientRelVo::getWeight,
                         Integer::sum));
@@ -42,27 +43,28 @@ public class CuisineCategoryWeightService {
                         ingredientVo.getCategoryCode()),
                         Collectors
                                 .summingInt(ingredient -> ingredientWeightMap.getOrDefault(ingredient.getCode(), 0))));
-        CuisineCategoryWeightVo cuisineCategoryWeightVo = new CuisineCategoryWeightVo();
-        ModelUtil.categoryEnumMapToModel(categoryWeightMap, cuisineCategoryWeightVo);
-        cuisineCategoryWeightVo.setCuisineCode(cuisineDesignerAo.getCuisineVo().getCode());
-        cuisineCategoryWeightVo.setCalorie(cuisineDesignerAo.getCuisineVo().getCalorie());
-        return cuisineCategoryWeightVo;
+        CuisineIngredientCategoryWeightVo cuisineIngredientCategoryWeightVo = new CuisineIngredientCategoryWeightVo();
+        ModelUtil.categoryEnumMapToModel(categoryWeightMap, cuisineIngredientCategoryWeightVo);
+        cuisineIngredientCategoryWeightVo.setCuisineCode(cuisineDesignerAo.getCuisineVo().getCode());
+        cuisineIngredientCategoryWeightVo.setCalorie(cuisineDesignerAo.getCuisineVo().getCalorie());
+        return cuisineIngredientCategoryWeightVo;
     }
 
-    public List<CuisineCategoryWeightVo> queryByCuisineCodeList(List<String> cuisineCodeList) {
-        return cuisineCategoryWeightDao.batchSelectByCuisineCodeList(cuisineCodeList);
+    public List<CuisineIngredientCategoryWeightVo> queryByCuisineCodeList(List<String> cuisineCodeList) {
+        return cuisineIngredientCategoryWeightDao.batchSelectByCuisineCodeList(cuisineCodeList);
     }
 
-    public CuisineCategoryWeightVo queryByCuisineCode(String cuisineCode) {
-        return cuisineCategoryWeightDao.selectByCuisineCode(cuisineCode);
+    @Nullable
+    public CuisineIngredientCategoryWeightVo queryByCuisineCode(String cuisineCode) {
+        return cuisineIngredientCategoryWeightDao.selectByCuisineCode(cuisineCode);
     }
 
-    public void add(CuisineCategoryWeightVo cuisineCategoryWeightVo) {
-        cuisineCategoryWeightDao.insert(cuisineCategoryWeightVo);
+    public void add(CuisineIngredientCategoryWeightVo cuisineIngredientCategoryWeightVo) {
+        cuisineIngredientCategoryWeightDao.insert(cuisineIngredientCategoryWeightVo);
     }
 
-    public void updateByCuisineCodeSelective(CuisineCategoryWeightVo cuisineCategoryWeightVo) {
-        cuisineCategoryWeightDao.updateByCuisineCodeSelective(cuisineCategoryWeightVo);
+    public void updateByCuisineCodeSelective(CuisineIngredientCategoryWeightVo cuisineIngredientCategoryWeightVo) {
+        cuisineIngredientCategoryWeightDao.updateByCuisineCodeSelective(cuisineIngredientCategoryWeightVo);
     }
 
 }

@@ -7,37 +7,35 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
+import java.util.Date;
 
 /**
- * user_nutrient_weight_sum_daily
+ * cuisine_nutrient_weight
  * 
  * @author heng.liu
- * @since 2021/1/5
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserNutrientWeightSumDailyVo extends NutrientWeightVo implements Serializable {
+public class CuisineNutrientWeightVo extends NutrientWeightVo implements Serializable {
     private Integer id;
 
     /**
-     * 用户唯一标识
+     * 菜品编码
      */
-    private String uuid;
+    private String cuisineCode;
 
     /**
-     * 日期
+     * 创建时间
      */
-    private LocalDate date;
+    private Date createTime;
 
-    private LocalDateTime createTime;
-
-    private LocalDateTime updateTime;
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
 
     private static final long serialVersionUID = 1L;
 }

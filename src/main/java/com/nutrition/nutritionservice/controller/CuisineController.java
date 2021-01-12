@@ -2,12 +2,12 @@ package com.nutrition.nutritionservice.controller;
 
 import com.nutrition.nutritionservice.biz.CuisineBiz;
 import com.nutrition.nutritionservice.biz.ModelIngredientCategoryModelBiz;
-import com.nutrition.nutritionservice.controller.ao.StoreCuisineListAo;
+import com.nutrition.nutritionservice.common.Response;
+import com.nutrition.nutritionservice.controller.ao.CuisineDesignerAo;
 import com.nutrition.nutritionservice.vo.CuisineRecommendedScoreWebAo;
 import com.nutrition.nutritionservice.vo.IDPageParamVo;
-import com.nutrition.nutritionservice.vo.user.UserIngredientWeightSumDailyVo;
-import com.nutrition.nutritionservice.controller.ao.CuisineDesignerAo;
 import com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo;
+import com.nutrition.nutritionservice.vo.user.UserIngredientWeightSumDailyVo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -66,14 +66,14 @@ public class CuisineController {
 
     @GetMapping("/cuisine-list")
     @ResponseBody
-    public StoreCuisineListAo queryCuisineList(@RequestParam String storeCode, @RequestParam String uuid) {
-        return cuisineBiz.queryCuisineList(storeCode);
+    public Response queryCuisineList(@RequestParam String storeCode, @RequestParam String uuid) {
+        return Response.success(cuisineBiz.queryCuisineList(storeCode));
     }
 
     @GetMapping("/query-details")
     @ResponseBody
-    public StoreCuisineListAo queryCuisineDetails(@RequestParam String cuisineCode) {
-        return cuisineBiz.queryCuisineDetails(cuisineCode);
+    public Response queryCuisineDetails(@RequestParam String cuisineCode, @RequestParam String uuid) {
+        return Response.success(cuisineBiz.queryCuisineDetails(cuisineCode, uuid));
     }
 
 }

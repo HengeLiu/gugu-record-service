@@ -1,7 +1,9 @@
 package com.nutrition.nutritionservice.controller.ao;
 
-import lombok.Builder;
+import com.nutrition.nutritionservice.vo.NutrientWeightVo;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
 
@@ -11,25 +13,16 @@ import java.io.Serializable;
  * @author heng.liu
  * @since 2021/1/5
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
-@Builder
-public class NutrientWeightAo implements Serializable {
+@SuperBuilder
+public class NutrientWeightAo extends NutrientWeightVo implements Serializable {
     private static final long serialVersionUID = 6382911904487410846L;
 
     /**
      * 营养素名称
      */
     private String nutrientName;
-
-    /**
-     * 营养素编码
-     */
-    private Integer nutrientCode;
-
-    /**
-     * 摄入重量
-     */
-    private Double weight;
 
     /**
      * 摄入热量

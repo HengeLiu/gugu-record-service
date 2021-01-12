@@ -53,7 +53,7 @@ public class CuisineTest {
                         .process(IngredientProcessEnum.STEW.getCode())
                         .weight(recommendedWeightMap.getOrDefault(categoryCode, 0)).build());
             });
-            cuisineBiz.saveNewCuisine(CuisineDesignerAo.builder()
+            cuisineBiz.addNewCuisine(CuisineDesignerAo.builder()
                     .cuisineVo(CuisineVo.builder()
                             .warm(cuisineWarmEnum.getCode()).status(CuisineStatusEnum.SALE.getCode())
                             .cuisineType(CuisineCategoryEnum.SET.getCode())

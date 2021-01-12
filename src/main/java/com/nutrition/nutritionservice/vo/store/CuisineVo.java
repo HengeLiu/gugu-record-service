@@ -1,10 +1,10 @@
 package com.nutrition.nutritionservice.vo.store;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import lombok.Builder;
 import lombok.Data;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * cuisine
@@ -25,6 +25,11 @@ public class CuisineVo implements Serializable {
      * 菜品名称
      */
     private String name;
+
+    /**
+     * 价格
+     */
+    private double price;
 
     /**
      * 门店编码
@@ -70,6 +75,11 @@ public class CuisineVo implements Serializable {
      * 创建时间
      */
     private LocalDateTime createTime;
+
+    /**
+     * 更新时间
+     */
+    private LocalDateTime updateTime;
 
     private static final long serialVersionUID = 1L;
 }

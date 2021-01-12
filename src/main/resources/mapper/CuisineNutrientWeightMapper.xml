@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nutrition.nutritionservice.dao.CuisineNutrientWeightDao">
+    <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.CuisineNutrientWeightVo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="cuisine_code" jdbcType="VARCHAR" property="cuisineCode"/>
+        <result column="nutrient_code" jdbcType="INTEGER" property="nutrientCode"/>
+        <result column="weight" jdbcType="DOUBLE" property="weight"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, cuisine_code, nutrient_code, weight, create_time, update_time
+  </sql>
+    <sql id="Insert_Column_List">
+    cuisine_code, nutrient_code, weight
+  </sql>
+    <select id="selectByCuisineCode" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from cuisine_nutrient_weight
+        where cuisine_code = #{cuisineCode}
+    </select>
+
+    <insert id="insert" keyColumn="id" keyProperty="id"
+            parameterType="com.nutrition.nutritionservice.vo.CuisineNutrientWeightVo" useGeneratedKeys="true">
+        insert into cuisine_nutrient_weight (
+        <include refid="Insert_Column_List"/>
+        )
+        values (#{cuisineCode,jdbcType=VARCHAR}, #{nutrientCode,jdbcType=INTEGER}, #{weight,jdbcType=DOUBLE})
+    </insert>
+
+    <insert id="batchInsert">
+        insert into cuisine_nutrient_weight
+        (<include refid="Insert_Column_List"/>)
+        values
+        <foreach collection="recordList" item="record" index="index" separator=",">
+            (
+            #{record.cuisineCode,jdbcType=VARCHAR},
+            #{record.nutrientCode,jdbcType=INTEGER},
+            #{record.weight,jdbcType=DOUBLE}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateWeightByCuisineAndNutrientCode">
+    update cuisine_nutrient_weight
+    set
+      weight = #{weight,jdbcType=DOUBLE}
+    where
+    cuisine_code = #{cuisineCode,jdbcType=VARCHAR} and
+      nutrient_code = #{nutrientCode,jdbcType=INTEGER}
+  </update>
+</mapper>

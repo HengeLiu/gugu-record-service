@@ -4,7 +4,7 @@ import com.nutrition.nutritionservice.biz.CuisineBiz;
 import com.nutrition.nutritionservice.enums.database.CuisineTasteEnum;
 import com.nutrition.nutritionservice.enums.database.DineTimeEnum;
 import com.nutrition.nutritionservice.enums.database.UserHistoricalCuisineStatusEnum;
-import com.nutrition.nutritionservice.service.CuisineCategoryWeightService;
+import com.nutrition.nutritionservice.service.CuisineIngredientCategoryWeightService;
 import com.nutrition.nutritionservice.service.CuisineService;
 import com.nutrition.nutritionservice.service.UserIngredientCategoryModelService;
 import com.nutrition.nutritionservice.service.UserHistoricalCuisineService;
@@ -12,7 +12,7 @@ import com.nutrition.nutritionservice.service.UserIngredientWeightSumDailyServic
 import com.nutrition.nutritionservice.service.UserInfoService;
 import com.nutrition.nutritionservice.util.ModelUtil;
 import com.nutrition.nutritionservice.util.VectorUtil;
-import com.nutrition.nutritionservice.vo.CuisineCategoryWeightVo;
+import com.nutrition.nutritionservice.vo.CuisineIngredientCategoryWeightVo;
 import com.nutrition.nutritionservice.vo.CuisineRecommendedScoreWebAo;
 import com.nutrition.nutritionservice.vo.IDPageParamVo;
 import com.nutrition.nutritionservice.vo.user.UserHistoricalCuisineVo;
@@ -58,7 +58,7 @@ public class CuisineRecommendedTest {
     private UserInfoService userInfoService;
 
     @Resource
-    private CuisineCategoryWeightService cuisineCategoryWeightService;
+    private CuisineIngredientCategoryWeightService cuisineIngredientCategoryWeightService;
 
     @Test
     public void testHistorical() {
@@ -109,10 +109,10 @@ public class CuisineRecommendedTest {
             // 用户今日摄入记录向量
             Vector<Double> userHistoricalWeightVector = ModelUtil.modelToVector(userIngredientWeightSumDailyVo);
             log.info("用户今日摄入记录向量 {}", userHistoricalWeightVector.toString());
-            CuisineCategoryWeightVo cuisineCategoryWeightVo = cuisineCategoryWeightService
+            CuisineIngredientCategoryWeightVo cuisineIngredientCategoryWeightVo = cuisineIngredientCategoryWeightService
                     .queryByCuisineCode(mostRecommendedCuisine.getCode());
             // 菜品食材种类重量向量
-            Vector<Integer> cuisineCategoryWeightVector = ModelUtil.modelToVector(cuisineCategoryWeightVo);
+            Vector<Integer> cuisineCategoryWeightVector = ModelUtil.modelToVector(cuisineIngredientCategoryWeightVo);
             log.info("菜品食材种类重量向量 {}", cuisineCategoryWeightVector.toString());
             ModelUtil.vectorToModel(VectorUtil.addition(cuisineCategoryWeightVector, userHistoricalWeightVector),
                     userIngredientWeightSumDailyVo);

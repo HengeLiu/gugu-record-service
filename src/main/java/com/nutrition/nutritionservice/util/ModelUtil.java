@@ -5,6 +5,7 @@ import com.nutrition.nutritionservice.controller.ao.IngredientCategoryWeightAo;
 import com.nutrition.nutritionservice.controller.ao.SupperIngredientCategoryWeightAo;
 import com.nutrition.nutritionservice.enums.database.IngredientCategoryEnum;
 import com.nutrition.nutritionservice.enums.database.IngredientSuperCategoryEnum;
+import com.nutrition.nutritionservice.vo.CuisineIngredientCategoryWeightVo;
 import com.nutrition.nutritionservice.vo.modeldata.CategoryModel;
 import com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo;
 import com.nutrition.nutritionservice.vo.user.UserIngredientWeightSumDailyVo;
@@ -127,19 +128,28 @@ public class ModelUtil {
                                                                                 UserIngredientWeightSumDailyVo historicalModel) {
         Map<IngredientCategoryEnum, Integer> targetMap = modelToCategoryEnumMap(targetModel);
         Map<IngredientCategoryEnum, Double> historicalMap = modelToCategoryEnumMap(historicalModel);
-        return targetMap.entrySet().stream().collect(Collectors.groupingBy(entry -> entry.getKey().getParentCategory()))
+        return targetMap.entrySet().stream()
+                // 先按照食材大类分组
+                .collect(Collectors.groupingBy(entry -> entry.getKey().getParentCategory()))
+                // 遍历每一个食材大类
                 .entrySet().stream().map(superCategoryEntry -> {
                     List<IngredientCategoryWeightAo> ingredientCategoryWeightAoList = superCategoryEntry.getValue()
+                            // 遍历每一个食材分类
                             .stream().map(categoryEntry -> {
                                 IngredientCategoryEnum categoryEnum = categoryEntry.getKey();
                                 return IngredientCategoryWeightAo.builder().categoryName(categoryEnum.getNameZh())
-                                        .categoryCode(categoryEnum.getCode()).targetWeight(categoryEntry.getValue())
+                                        .categoryCode(categoryEnum.getCode())
+                                        // 摄入目标值
+                                        .targetWeight(categoryEntry.getValue())
+                                        // 摄入历史值
                                         .historicalWeight(historicalMap.get(categoryEnum).intValue())
                                         .commonIngredientNameListStr(categoryEnum.getCommonIngredientNameArrayStr())
                                         .build();
                             }).collect(Collectors.toList());
+                    // 计算大类下分类总目标重量
                     int targetWeight = ingredientCategoryWeightAoList.stream()
                             .mapToInt(IngredientCategoryWeightAo::getTargetWeight).sum();
+                    // 计算大类下分类总历史重量
                     int historicalWeight = ingredientCategoryWeightAoList.stream()
                             .mapToInt(IngredientCategoryWeightAo::getHistoricalWeight).sum();
                     IngredientSuperCategoryEnum superCategoryEnum = superCategoryEntry.getKey();
@@ -148,6 +158,32 @@ public class ModelUtil {
                             .supperCategoryCode(superCategoryEnum.getCode())
                             .supperCategoryTargetWeight(targetWeight)
                             .supperCategoryHistoricalWeight(historicalWeight)
+                            .categoryWeightList(ingredientCategoryWeightAoList).build();
+                }).collect(Collectors.toList());
+    }
+
+    public static List<SupperIngredientCategoryWeightAo> cuisineIngredientCategoryWeightVoToAo(
+            CuisineIngredientCategoryWeightVo cuisineIngredientCategoryWeightVo) {
+        Map<IngredientCategoryEnum, Integer> targetMap = modelToCategoryEnumMap(cuisineIngredientCategoryWeightVo);
+        return targetMap.entrySet().stream()
+                // 先按照食材大类分组
+                .collect(Collectors.groupingBy(entry -> entry.getKey().getParentCategory()))
+                // 遍历每一个食材大类
+                .entrySet().stream().map(superCategoryEntry -> {
+                    List<IngredientCategoryWeightAo> ingredientCategoryWeightAoList = superCategoryEntry.getValue()
+                            // 遍历每一个食材分类
+                            .stream().map(categoryEntry -> {
+                                IngredientCategoryEnum categoryEnum = categoryEntry.getKey();
+                                return IngredientCategoryWeightAo.builder().categoryName(categoryEnum.getNameZh())
+                                        .categoryCode(categoryEnum.getCode()).targetWeight(categoryEntry.getValue())
+                                        .build();
+                            }).collect(Collectors.toList());
+                    IngredientSuperCategoryEnum superCategoryEnum = superCategoryEntry.getKey();
+                    return SupperIngredientCategoryWeightAo.builder().supperCategoryName(superCategoryEnum.getNameZh())
+                            .supperCategoryCode(superCategoryEnum.getCode()).supperCategoryTargetWeight(
+                                    // 大类下分类总重量
+                                    ingredientCategoryWeightAoList.stream()
+                                            .mapToInt(IngredientCategoryWeightAo::getTargetWeight).sum())
                             .categoryWeightList(ingredientCategoryWeightAoList).build();
                 }).collect(Collectors.toList());
     }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.nutrition.nutritionservice.dao.CuisineCategoryWeightDao">
-  <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.CuisineCategoryWeightVo">
+<mapper namespace="com.nutrition.nutritionservice.dao.CuisineIngredientCategoryWeightDao">
+  <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.CuisineIngredientCategoryWeightVo">
     <id column="id" jdbcType="INTEGER" property="id"/>
     <result column="cuisine_code" jdbcType="VARCHAR" property="cuisineCode"/>
     <result column="calorie" jdbcType="DOUBLE" property="calorie"/>
@@ -36,13 +36,13 @@
   <select id="selectByCuisineCode" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
-    from cuisine_category_weight
+    from cuisine_ingredient_category_weight
     where cuisine_code = #{cuisineCode}
   </select>
   <select id="batchSelectByCuisineCodeList" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
-    from cuisine_category_weight
+    from cuisine_ingredient_category_weight
     where cuisine_code in
     (
     <foreach collection="cuisineCodeList" separator="," item="cuisineCode">
@@ -51,8 +51,8 @@
     )
   </select>
   <insert id="insert" keyColumn="id" keyProperty="id"
-          parameterType="com.nutrition.nutritionservice.vo.CuisineCategoryWeightVo" useGeneratedKeys="true">
-    insert into cuisine_category_weight (
+          parameterType="com.nutrition.nutritionservice.vo.CuisineIngredientCategoryWeightVo" useGeneratedKeys="true">
+    insert into cuisine_ingredient_category_weight (
     <include refid="Insert_Column_List"/>
     )
     values (#{cuisineCode,jdbcType=VARCHAR}, #{calorie}, #{processedGrains,jdbcType=INTEGER},
@@ -63,8 +63,8 @@
     #{dairy,jdbcType=INTEGER}, #{soybean,jdbcType=INTEGER}, #{nut,jdbcType=INTEGER},
     #{oil,jdbcType=INTEGER}, #{salt,jdbcType=INTEGER})
   </insert>
-  <update id="updateByCuisineCodeSelective" parameterType="com.nutrition.nutritionservice.vo.CuisineCategoryWeightVo">
-    update cuisine_category_weight
+  <update id="updateByCuisineCodeSelective" parameterType="com.nutrition.nutritionservice.vo.CuisineIngredientCategoryWeightVo">
+    update cuisine_ingredient_category_weight
     <set>
       <if test="cuisineCode != null">
         cuisine_code = #{cuisineCode,jdbcType=VARCHAR},
@@ -123,8 +123,8 @@
     </set>
     where cuisine_code = #{cuisineCode}
   </update>
-  <update id="updateByCuisineCode" parameterType="com.nutrition.nutritionservice.vo.CuisineCategoryWeightVo">
-    update cuisine_category_weight
+  <update id="updateByCuisineCode" parameterType="com.nutrition.nutritionservice.vo.CuisineIngredientCategoryWeightVo">
+    update cuisine_ingredient_category_weight
     set cuisine_code = #{cuisineCode,jdbcType=VARCHAR},
       calorie = #{calorie,jdbcType=DOUBLE},
       processed_grains = #{processedGrains,jdbcType=INTEGER},

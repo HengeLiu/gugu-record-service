@@ -1,6 +1,9 @@
 package com.nutrition.nutritionservice.controller.ao;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -11,13 +14,16 @@ import java.io.Serializable;
  * @since 2021/1/11
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CuisineIngredientAo implements Serializable {
 
     private static final long serialVersionUID = 1L;
     /**
      * 食材编码
      */
-    private String code;
+    private Integer code;
 
     /**
      * 食材名称

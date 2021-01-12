@@ -1,8 +1,9 @@
 package com.nutrition.nutritionservice.vo;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import lombok.Data;
 
 /**
  * ingredient
@@ -53,6 +54,11 @@ public class IngredientVo implements Serializable {
      * 食材类型
      */
     private String ingredientType;
+
+    /**
+     * 图片地址
+     */
+    private String imageUrl;
 
     private LocalDateTime createTime;
 

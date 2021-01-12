@@ -53,6 +53,16 @@ public class CuisineDetailsAo implements Serializable {
     private Double modelMatchingScore;
 
     /**
+     * 饿了么外卖小程序地址
+     */
+    private String eleUrl;
+
+    /**
+     * 美团外卖小程序地址
+     */
+    private String meituanUrl;
+
+    /**
      * 餐品图片地址
      */
     private String imageUrl;
@@ -61,11 +71,6 @@ public class CuisineDetailsAo implements Serializable {
      * 食材列表
      */
     private List<CuisineIngredientAo> ingredientList;
-
-    /**
-     * 外卖平台地址
-     */
-    private List<CuisineTakeawayPlatformUrlAo> takeawayPlatformUrlList;
 
     /**
      * 菜品食材种类统计
