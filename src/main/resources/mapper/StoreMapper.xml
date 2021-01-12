@@ -7,7 +7,7 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="manager_account_uuid" jdbcType="VARCHAR" property="managerAccountUuid" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
   </resultMap>
   <sql id="Base_Column_List">
     id, code, `name`, manager_account_uuid, create_time, update_time
@@ -16,18 +16,25 @@
     id, code, `name`, manager_account_uuid
   </sql>
   <select id="selectByCode" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
+    select
+    <include refid="Base_Column_List"/>
     from store
     where code = #{code}
   </select>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nutrition.nutritionservice.vo.StoreVo" useGeneratedKeys="true">
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from store
+  </select>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nutrition.nutritionservice.vo.StoreVo"
+          useGeneratedKeys="true">
     insert into store (
     <include refid="Insert_Column_List"/>
     )
     values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{managerAccountUuid,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nutrition.nutritionservice.vo.StoreVo" useGeneratedKeys="true">
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nutrition.nutritionservice.vo.StoreVo"
+          useGeneratedKeys="true">
     insert into store
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="code != null">

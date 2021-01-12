@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nutrition.nutritionservice.dao.StoreInfoDao">
+    <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.StoreInfoVo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="store_code" jdbcType="VARCHAR" property="storeCode"/>
+        <result column="store_name" jdbcType="VARCHAR" property="storeName"/>
+        <result column="location_title" jdbcType="VARCHAR" property="locationTitle"/>
+        <result column="location_type" jdbcType="TINYINT" property="locationType"/>
+        <result column="location_latitude" jdbcType="DOUBLE" property="locationLatitude"/>
+        <result column="location_longitude" jdbcType="DOUBLE" property="locationLongitude"/>
+        <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
+        <result column="icon_url" jdbcType="VARCHAR" property="iconUrl"/>
+        <result column="business_type" jdbcType="TINYINT" property="businessType"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, store_code, store_name, location_title, location_type, location_latitude, location_longitude,
+    image_url, icon_url, business_type, create_time, update_time
+  </sql>
+    <sql id="Insert_Column_List">
+    store_code, store_name, location_title, location_type, location_latitude, location_longitude,
+    image_url, icon_url, business_type
+  </sql>
+    <select id="selectByStoreCode" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from store_info
+        where store_code = #{storeCode}
+    </select>
+
+    <select id="selectByStoreCodeList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from store_info
+        where store_code in (
+        <foreach collection="storeCodeList" item="storeCode" separator=",">
+            #{storeCode}
+        </foreach>
+        )
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from store_info
+    </select>
+
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nutrition.nutritionservice.vo.StoreInfoVo"
+            useGeneratedKeys="true">
+        insert into store_info (
+        <include refid="Insert_Column_List"/>
+        )
+        values (#{storeCode,jdbcType=VARCHAR}, #{storeName}, #{locationTitle,jdbcType=VARCHAR},
+        #{locationType,jdbcType=TINYINT},
+        #{locationLatitude,jdbcType=DOUBLE}, #{locationLongitude,jdbcType=DOUBLE}, #{imageUrl,jdbcType=VARCHAR},
+        #{iconUrl,jdbcType=VARCHAR}, #{businessType,jdbcType=TINYINT})
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id"
+            parameterType="com.nutrition.nutritionservice.vo.StoreInfoVo" useGeneratedKeys="true">
+        insert into store_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="storeCode != null">
+                store_code,
+            </if>
+            <if test="storeName != null">
+                store_name,
+            </if>
+            <if test="locationTitle != null">
+                location_title,
+            </if>
+            <if test="locationType != null">
+                location_type,
+            </if>
+            <if test="locationLatitude != null">
+                location_latitude,
+            </if>
+            <if test="locationLongitude != null">
+                location_longitude,
+            </if>
+            <if test="imageUrl != null">
+                image_url,
+            </if>
+            <if test="iconUrl != null">
+                icon_url,
+            </if>
+            <if test="businessType != null">
+                business_type,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="storeCode != null">
+                #{storeCode,jdbcType=VARCHAR},
+            </if>
+            <if test="storeName != null">
+                #{storeName},
+            </if>
+            <if test="locationTitle != null">
+                #{locationTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="locationType != null">
+                #{locationType,jdbcType=TINYINT},
+            </if>
+            <if test="locationLatitude != null">
+                #{locationLatitude,jdbcType=DOUBLE},
+            </if>
+            <if test="locationLongitude != null">
+                #{locationLongitude,jdbcType=DOUBLE},
+            </if>
+            <if test="imageUrl != null">
+                #{imageUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="iconUrl != null">
+                #{iconUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="businessType != null">
+                #{businessType,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.nutrition.nutritionservice.vo.StoreInfoVo">
+        update store_info
+        <set>
+            <if test="storeCode != null">
+                store_code = #{storeCode,jdbcType=VARCHAR},
+            </if>
+            <if test="storeName != null">
+                store_name = #{storeName,jdbcType=VARCHAR},
+            </if>
+            <if test="locationTitle != null">
+                location_title = #{locationTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="locationType != null">
+                location_type = #{locationType,jdbcType=TINYINT},
+            </if>
+            <if test="locationLatitude != null">
+                location_latitude = #{locationLatitude,jdbcType=DOUBLE},
+            </if>
+            <if test="locationLongitude != null">
+                location_longitude = #{locationLongitude,jdbcType=DOUBLE},
+            </if>
+            <if test="imageUrl != null">
+                image_url = #{imageUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="iconUrl != null">
+                icon_url = #{iconUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="businessType != null">
+                business_type = #{businessType,jdbcType=TINYINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.nutrition.nutritionservice.vo.StoreInfoVo">
+    update store_info
+    set store_code = #{storeCode,jdbcType=VARCHAR},
+      store_name = #{storeName,jdbcType=VARCHAR},
+      location_title = #{locationTitle,jdbcType=VARCHAR},
+      location_type = #{locationType,jdbcType=TINYINT},
+      location_latitude = #{locationLatitude,jdbcType=DOUBLE},
+      location_longitude = #{locationLongitude,jdbcType=DOUBLE},
+      image_url = #{imageUrl,jdbcType=VARCHAR},
+      icon_url = #{iconUrl,jdbcType=VARCHAR},
+      business_type = #{businessType,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -11,3 +11,6 @@ GET https://localhost/user/save-history?uuid=b58700facd3b4118ac2a40d51b3ec070&cu
 
 ### 查询餐品详情
 GET https://localhost/cuisine/query-details?uuid=b58700facd3b4118ac2a40d51b3ec070&cuisineCode=1a219e3a71f34d8ebc2af9c3d2d6eef8
+
+### 查询门店列表
+GET https://localhost/store/query-store-list
