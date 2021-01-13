@@ -30,7 +30,7 @@ public class ProgramLoadDataController {
     }
 
     @PostMapping("/user-info/by-code")
-    public Response loadUserInfoByWxCodeCode(@RequestBody String code) {
+    public Response loadUserInfoByWxCode(@RequestBody String code) {
         return Response.success(programLoadDataBiz.loadUserInfoByWxCodeCode(code));
     }
 
