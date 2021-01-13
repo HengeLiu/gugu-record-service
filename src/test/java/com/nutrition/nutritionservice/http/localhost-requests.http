@@ -3,7 +3,7 @@ GET https://localhost/load/user-info?openid=test_openid_1235123
 Content-Type: application/json
 
 ###
-GET https://www.nutrition-service.com/cuisine/cuisine-list?storeCode=100001&uuid=0
+GET https://localhost/cuisine/cuisine-list?storeCode=100001&uuid=0
 Content-Type: application/json
 
 ### 添加饮食记录

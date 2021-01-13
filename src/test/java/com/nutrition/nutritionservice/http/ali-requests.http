@@ -1,0 +1,19 @@
+### 连接测试
+GET https://www.nutrition-service.com/hello
+
+### 加载用户信息
+GET https://www.nutrition-service.com/load/user-info?openid=test_openid_1235123
+Content-Type: application/json
+
+### 查询门店菜品列表
+GET https://www.nutrition-service.com/cuisine/cuisine-list?storeCode=100001&uuid=0
+Content-Type: application/json
+
+### 添加饮食记录
+GET https://www.nutrition-service.com/user/save-history?uuid=b58700facd3b4118ac2a40d51b3ec070&cuisineCode=1a219e3a71f34d8ebc2af9c3d2d6eef8
+
+### 查询餐品详情
+GET https://www.nutrition-service.com/cuisine/query-details?uuid=b58700facd3b4118ac2a40d51b3ec070&cuisineCode=1a219e3a71f34d8ebc2af9c3d2d6eef8
+
+### 查询门店列表
+GET https://www.nutrition-service.com/store/query-store-list
