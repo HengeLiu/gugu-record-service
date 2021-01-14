@@ -16,7 +16,8 @@ public class Model2UserModelConverter {
             return null;
         }
         UserIngredientCategoryModelVo userIngredientCategoryModelVo = new UserIngredientCategoryModelVo();
-        userIngredientCategoryModelVo.setCalorie(modelIngredientCategoryModelVo.getCalorie());
+        userIngredientCategoryModelVo.setStandardCalorie(modelIngredientCategoryModelVo.getStandardCalorie());
+        userIngredientCategoryModelVo.setTargetCalorie(modelIngredientCategoryModelVo.getTargetCalorie());
         userIngredientCategoryModelVo.setProcessedGrains(modelIngredientCategoryModelVo.getProcessedGrains());
         userIngredientCategoryModelVo.setUnprocessedGrains(modelIngredientCategoryModelVo.getUnprocessedGrains());
         userIngredientCategoryModelVo.setMixedBeans(modelIngredientCategoryModelVo.getMixedBeans());
@@ -44,7 +45,8 @@ public class Model2UserModelConverter {
             return null;
         }
         ModelIngredientCategoryModelVo modelIngredientCategoryModelVo = new ModelIngredientCategoryModelVo();
-        modelIngredientCategoryModelVo.setCalorie(userIngredientCategoryModelVo.getCalorie());
+        modelIngredientCategoryModelVo.setStandardCalorie(userIngredientCategoryModelVo.getStandardCalorie());
+        modelIngredientCategoryModelVo.setTargetCalorie(userIngredientCategoryModelVo.getTargetCalorie());
         modelIngredientCategoryModelVo.setProcessedGrains(userIngredientCategoryModelVo.getProcessedGrains());
         modelIngredientCategoryModelVo.setUnprocessedGrains(userIngredientCategoryModelVo.getUnprocessedGrains());
         modelIngredientCategoryModelVo.setMixedBeans(userIngredientCategoryModelVo.getMixedBeans());

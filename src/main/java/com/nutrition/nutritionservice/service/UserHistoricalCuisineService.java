@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
 
 /**
  * 用户历史菜品记录Service。
@@ -32,6 +35,11 @@ public class UserHistoricalCuisineService {
     @Transactional(rollbackFor = Exception.class)
     public void add(UserHistoricalCuisineVo userHistoricalCuisineVo) {
         userHistoricalCuisineDao.insert(userHistoricalCuisineVo);
+    }
+
+    public List<UserHistoricalCuisineVo> queryByUuidAndDate(String uuid, LocalDate localDate) {
+        return userHistoricalCuisineDao.selectByUuidAndDateTime(uuid, localDate.atTime(LocalTime.MIN),
+                localDate.atTime(LocalTime.MAX));
     }
 
 }

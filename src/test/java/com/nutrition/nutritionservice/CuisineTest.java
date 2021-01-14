@@ -1,9 +1,9 @@
 package com.nutrition.nutritionservice;
 
 import com.google.common.collect.Lists;
-import com.nutrition.nutritionservice.biz.CuisineBiz;
-import com.nutrition.nutritionservice.biz.ModelIngredientCategoryModelBiz;
-import com.nutrition.nutritionservice.controller.ao.CuisineDesignerAo;
+import com.nutrition.nutritionservice.biz.health.CuisineBiz;
+import com.nutrition.nutritionservice.biz.health.ModelIngredientCategoryModelBiz;
+import com.nutrition.nutritionservice.controller.health.ao.CuisineDesignerAo;
 import com.nutrition.nutritionservice.enums.database.CuisineCategoryEnum;
 import com.nutrition.nutritionservice.enums.database.CuisineStatusEnum;
 import com.nutrition.nutritionservice.enums.database.CuisineWarmEnum;

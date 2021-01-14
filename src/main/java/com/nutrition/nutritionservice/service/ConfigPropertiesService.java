@@ -1,6 +1,6 @@
 package com.nutrition.nutritionservice.service;
 
-import com.nutrition.nutritionservice.controller.ao.LocationAo;
+import com.nutrition.nutritionservice.controller.health.ao.LocationAo;
 import com.nutrition.nutritionservice.enums.CodeEnums;
 import com.nutrition.nutritionservice.enums.database.GenderEnum;
 import com.nutrition.nutritionservice.vo.user.UserInfoVo;

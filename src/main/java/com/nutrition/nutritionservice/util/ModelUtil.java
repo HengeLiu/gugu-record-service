@@ -1,8 +1,8 @@
 package com.nutrition.nutritionservice.util;
 
 import com.google.common.collect.Maps;
-import com.nutrition.nutritionservice.controller.ao.IngredientCategoryWeightAo;
-import com.nutrition.nutritionservice.controller.ao.SupperIngredientCategoryWeightAo;
+import com.nutrition.nutritionservice.controller.health.ao.IngredientCategoryWeightAo;
+import com.nutrition.nutritionservice.controller.health.ao.SupperIngredientCategoryWeightAo;
 import com.nutrition.nutritionservice.enums.database.IngredientCategoryEnum;
 import com.nutrition.nutritionservice.enums.database.IngredientSuperCategoryEnum;
 import com.nutrition.nutritionservice.vo.CuisineIngredientCategoryWeightVo;

@@ -26,6 +26,15 @@
     <include refid="Base_Column_List"/>
     from store
   </select>
+  <select id="selectByCodeList" resultType="com.nutrition.nutritionservice.vo.StoreVo">
+    select
+    <include refid="Base_Column_List"/>
+    from store where code in (
+    <foreach collection="codeList" item="code" separator=",">
+      #{code}
+    </foreach>
+    )
+  </select>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nutrition.nutritionservice.vo.StoreVo"
           useGeneratedKeys="true">
     insert into store (

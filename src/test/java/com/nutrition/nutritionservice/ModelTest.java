@@ -1,6 +1,6 @@
 package com.nutrition.nutritionservice;
 
-import com.nutrition.nutritionservice.biz.ModelIngredientCategoryModelBiz;
+import com.nutrition.nutritionservice.biz.health.ModelIngredientCategoryModelBiz;
 import com.nutrition.nutritionservice.converter.Model2UserModelConverter;
 import com.nutrition.nutritionservice.dao.UserIngredientCategoryModelDao;
 import com.nutrition.nutritionservice.dao.UserInfoDao;
@@ -72,7 +72,7 @@ public class ModelTest {
     public void calculateAllModelSimilarity() {
         List<ModelIngredientCategoryModelVo> modelList = modelIngredientCategoryModelService.listAllModels();
         for (ModelIngredientCategoryModelVo model1 : modelList) {
-            System.out.print("" + model1.getCalorie() + "," + model1.getGoal());
+            System.out.print("" + model1.getStandardCalorie() + "," + model1.getGoal());
             for (ModelIngredientCategoryModelVo model2 : modelList) {
                 double euclidDistance = ModelUtil.calculateEuclidDistance(model1, model2);
                 System.out.print("," + euclidDistance);

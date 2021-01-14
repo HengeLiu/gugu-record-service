@@ -8,11 +8,10 @@
         <version>2.3.3.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.nutrition</groupId>
-    <artifactId>nutrition-service</artifactId>
+    <groupId>com.gugu.tech</groupId>
+    <artifactId>record-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>nutrition-service</name>
-    <description>Nutrition service demo</description>
+    <name>gugu-record-service</name>
     <packaging>jar</packaging>
 
     <properties>
@@ -99,7 +98,7 @@
     </dependencies>
 
     <build>
-        <finalName>nutrition-service</finalName>
+        <finalName>gugu-record-service</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

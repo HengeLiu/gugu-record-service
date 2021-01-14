@@ -1,5 +1,6 @@
 package com.nutrition.nutritionservice.controller.ao;
 
+import com.nutrition.nutritionservice.controller.health.ao.NutrientWeightAo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -38,29 +39,14 @@ public class PreloadDataAo implements Serializable {
     private Double historicalCalorieDaily;
 
     /**
-     * 用户设置
+     * 门店图标地址列表
      */
-    private UserSettingsAo userSettings;
+    private List<String> storeIconUrlList;
 
     /**
-     * 系统默认点餐位置
+     * 今日已催更次数
      */
-    private LocationAo systemDefaultOrderLocation;
-
-    /**
-     * 用户状态信息
-     */
-    private UserStatusInfoAo userStatusInfo;
-
-    /**
-     * 上一次添加的餐品
-     */
-    private LastAddedCuisineAo lastAddedCuisine;
-
-    /**
-     * 用户食材分类模型目标值及历史摄入量
-     */
-    private List<SupperIngredientCategoryWeightAo> ingredientCategoryWeightList;
+    private Integer todayPushingTime;
 
     /**
      * 营养素摄入累计

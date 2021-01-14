@@ -3,7 +3,8 @@
 <mapper namespace="com.nutrition.nutritionservice.dao.ModelIngredientCategoryModelDao">
     <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.modeldata.ModelIngredientCategoryModelVo">
         <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="calorie" jdbcType="INTEGER" property="calorie"/>
+        <result column="standard_calorie" jdbcType="DOUBLE" property="standardCalorie"/>
+        <result column="target_calorie" jdbcType="DOUBLE" property="targetCalorie"/>
         <result column="processed_grains" jdbcType="INTEGER" property="processedGrains"/>
         <result column="unprocessed_grains" jdbcType="INTEGER" property="unprocessedGrains"/>
         <result column="mixed_beans" jdbcType="INTEGER" property="mixedBeans"/>
@@ -23,7 +24,7 @@
         <result column="goal" jdbcType="TINYINT" property="goal"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, calorie, processed_grains, unprocessed_grains, mixed_beans, tuber, general_vegetables, 
+    id, calorie, standard_calorie, target_calorie, processed_grains, unprocessed_grains, mixed_beans, tuber, general_vegetables,
     dark_vegetables, fruit, meat, poultry, aquatic, egg, dairy, soybean, nut, oil, salt, 
     goal
   </sql>
@@ -32,7 +33,7 @@
         select
         <include refid="Base_Column_List"/>
         from model_ingredient_category_model
-        where calorie = #{calorie} and goal = #{goal}
+        where standard_calorie = #{standardCalorie} and goal = #{goal}
     </select>
     <select id="selectAll" resultType="com.nutrition.nutritionservice.vo.modeldata.ModelIngredientCategoryModelVo">
         select

@@ -50,4 +50,8 @@ public class CuisineService {
     public CuisineVo queryByCuisineCode(String cuisineCode) {
         return cuisineDao.selectByCode(cuisineCode);
     }
+
+    public List<CuisineVo> queryByCuisineCodeList(List<String> cuisineCodeList) {
+        return cuisineDao.batchSelect(cuisineCodeList);
+    }
 }

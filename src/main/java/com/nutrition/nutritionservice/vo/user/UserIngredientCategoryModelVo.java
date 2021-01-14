@@ -23,9 +23,14 @@ public class UserIngredientCategoryModelVo extends CategoryModel<Integer> implem
     private String uuid;
 
     /**
-     * 日需热量水平
+     * 标准摄入热量
      */
-    private double calorie;
+    private double standardCalorie;
+
+    /**
+     * 目标摄入热量
+     */
+    private double targetCalorie;
 
     /**
      * 0,未知;1,平衡;2,减脂;3,增肌

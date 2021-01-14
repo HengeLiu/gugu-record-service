@@ -11,6 +11,8 @@ public interface StoreDao {
 
     StoreVo selectByCode(String code);
 
+    List<StoreVo> selectByCodeList(List<String> codeList);
+
     List<StoreVo> selectAll();
 
     //

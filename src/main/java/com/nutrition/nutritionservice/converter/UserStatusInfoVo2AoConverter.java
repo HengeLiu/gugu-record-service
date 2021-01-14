@@ -1,6 +1,6 @@
 package com.nutrition.nutritionservice.converter;
 
-import com.nutrition.nutritionservice.controller.ao.UserStatusInfoAo;
+import com.nutrition.nutritionservice.controller.health.ao.UserStatusInfoAo;
 import com.nutrition.nutritionservice.vo.UserStatusInfoVo;
 
 /**

@@ -51,6 +51,16 @@
         from cuisine
         where dine_time = #{dineTime}
     </select>
+    <select id="batchSelect" resultType="com.nutrition.nutritionservice.vo.store.CuisineVo">
+        select
+        <include refid="Base_Column_List"/>
+        from cuisine
+        where code in (
+        <foreach collection="cuisineCodeList" item="cuisineCode" separator=",">
+            #{cuisineCode}
+        </foreach>
+        )
+    </select>
     <insert id="insert" parameterType="com.nutrition.nutritionservice.vo.store.CuisineVo">
         insert into cuisine (
         <include refid="Insert_Column_List"/>

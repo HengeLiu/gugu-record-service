@@ -1,6 +1,6 @@
 package com.nutrition.nutritionservice.converter;
 
-import com.nutrition.nutritionservice.controller.ao.UserInfoAo;
+import com.nutrition.nutritionservice.controller.health.ao.UserInfoAo;
 import com.nutrition.nutritionservice.vo.user.UserInfoVo;
 
 /**
@@ -14,6 +14,12 @@ public class UserInfoAo2VoConverter {
                 .calorie(calorie).gender(userInfoAo.getGender()).goal(userInfoAo.getGoal())
                 .height(userInfoAo.getHeight()).weight(userInfoAo.getWeight()).profeChar(userInfoAo.getProfeChar())
                 .sportsHabits(userInfoAo.getSportsHabits()).build();
+    }
+
+    public static UserInfoAo revert(UserInfoVo userInfoVo) {
+        return UserInfoAo.builder().uuid(userInfoVo.getUuid()).age(userInfoVo.getAge()).gender(userInfoVo.getGender())
+                .goal(userInfoVo.getGoal()).height(userInfoVo.getHeight()).weight(userInfoVo.getWeight())
+                .profeChar(userInfoVo.getProfeChar()).sportsHabits(userInfoVo.getSportsHabits()).build();
     }
 
 }

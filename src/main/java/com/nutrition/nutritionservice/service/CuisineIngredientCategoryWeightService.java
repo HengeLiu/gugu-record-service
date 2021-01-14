@@ -6,7 +6,7 @@ import com.nutrition.nutritionservice.enums.database.IngredientCategoryEnum;
 import com.nutrition.nutritionservice.util.ModelUtil;
 import com.nutrition.nutritionservice.vo.CuisineIngredientCategoryWeightVo;
 import com.nutrition.nutritionservice.vo.IngredientVo;
-import com.nutrition.nutritionservice.controller.ao.CuisineDesignerAo;
+import com.nutrition.nutritionservice.controller.health.ao.CuisineDesignerAo;
 import com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo;
 import org.springframework.stereotype.Service;
 

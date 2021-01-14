@@ -46,6 +46,11 @@
         <include refid="Base_Column_List"/>
         from store_info
     </select>
+    <select id="selectByStatus" resultType="com.nutrition.nutritionservice.vo.StoreInfoVo">
+        select
+        <include refid="Base_Column_List"/>
+        from store_info where status = #{storeStatus}
+    </select>
 
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nutrition.nutritionservice.vo.StoreInfoVo"
             useGeneratedKeys="true">

@@ -1,6 +1,6 @@
 package com.nutrition.nutritionservice.controller;
 
-import com.nutrition.nutritionservice.biz.StoreBiz;
+import com.nutrition.nutritionservice.biz.health.StoreBiz;
 import com.nutrition.nutritionservice.common.Response;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,9 +21,9 @@ public class StoreController {
     @Resource
     private StoreBiz storeBiz;
 
-    @GetMapping("/query-store-list")
+    @GetMapping("/query/supported")
     public Response queryStoreList() {
-        return Response.success(storeBiz.queryAllStore());
+        return Response.success(storeBiz.queryAllSupportedStore());
     }
 
 }

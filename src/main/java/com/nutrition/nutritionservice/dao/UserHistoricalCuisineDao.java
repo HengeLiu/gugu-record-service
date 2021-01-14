@@ -2,6 +2,7 @@ package com.nutrition.nutritionservice.dao;
 
 import com.nutrition.nutritionservice.vo.user.UserHistoricalCuisineVo;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface UserHistoricalCuisineDao {
@@ -17,4 +18,6 @@ public interface UserHistoricalCuisineDao {
     List<UserHistoricalCuisineVo> selectByUuid(String uuid);
 
     int updateStatusByUuidAndCuisineCode(String uuid, String cuisineCode, int status);
+
+    List<UserHistoricalCuisineVo> selectByUuidAndDateTime(String uuid, LocalDateTime startTime, LocalDateTime endTime);
 }

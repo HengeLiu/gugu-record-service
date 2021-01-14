@@ -1,6 +1,6 @@
 package com.nutrition.nutritionservice.controller;
 
-import com.nutrition.nutritionservice.biz.ProgramLoadDataBiz;
+import com.nutrition.nutritionservice.biz.record.ProgramLoadDataBiz;
 import com.nutrition.nutritionservice.common.Response;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 /**
- * 程序加载时获取预备数据。
+ * 程序加载
  *
  * @author heng.liu
- * @since 2021/1/4
+ * @since 2021/1/14
  */
 @RestController
 @RequestMapping("/load")

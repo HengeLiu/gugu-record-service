@@ -6,6 +6,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 门店
@@ -24,4 +25,7 @@ public class StoreService {
         return storeDao.selectByCode(code);
     }
 
+    public List<StoreVo> queryByCodeList(List<String> codeList) {
+        return storeDao.selectByCodeList(codeList);
+    }
 }

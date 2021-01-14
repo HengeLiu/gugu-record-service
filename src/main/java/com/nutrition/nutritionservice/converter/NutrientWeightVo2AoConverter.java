@@ -1,7 +1,7 @@
 package com.nutrition.nutritionservice.converter;
 
 import com.google.common.collect.Maps;
-import com.nutrition.nutritionservice.controller.ao.NutrientWeightAo;
+import com.nutrition.nutritionservice.controller.health.ao.NutrientWeightAo;
 import com.nutrition.nutritionservice.enums.CodeEnums;
 import com.nutrition.nutritionservice.enums.database.NutrientEnum;
 import com.nutrition.nutritionservice.vo.NutrientWeightVo;

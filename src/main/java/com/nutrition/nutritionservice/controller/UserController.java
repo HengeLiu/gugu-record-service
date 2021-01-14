@@ -1,8 +1,8 @@
 package com.nutrition.nutritionservice.controller;
 
-import com.nutrition.nutritionservice.biz.UserBiz;
+import com.nutrition.nutritionservice.biz.health.UserBiz;
 import com.nutrition.nutritionservice.common.Response;
-import com.nutrition.nutritionservice.controller.ao.UserInfoAo;
+import com.nutrition.nutritionservice.controller.health.ao.UserInfoAo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,19 +24,24 @@ public class UserController {
     @Resource
     private UserBiz userBiz;
 
-    @GetMapping("/wechat/query/userinfo")
-    public Response queryUserinfo(@RequestParam String wxUserCode) {
-        return Response.success(userBiz.loginWithWechat(wxUserCode));
-    }
-
-    @PostMapping("/wechat/save/userinfo")
+    @PostMapping("/save/user-info")
     public Response saveUserInfo(UserInfoAo userInfoVo) {
         return Response.success(userBiz.saveUserInfo(userInfoVo));
     }
 
-    @GetMapping("/save-history")
+    @GetMapping("/save/cuisine-history")
     public Response saveCuisineHistory(@RequestParam String uuid, @RequestParam String cuisineCode) {
         return Response.success(userBiz.saveCuisineHistory(uuid, cuisineCode));
+    }
+
+    @GetMapping("/query/today-cuisine-history")
+    public Response queryTodayCuisineHistory(@RequestParam String uuid) {
+        return Response.success(userBiz.queryTodayCuisineHistory(uuid));
+    }
+
+    @GetMapping("/query/user-info")
+    public Response queryUserInfo(@RequestParam String uuid) {
+        return Response.success(userBiz.queryUserInfo(uuid));
     }
 
 }

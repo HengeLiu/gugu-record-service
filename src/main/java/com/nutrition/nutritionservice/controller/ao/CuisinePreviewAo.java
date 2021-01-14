@@ -48,13 +48,13 @@ public class CuisinePreviewAo implements Serializable {
     private List<String> mainIngredientList;
 
     /**
-     * 菜品排序信息
+     * 所属门店编码
      */
-    private CuisineSortInfoAo cuisineSortInfo;
+    private String storeCode;
 
     /**
-     * 所属门店信息
+     * 所属门店名称
      */
-    private StorePreviewAo storeInfo;
+    private String storeName;
 
 }
