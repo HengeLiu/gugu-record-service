@@ -37,7 +37,7 @@
     goal, model_status
   </sql>
   <update id="updateModelStatusByUuid">
-    update user_ingredient_category_model set model_status = #{model_status} where uuid = #{uuid}
+    update user_ingredient_category_model set model_status = #{modelStatus} where uuid = #{uuid}
   </update>
   <select id="selectActiveModelByUuid" parameterType="java.lang.String" resultMap="BaseResultMap">
     select

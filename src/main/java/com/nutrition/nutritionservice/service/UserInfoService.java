@@ -30,4 +30,11 @@ public class UserInfoService {
         return userInfoDao.updateByUuidSelective(userInfo);
     }
 
+    public int addOrUpdate(UserInfoVo userInfoVo) {
+        if (userInfoDao.selectByUuid(userInfoVo.getUuid()) != null) {
+            return userInfoDao.updateByUuidSelective(userInfoVo);
+        }
+        return userInfoDao.insert(userInfoVo);
+    }
+
 }

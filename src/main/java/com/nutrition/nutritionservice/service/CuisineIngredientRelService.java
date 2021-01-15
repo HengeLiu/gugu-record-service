@@ -3,8 +3,10 @@ package com.nutrition.nutritionservice.service;
 import com.nutrition.nutritionservice.dao.CuisineIngredientRelDao;
 import com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -24,6 +26,9 @@ public class CuisineIngredientRelService {
     }
 
     public int addBatch(List<CuisineIngredientRelVo> relList) {
+        if (CollectionUtils.isEmpty(relList)){
+            return 0;
+        }
         return cuisineIngredientRelDao.batchInsert(relList);
     }
 
@@ -32,6 +37,9 @@ public class CuisineIngredientRelService {
     }
 
     public List<CuisineIngredientRelVo> queryByCuisineCodeList(List<String> cuisineCodeList) {
+        if (CollectionUtils.isEmpty(cuisineCodeList)){
+            return Collections.emptyList();
+        }
         return cuisineIngredientRelDao.batchSelectByCuisineCodeList(cuisineCodeList);
     }
 

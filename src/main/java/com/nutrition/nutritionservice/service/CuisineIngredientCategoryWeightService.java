@@ -6,12 +6,14 @@ import com.nutrition.nutritionservice.enums.database.IngredientCategoryEnum;
 import com.nutrition.nutritionservice.util.ModelUtil;
 import com.nutrition.nutritionservice.vo.CuisineIngredientCategoryWeightVo;
 import com.nutrition.nutritionservice.vo.IngredientVo;
-import com.nutrition.nutritionservice.controller.health.ao.CuisineDesignerAo;
+import com.nutrition.nutritionservice.controller.ao.CuisineDesignerAo;
 import com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Nullable;
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -51,6 +53,9 @@ public class CuisineIngredientCategoryWeightService {
     }
 
     public List<CuisineIngredientCategoryWeightVo> queryByCuisineCodeList(List<String> cuisineCodeList) {
+        if (CollectionUtils.isEmpty(cuisineCodeList)){
+            return Collections.emptyList();
+        }
         return cuisineIngredientCategoryWeightDao.batchSelectByCuisineCodeList(cuisineCodeList);
     }
 

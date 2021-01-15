@@ -1,7 +1,7 @@
 package com.nutrition.nutritionservice;
 
 import com.alibaba.fastjson.JSON;
-import com.nutrition.nutritionservice.biz.health.ModelIngredientCategoryModelBiz;
+import com.nutrition.nutritionservice.biz.ModelIngredientCategoryModelBiz;
 import com.nutrition.nutritionservice.vo.ModelParamVo;
 import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientCategoryModelVo;
 import org.junit.jupiter.api.Test;

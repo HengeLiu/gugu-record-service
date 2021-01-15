@@ -4,6 +4,7 @@ import com.nutrition.nutritionservice.dao.UserNutrientWeightSumDailyDao;
 import com.nutrition.nutritionservice.vo.UserNutrientWeightSumDailyVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
@@ -27,11 +28,17 @@ public class UserNutrientWeightSumDailyService {
 
     @Transactional(rollbackFor = Exception.class)
     public int addAll(List<UserNutrientWeightSumDailyVo> userNutrientWeightSumDailyVoList) {
+        if (CollectionUtils.isEmpty(userNutrientWeightSumDailyVoList)) {
+            return 0;
+        }
         return userNutrientWeightSumDailyDao.batchInsert(userNutrientWeightSumDailyVoList);
     }
 
     @Transactional(rollbackFor = Exception.class)
     public int updateAll(List<UserNutrientWeightSumDailyVo> userNutrientWeightSumDailyVoList) {
+        if (CollectionUtils.isEmpty(userNutrientWeightSumDailyVoList)) {
+            return 0;
+        }
         return userNutrientWeightSumDailyDao.batchUpdate(userNutrientWeightSumDailyVoList);
     }
 

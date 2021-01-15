@@ -22,10 +22,6 @@ public class UserIngredientCategoryModelService {
     @Resource
     private UserIngredientCategoryModelDao userIngredientCategoryModelDao;
 
-    public long add(UserIngredientCategoryModelVo userModelVo) {
-        return userIngredientCategoryModelDao.insert(userModelVo);
-    }
-
     public long save(UserIngredientCategoryModelVo userModelVo) {
         userIngredientCategoryModelDao.updateModelStatusByUuid(userModelVo.getUuid(),
                 UserIngredientModelStatusEnum.DEPRECATED.getCode());

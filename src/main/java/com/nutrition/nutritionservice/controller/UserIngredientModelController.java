@@ -1,6 +1,6 @@
 package com.nutrition.nutritionservice.controller;
 
-import com.nutrition.nutritionservice.biz.health.ModelIngredientCategoryModelBiz;
+import com.nutrition.nutritionservice.biz.ModelIngredientCategoryModelBiz;
 import com.nutrition.nutritionservice.vo.ModelParamVo;
 import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientCategoryModelVo;
 import lombok.extern.slf4j.Slf4j;

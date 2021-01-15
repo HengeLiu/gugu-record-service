@@ -4,8 +4,10 @@ import com.nutrition.nutritionservice.dao.CuisineDao;
 import com.nutrition.nutritionservice.vo.IDPageParamVo;
 import com.nutrition.nutritionservice.vo.store.CuisineVo;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -52,6 +54,9 @@ public class CuisineService {
     }
 
     public List<CuisineVo> queryByCuisineCodeList(List<String> cuisineCodeList) {
+        if (CollectionUtils.isEmpty(cuisineCodeList)) {
+            return Collections.emptyList();
+        }
         return cuisineDao.batchSelect(cuisineCodeList);
     }
 }

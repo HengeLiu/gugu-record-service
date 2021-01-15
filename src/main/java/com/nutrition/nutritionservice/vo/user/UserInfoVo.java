@@ -1,16 +1,14 @@
 package com.nutrition.nutritionservice.vo.user;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.Date;
-
 import com.nutrition.nutritionservice.vo.ModelParamVo;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * user_info
@@ -32,9 +30,14 @@ public class UserInfoVo extends ModelParamVo implements Serializable {
 
 
     /**
-     * 日需热量
+     * 实际目标日需热量
      */
-    private Double calorie;
+    private Double targetCalorie;
+
+    /**
+     * 标准日需热量
+     */
+    private Double standardCalorie;
 
 
     /**

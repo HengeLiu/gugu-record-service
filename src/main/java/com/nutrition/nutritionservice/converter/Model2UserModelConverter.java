@@ -1,6 +1,5 @@
 package com.nutrition.nutritionservice.converter;
 
-import com.nutrition.nutritionservice.enums.database.UserIngredientModelStatusEnum;
 import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientCategoryModelVo;
 import com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo;
 
@@ -10,14 +9,12 @@ import com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo;
  */
 public class Model2UserModelConverter {
 
-    public static UserIngredientCategoryModelVo convert(ModelIngredientCategoryModelVo modelIngredientCategoryModelVo,
-            String uuid, UserIngredientModelStatusEnum userModelStatusEnum) {
+    public static UserIngredientCategoryModelVo convert(ModelIngredientCategoryModelVo modelIngredientCategoryModelVo) {
         if (modelIngredientCategoryModelVo == null) {
             return null;
         }
         UserIngredientCategoryModelVo userIngredientCategoryModelVo = new UserIngredientCategoryModelVo();
-        userIngredientCategoryModelVo.setStandardCalorie(modelIngredientCategoryModelVo.getStandardCalorie());
-        userIngredientCategoryModelVo.setTargetCalorie(modelIngredientCategoryModelVo.getTargetCalorie());
+        userIngredientCategoryModelVo.setCalorie(modelIngredientCategoryModelVo.getTargetCalorie());
         userIngredientCategoryModelVo.setProcessedGrains(modelIngredientCategoryModelVo.getProcessedGrains());
         userIngredientCategoryModelVo.setUnprocessedGrains(modelIngredientCategoryModelVo.getUnprocessedGrains());
         userIngredientCategoryModelVo.setMixedBeans(modelIngredientCategoryModelVo.getMixedBeans());
@@ -35,8 +32,7 @@ public class Model2UserModelConverter {
         userIngredientCategoryModelVo.setOil(modelIngredientCategoryModelVo.getOil());
         userIngredientCategoryModelVo.setSalt(modelIngredientCategoryModelVo.getSalt());
         userIngredientCategoryModelVo.setGoal(modelIngredientCategoryModelVo.getGoal());
-        userIngredientCategoryModelVo.setUuid(uuid);
-        userIngredientCategoryModelVo.setModelStatus(userModelStatusEnum.getCode());
+
         return userIngredientCategoryModelVo;
     }
 
@@ -45,8 +41,7 @@ public class Model2UserModelConverter {
             return null;
         }
         ModelIngredientCategoryModelVo modelIngredientCategoryModelVo = new ModelIngredientCategoryModelVo();
-        modelIngredientCategoryModelVo.setStandardCalorie(userIngredientCategoryModelVo.getStandardCalorie());
-        modelIngredientCategoryModelVo.setTargetCalorie(userIngredientCategoryModelVo.getTargetCalorie());
+        modelIngredientCategoryModelVo.setTargetCalorie(userIngredientCategoryModelVo.getCalorie());
         modelIngredientCategoryModelVo.setProcessedGrains(userIngredientCategoryModelVo.getProcessedGrains());
         modelIngredientCategoryModelVo.setUnprocessedGrains(userIngredientCategoryModelVo.getUnprocessedGrains());
         modelIngredientCategoryModelVo.setMixedBeans(userIngredientCategoryModelVo.getMixedBeans());

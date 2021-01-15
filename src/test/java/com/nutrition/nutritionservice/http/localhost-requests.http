@@ -3,18 +3,64 @@
 GET https://localhost/hello
 Content-Type: application/x-www-form-urlencoded
 
-### 加载用户信息
-GET https://localhost/product/load/user-info?openid=test_openid_1235123
-Content-Type: application/json
-
 ### 添加饮食记录
 GET https://localhost/user/save/cuisine-history?uuid=b58700facd3b4118ac2a40d51b3ec070&cuisineCode=1a219e3a71f34d8ebc2af9c3d2d6eef8
-
-### 查询今日添加餐品记录
-GET https://localhost/user/query/today-cuisine-history?uuid=b58700facd3b4118ac2a40d51b3ec070
 
 ### 查询餐品详情
 GET https://localhost/cuisine/query-details?cuisineCode=1a219e3a71f34d8ebc2af9c3d2d6eef8
 
 ### 查询门店列表
-GET https://localhost/store/query-store-list
+GET https://localhost/store/query/supported
+
+### 加载用户信息
+GET https://localhost/product/load/user-info?openid=test_openid_liuheng
+
+### 保存用户健康信息
+POST https://localhost/user/save/user-info
+Content-Type: application/json
+
+{
+  "uuid": "87391f78d143405b9de4ca9a8b35ef05",
+  "gender": 1,
+  "age": 28,
+  "height": 181,
+  "weight": 65,
+  "profeChar": 1,
+  "sportsHabits": 2,
+  "goal": 2
+}
+
+### 查询已支持门店列表
+GET https://localhost/store/query/supported
+
+### 查询用户今日添加餐品列表
+GET https://localhost/user/query/today-cuisine-history?uuid=87391f78d143405b9de4ca9a8b35ef05
+
+### 查询用户信息
+GET https://localhost/user/query/user-info?uuid=87391f78d143405b9de4ca9a8b35ef05
+
+### 查询待催更功能列表
+GET https://localhost/product/function-list
+
+### 功能催更
+GET https://localhost/product/push-function?uuid=87391f78d143405b9de4ca9a8b35ef05&functionCode=10001
+
+### 用户提交建议
+POST https://localhost/product/express-opinion
+Content-Type: application/json
+
+{
+  "uuid":"87391f78d143405b9de4ca9a8b35ef05",
+  "content": "咕咕咕咕",
+  "contact": "咕咕"
+}
+
+### 用户推荐门店
+POST https://localhost/product/recommend-store
+Content-Type: application/json
+
+{
+  "uuid":"87391f78d143405b9de4ca9a8b35ef05",
+  "storeName": "咕咕鸡鸡",
+  "userAddress": "东直门外大街"
+}

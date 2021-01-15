@@ -1,9 +1,9 @@
 package com.nutrition.nutritionservice.controller;
 
-import com.nutrition.nutritionservice.biz.health.CuisineBiz;
-import com.nutrition.nutritionservice.biz.health.ModelIngredientCategoryModelBiz;
+import com.nutrition.nutritionservice.biz.CuisineBiz;
+import com.nutrition.nutritionservice.biz.ModelIngredientCategoryModelBiz;
 import com.nutrition.nutritionservice.common.Response;
-import com.nutrition.nutritionservice.controller.health.ao.CuisineDesignerAo;
+import com.nutrition.nutritionservice.controller.ao.CuisineDesignerAo;
 import com.nutrition.nutritionservice.vo.CuisineRecommendedScoreWebAo;
 import com.nutrition.nutritionservice.vo.IDPageParamVo;
 import com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo;

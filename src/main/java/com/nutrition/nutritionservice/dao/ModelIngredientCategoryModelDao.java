@@ -8,7 +8,7 @@ import java.util.List;
 @Repository
 public interface ModelIngredientCategoryModelDao {
 
-    ModelIngredientCategoryModelVo selectByCalorieGoal(double calorie, int goal);
+    ModelIngredientCategoryModelVo selectByCalorieGoal(double standardCalorie, int goal);
 
     List<ModelIngredientCategoryModelVo> selectAll();
 

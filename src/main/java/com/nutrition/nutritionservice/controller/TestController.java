@@ -1,6 +1,6 @@
 package com.nutrition.nutritionservice.controller;
 
-import com.nutrition.nutritionservice.controller.health.ao.CuisineDesignerAo;
+import com.nutrition.nutritionservice.controller.ao.CuisineDesignerAo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

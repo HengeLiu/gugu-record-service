@@ -3,6 +3,7 @@ package com.nutrition.nutritionservice.service;
 import com.nutrition.nutritionservice.dao.CuisineNutrientWeightDao;
 import com.nutrition.nutritionservice.vo.CuisineNutrientWeightVo;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -28,6 +29,9 @@ public class CuisineNutrientWeightService {
     }
 
     public void addAll(List<CuisineNutrientWeightVo> cuisineNutrientWeightVoList) {
+        if (CollectionUtils.isEmpty(cuisineNutrientWeightVoList)) {
+            return;
+        }
         cuisineNutrientWeightDao.batchInsert(cuisineNutrientWeightVoList);
     }
 

@@ -25,12 +25,7 @@ public class UserIngredientCategoryModelVo extends CategoryModel<Integer> implem
     /**
      * 标准摄入热量
      */
-    private double standardCalorie;
-
-    /**
-     * 目标摄入热量
-     */
-    private double targetCalorie;
+    private double calorie;
 
     /**
      * 0,未知;1,平衡;2,减脂;3,增肌

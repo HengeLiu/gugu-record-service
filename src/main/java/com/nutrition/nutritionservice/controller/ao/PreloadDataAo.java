@@ -1,6 +1,5 @@
 package com.nutrition.nutritionservice.controller.ao;
 
-import com.nutrition.nutritionservice.controller.health.ao.NutrientWeightAo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,9 +28,9 @@ public class PreloadDataAo implements Serializable {
     private String uuid;
 
     /**
-     * 模型日需千卡热量
+     * 目标日需千卡热量
      */
-    private Double modelCalorie;
+    private Double targetCalorie;
 
     /**
      * 今日千卡热量摄入历史

@@ -1,11 +1,12 @@
 package com.nutrition.nutritionservice.controller;
 
-import com.nutrition.nutritionservice.biz.health.UserBiz;
+import com.nutrition.nutritionservice.biz.UserBiz;
 import com.nutrition.nutritionservice.common.Response;
-import com.nutrition.nutritionservice.controller.health.ao.UserInfoAo;
+import com.nutrition.nutritionservice.controller.ao.UserInfoAo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +26,7 @@ public class UserController {
     private UserBiz userBiz;
 
     @PostMapping("/save/user-info")
-    public Response saveUserInfo(UserInfoAo userInfoVo) {
+    public Response saveUserInfo(@RequestBody UserInfoAo userInfoVo) {
         return Response.success(userBiz.saveUserInfo(userInfoVo));
     }
 

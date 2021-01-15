@@ -1,6 +1,6 @@
 package com.nutrition.nutritionservice;
 
-import com.nutrition.nutritionservice.biz.health.CuisineBiz;
+import com.nutrition.nutritionservice.biz.CuisineBiz;
 import com.nutrition.nutritionservice.enums.database.CuisineTasteEnum;
 import com.nutrition.nutritionservice.enums.database.DineTimeEnum;
 import com.nutrition.nutritionservice.enums.database.UserHistoricalCuisineStatusEnum;

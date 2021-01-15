@@ -24,7 +24,7 @@
         <result column="goal" jdbcType="TINYINT" property="goal"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, calorie, standard_calorie, target_calorie, processed_grains, unprocessed_grains, mixed_beans, tuber, general_vegetables,
+    id, standard_calorie, target_calorie, processed_grains, unprocessed_grains, mixed_beans, tuber, general_vegetables,
     dark_vegetables, fruit, meat, poultry, aquatic, egg, dairy, soybean, nut, oil, salt, 
     goal
   </sql>

@@ -1,18 +1,18 @@
 package com.nutrition.nutritionservice;
 
-import com.nutrition.nutritionservice.biz.health.ModelIngredientCategoryModelBiz;
+import com.nutrition.nutritionservice.biz.ModelIngredientCategoryModelBiz;
 import com.nutrition.nutritionservice.converter.Model2UserModelConverter;
-import com.nutrition.nutritionservice.dao.UserIngredientCategoryModelDao;
 import com.nutrition.nutritionservice.dao.UserInfoDao;
+import com.nutrition.nutritionservice.dao.UserIngredientCategoryModelDao;
 import com.nutrition.nutritionservice.enums.database.UserIngredientModelStatusEnum;
 import com.nutrition.nutritionservice.service.EnergyCalorieCalculateService;
 import com.nutrition.nutritionservice.service.ModelIngredientCategoryModelService;
-import com.nutrition.nutritionservice.service.UserIngredientCategoryModelService;
 import com.nutrition.nutritionservice.service.UserInfoService;
+import com.nutrition.nutritionservice.service.UserIngredientCategoryModelService;
 import com.nutrition.nutritionservice.util.ModelUtil;
 import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientCategoryModelVo;
-import com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo;
 import com.nutrition.nutritionservice.vo.user.UserInfoVo;
+import com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -55,16 +55,17 @@ public class ModelTest {
         while (++uuid <= 100102) {
             System.out.println(uuid);
             UserInfoVo userInfoVo = userInfoService.selectByUuid(String.valueOf(uuid));
-            if (userInfoVo.getCalorie() == 0) {
+            if (userInfoVo.getTargetCalorie() == 0) {
                 double calorie = energyCalorieCalculateService.calculateCalorie(userInfoVo);
-                userInfoVo.setCalorie(calorie);
+                userInfoVo.setTargetCalorie(calorie);
                 userInfoService.add(userInfoVo);
             }
             ModelIngredientCategoryModelVo intakesModel = modelIngredientCategoryModelService
-                    .queryModelByCalorieGoal(userInfoVo.getCalorie(), userInfoVo.getGoal());
-            UserIngredientCategoryModelVo userModel = Model2UserModelConverter.convert(intakesModel,
-                    String.valueOf(uuid), UserIngredientModelStatusEnum.ACTIVE);
-            userIngredientCategoryModelService.add(userModel);
+                    .queryModelByCalorieGoal(userInfoVo.getTargetCalorie(), userInfoVo.getGoal());
+            UserIngredientCategoryModelVo userModel = Model2UserModelConverter.convert(intakesModel);
+            userModel.setUuid(userInfoVo.getUuid());
+            userModel.setModelStatus(UserIngredientModelStatusEnum.ACTIVE.getCode());
+            userIngredientCategoryModelService.save(userModel);
         }
     }
 
