@@ -42,7 +42,7 @@
         select
         <include refid="Base_Column_List"/>
         from user_historical_cuisine
-        where uuid = #{uuid} and (create_time &gt;= #{startTime} and create_time &lt; #{endTime})
+        where uuid = #{uuid} and create_time &gt;= #{startTime} and create_time &lt; #{endTime}
     </select>
 
     <insert id="insert" keyColumn="id" keyProperty="id"

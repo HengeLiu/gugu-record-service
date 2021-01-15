@@ -164,7 +164,7 @@ public class ProgramBiz {
 
         List<UserFunctionVotesVo> userFunctionVotesVoList = userFunctionVotesService.queryByUuidAndDate(uuid,
                 LocalDate.now());
-        preloadDataAoBuilder.todayPushingTime(CollectionUtils.size(userFunctionVotesVoList.size()));
+        preloadDataAoBuilder.todayPushingTime(CollectionUtils.size(userFunctionVotesVoList));
 
         List<StoreInfoVo> storeInfoVoList = storeInfoService.queryByStatus(StoreStatusEnum.ONLINE.getCode(), 3);
         preloadDataAoBuilder

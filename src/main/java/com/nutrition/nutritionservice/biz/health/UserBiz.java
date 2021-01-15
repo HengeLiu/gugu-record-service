@@ -234,7 +234,7 @@ public class UserBiz {
         resultParamMap.put("userNutrientHistoricalIntakesDaily", NutrientWeightVo2AoConverter
                 .convert(userIngredientWeightSumDailyVo.getCalorie(), newUserNutrientWeightSumDailyVoList));
 
-        resultParamMap.put("historicalCuisineList", queryTodayCuisineHistory(uuid));
+//        resultParamMap.put("historicalCuisineList", queryTodayCuisineHistory(uuid));
         return resultParamMap;
     }
 

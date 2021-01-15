@@ -1,16 +1,20 @@
-### 加载用户信息
-GET https://localhost/load/user-info?openid=test_openid_1235123
-Content-Type: application/json
 
-###
-GET https://localhost/cuisine/cuisine-list?storeCode=100001&uuid=0
+### 启动测试
+GET https://localhost/hello
+Content-Type: application/x-www-form-urlencoded
+
+### 加载用户信息
+GET https://localhost/product/load/user-info?openid=test_openid_1235123
 Content-Type: application/json
 
 ### 添加饮食记录
-GET https://localhost/user/save-history?uuid=b58700facd3b4118ac2a40d51b3ec070&cuisineCode=1a219e3a71f34d8ebc2af9c3d2d6eef8
+GET https://localhost/user/save/cuisine-history?uuid=b58700facd3b4118ac2a40d51b3ec070&cuisineCode=1a219e3a71f34d8ebc2af9c3d2d6eef8
+
+### 查询今日添加餐品记录
+GET https://localhost/user/query/today-cuisine-history?uuid=b58700facd3b4118ac2a40d51b3ec070
 
 ### 查询餐品详情
-GET https://localhost/cuisine/query-details?uuid=b58700facd3b4118ac2a40d51b3ec070&cuisineCode=1a219e3a71f34d8ebc2af9c3d2d6eef8
+GET https://localhost/cuisine/query-details?cuisineCode=1a219e3a71f34d8ebc2af9c3d2d6eef8
 
 ### 查询门店列表
 GET https://localhost/store/query-store-list
