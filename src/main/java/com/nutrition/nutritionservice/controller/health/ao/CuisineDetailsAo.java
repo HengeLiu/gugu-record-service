@@ -33,36 +33,6 @@ public class CuisineDetailsAo implements Serializable {
     private String name;
 
     /**
-     * 价格
-     */
-    private Double price;
-
-    /**
-     * 推荐总分
-     */
-    private Double totalScore;
-
-    /**
-     * 评分
-     */
-    private Double ratingScore;
-
-    /**
-     * 模型匹配度
-     */
-    private Double modelMatchingScore;
-
-    /**
-     * 饿了么外卖小程序地址
-     */
-    private String eleUrl;
-
-    /**
-     * 美团外卖小程序地址
-     */
-    private String meituanUrl;
-
-    /**
      * 餐品图片地址
      */
     private String imageUrl;
@@ -71,16 +41,6 @@ public class CuisineDetailsAo implements Serializable {
      * 食材列表
      */
     private List<CuisineIngredientAo> ingredientList;
-
-    /**
-     * 菜品食材种类统计
-     */
-    private List<SupperIngredientCategoryWeightAo> ingredientCategoryList;
-
-    /**
-     * 营养素重量
-     */
-    private List<NutrientWeightAo> nutrientWeightList;
 
     /**
      * 门店信息

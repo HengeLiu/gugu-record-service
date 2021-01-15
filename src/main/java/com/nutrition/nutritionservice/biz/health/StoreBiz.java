@@ -23,7 +23,8 @@ public class StoreBiz {
     private StoreInfoService storeInfoService;
 
     public List<StorePreviewAo> queryAllSupportedStore() {
-        List<StoreInfoVo> storeInfoVoList = storeInfoService.queryByStatus(StoreStatusEnum.ONLINE.getCode());
+        List<StoreInfoVo> storeInfoVoList = storeInfoService.queryByStatus(StoreStatusEnum.ONLINE.getCode(),
+                Integer.MAX_VALUE);
         return storeInfoVoList.stream()
                 .map(storeInfoVo -> StorePreviewAo.builder().code(storeInfoVo.getStoreCode())
                         .name(storeInfoVo.getStoreName()).imageUrl(storeInfoVo.getImageUrl())

@@ -5,14 +5,13 @@ import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.nutrition.nutritionservice.annotation.Biz;
+import com.nutrition.nutritionservice.controller.ao.CuisinePreviewAo;
 import com.nutrition.nutritionservice.controller.health.ao.CuisineCategoryAo;
 import com.nutrition.nutritionservice.controller.health.ao.CuisineDesignerAo;
 import com.nutrition.nutritionservice.controller.health.ao.CuisineDetailsAo;
 import com.nutrition.nutritionservice.controller.health.ao.CuisineIngredientAo;
-import com.nutrition.nutritionservice.controller.ao.CuisinePreviewAo;
 import com.nutrition.nutritionservice.controller.health.ao.StoreCuisineListAo;
 import com.nutrition.nutritionservice.controller.health.ao.StorePreviewAo;
-import com.nutrition.nutritionservice.converter.NutrientWeightVo2AoConverter;
 import com.nutrition.nutritionservice.enums.CodeEnums;
 import com.nutrition.nutritionservice.enums.UnitEnum;
 import com.nutrition.nutritionservice.enums.database.CuisineCategoryEnum;
@@ -48,7 +47,6 @@ import com.nutrition.nutritionservice.vo.StoreVo;
 import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientCategoryModelVo;
 import com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo;
 import com.nutrition.nutritionservice.vo.store.CuisineVo;
-import com.nutrition.nutritionservice.vo.user.UserInfoVo;
 import com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo;
 import com.nutrition.nutritionservice.vo.user.UserIngredientWeightSumDailyVo;
 import lombok.extern.slf4j.Slf4j;
@@ -57,7 +55,6 @@ import org.springframework.util.CollectionUtils;
 import org.thymeleaf.util.ListUtils;
 
 import javax.annotation.Resource;
-import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -110,17 +107,6 @@ public class CuisineBiz {
 
     @Resource
     private StoreService storeService;
-
-    @Resource
-    private UserIngredientCategoryModelService userIngredientCategoryModelService;
-
-    @Resource
-    private UserIngredientWeightSumDailyService userIngredientWeightSumDailyService;
-
-    @Resource
-    private UserInfoService userInfoService;
-
-
 
     @Resource
     private IngredientNutrientRelService ingredientNutrientRelService;
@@ -334,7 +320,7 @@ public class CuisineBiz {
         return storeCuisineListAoBuilder.cuisineCategoryList(cuisineCategoryAoList).build();
     }
 
-    public CuisineDetailsAo queryCuisineDetails(String cuisineCode, String uuid) {
+    public CuisineDetailsAo queryCuisineDetails(String cuisineCode) {
 
         CuisineDetailsAo.CuisineDetailsAoBuilder cuisineDetailsAoBuilder = CuisineDetailsAo.builder();
 
@@ -343,24 +329,10 @@ public class CuisineBiz {
         cuisineDetailsAoBuilder.name(cuisineVo.getName());
         CuisineAdditionalInfoVo cuisineAdditionalInfoVo = cuisineAdditionalInfoService.queryByCuisineCode(cuisineCode);
         if (cuisineAdditionalInfoVo != null) {
-            cuisineDetailsAoBuilder.price(cuisineAdditionalInfoVo.getPrice());
-            cuisineDetailsAoBuilder.ratingScore(cuisineAdditionalInfoVo.getRatingScore());
-            cuisineDetailsAoBuilder.eleUrl(cuisineAdditionalInfoVo.getEleUrl());
-            cuisineDetailsAoBuilder.meituanUrl(cuisineAdditionalInfoVo.getMeituanUrl());
             cuisineDetailsAoBuilder.imageUrl(cuisineAdditionalInfoVo.getImageUrl());
         }
 
-        UserInfoVo userInfoVo = userInfoService.selectByUuid(uuid);
-        UserIngredientCategoryModelVo userIngredientCategoryModelVo = userIngredientCategoryModelService
-                .queryById(userInfoVo.getActiveModelId());
-        UserIngredientWeightSumDailyVo userIngredientWeightSumDailyVo = userIngredientWeightSumDailyService
-                .queryByUuidAndDate(uuid, LocalDate.now());
-        if (userIngredientWeightSumDailyVo == null) {
-            userIngredientWeightSumDailyVo = UserIngredientWeightSumDailyVo.createEmpty(uuid, LocalDate.now());
-        }
-        Vector<Integer> userModelVector = ModelUtil.modelToVector(userIngredientCategoryModelVo);
-        Vector<Double> historicalWeightVector = ModelUtil.modelToVector(userIngredientWeightSumDailyVo);
-        Vector<Double> subtractionVector = VectorUtil.subtraction(userModelVector, historicalWeightVector);
+
 
         CuisineIngredientCategoryWeightVo cuisineIngredientCategoryWeightVo = cuisineIngredientCategoryWeightService
                 .queryByCuisineCode(cuisineCode);
@@ -368,9 +340,6 @@ public class CuisineBiz {
             throw new NutritionServiceException(
                     "Cuisine ingredient category weight can not null, cuisine code " + cuisineCode);
         }
-        double cosineSimilarity = VectorUtil.cosineSimilarity(subtractionVector,
-                ModelUtil.modelToVector(cuisineIngredientCategoryWeightVo));
-        cuisineDetailsAoBuilder.modelMatchingScore(cosineSimilarity);
 
         Map<Integer, Integer> ingredientCodeWeightMap = cuisineIngredientRelService.queryByCuisineCode(cuisineCode)
                 .stream().filter(cuisineIngredientRelVo -> cuisineIngredientRelVo.getWeight() > 0).collect(
@@ -391,13 +360,6 @@ public class CuisineBiz {
         }
         cuisineDetailsAoBuilder.ingredientList(cuisineIngredientAoList);
 
-        cuisineDetailsAoBuilder.ingredientCategoryList(
-                ModelUtil.cuisineIngredientCategoryWeightVoToAo(cuisineIngredientCategoryWeightVo));
-
-        List<CuisineNutrientWeightVo> cuisineNutrientWeightVoList = cuisineNutrientWeightService
-                .queryByCuisineCode(cuisineCode);
-        cuisineDetailsAoBuilder
-                .nutrientWeightList(NutrientWeightVo2AoConverter.convert(null, cuisineNutrientWeightVoList));
 
         StoreVo storeVo = storeService.queryByCode(cuisineVo.getStoreCode());
         if (storeVo == null) {

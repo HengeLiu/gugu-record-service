@@ -3,26 +3,41 @@ package com.nutrition.nutritionservice.biz.record;
 import com.nutrition.nutritionservice.annotation.Biz;
 import com.nutrition.nutritionservice.biz.health.ModelIngredientCategoryModelBiz;
 import com.nutrition.nutritionservice.biz.health.UserNutrientWeightSumDailyBiz;
-import com.nutrition.nutritionservice.controller.health.ao.NutrientWeightAo;
 import com.nutrition.nutritionservice.controller.ao.PreloadDataAo;
+import com.nutrition.nutritionservice.controller.ao.StoreRecommendAo;
+import com.nutrition.nutritionservice.controller.ao.UserOpinionAo;
+import com.nutrition.nutritionservice.controller.health.ao.NutrientWeightAo;
 import com.nutrition.nutritionservice.converter.Model2UserModelConverter;
+import com.nutrition.nutritionservice.enums.database.ProductFunctionStatusEnum;
+import com.nutrition.nutritionservice.enums.database.StoreStatusEnum;
 import com.nutrition.nutritionservice.enums.database.UserAccountStatusTypeEnum;
 import com.nutrition.nutritionservice.enums.database.UserAccountTypeEnum;
 import com.nutrition.nutritionservice.enums.database.UserIngredientModelStatusEnum;
 import com.nutrition.nutritionservice.exception.NutritionServiceException;
 import com.nutrition.nutritionservice.service.ConfigPropertiesService;
+import com.nutrition.nutritionservice.service.ProductFunctionService;
+import com.nutrition.nutritionservice.service.ProductStoreRecommendationService;
+import com.nutrition.nutritionservice.service.StoreInfoService;
 import com.nutrition.nutritionservice.service.UserAccountService;
+import com.nutrition.nutritionservice.service.UserFunctionVotesService;
 import com.nutrition.nutritionservice.service.UserInfoService;
 import com.nutrition.nutritionservice.service.UserIngredientCategoryModelService;
 import com.nutrition.nutritionservice.service.UserIngredientWeightSumDailyService;
+import com.nutrition.nutritionservice.service.ProductUserRecommendationService;
 import com.nutrition.nutritionservice.service.UserStatusInfoService;
 import com.nutrition.nutritionservice.service.WechatHttpApiService;
+import com.nutrition.nutritionservice.vo.ProductFunctionVo;
+import com.nutrition.nutritionservice.vo.ProductStoreRecommendationVo;
+import com.nutrition.nutritionservice.vo.StoreInfoVo;
+import com.nutrition.nutritionservice.vo.UserFunctionVotesVo;
+import com.nutrition.nutritionservice.vo.ProductUserRecommendationVo;
 import com.nutrition.nutritionservice.vo.UserStatusInfoVo;
 import com.nutrition.nutritionservice.vo.user.UserAccountVo;
 import com.nutrition.nutritionservice.vo.user.UserInfoVo;
 import com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo;
 import com.nutrition.nutritionservice.vo.user.UserIngredientWeightSumDailyVo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
@@ -30,6 +45,7 @@ import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * 程序加载数据
@@ -39,7 +55,7 @@ import java.util.UUID;
  */
 @Biz
 @Slf4j
-public class ProgramLoadDataBiz {
+public class ProgramBiz {
 
     @Resource
     private UserAccountService userAccountService;
@@ -67,6 +83,21 @@ public class ProgramLoadDataBiz {
 
     @Resource
     private WechatHttpApiService wechatHttpApiService;
+
+    @Resource
+    private ProductFunctionService productFunctionService;
+
+    @Resource
+    private ProductUserRecommendationService productUserRecommendationService;
+
+    @Resource
+    private UserFunctionVotesService userFunctionVotesService;
+
+    @Resource
+    private StoreInfoService storeInfoService;
+
+    @Resource
+    private ProductStoreRecommendationService productStoreRecommendationService;
 
     @Transactional(rollbackFor = Exception.class)
     public PreloadDataAo loadUserInfo(String openid) {
@@ -131,6 +162,14 @@ public class ProgramLoadDataBiz {
                 historicalCalorie, LocalDate.now());
         preloadDataAoBuilder.userNutrientHistoricalIntakesDaily(nutrientWeightList);
 
+        List<UserFunctionVotesVo> userFunctionVotesVoList = userFunctionVotesService.queryByUuidAndDate(uuid,
+                LocalDate.now());
+        preloadDataAoBuilder.todayPushingTime(CollectionUtils.size(userFunctionVotesVoList.size()));
+
+        List<StoreInfoVo> storeInfoVoList = storeInfoService.queryByStatus(StoreStatusEnum.ONLINE.getCode(), 3);
+        preloadDataAoBuilder
+                .storeIconUrlList(storeInfoVoList.stream().map(StoreInfoVo::getIconUrl).collect(Collectors.toList()));
+
         return preloadDataAoBuilder.build();
     }
 
@@ -142,4 +181,23 @@ public class ProgramLoadDataBiz {
         }
         return loadUserInfo(wxOpenid);
     }
+
+    public List<ProductFunctionVo> queryNominatedFunctionList() {
+        return productFunctionService.queryProductFunctionList(ProductFunctionStatusEnum.NOMINATED.getCode());
+    }
+
+    public void pushingFunction(String uuid, String functionCode) {
+        userFunctionVotesService.add(UserFunctionVotesVo.builder().uuid(uuid).functionCode(functionCode).build());
+    }
+
+    public void saveOpinion(UserOpinionAo userOpinionAo) {
+        productUserRecommendationService.add(ProductUserRecommendationVo.builder().uuid(userOpinionAo.getUuid())
+                .contact(userOpinionAo.getContact()).content(userOpinionAo.getContent()).build());
+    }
+
+    public void saveStoreRecommendation(StoreRecommendAo storeRecommendAo) {
+        productStoreRecommendationService.add(ProductStoreRecommendationVo.builder().uuid(storeRecommendAo.getUuid())
+                .storeName(storeRecommendAo.getStoreName()).userAddress(storeRecommendAo.getUserAddress()).build());
+    }
+
 }

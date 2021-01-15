@@ -66,14 +66,14 @@ public class CuisineController {
 
     @GetMapping("/cuisine-list")
     @ResponseBody
-    public Response queryCuisineList(@RequestParam String storeCode, @RequestParam String uuid) {
+    public Response queryCuisineList(@RequestParam String storeCode) {
         return Response.success(cuisineBiz.queryCuisineList(storeCode));
     }
 
     @GetMapping("/query-details")
     @ResponseBody
-    public Response queryCuisineDetails(@RequestParam String cuisineCode, @RequestParam String uuid) {
-        return Response.success(cuisineBiz.queryCuisineDetails(cuisineCode, uuid));
+    public Response queryCuisineDetails(@RequestParam String cuisineCode) {
+        return Response.success(cuisineBiz.queryCuisineDetails(cuisineCode));
     }
 
 }

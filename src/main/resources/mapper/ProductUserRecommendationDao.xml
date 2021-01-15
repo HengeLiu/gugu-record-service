@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nutrition.nutritionservice.dao.ProductUserRecommendationDao">
+    <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.ProductUserRecommendationVo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="uuid" jdbcType="VARCHAR" property="uuid"/>
+        <result column="contact" jdbcType="VARCHAR" property="contact"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, uuid, contact, content, create_time
+  </sql>
+    <sql id="Insert_Column_List">
+    uuid, contact, content
+  </sql>
+    <insert id="insert" keyColumn="id" keyProperty="id"
+            parameterType="com.nutrition.nutritionservice.vo.ProductUserRecommendationVo" useGeneratedKeys="true">
+        insert into product_user_recommendation (
+        <include refid="Insert_Column_List"/>
+        )
+        values (#{uuid,jdbcType=VARCHAR}, #{contact}, #{content,jdbcType=VARCHAR}
+        )
+    </insert>
+
+</mapper>

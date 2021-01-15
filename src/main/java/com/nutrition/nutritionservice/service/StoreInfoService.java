@@ -21,8 +21,8 @@ public class StoreInfoService {
         return storeInfoDao.selectAll();
     }
 
-    public List<StoreInfoVo> queryByStatus(int storeStatus) {
-        return storeInfoDao.selectByStatus(storeStatus);
+    public List<StoreInfoVo> queryByStatus(int storeStatus, int limit) {
+        return storeInfoDao.selectByStatus(storeStatus, limit);
     }
 
 }

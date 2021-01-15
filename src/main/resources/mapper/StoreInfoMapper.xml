@@ -49,7 +49,7 @@
     <select id="selectByStatus" resultType="com.nutrition.nutritionservice.vo.StoreInfoVo">
         select
         <include refid="Base_Column_List"/>
-        from store_info where status = #{storeStatus}
+        from store_info where status = #{storeStatus} order by create_time limit #{limit}
     </select>
 
     <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nutrition.nutritionservice.vo.StoreInfoVo"
