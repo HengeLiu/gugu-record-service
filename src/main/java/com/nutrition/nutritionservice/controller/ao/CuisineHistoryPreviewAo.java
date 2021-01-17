@@ -23,12 +23,5 @@ public class CuisineHistoryPreviewAo implements Serializable {
      * 餐品名称
      */
     private String name;
-
-    /**
-     * 图片地址
-     */
-    private String imageUrl;
-
-
-
+    
 }

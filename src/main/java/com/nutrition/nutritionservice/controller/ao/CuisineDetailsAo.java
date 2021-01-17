@@ -33,11 +33,6 @@ public class CuisineDetailsAo implements Serializable {
     private String name;
 
     /**
-     * 餐品图片地址
-     */
-    private String imageUrl;
-
-    /**
      * 食材列表
      */
     private List<CuisineIngredientAo> ingredientList;

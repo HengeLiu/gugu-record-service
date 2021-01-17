@@ -8,16 +8,15 @@
         <result column="rating_score" jdbcType="DOUBLE" property="ratingScore"/>
         <result column="ele_url" jdbcType="VARCHAR" property="eleUrl"/>
         <result column="meituan_url" jdbcType="VARCHAR" property="meituanUrl"/>
-        <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, cuisine_code, price, rating_score, ele_url, meituan_url, image_url, create_time, 
+    id, cuisine_code, price, rating_score, ele_url, meituan_url, create_time,
     update_time
   </sql>
     <sql id="Insert_Column_List">
-    cuisine_code, price, rating_score, ele_url, meituan_url, image_url
+    cuisine_code, price, rating_score, ele_url, meituan_url
   </sql>
     <select id="selectByCuisineCode" resultMap="BaseResultMap">
         select
@@ -32,7 +31,7 @@
         <include refid="Insert_Column_List"/>
         )
         values (#{cuisineCode,jdbcType=VARCHAR}, #{price,jdbcType=DOUBLE}, #{ratingScore,jdbcType=DOUBLE},
-        #{eleUrl,jdbcType=VARCHAR}, #{meituanUrl,jdbcType=VARCHAR}, #{imageUrl,jdbcType=VARCHAR})
+        #{eleUrl,jdbcType=VARCHAR}, #{meituanUrl,jdbcType=VARCHAR}
     </insert>
     <insert id="insertSelective" keyColumn="id" keyProperty="id"
             parameterType="com.nutrition.nutritionservice.vo.CuisineAdditionalInfoVo" useGeneratedKeys="true">
@@ -53,9 +52,6 @@
             <if test="meituanUrl != null">
                 meituan_url,
             </if>
-            <if test="imageUrl != null">
-                image_url,
-            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="cuisineCode != null">
@@ -73,9 +69,6 @@
             <if test="meituanUrl != null">
                 #{meituanUrl,jdbcType=VARCHAR},
             </if>
-            <if test="imageUrl != null">
-                #{imageUrl,jdbcType=VARCHAR},
-            </if>
         </trim>
     </insert>
     <update id="updateByCuisineCodeSelective" parameterType="com.nutrition.nutritionservice.vo.CuisineAdditionalInfoVo">
@@ -92,9 +85,6 @@
             </if>
             <if test="meituanUrl != null">
                 meituan_url = #{meituanUrl,jdbcType=VARCHAR},
-            </if>
-            <if test="imageUrl != null">
-                image_url = #{imageUrl,jdbcType=VARCHAR},
             </if>
         </set>
         where cuisine_code = #{cuisineCode}

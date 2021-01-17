@@ -55,11 +55,6 @@ public class IngredientVo implements Serializable {
      */
     private String ingredientType;
 
-    /**
-     * 图片地址
-     */
-    private String imageUrl;
-
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;

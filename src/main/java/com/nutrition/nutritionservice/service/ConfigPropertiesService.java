@@ -64,6 +64,19 @@ public class ConfigPropertiesService {
     @Value("${system_default_order_address_longitude}")
     private double systemDefaultOrderAddressLongitude;
 
+    @Value("${ingredient_image_path}")
+    private String ingredientImagePath;
+    @Value("${ingredient_icon_path}")
+    private String ingredientIconPath;
+    @Value("${shop_image_path}")
+    private String shopImagePath;
+    @Value("${shop_icon_path}")
+    private String shopIconPath;
+    @Value("${cuisine_image_path}")
+    private String cuisineImagePath;
+    @Value("${empty_image_path}")
+    private String emptyImagePath;
+
     public UserInfoVo getDefaultUserInfo(GenderEnum genderEnum) {
         if (genderEnum == null || genderEnum == GenderEnum.FEMALE) {
             return UserInfoVo.builder().gender(GenderEnum.FEMALE.getCode()).goal(costumerDefaultGoalFemale)

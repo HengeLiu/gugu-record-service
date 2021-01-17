@@ -38,9 +38,9 @@ public class PreloadDataAo implements Serializable {
     private Double historicalCalorieDaily;
 
     /**
-     * 门店图标地址列表
+     * 需要显示图标的门店Code列表
      */
-    private List<String> storeIconUrlList;
+    private List<String> needIconStoreCodeList;
 
     /**
      * 今日已催更次数

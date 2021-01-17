@@ -12,17 +12,16 @@
         <result column="cuisine_type" jdbcType="TINYINT" property="cuisineType"/>
         <result column="dine_time" jdbcType="TINYINT" property="dineTime"/>
         <result column="warm" jdbcType="TINYINT" property="warm"/>
-        <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
         <result column="status" jdbcType="TINYINT" property="status"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, code, `name`, price, store_code, calorie, goal, cuisine_type, dine_time, warm, image_url, `status`,
+    id, code, `name`, price, store_code, calorie, goal, cuisine_type, dine_time, warm, `status`,
     create_time, update_time
   </sql>
     <sql id="Insert_Column_List">
-    code, `name`, price, store_code, calorie, goal, cuisine_type, dine_time, warm, image_url, `status`
+    code, `name`, price, store_code, calorie, goal, cuisine_type, dine_time, warm, `status`
   </sql>
     <select id="selectByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
         select

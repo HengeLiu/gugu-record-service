@@ -302,7 +302,6 @@ public class UserBiz {
                             .get(cuisineIngredientRelVo.getIngredientCode()))
                     .collect(Collectors.toList());
             cuisinePreviewAoList.add(CuisinePreviewAo.builder().code(cuisineVo.getCode()).name(cuisineVo.getName())
-                    .imageUrl(cuisineVo.getImageUrl())
                     .lastAddedDateTime(DateTimeUtil.YMDHMS.format(historicalCuisineVo.getCreateTime()))
                     .storeCode(storeVo.getCode()).storeName(storeVo.getName())
                     .mainIngredientList(mainIngredientNameList).build());

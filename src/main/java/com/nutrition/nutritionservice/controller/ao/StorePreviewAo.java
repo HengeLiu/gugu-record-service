@@ -54,14 +54,4 @@ public class StorePreviewAo implements Serializable {
      */
     private Integer monthlySales;
 
-    /**
-     * 图片地址
-     */
-    private String imageUrl;
-
-    /**
-     * 图片地址
-     */
-    private String iconUrl;
-
 }

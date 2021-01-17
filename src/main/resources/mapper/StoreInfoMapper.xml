@@ -9,19 +9,15 @@
         <result column="location_type" jdbcType="TINYINT" property="locationType"/>
         <result column="location_latitude" jdbcType="DOUBLE" property="locationLatitude"/>
         <result column="location_longitude" jdbcType="DOUBLE" property="locationLongitude"/>
-        <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
-        <result column="icon_url" jdbcType="VARCHAR" property="iconUrl"/>
         <result column="business_type" jdbcType="TINYINT" property="businessType"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, store_code, store_name, location_title, location_type, location_latitude, location_longitude,
-    image_url, icon_url, business_type, create_time, update_time
+    id, store_code, store_name, location_title, location_type, location_latitude, location_longitude, business_type, create_time, update_time
   </sql>
     <sql id="Insert_Column_List">
-    store_code, store_name, location_title, location_type, location_latitude, location_longitude,
-    image_url, icon_url, business_type
+    store_code, store_name, location_title, location_type, location_latitude, location_longitude, business_type
   </sql>
     <select id="selectByStoreCode" resultMap="BaseResultMap">
         select
@@ -59,8 +55,7 @@
         )
         values (#{storeCode,jdbcType=VARCHAR}, #{storeName}, #{locationTitle,jdbcType=VARCHAR},
         #{locationType,jdbcType=TINYINT},
-        #{locationLatitude,jdbcType=DOUBLE}, #{locationLongitude,jdbcType=DOUBLE}, #{imageUrl,jdbcType=VARCHAR},
-        #{iconUrl,jdbcType=VARCHAR}, #{businessType,jdbcType=TINYINT})
+        #{locationLatitude,jdbcType=DOUBLE}, #{locationLongitude,jdbcType=DOUBLE}, #{businessType,jdbcType=TINYINT})
     </insert>
     <insert id="insertSelective" keyColumn="id" keyProperty="id"
             parameterType="com.nutrition.nutritionservice.vo.StoreInfoVo" useGeneratedKeys="true">
@@ -84,12 +79,6 @@
             <if test="locationLongitude != null">
                 location_longitude,
             </if>
-            <if test="imageUrl != null">
-                image_url,
-            </if>
-            <if test="iconUrl != null">
-                icon_url,
-            </if>
             <if test="businessType != null">
                 business_type,
             </if>
@@ -112,12 +101,6 @@
             </if>
             <if test="locationLongitude != null">
                 #{locationLongitude,jdbcType=DOUBLE},
-            </if>
-            <if test="imageUrl != null">
-                #{imageUrl,jdbcType=VARCHAR},
-            </if>
-            <if test="iconUrl != null">
-                #{iconUrl,jdbcType=VARCHAR},
             </if>
             <if test="businessType != null">
                 #{businessType,jdbcType=TINYINT},
@@ -145,12 +128,6 @@
             <if test="locationLongitude != null">
                 location_longitude = #{locationLongitude,jdbcType=DOUBLE},
             </if>
-            <if test="imageUrl != null">
-                image_url = #{imageUrl,jdbcType=VARCHAR},
-            </if>
-            <if test="iconUrl != null">
-                icon_url = #{iconUrl,jdbcType=VARCHAR},
-            </if>
             <if test="businessType != null">
                 business_type = #{businessType,jdbcType=TINYINT},
             </if>
@@ -165,8 +142,6 @@
       location_type = #{locationType,jdbcType=TINYINT},
       location_latitude = #{locationLatitude,jdbcType=DOUBLE},
       location_longitude = #{locationLongitude,jdbcType=DOUBLE},
-      image_url = #{imageUrl,jdbcType=VARCHAR},
-      icon_url = #{iconUrl,jdbcType=VARCHAR},
       business_type = #{businessType,jdbcType=TINYINT}
     where id = #{id,jdbcType=BIGINT}
   </update>

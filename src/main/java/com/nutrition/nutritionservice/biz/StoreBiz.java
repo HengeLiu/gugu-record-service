@@ -27,8 +27,7 @@ public class StoreBiz {
                 Integer.MAX_VALUE);
         return storeInfoVoList.stream()
                 .map(storeInfoVo -> StorePreviewAo.builder().code(storeInfoVo.getStoreCode())
-                        .name(storeInfoVo.getStoreName()).imageUrl(storeInfoVo.getImageUrl())
-                        .iconUrl(storeInfoVo.getIconUrl()).addressTitle(storeInfoVo.getLocationTitle()).build())
+                        .name(storeInfoVo.getStoreName()).addressTitle(storeInfoVo.getLocationTitle()).build())
                 .collect(Collectors.toList());
     }
 

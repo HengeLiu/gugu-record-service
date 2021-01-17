@@ -45,16 +45,6 @@ public class StoreInfoVo implements Serializable {
     private Double locationLongitude;
 
     /**
-     * 门店图片地址
-     */
-    private String imageUrl;
-
-    /**
-     * 门店图标地址
-     */
-    private String iconUrl;
-
-    /**
      * 业务类型
      */
     private Byte businessType;

@@ -5,11 +5,11 @@ import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.nutrition.nutritionservice.annotation.Biz;
-import com.nutrition.nutritionservice.controller.ao.CuisinePreviewAo;
 import com.nutrition.nutritionservice.controller.ao.CuisineCategoryAo;
 import com.nutrition.nutritionservice.controller.ao.CuisineDesignerAo;
 import com.nutrition.nutritionservice.controller.ao.CuisineDetailsAo;
 import com.nutrition.nutritionservice.controller.ao.CuisineIngredientAo;
+import com.nutrition.nutritionservice.controller.ao.CuisinePreviewAo;
 import com.nutrition.nutritionservice.controller.ao.StoreCuisineListAo;
 import com.nutrition.nutritionservice.controller.ao.StorePreviewAo;
 import com.nutrition.nutritionservice.enums.CodeEnums;
@@ -31,7 +31,6 @@ import com.nutrition.nutritionservice.service.IngredientService;
 import com.nutrition.nutritionservice.service.StoreService;
 import com.nutrition.nutritionservice.util.ModelUtil;
 import com.nutrition.nutritionservice.util.VectorUtil;
-import com.nutrition.nutritionservice.vo.CuisineAdditionalInfoVo;
 import com.nutrition.nutritionservice.vo.CuisineHistoricalTasteVo;
 import com.nutrition.nutritionservice.vo.CuisineIngredientCategoryWeightVo;
 import com.nutrition.nutritionservice.vo.CuisineNutrientWeightVo;
@@ -306,7 +305,7 @@ public class CuisineBiz {
                         .categoryName(cuisineCategoryEnumListEntry.getKey().getName())
                         .cuisineList(cuisineCategoryEnumListEntry.getValue().stream()
                                 .map(cuisineVo -> CuisinePreviewAo.builder().code(cuisineVo.getCode())
-                                        .name(cuisineVo.getName()).imageUrl(cuisineVo.getImageUrl())
+                                        .name(cuisineVo.getName())
                                         .mainIngredientList(cuisineCodeIngredientNameMap
                                                 .getOrDefault(cuisineVo.getCode(), Collections.emptyList()))
                                         .build())
@@ -324,12 +323,6 @@ public class CuisineBiz {
         cuisineDetailsAoBuilder.code(cuisineCode);
         CuisineVo cuisineVo = cuisineService.queryByCuisineCode(cuisineCode);
         cuisineDetailsAoBuilder.name(cuisineVo.getName());
-        CuisineAdditionalInfoVo cuisineAdditionalInfoVo = cuisineAdditionalInfoService.queryByCuisineCode(cuisineCode);
-        if (cuisineAdditionalInfoVo != null) {
-            cuisineDetailsAoBuilder.imageUrl(cuisineAdditionalInfoVo.getImageUrl());
-        }
-
-
 
         CuisineIngredientCategoryWeightVo cuisineIngredientCategoryWeightVo = cuisineIngredientCategoryWeightService
                 .queryByCuisineCode(cuisineCode);
@@ -353,7 +346,7 @@ public class CuisineBiz {
                 continue;
             }
             cuisineIngredientAoList.add(CuisineIngredientAo.builder().code(ingredientCode).name(ingredientVo.getName())
-                    .weight(cuisineIngredientWeightEntry.getValue()).imageUrl(ingredientVo.getImageUrl()).build());
+                    .weight(cuisineIngredientWeightEntry.getValue()).build());
         }
         cuisineDetailsAoBuilder.ingredientList(cuisineIngredientAoList);
 

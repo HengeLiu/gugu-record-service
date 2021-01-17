@@ -33,11 +33,6 @@ public class CuisinePreviewAo implements Serializable {
     private String name;
 
     /**
-     * 产品图片地址
-     */
-    private String imageUrl;
-
-    /**
      * 上次添加日期时间
      */
     private String lastAddedDateTime;

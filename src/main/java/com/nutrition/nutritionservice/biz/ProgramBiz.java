@@ -129,7 +129,8 @@ public class ProgramBiz {
 
         List<StoreInfoVo> storeInfoVoList = storeInfoService.queryByStatus(StoreStatusEnum.ONLINE.getCode(), 3);
         preloadDataAoBuilder
-                .storeIconUrlList(storeInfoVoList.stream().map(StoreInfoVo::getIconUrl).collect(Collectors.toList()));
+                .needIconStoreCodeList(
+                        storeInfoVoList.stream().map(StoreInfoVo::getStoreCode).collect(Collectors.toList()));
 
         return preloadDataAoBuilder.build();
     }

@@ -39,11 +39,6 @@ public class CuisineAdditionalInfoVo implements Serializable {
     private String meituanUrl;
 
     /**
-     * 图片地址
-     */
-    private String imageUrl;
-
-    /**
      * 创建时间
      */
     private Date createTime;

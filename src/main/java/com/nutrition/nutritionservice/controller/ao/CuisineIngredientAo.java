@@ -35,9 +35,4 @@ public class CuisineIngredientAo implements Serializable {
      */
     private Integer weight;
 
-    /**
-     * 食材图片地址
-     */
-    private String imageUrl;
-
 }
