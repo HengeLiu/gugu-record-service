@@ -33,7 +33,7 @@ public class ProgramController {
 
     @GetMapping("/load/user-info/by-code")
     public Response loadUserInfoByWxCode(@RequestParam String code) {
-        return Response.success(programBiz.loadUserInfoByWxCodeCode(code));
+        return Response.success(programBiz.loadUserInfoByWxCode(code));
     }
 
     @GetMapping("/function-list")

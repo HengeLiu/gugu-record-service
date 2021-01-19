@@ -48,6 +48,11 @@ public class PreloadDataAo implements Serializable {
     private Integer todayPushingTime;
 
     /**
+     * 是否已录入用户健康信息
+     */
+    private Integer customInfo;
+
+    /**
      * 营养素摄入累计
      */
     private List<NutrientWeightAo> userNutrientHistoricalIntakesDaily;

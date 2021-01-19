@@ -44,6 +44,16 @@ public class CuisineController {
         return model;
     }
 
+    @GetMapping("/upload")
+    public ModelAndView upload(@RequestParam("dine") Integer dineCode) {
+        ModelAndView model = new ModelAndView("cuisine_designer");
+        model.addObject("ingredientList", "");
+        model.addObject("recommendedCategoryWeightMap",
+                cuisineBiz.queryRecommendedCategoryWeightMap(modelIngredientCategoryModelBiz.queryMostNeededModel(), dineCode));
+        model.addObject("cuisine", CuisineDesignerAo.builder().build());
+        return model;
+    }
+
     @PostMapping("/create")
     @ResponseBody
     public String create(@ModelAttribute("cuisine") CuisineDesignerAo cuisineDesignerAo) {

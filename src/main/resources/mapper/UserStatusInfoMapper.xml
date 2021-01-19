@@ -72,4 +72,9 @@
     </set>
     where uuid = #{uuid}
   </update>
+  <update id="updateCustomInfoStatusByUuid">
+    update user_status_info
+    set custom_info = #{customUserInfoStatus}
+    where uuid = #{uuid}
+  </update>
 </mapper>

@@ -41,6 +41,9 @@
         </foreach>
         )
     </select>
+    <select id="selectAvailable" resultType="com.nutrition.nutritionservice.vo.IngredientVo">
+        select 
+    </select>
     <delete id="deleteByCode" parameterType="java.lang.String">
     delete from ingredient
     where code = #{code}

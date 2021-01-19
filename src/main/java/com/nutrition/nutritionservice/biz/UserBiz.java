@@ -8,6 +8,7 @@ import com.nutrition.nutritionservice.controller.ao.UserInfoAo;
 import com.nutrition.nutritionservice.converter.Model2UserModelConverter;
 import com.nutrition.nutritionservice.converter.NutrientWeightVo2AoConverter;
 import com.nutrition.nutritionservice.enums.database.CuisineTasteEnum;
+import com.nutrition.nutritionservice.enums.database.CustomUserInfoStatusEnum;
 import com.nutrition.nutritionservice.enums.database.NutrientEnum;
 import com.nutrition.nutritionservice.enums.database.UserAccountStatusTypeEnum;
 import com.nutrition.nutritionservice.enums.database.UserAccountTypeEnum;
@@ -126,6 +127,8 @@ public class UserBiz {
 
         /* 为用户建立食材类型模型 */
         double targetCalorie = saveUserInfoAndModel(userInfoAo, uuid);
+
+        userStatusInfoService.updateCustomInfoStatusByUuid(CustomUserInfoStatusEnum.ENTERED.getCode(), uuid);
 
         Map<String, Object> resultParamMap = Maps.newHashMap();
         resultParamMap.put("targetCalorie", targetCalorie);

@@ -9,7 +9,6 @@ import com.nutrition.nutritionservice.enums.database.ProductFunctionStatusEnum;
 import com.nutrition.nutritionservice.enums.database.StoreStatusEnum;
 import com.nutrition.nutritionservice.enums.database.UserAccountTypeEnum;
 import com.nutrition.nutritionservice.exception.NutritionServiceException;
-import com.nutrition.nutritionservice.service.ConfigPropertiesService;
 import com.nutrition.nutritionservice.service.ProductFunctionService;
 import com.nutrition.nutritionservice.service.ProductStoreRecommendationService;
 import com.nutrition.nutritionservice.service.ProductUserRecommendationService;
@@ -17,7 +16,6 @@ import com.nutrition.nutritionservice.service.StoreInfoService;
 import com.nutrition.nutritionservice.service.UserAccountService;
 import com.nutrition.nutritionservice.service.UserFunctionVotesService;
 import com.nutrition.nutritionservice.service.UserInfoService;
-import com.nutrition.nutritionservice.service.UserIngredientCategoryModelService;
 import com.nutrition.nutritionservice.service.UserIngredientWeightSumDailyService;
 import com.nutrition.nutritionservice.service.UserStatusInfoService;
 import com.nutrition.nutritionservice.service.WechatHttpApiService;
@@ -26,6 +24,7 @@ import com.nutrition.nutritionservice.vo.ProductStoreRecommendationVo;
 import com.nutrition.nutritionservice.vo.ProductUserRecommendationVo;
 import com.nutrition.nutritionservice.vo.StoreInfoVo;
 import com.nutrition.nutritionservice.vo.UserFunctionVotesVo;
+import com.nutrition.nutritionservice.vo.UserStatusInfoVo;
 import com.nutrition.nutritionservice.vo.user.UserAccountVo;
 import com.nutrition.nutritionservice.vo.user.UserInfoVo;
 import com.nutrition.nutritionservice.vo.user.UserIngredientWeightSumDailyVo;
@@ -37,6 +36,7 @@ import org.springframework.util.StringUtils;
 import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -56,19 +56,10 @@ public class ProgramBiz {
     private UserInfoService userInfoService;
 
     @Resource
-    private UserIngredientCategoryModelService userIngredientCategoryModelService;
-
-    @Resource
     private UserIngredientWeightSumDailyService userIngredientWeightSumDailyService;
 
     @Resource
     private UserStatusInfoService userStatusInfoService;
-
-    @Resource
-    private ConfigPropertiesService configPropertiesService;
-
-    @Resource
-    private ModelIngredientCategoryModelBiz modelIngredientCategoryModelBiz;
 
     @Resource
     private UserNutrientWeightSumDailyBiz userNutrientWeightSumDailyBiz;
@@ -105,6 +96,8 @@ public class ProgramBiz {
         UserInfoVo userInfoVo = userInfoService.selectByUuid(uuid);
 
         preloadDataAoBuilder.uuid(uuid);
+
+        /* 用户目标摄入热量 */
         preloadDataAoBuilder.targetCalorie(userInfoVo.getTargetCalorie());
 
         /* 用户食材分类模型目标值及历史摄入量 */
@@ -115,6 +108,7 @@ public class ProgramBiz {
             userIngredientWeightSumDailyVo = UserIngredientWeightSumDailyVo.createEmpty(uuid, LocalDate.now());
         }
 
+        /* 今日热量摄入历史 */
         double historicalCalorie = userIngredientWeightSumDailyVo.getCalorie();
         preloadDataAoBuilder.historicalCalorieDaily(historicalCalorie);
 
@@ -123,19 +117,25 @@ public class ProgramBiz {
                 historicalCalorie, LocalDate.now());
         preloadDataAoBuilder.userNutrientHistoricalIntakesDaily(nutrientWeightList);
 
+        /* 今日已催更次数 */
         List<UserFunctionVotesVo> userFunctionVotesVoList = userFunctionVotesService.queryByUuidAndDate(uuid,
                 LocalDate.now());
         preloadDataAoBuilder.todayPushingTime(CollectionUtils.size(userFunctionVotesVoList));
 
+        /* 需要展示图片的门店列表 */
         List<StoreInfoVo> storeInfoVoList = storeInfoService.queryByStatus(StoreStatusEnum.ONLINE.getCode(), 3);
         preloadDataAoBuilder
                 .needIconStoreCodeList(
                         storeInfoVoList.stream().map(StoreInfoVo::getStoreCode).collect(Collectors.toList()));
 
+        /* 用户状态 */
+        UserStatusInfoVo userStatusInfoVo = userStatusInfoService.queryBuUuid(uuid);
+        preloadDataAoBuilder.customInfo(Objects.requireNonNull(userStatusInfoVo).getCustomInfo());
+
         return preloadDataAoBuilder.build();
     }
 
-    public PreloadDataAo loadUserInfoByWxCodeCode(String jsCode) {
+    public PreloadDataAo loadUserInfoByWxCode(String jsCode) {
         String wxOpenid = wechatHttpApiService.getUserOpenId(jsCode);
         if (StringUtils.isEmpty(wxOpenid)) {
             log.error("Cannot get wx.openid.");

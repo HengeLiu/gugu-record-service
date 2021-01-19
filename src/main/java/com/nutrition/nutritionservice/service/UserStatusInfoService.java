@@ -37,4 +37,8 @@ public class UserStatusInfoService {
         return userStatusInfoDao.updateByUuidSelective(userStatusInfoVo);
     }
 
+    public void updateCustomInfoStatusByUuid(int customUserInfoStatus, String uuid) {
+        userStatusInfoDao.updateCustomInfoStatusByUuid(customUserInfoStatus, uuid);
+    }
+
 }

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>菜品设计助手</title>
+</head>
+<script>
+
+</script>
+<body>
+<form th:action="@{/cuisine/upload}" method="post" th:object="${cuisine}">
+	<div>
+		<label class="cuisine_name">餐品名称:
+			<input class="cuisine_name_input" placeholder="请输入餐品名称"/>
+		</label>
+	</div>
+	<div th:if="${recommendedCategoryWeightMap.getOrDefault('processed_grains',0)}!=0">
+		<label class="category_name_label">精制谷物</label>
+		<label>
+			<select class="category_select" th:field="*{processedGrains}">
+				<option class="disable_option" value="" style="color: #b6b6b6" selected>--请选择食材--</option>
+				<option class="ingredient_option"
+						th:each="ingredient:${ingredientCategoryMap.getOrDefault('processed_grains',0)}"
+						th:value="${ingredient.code}"
+						th:text="${ingredient.name}+(${ingredient.specifications}==null?'':'('+${ingredient.specifications}+')')"
+						value=""></option>
+			</select>
+		</label>
+		<label class="category_weight_label"
+			   th:text="${recommendedCategoryWeightMap.get('processed_grains')}+'克'"></label>
+	</div>
+	
+	<input type="submit" value="保存">
+</form>
+</body>
+</html>

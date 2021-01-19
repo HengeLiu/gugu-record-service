@@ -10,4 +10,5 @@ public interface UserStatusInfoDao {
 
     int updateByUuidSelective(UserStatusInfoVo record);
 
+    void updateCustomInfoStatusByUuid(int customUserInfoStatus, String uuid);
 }
