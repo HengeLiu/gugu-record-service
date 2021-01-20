@@ -1,9 +1,9 @@
 package com.nutrition.nutritionservice.controller;
 
 import com.nutrition.nutritionservice.biz.CuisineBiz;
-import com.nutrition.nutritionservice.biz.ModelIngredientCategoryModelBiz;
 import com.nutrition.nutritionservice.common.Response;
 import com.nutrition.nutritionservice.controller.ao.CuisineDesignerAo;
+import com.nutrition.nutritionservice.controller.ao.CuisineUploadAo;
 import com.nutrition.nutritionservice.vo.CuisineRecommendedScoreWebAo;
 import com.nutrition.nutritionservice.vo.IDPageParamVo;
 import com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo;
@@ -12,10 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -31,33 +31,23 @@ public class CuisineController {
     @Resource
     private CuisineBiz cuisineBiz;
 
-    @Resource
-    private ModelIngredientCategoryModelBiz modelIngredientCategoryModelBiz;
-
-    @GetMapping("/designer")
-    public ModelAndView designer(@RequestParam("dine") Integer dineCode) {
-        ModelAndView model = new ModelAndView("cuisine_designer");
-        model.addObject("ingredientCategoryMap", cuisineBiz.queryIngredientCategoryMap());
-        model.addObject("recommendedCategoryWeightMap",
-                cuisineBiz.queryRecommendedCategoryWeightMap(modelIngredientCategoryModelBiz.queryMostNeededModel(), dineCode));
-        model.addObject("cuisine", CuisineDesignerAo.builder().build());
-        return model;
-    }
-
-    @GetMapping("/upload")
-    public ModelAndView upload(@RequestParam("dine") Integer dineCode) {
-        ModelAndView model = new ModelAndView("cuisine_designer");
-        model.addObject("ingredientList", "");
-        model.addObject("recommendedCategoryWeightMap",
-                cuisineBiz.queryRecommendedCategoryWeightMap(modelIngredientCategoryModelBiz.queryMostNeededModel(), dineCode));
-        model.addObject("cuisine", CuisineDesignerAo.builder().build());
-        return model;
+    @GetMapping("/check-name")
+    @ResponseBody
+    public Response checkCuisineName(@RequestParam String cuisineName, @RequestParam String storeCode) {
+        return Response.success(cuisineBiz.checkName(cuisineName, storeCode));
     }
 
     @PostMapping("/create")
     @ResponseBody
     public String create(@ModelAttribute("cuisine") CuisineDesignerAo cuisineDesignerAo) {
         return "Create success";
+    }
+
+    @PostMapping("/upload")
+    @ResponseBody
+    public Response upload(@RequestBody CuisineUploadAo cuisineUploadAo) {
+        cuisineBiz.uploadCuisine(cuisineUploadAo);
+        return Response.success("upload success");
     }
 
     @PostMapping("/recommendedList/dine")

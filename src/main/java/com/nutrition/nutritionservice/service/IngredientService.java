@@ -29,4 +29,9 @@ public class IngredientService {
         return ingredientDao.selectByCodeList(ingredientCodeList);
     }
 
+    public List<IngredientVo> queryAvailable(){
+        return ingredientDao.selectAvailable();
+    }
+
+
 }

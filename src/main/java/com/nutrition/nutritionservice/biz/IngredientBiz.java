@@ -38,4 +38,8 @@ public class IngredientBiz {
         return cuisineCalorie;
     }
 
+    public List<IngredientVo> queryAvailable() {
+        return ingredientService.queryAvailable();
+    }
+
 }

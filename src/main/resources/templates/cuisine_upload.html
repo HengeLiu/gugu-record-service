@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>菜品设计助手</title>
+</head>
+<script type="text/javascript" src="/js/jquery-3.5.1.min.js"></script>
+<script>
+    let ingredientList;
+
+    window.onload = function () {
+        $.ajax({
+            url: "https://localhost/ingredient/query/available",
+            method: "GET",
+            success: function (data) {
+                ingredientList = data.data
+                appendNewRowToIngredientRowList(ingredientList);
+            }
+        });
+
+        let selectElements = document.getElementsByTagName("select");
+        for (let selectElement of selectElements) {
+            selectElement.addEventListener("change", function () {
+                selectTagOnChange(selectElement);
+            });
+        }
+    }
+
+    function appendNewRowToIngredientRowList(ingredientList) {
+        let ingredientRowListEle = document.getElementById('ingredient_row_list');
+        ingredientRowListEle.appendChild(createIngredientRow(ingredientList));
+    }
+
+    function createIngredientRow(ingredientList) {
+        let ingredientNameLabelElem = document.createElement('label');
+        ingredientNameLabelElem.setAttribute('class', 'ingredient_name_label');
+        ingredientNameLabelElem.appendChild(createIngredientNameSelectElem(ingredientList));
+
+        let ingredientWeightInputElem = document.createElement('input');
+        ingredientWeightInputElem.setAttribute('class', 'ingredient_weight_input');
+        ingredientWeightInputElem.setAttribute('type', 'number');
+        ingredientWeightInputElem.setAttribute('placeholder', '请输入食材重量');
+        ingredientWeightInputElem.setAttribute('onchange', 'checkIngredientWeight(this)');
+        ingredientWeightInputElem.setAttribute('onkeydown', 'checkIngredientWeightInputKeyDown(event,this)');
+
+        let ingredientUnitSpanElem = document.createElement('span');
+        ingredientUnitSpanElem.setAttribute('class', 'ingredient_weight_unit');
+        ingredientUnitSpanElem.innerHTML = ' 克';
+
+        let ingredientWeightLabelElem = document.createElement('label');
+        ingredientWeightLabelElem.setAttribute('class', 'ingredient_weight_label');
+        ingredientWeightLabelElem.appendChild(ingredientWeightInputElem);
+        ingredientWeightLabelElem.appendChild(ingredientUnitSpanElem);
+
+        let removeRowButtonElem = document.createElement('button');
+        removeRowButtonElem.setAttribute('type', 'button');
+        removeRowButtonElem.setAttribute('onclick', 'removeIngredientRow(this)');
+        removeRowButtonElem.innerHTML = '移除';
+
+        let ingredientRowElem = document.createElement('div');
+        ingredientRowElem.setAttribute('class', 'ingredient_row');
+        ingredientRowElem.appendChild(ingredientNameLabelElem);
+        ingredientRowElem.appendChild(ingredientWeightLabelElem);
+        ingredientRowElem.appendChild(removeRowButtonElem);
+
+        return ingredientRowElem;
+    }
+
+    function removeIngredientRow(elem) {
+        let ingredientRowElem = elem.parentNode;
+        ingredientRowElem.parentNode.removeChild(ingredientRowElem);
+    }
+
+    function createIngredientNameSelectElem(ingredientList) {
+        let ingredientNameSelectEle = document.createElement('select');
+        ingredientNameSelectEle.setAttribute('class', 'ingredient_name_select');
+        let noticeOptionEle = document.createElement('option');
+        noticeOptionEle.setAttribute('class', 'notice_option');
+        noticeOptionEle.setAttribute('value', 'none');
+        noticeOptionEle.text = '--请选择食材--';
+        ingredientNameSelectEle.appendChild(noticeOptionEle);
+        appendIngredientNameOptionElem(ingredientList, ingredientNameSelectEle);
+        return ingredientNameSelectEle;
+    }
+
+    function appendIngredientNameOptionElem(ingredientList, selectElem) {
+        for (let ingredient of ingredientList) {
+            let ingredientNameOptionElem = document.createElement('option');
+            ingredientNameOptionElem.setAttribute('class', 'ingredient_name_option');
+            ingredientNameOptionElem.setAttribute('value', ingredient.code);
+            if (ingredient.specifications === undefined || ingredient.specifications === '均值') {
+                ingredientNameOptionElem.text = ingredient.name;
+            } else {
+                ingredientNameOptionElem.text = ingredient.name + '(' + ingredient.specifications + ')';
+            }
+            selectElem.appendChild(ingredientNameOptionElem);
+        }
+    }
+
+
+    function selectTagOnChange(selectTag) {
+        let noticeOptionTag = selectTag.getElementsByClassName("notice_option")[0];
+        if (noticeOptionTag !== undefined) {
+            noticeOptionTag.disabled = true;
+        }
+    }
+
+    function checkIngredientWeight(ingredientInputElem) {
+        if (ingredientInputElem.value.indexOf('.') !== -1) {
+            if (ingredientInputElem.parentNode.pass === false) {
+                return;
+            }
+            let weightWarningElem = document.createElement('span');
+            weightWarningElem.innerHTML = ' 重量必须是整数 ';
+            weightWarningElem.style.color = 'red';
+            weightWarningElem.setAttribute('class', 'weight_warning');
+            ingredientInputElem.parentNode.appendChild(weightWarningElem);
+            ingredientInputElem.parentNode.pass = false;
+        } else {
+            let ingredientWeightLabelElem = ingredientInputElem.parentNode;
+            let weightWarningElem = ingredientWeightLabelElem.getElementsByClassName('weight_warning')[0];
+            if (weightWarningElem !== undefined) {
+                ingredientWeightLabelElem.removeChild(weightWarningElem);
+                ingredientWeightLabelElem.pass = true;
+            }
+        }
+    }
+
+    function checkIngredientWeightInputKeyDown(event, ingredientInputElem) {
+        if (event.keyCode === 13) {
+            checkIngredientWeight(ingredientInputElem);
+        }
+    }
+
+    function checkCuisineNameInputKeyDown(event, cuisineName) {
+        if (event.keyCode === 13) {
+            checkCuisineName(cuisineName);
+        }
+    }
+
+    function checkCuisineName(cuisineName) {
+        let storeCode = document.getElementById("shop_select").value;
+        let cuisineNameWarning = document.getElementById("cuisine_name_warning");
+        if (storeCode === 'none') {
+            cuisineNameWarning.innerHTML = '请先选择门店';
+            cuisineNameWarning.style.color = 'red';
+            cuisineNameWarning.pass = false;
+        } else {
+            $.ajax({
+                url: "https://localhost/cuisine/check-name",
+                method: "GET",
+                data: {
+                    cuisineName: cuisineName,
+                    storeCode: storeCode
+                },
+                success: function (data) {
+                    if (data.result) {
+                        cuisineNameWarning.innerHTML = '餐名校验通过';
+                        cuisineNameWarning.style.color = 'green';
+                        cuisineNameWarning.pass = true;
+                    } else {
+                        cuisineNameWarning.innerHTML = '餐名校验不通过';
+                        cuisineNameWarning.style.color = 'red';
+                        cuisineNameWarning.pass = false;
+                    }
+                }
+            });
+        }
+    }
+
+    function submitCuisine() {
+        let storeCode = document.getElementById("shop_select").value;
+        if (storeCode === 'none') {
+            alert('请选择门店');
+            return;
+        }
+        if (!document.getElementById("cuisine_name_warning").pass) {
+            alert('餐品名称检查未通过');
+            return;
+        }
+        let cuisineName = document.getElementById("cuisine_name_input").value;
+
+        let ingredientRowElemList = document.getElementsByClassName('ingredient_row');
+        if (ingredientRowElemList.length === 0) {
+            alert('餐品食材列表不能为空');
+            return;
+        }
+        let ingredientWeightDataList = [];
+        for (let ingredientRowElement of ingredientRowElemList) {
+            let ingredientNameSelectElem = ingredientRowElement.getElementsByClassName('ingredient_name_label')[0].getElementsByClassName('ingredient_name_select')[0];
+            let ingredientCode = ingredientNameSelectElem.value;
+            if (ingredientCode === 'none') {
+                alert('餐品食材名称不能为空');
+                return;
+            }
+            let ingredientWeightInputElem = ingredientRowElement.getElementsByClassName('ingredient_weight_label')[0].getElementsByClassName('ingredient_weight_input')[0];
+            let ingredientWeight = ingredientWeightInputElem.value;
+            if (ingredientWeight === undefined || ingredientWeight === '') {
+                alert('餐品食材重量不能为空');
+                return;
+            }
+            ingredientWeightDataList.push({
+                code: parseInt(ingredientCode),
+                weight: parseInt(ingredientWeight),
+            })
+        }
+        console.log(ingredientWeightDataList)
+
+        $.ajax({
+            url: "https://localhost/cuisine/upload",
+            method: "POST",
+            data: JSON.stringify({
+                storeCode: storeCode,
+                cuisineName: cuisineName,
+                ingredientWeightList: ingredientWeightDataList
+            })
+            ,
+            dataType: 'json',
+            headers: {
+                "Content-Type": "application/json;charset=UTF-8"
+            },
+            success: function (data) {
+                console.log(data)
+            }
+        })
+    }
+
+</script>
+<body>
+<form onsubmit="return false">
+	<div>
+		<label class="shop_name_label">
+			门店名称:
+			<select class="shop_name_select" id="shop_select">
+				<option class="notice_option" value="none">--请选择门店--</option>
+				<option th:each="store:${storeList}" th:value="${store.code}" th:text="${store.name}">
+				</option>
+			</select>
+		</label>
+	</div>
+	<div>
+		<label class="cuisine_name_label">餐品名称:
+			<input id="cuisine_name_input" placeholder="请输入餐品名称" onchange="checkCuisineName(this.value)"
+				   onkeydown="checkCuisineNameInputKeyDown(event,this.value)"/>
+		</label>
+		<label id="cuisine_name_warning"></label>
+	</div>
+	<div id="ingredient_table">
+		<div>选择食材</div>
+		<div id="ingredient_table_title">
+			<label id="ingredient_name_title">
+				食材名称
+			</label>
+			<label class="ingredient_weight_title">
+				重量
+			</label>
+		</div>
+		<div id="ingredient_row_list">
+		
+		</div>
+		<button type="button" onclick="appendNewRowToIngredientRowList(ingredientList)">添加食材项</button>
+	</div>
+	<button type="button" onclick="submitCuisine()">保存餐品</button>
+</form>
+</body>
+</html>

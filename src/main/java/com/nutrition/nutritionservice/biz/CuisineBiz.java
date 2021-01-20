@@ -10,13 +10,18 @@ import com.nutrition.nutritionservice.controller.ao.CuisineDesignerAo;
 import com.nutrition.nutritionservice.controller.ao.CuisineDetailsAo;
 import com.nutrition.nutritionservice.controller.ao.CuisineIngredientAo;
 import com.nutrition.nutritionservice.controller.ao.CuisinePreviewAo;
+import com.nutrition.nutritionservice.controller.ao.CuisineUploadAo;
 import com.nutrition.nutritionservice.controller.ao.StoreCuisineListAo;
 import com.nutrition.nutritionservice.controller.ao.StorePreviewAo;
 import com.nutrition.nutritionservice.enums.CodeEnums;
 import com.nutrition.nutritionservice.enums.UnitEnum;
 import com.nutrition.nutritionservice.enums.database.CuisineCategoryEnum;
+import com.nutrition.nutritionservice.enums.database.CuisineStatusEnum;
 import com.nutrition.nutritionservice.enums.database.CuisineTasteEnum;
+import com.nutrition.nutritionservice.enums.database.CuisineWarmEnum;
+import com.nutrition.nutritionservice.enums.database.DineTimeEnum;
 import com.nutrition.nutritionservice.enums.database.IngredientCategoryEnum;
+import com.nutrition.nutritionservice.enums.database.ModelGoalEnum;
 import com.nutrition.nutritionservice.exception.NutritionServiceException;
 import com.nutrition.nutritionservice.service.ConfigPropertiesService;
 import com.nutrition.nutritionservice.service.CuisineAdditionalInfoService;
@@ -130,6 +135,25 @@ public class CuisineBiz {
         cuisineIngredientCategoryWeightService.add(cuisineIngredientCategoryWeightVo);
         // 保存菜品营养素重量信息
         cuisineNutrientWeightService.addAll(this.calculateNutrientWeight(cuisineIngredientRelList, cuisineCode));
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void uploadCuisine(CuisineUploadAo cuisineUploadAo) {
+        List<CuisineIngredientAo> ingredientWeightList = cuisineUploadAo.getIngredientWeightList();
+        if (CollectionUtils.isEmpty(ingredientWeightList)) {
+            throw new NutritionServiceException("餐品食材列表不能为空");
+        }
+        addNewCuisine(CuisineDesignerAo.builder()
+                .cuisineVo(CuisineVo.builder().warm(CuisineWarmEnum.COOL.getCode())
+                        .status(CuisineStatusEnum.SALE.getCode()).cuisineType(CuisineCategoryEnum.SET.getCode())
+                        .name(cuisineUploadAo.getCuisineName()).dineTime(DineTimeEnum.LUNCH.getCode())
+                        .storeCode(cuisineUploadAo.getStoreCode()).goal(ModelGoalEnum.LOSE_WEIGHT.getCode()).build())
+                .cuisineIngredientRelList(ingredientWeightList.stream()
+                        .map(ingredientWeightAo -> CuisineIngredientRelVo.builder()
+                                .weight(ingredientWeightAo.getWeight()).ingredientCode(ingredientWeightAo.getCode())
+                                .build())
+                        .collect(Collectors.toList()))
+                .build());
     }
 
     public List<CuisineNutrientWeightVo> calculateNutrientWeight(
@@ -360,5 +384,13 @@ public class CuisineBiz {
                 .storeInfo(StorePreviewAo.builder().code(storeVo.getCode()).name(storeVo.getName()).build());
 
         return cuisineDetailsAoBuilder.build();
+    }
+
+    public Boolean checkName(String cuisineName, String storeCode) {
+        List<CuisineVo> cuisineVoList = cuisineService.queryByStoreCode(storeCode);
+        if (CollectionUtils.isEmpty(cuisineVoList)) {
+            return true;
+        }
+        return cuisineVoList.stream().noneMatch(cuisineVo -> cuisineName.equals(cuisineVo.getName()));
     }
 }

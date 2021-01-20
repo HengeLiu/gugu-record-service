@@ -42,7 +42,10 @@
         )
     </select>
     <select id="selectAvailable" resultType="com.nutrition.nutritionservice.vo.IngredientVo">
-        select 
+        select
+        <include refid="Base_Column_List"/>
+        from ingredient
+        where available = 1
     </select>
     <delete id="deleteByCode" parameterType="java.lang.String">
     delete from ingredient
