@@ -16,6 +16,12 @@
         from user_function_votes
         where uuid = #{uuid} and (create_time &gt;= #{startTime} and create_time &lt; #{endTime})
     </select>
+    <select id="selectLastVoteByUuid" resultType="com.nutrition.nutritionservice.vo.UserFunctionVotesVo">
+        select
+        <include refid="Base_Column_List"/>
+        from user_function_votes
+        where uuid = #{uuid} order by create_time desc limit 1
+    </select>
     <insert id="insert" keyColumn="id" keyProperty="id"
             parameterType="com.nutrition.nutritionservice.vo.UserFunctionVotesVo" useGeneratedKeys="true">
     insert into user_function_votes (uuid, function_code)

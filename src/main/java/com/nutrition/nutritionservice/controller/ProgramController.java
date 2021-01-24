@@ -37,8 +37,8 @@ public class ProgramController {
     }
 
     @GetMapping("/function-list")
-    public Response queryFunctionList() {
-        return Response.success(programBiz.queryNominatedFunctionList());
+    public Response queryFunctionList(@RequestParam String uuid) {
+        return Response.success(programBiz.queryNominatedFunctionList(uuid));
     }
 
     /**

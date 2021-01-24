@@ -3,12 +3,12 @@ package com.nutrition.nutritionservice.biz;
 import com.nutrition.nutritionservice.annotation.Biz;
 import com.nutrition.nutritionservice.controller.ao.NutrientWeightAo;
 import com.nutrition.nutritionservice.controller.ao.PreloadDataAo;
+import com.nutrition.nutritionservice.controller.ao.ProductFunctionListAo;
 import com.nutrition.nutritionservice.controller.ao.StoreRecommendAo;
 import com.nutrition.nutritionservice.controller.ao.UserOpinionAo;
 import com.nutrition.nutritionservice.enums.database.ProductFunctionStatusEnum;
 import com.nutrition.nutritionservice.enums.database.StoreStatusEnum;
 import com.nutrition.nutritionservice.enums.database.UserAccountTypeEnum;
-import com.nutrition.nutritionservice.exception.NutritionServiceException;
 import com.nutrition.nutritionservice.service.ProductFunctionService;
 import com.nutrition.nutritionservice.service.ProductStoreRecommendationService;
 import com.nutrition.nutritionservice.service.ProductUserRecommendationService;
@@ -19,7 +19,6 @@ import com.nutrition.nutritionservice.service.UserInfoService;
 import com.nutrition.nutritionservice.service.UserIngredientWeightSumDailyService;
 import com.nutrition.nutritionservice.service.UserStatusInfoService;
 import com.nutrition.nutritionservice.service.WechatHttpApiService;
-import com.nutrition.nutritionservice.vo.ProductFunctionVo;
 import com.nutrition.nutritionservice.vo.ProductStoreRecommendationVo;
 import com.nutrition.nutritionservice.vo.ProductUserRecommendationVo;
 import com.nutrition.nutritionservice.vo.StoreInfoVo;
@@ -31,10 +30,10 @@ import com.nutrition.nutritionservice.vo.user.UserIngredientWeightSumDailyVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -117,11 +116,6 @@ public class ProgramBiz {
                 historicalCalorie, LocalDate.now());
         preloadDataAoBuilder.userNutrientHistoricalIntakesDaily(nutrientWeightList);
 
-        /* 今日已催更次数 */
-        List<UserFunctionVotesVo> userFunctionVotesVoList = userFunctionVotesService.queryByUuidAndDate(uuid,
-                LocalDate.now());
-        preloadDataAoBuilder.todayPushingTime(CollectionUtils.size(userFunctionVotesVoList));
-
         /* 需要展示图片的门店列表 */
         List<StoreInfoVo> storeInfoVoList = storeInfoService.queryByStatus(StoreStatusEnum.ONLINE.getCode(), 3);
         preloadDataAoBuilder
@@ -136,16 +130,21 @@ public class ProgramBiz {
     }
 
     public PreloadDataAo loadUserInfoByWxCode(String jsCode) {
-        String wxOpenid = wechatHttpApiService.getUserOpenId(jsCode);
-        if (StringUtils.isEmpty(wxOpenid)) {
-            log.error("Cannot get wx.openid.");
-            throw new NutritionServiceException("未查询到用户的微信账号");
-        }
-        return loadUserInfo(wxOpenid);
+        return loadUserInfo(wechatHttpApiService.getUserOpenId(jsCode));
     }
 
-    public List<ProductFunctionVo> queryNominatedFunctionList() {
-        return productFunctionService.queryProductFunctionList(ProductFunctionStatusEnum.NOMINATED.getCode());
+    public ProductFunctionListAo queryNominatedFunctionList(String uuid) {
+        /* 今日已催更次数 */
+        List<UserFunctionVotesVo> userFunctionVotesVoList = userFunctionVotesService.queryByUuidAndDate(uuid,
+                LocalDate.now());
+        return ProductFunctionListAo.builder().userTodayPushingTime(CollectionUtils.size(userFunctionVotesVoList))
+                .userTodayLastPushingCode(userFunctionVotesVoList.stream()
+                        .sorted(Comparator.comparing(UserFunctionVotesVo::getCreateTime).reversed())
+                        .map(UserFunctionVotesVo::getFunctionCode).findFirst().orElse(null))
+                .productFunctionList(
+                        productFunctionService.queryProductFunctionList(ProductFunctionStatusEnum.NOMINATED.getCode()))
+                .build();
+
     }
 
     public void pushingFunction(String uuid, String functionCode) {

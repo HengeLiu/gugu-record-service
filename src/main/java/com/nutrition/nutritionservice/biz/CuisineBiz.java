@@ -34,6 +34,7 @@ import com.nutrition.nutritionservice.service.DineRecommendedRateService;
 import com.nutrition.nutritionservice.service.IngredientNutrientRelService;
 import com.nutrition.nutritionservice.service.IngredientService;
 import com.nutrition.nutritionservice.service.StoreService;
+import com.nutrition.nutritionservice.util.CuisineUtil;
 import com.nutrition.nutritionservice.util.ModelUtil;
 import com.nutrition.nutritionservice.util.VectorUtil;
 import com.nutrition.nutritionservice.vo.CuisineHistoricalTasteVo;
@@ -182,8 +183,11 @@ public class CuisineBiz {
                 }
                 double ingredientNutrientWeight = Double.parseDouble(ingredientNutrientRelVo.getNutrientContent())
                         * ingredientWeight / 100;
-                if (UnitEnum.MG.getName().equals(ingredientNutrientRelVo.getContentUnit())) {
-                    ingredientNutrientWeight /= 1000;
+                if (UnitEnum.MILLIGRAMS.getName().equals(ingredientNutrientRelVo.getContentUnit())) {
+                    ingredientNutrientWeight /= 1_000;
+                } else if (UnitEnum.MICROGRAMS.getName().equals(ingredientNutrientRelVo.getContentUnit())) {
+                    ingredientNutrientWeight /= 1_000_000;
+
                 }
                 nutrientCodeWeightMap.put(ingredientNutrientRelVo.getNutrientCode(), ingredientNutrientWeight
                         + nutrientCodeWeightMap.getOrDefault(ingredientNutrientRelVo.getNutrientCode(), 0.0));
@@ -330,8 +334,9 @@ public class CuisineBiz {
                         .cuisineList(cuisineCategoryEnumListEntry.getValue().stream()
                                 .map(cuisineVo -> CuisinePreviewAo.builder().code(cuisineVo.getCode())
                                         .name(cuisineVo.getName())
-                                        .mainIngredientList(cuisineCodeIngredientNameMap
-                                                .getOrDefault(cuisineVo.getCode(), Collections.emptyList()))
+                                        .mainIngredientListStr(
+                                                CuisineUtil.ingredientListToStr(cuisineCodeIngredientNameMap
+                                                        .getOrDefault(cuisineVo.getCode(), Collections.emptyList())))
                                         .build())
                                 .collect(Collectors.toList()))
                         .build())

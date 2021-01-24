@@ -43,11 +43,6 @@ public class PreloadDataAo implements Serializable {
     private List<String> needIconStoreCodeList;
 
     /**
-     * 今日已催更次数
-     */
-    private Integer todayPushingTime;
-
-    /**
      * 是否已录入用户健康信息
      */
     private Integer customInfo;

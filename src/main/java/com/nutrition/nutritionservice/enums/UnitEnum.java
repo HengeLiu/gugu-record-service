@@ -10,11 +10,13 @@ public enum UnitEnum implements CodeEnum<Integer> {
 
     UNKNOWN(0, "未知", "none"),
 
-    MG(1, "毫克", "mg"),
+    MILLIGRAMS(1, "毫克", "mg"),
 
-    G(2, "克", "g"),
+    GRAMS(2, "克", "g"),
 
     PERCENT(3, "百分比", "%"),
+
+    MICROGRAMS(4, "微克", "μg"),
 
     ;
 

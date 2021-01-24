@@ -2,10 +2,8 @@ package com.nutrition.nutritionservice.converter;
 
 import com.google.common.collect.Maps;
 import com.nutrition.nutritionservice.controller.ao.NutrientWeightAo;
-import com.nutrition.nutritionservice.enums.CodeEnums;
 import com.nutrition.nutritionservice.enums.database.NutrientEnum;
 import com.nutrition.nutritionservice.vo.NutrientWeightVo;
-import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -27,37 +25,41 @@ public class NutrientWeightVo2AoConverter {
      */
     public static List<NutrientWeightAo> convert(Double targetCalorie,
             List<? extends NutrientWeightVo> nutrientWeightList) {
-        // 需要展示或计算热量的营养素，key: 营养素编码，value: 营养素的热量。
-        Map<Integer, Double> nutrientCodeCalorieMap = Maps.newHashMap();
-        nutrientCodeCalorieMap.put(NutrientEnum.CHO.getCode(), 4.0);
-        nutrientCodeCalorieMap.put(NutrientEnum.Fat.getCode(), 9.0);
-        nutrientCodeCalorieMap.put(NutrientEnum.Protein.getCode(), 4.0);
-        if (CollectionUtils.isEmpty(nutrientWeightList)) {
-            return Collections.emptyList();
+        if (nutrientWeightList == null) {
+            nutrientWeightList = Collections.emptyList();
         }
-        List<NutrientWeightAo> nutrientWeightAoList = nutrientWeightList.stream()
-                .filter(nutrientWeight -> nutrientCodeCalorieMap.containsKey(nutrientWeight.getNutrientCode()))
-                .map(nutrientWeight -> {
-                    NutrientEnum nutrientEnum = CodeEnums.valueOf(NutrientEnum.class, nutrientWeight.getNutrientCode());
-                    if (nutrientEnum == null) {
-                        throw new IllegalArgumentException(
-                                "Nutrient not exist, code " + nutrientWeight.getNutrientCode());
-                    }
+        // 需要展示或计算热量的营养素，key: NutrientEnum，value: 营养素的热量。
+        Map<NutrientEnum, Double> nutrientEnumCalorieMap = Maps.newTreeMap();
+        nutrientEnumCalorieMap.put(NutrientEnum.CHO, 4.0);
+        nutrientEnumCalorieMap.put(NutrientEnum.Fat, 9.0);
+        nutrientEnumCalorieMap.put(NutrientEnum.Protein, 4.0);
+
+        Map<Integer, Double> nutrientWeightMap = nutrientWeightList.stream()
+                .collect(Collectors.toMap(NutrientWeightVo::getNutrientCode, NutrientWeightVo::getWeight));
+        List<NutrientWeightAo> nutrientWeightAoList = nutrientEnumCalorieMap.entrySet().stream()
+                .map(nutrientCodeCalorieEntry -> {
+                    NutrientEnum nutrientEnum = nutrientCodeCalorieEntry.getKey();
+                    Double nutrientCalorie = nutrientCodeCalorieEntry.getValue();
+                    Double nutrientWeight = nutrientWeightMap.getOrDefault(nutrientEnum.getCode(), 0.0);
                     return NutrientWeightAo.builder().nutrientCode(nutrientEnum.getCode())
-                            .nutrientName(nutrientEnum.getNameZh()).weight(nutrientWeight.getWeight())
-                            .calorie(nutrientWeight.getWeight() * nutrientCodeCalorieMap.get(nutrientEnum.getCode()))
-                            .build();
+                            .nutrientName(nutrientEnum.getNameZh()).weight(nutrientWeight)
+                            .calorie(nutrientWeight * nutrientCalorie).build();
                 }).collect(Collectors.toList());
         double calorieSum = nutrientWeightAoList.stream().mapToDouble(NutrientWeightAo::getCalorie).sum();
-        if (targetCalorie != null) {
-            // 热量计算误差处理
-            nutrientWeightAoList.forEach(nutrientWeight -> {
-                nutrientWeight.setPercent(nutrientWeight.getCalorie() / calorieSum);
-                nutrientWeight.setCalorie(nutrientWeight.getPercent() * targetCalorie);
-            });
+        if (calorieSum != 0) {
+            if (targetCalorie != null) {
+                // 热量计算误差处理
+                nutrientWeightAoList.forEach(nutrientWeight -> {
+                    nutrientWeight.setPercent(nutrientWeight.getCalorie() / calorieSum);
+                    nutrientWeight.setCalorie(nutrientWeight.getPercent() * targetCalorie);
+                });
+            } else {
+                nutrientWeightAoList
+                        .forEach(nutrientWeight -> nutrientWeight.setPercent(nutrientWeight.getCalorie() / calorieSum));
+            }
         } else {
             nutrientWeightAoList
-                    .forEach(nutrientWeight -> nutrientWeight.setPercent(nutrientWeight.getCalorie() / calorieSum));
+                    .forEach(nutrientWeight -> nutrientWeight.setPercent(0.0));
         }
         return nutrientWeightAoList;
 

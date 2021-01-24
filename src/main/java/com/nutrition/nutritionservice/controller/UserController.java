@@ -25,6 +25,11 @@ public class UserController {
     @Resource
     private UserBiz userBiz;
 
+    @GetMapping("/query/uuid-by-code")
+    public Response queryUuidByWechatCode(@RequestParam String wechatCode){
+        return Response.success(userBiz.queryUuidByWechatCode(wechatCode));
+    }
+
     @PostMapping("/save/user-info")
     public Response saveUserInfo(@RequestBody UserInfoAo userInfoVo) {
         return Response.success(userBiz.saveUserInfo(userInfoVo));

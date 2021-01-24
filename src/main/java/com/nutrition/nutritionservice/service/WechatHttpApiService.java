@@ -2,6 +2,7 @@ package com.nutrition.nutritionservice.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.nutrition.nutritionservice.exception.NutritionServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.StatusLine;
@@ -37,6 +38,7 @@ public class WechatHttpApiService {
             }
         } catch (Exception e) {
             log.error("查询微信用户会话时发生异常", e);
+            throw new NutritionServiceException("未查询到用户的微信账号");
         }
         return "";
     }

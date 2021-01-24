@@ -2,8 +2,6 @@ package com.nutrition.nutritionservice.util;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -25,6 +23,12 @@ public class DateTimeUtil {
 
     public static final String MDHMS_PATTERN = "MM月dd日HH:mm:ss";
     public static final DateTimeFormatter MDHMS = DateTimeFormatter.ofPattern(YMDHMS_PATTERN);
+
+    public static final String MDHM_PATTERN = "MM月dd日HH:mm";
+    public static final DateTimeFormatter MDHM = DateTimeFormatter.ofPattern(MDHM_PATTERN);
+
+    public static final String HM_PATTERN = "HH:mm ";
+    public static final DateTimeFormatter HM = DateTimeFormatter.ofPattern(HM_PATTERN);
 
     public static LocalDateTime convert(Date date) {
         if (date == null) {

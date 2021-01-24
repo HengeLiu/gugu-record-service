@@ -30,6 +30,7 @@ import com.nutrition.nutritionservice.service.UserIngredientWeightSumDailyServic
 import com.nutrition.nutritionservice.service.UserNutrientWeightSumDailyService;
 import com.nutrition.nutritionservice.service.UserStatusInfoService;
 import com.nutrition.nutritionservice.service.WechatHttpApiService;
+import com.nutrition.nutritionservice.util.CuisineUtil;
 import com.nutrition.nutritionservice.util.DateTimeUtil;
 import com.nutrition.nutritionservice.vo.CuisineIngredientCategoryWeightVo;
 import com.nutrition.nutritionservice.vo.CuisineNutrientWeightVo;
@@ -135,6 +136,11 @@ public class UserBiz {
         return resultParamMap;
     }
 
+    /**
+     * 根据指定的openid，为用户创建账号、默认用户信息、默认健康模型、默认用户状态，并且保存。
+     * 
+     * @param openid 目前为微信openid。
+     */
     @Transactional(rollbackFor = Exception.class)
     public UserAccountVo creatAccountUserInfoAndModel(String openid) {
         /* 为新用户创建默认数据 */
@@ -263,8 +269,6 @@ public class UserBiz {
         }
         resultParamMap.put("userNutrientHistoricalIntakesDaily", NutrientWeightVo2AoConverter
                 .convert(userIngredientWeightSumDailyVo.getCalorie(), newUserNutrientWeightSumDailyVoList));
-
-//        resultParamMap.put("historicalCuisineList", queryTodayCuisineHistory(uuid));
         return resultParamMap;
     }
 
@@ -305,9 +309,9 @@ public class UserBiz {
                             .get(cuisineIngredientRelVo.getIngredientCode()))
                     .collect(Collectors.toList());
             cuisinePreviewAoList.add(CuisinePreviewAo.builder().code(cuisineVo.getCode()).name(cuisineVo.getName())
-                    .lastAddedDateTime(DateTimeUtil.YMDHMS.format(historicalCuisineVo.getCreateTime()))
+                    .lastAddedDateTime(DateTimeUtil.HM.format(historicalCuisineVo.getCreateTime()))
                     .storeCode(storeVo.getCode()).storeName(storeVo.getName())
-                    .mainIngredientList(mainIngredientNameList).build());
+                    .mainIngredientListStr(CuisineUtil.ingredientListToStr(mainIngredientNameList)).build());
 
         }
         return cuisinePreviewAoList;
@@ -320,4 +324,13 @@ public class UserBiz {
                 .profeChar(userInfoVo.getProfeChar()).sportsHabits(userInfoVo.getSportsHabits()).build();
     }
 
+    public String queryUuidByWechatCode(String wechatCode) {
+        String openid = wechatHttpApiService.getUserOpenId(wechatCode);
+        UserAccountVo userAccountVo = userAccountService.queryByExternalIdAndType(openid,
+                UserAccountTypeEnum.WEI_XIN);
+        if (userAccountVo == null) {
+            userAccountVo = creatAccountUserInfoAndModel(openid);
+        }
+        return userAccountVo.getUuid();
+    }
 }

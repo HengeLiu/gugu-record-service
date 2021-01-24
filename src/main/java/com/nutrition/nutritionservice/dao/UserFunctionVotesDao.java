@@ -9,4 +9,6 @@ public interface UserFunctionVotesDao {
     int insert(UserFunctionVotesVo record);
 
     List<UserFunctionVotesVo> selectByUuidAndDateTime(String uuid, LocalDateTime startTime, LocalDateTime endTime);
+
+    UserFunctionVotesVo selectLastVoteByUuid(String uuid);
 }

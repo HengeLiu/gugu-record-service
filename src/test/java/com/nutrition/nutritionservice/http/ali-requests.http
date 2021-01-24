@@ -4,7 +4,7 @@ GET https://www.nutrition-service.com/hello
 Content-Type: application/x-www-form-urlencoded
 
 ### 添加饮食记录
-GET https://www.nutrition-service.com/user/save/cuisine-history?uuid=87391f78d143405b9de4ca9a8b35ef05&cuisineCode=1a219e3a71f34d8ebc2af9c3d2d6eef8
+GET https://www.nutrition-service.com/user/save/cuisine-history?uuid=424ea6f5f2804470956ad91346344fa8&cuisineCode=d3a83514e8954e97be979ee076c61a53
 
 ### 查询餐品详情
 GET https://www.nutrition-service.com/cuisine/query-details?cuisineCode=1a219e3a71f34d8ebc2af9c3d2d6eef8
@@ -13,7 +13,7 @@ GET https://www.nutrition-service.com/cuisine/query-details?cuisineCode=1a219e3a
 GET https://www.nutrition-service.com/store/query/supported
 
 ### 加载用户信息
-GET https://www.nutrition-service.com/product/load/user-info?openid=test_openid_liuheng
+GET https://www.nutrition-service.com/product/load/user-info?openid=ov5KQ4l0nO7L1k5d95_4xFvrIuxc
 
 ### 保存用户健康信息
 POST https://www.nutrition-service.com/user/save/user-info
@@ -34,13 +34,13 @@ Content-Type: application/json
 GET https://www.nutrition-service.com/store/query/supported
 
 ### 查询用户今日添加餐品列表
-GET https://www.nutrition-service.com/user/query/today-cuisine-history?uuid=87391f78d143405b9de4ca9a8b35ef05
+GET https://www.nutrition-service.com/user/query/today-cuisine-history?uuid=424ea6f5f2804470956ad91346344fa8
 
 ### 查询用户信息
 GET https://www.nutrition-service.com/user/query/user-info?uuid=87391f78d143405b9de4ca9a8b35ef05
 
 ### 查询待催更功能列表
-GET https://www.nutrition-service.com/product/function-list
+GET https://www.nutrition-service.com/product/function-list?uuid=
 
 ### 功能催更
 GET https://www.nutrition-service.com/product/push-function?uuid=87391f78d143405b9de4ca9a8b35ef05&functionCode=10001
