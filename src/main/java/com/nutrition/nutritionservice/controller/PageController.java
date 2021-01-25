@@ -53,4 +53,18 @@ public class PageController {
         return model;
     }
 
+    @GetMapping("/list/store/cuisine")
+    public ModelAndView listStoreCuisine(@RequestParam String storeCode) {
+        ModelAndView model = new ModelAndView("store_cuisine");
+        model.addObject("cuisineList", cuisineBiz.queryCuisineList(storeCode));
+        return model;
+    }
+
+    @GetMapping("/list/cuisine/details")
+    public ModelAndView listCuisineDetails(@RequestParam String cuisineCode) {
+        ModelAndView model = new ModelAndView("cuisine_details");
+        model.addObject("cuisineDetail", cuisineBiz.queryCuisineDetails(cuisineCode));
+        return model;
+    }
+
 }

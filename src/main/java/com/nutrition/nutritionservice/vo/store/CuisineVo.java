@@ -67,6 +67,11 @@ public class CuisineVo implements Serializable {
     private int status;
 
     /**
+     * 排序优先级
+     */
+    private int sortPriority;
+
+    /**
      * 创建时间
      */
     private LocalDateTime createTime;

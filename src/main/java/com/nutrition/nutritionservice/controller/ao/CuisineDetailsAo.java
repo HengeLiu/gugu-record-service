@@ -33,6 +33,11 @@ public class CuisineDetailsAo implements Serializable {
     private String name;
 
     /**
+     * 热量
+     */
+    private Double calorie;
+
+    /**
      * 食材列表
      */
     private List<CuisineIngredientAo> ingredientList;

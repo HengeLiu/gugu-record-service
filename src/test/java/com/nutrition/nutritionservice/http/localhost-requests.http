@@ -64,3 +64,9 @@ Content-Type: application/json
   "storeName": "咕咕鸡鸡",
   "userAddress": "东直门外大街"
 }
+
+### 查询门店餐品列表
+GET https://localhost/cuisine/cuisine-list?storeCode=100004
+
+### 查询餐品详情
+GET https://localhost/cuisine/query-details?cuisineCode=32ce84d58b374bef955dfef082db6f88

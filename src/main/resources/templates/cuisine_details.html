@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>餐品详情</title>
+</head>
+<body>
+<div>
+	[[${cuisineDetail.storeInfo.name}]]
+</div>
+<div style="font-size: 25px">
+	[[${cuisineDetail.name}]]
+</div>
+<div style="font-size: 20px;">
+	[[${#numbers.formatInteger(cuisineDetail.calorie,0)}]] 千卡
+</div>
+<div style="display: flex; flex-wrap: wrap;">
+	<div style="margin: 10px; text-align: center; width: 22%"
+		 th:each="ingredient:${cuisineDetail.ingredientList}">
+		<div>
+			<img style="height: 200px; width: 200px;"
+				 th:src="'https://localhost/static/ingredient-image?ingredientCode='+${ingredient.code}">
+		</div>
+		<div style="display: flex; text-align: center;">
+			<div style="font-size: 20px; margin-right:20px">
+				[[${ingredient.name}]]
+			</div>
+			<div style="font-size: 20px">
+				[[${ingredient.weight}]] 克
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>

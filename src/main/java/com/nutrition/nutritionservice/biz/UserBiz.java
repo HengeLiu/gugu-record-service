@@ -309,12 +309,15 @@ public class UserBiz {
                             .get(cuisineIngredientRelVo.getIngredientCode()))
                     .collect(Collectors.toList());
             cuisinePreviewAoList.add(CuisinePreviewAo.builder().code(cuisineVo.getCode()).name(cuisineVo.getName())
+                    .calorie(cuisineVo.getCalorie()).sortPriority(cuisineVo.getSortPriority())
                     .lastAddedDateTime(DateTimeUtil.HM.format(historicalCuisineVo.getCreateTime()))
                     .storeCode(storeVo.getCode()).storeName(storeVo.getName())
                     .mainIngredientListStr(CuisineUtil.ingredientListToStr(mainIngredientNameList)).build());
 
         }
-        return cuisinePreviewAoList;
+        return cuisinePreviewAoList.stream()
+                .sorted(Comparator.comparingInt(CuisinePreviewAo::getSortPriority).reversed())
+                .collect(Collectors.toList());
     }
 
     public UserInfoAo queryUserInfo(String uuid) {

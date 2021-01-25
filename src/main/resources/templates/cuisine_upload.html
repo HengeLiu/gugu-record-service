@@ -204,7 +204,12 @@
                 weight: parseInt(ingredientWeight),
             })
         }
-        console.log(ingredientWeightDataList)
+
+        let baseCuisineNameSelectEle = document.getElementById("base_cuisine_name_select");
+        let baseCuisineCode = '';
+        if (baseCuisineNameSelectEle.value != null && baseCuisineNameSelectEle.value !== 'none'){
+            baseCuisineCode = baseCuisineNameSelectEle.value;
+		}
 
         $.ajax({
             url: "https://localhost/cuisine/upload",
@@ -212,6 +217,7 @@
             data: JSON.stringify({
                 storeCode: storeCode,
                 cuisineName: cuisineName,
+                baseCuisineCode: baseCuisineCode,
                 ingredientWeightList: ingredientWeightDataList
             })
             ,
@@ -220,7 +226,43 @@
                 "Content-Type": "application/json;charset=UTF-8"
             },
             success: function (data) {
-                console.log(data)
+                alert("创建餐品成功")
+            }
+        })
+    }
+    
+    function loadBaseCuisine(storeCode) {
+        $.ajax({
+            url: "https://localhost/cuisine/query/cuisine-list",
+            method: "GET",
+            data: {
+                storeCode: storeCode
+            }
+            ,
+            dataType: 'json',
+            headers: {
+                "Content-Type": "application/json;charset=UTF-8"
+            },
+            success: function (data) {
+                let baseCuisineNameSelectEle = document.getElementById("base_cuisine_name_select");
+                baseCuisineNameSelectEle.innerHTML = "";
+                
+                let noticeOptionEle = document.createElement('option');
+                noticeOptionEle.setAttribute('class', 'base_cuisine_name_option');
+                noticeOptionEle.setAttribute('value', 'none');
+                noticeOptionEle.text = '--无底菜--';
+                baseCuisineNameSelectEle.appendChild(noticeOptionEle);
+
+                baseCuisineNameSelectEle.value = 'none';
+                
+                let cuisineList = data.data;
+                for (let cuisine of cuisineList) {
+                    let ingredientNameOptionElem = document.createElement('option');
+                    ingredientNameOptionElem.setAttribute('class', 'base_cuisine_name_option');
+                    ingredientNameOptionElem.setAttribute('value', cuisine.code);
+                    ingredientNameOptionElem.text = cuisine.name;
+                    baseCuisineNameSelectEle.appendChild(ingredientNameOptionElem);
+                }
             }
         })
     }
@@ -231,7 +273,7 @@
 	<div>
 		<label class="shop_name_label">
 			门店名称:
-			<select class="shop_name_select" id="shop_select">
+			<select class="shop_name_select" id="shop_select" onchange="loadBaseCuisine(this.value)">
 				<option class="notice_option" value="none">--请选择门店--</option>
 				<option th:each="store:${storeList}" th:value="${store.code}" th:text="${store.name}">
 				</option>
@@ -244,6 +286,13 @@
 				   onkeydown="checkCuisineNameInputKeyDown(event,this.value)"/>
 		</label>
 		<label id="cuisine_name_warning"></label>
+	</div>
+	<div>
+		<label class="base_cuisine_name_label">引入底菜:
+			<select id="base_cuisine_name_select">
+				<option class="notice_option" value="none">--没有底菜--</option>
+			</select>
+		</label>
 	</div>
 	<div id="ingredient_table">
 		<div>选择食材</div>

@@ -54,6 +54,7 @@ import com.nutrition.nutritionservice.vo.user.UserIngredientWeightSumDailyVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.thymeleaf.util.ListUtils;
 
 import javax.annotation.Resource;
@@ -143,6 +144,17 @@ public class CuisineBiz {
         List<CuisineIngredientAo> ingredientWeightList = cuisineUploadAo.getIngredientWeightList();
         if (CollectionUtils.isEmpty(ingredientWeightList)) {
             throw new NutritionServiceException("餐品食材列表不能为空");
+        }
+        String baseCuisineCode = cuisineUploadAo.getBaseCuisineCode();
+        if (!StringUtils.isEmpty(baseCuisineCode)) {
+            List<CuisineIngredientRelVo> baseCuisineIngredientRelList = cuisineIngredientRelService
+                    .queryByCuisineCode(baseCuisineCode);
+            ingredientWeightList.addAll(baseCuisineIngredientRelList.stream()
+                    .map(baseCuisineIngredientRel -> CuisineIngredientAo.builder()
+                            .code(baseCuisineIngredientRel.getIngredientCode())
+                            .weight(baseCuisineIngredientRel.getWeight()).build())
+                    .collect(Collectors.toList()));
+
         }
         addNewCuisine(CuisineDesignerAo.builder()
                 .cuisineVo(CuisineVo.builder().warm(CuisineWarmEnum.COOL.getCode())
@@ -334,10 +346,12 @@ public class CuisineBiz {
                         .cuisineList(cuisineCategoryEnumListEntry.getValue().stream()
                                 .map(cuisineVo -> CuisinePreviewAo.builder().code(cuisineVo.getCode())
                                         .name(cuisineVo.getName())
+                                        .calorie(cuisineVo.getCalorie()).sortPriority(cuisineVo.getSortPriority())
                                         .mainIngredientListStr(
                                                 CuisineUtil.ingredientListToStr(cuisineCodeIngredientNameMap
                                                         .getOrDefault(cuisineVo.getCode(), Collections.emptyList())))
                                         .build())
+                                .sorted(Comparator.comparingInt(CuisinePreviewAo::getSortPriority).reversed())
                                 .collect(Collectors.toList()))
                         .build())
                 .collect(Collectors.toList());
@@ -352,6 +366,7 @@ public class CuisineBiz {
         cuisineDetailsAoBuilder.code(cuisineCode);
         CuisineVo cuisineVo = cuisineService.queryByCuisineCode(cuisineCode);
         cuisineDetailsAoBuilder.name(cuisineVo.getName());
+        cuisineDetailsAoBuilder.calorie(cuisineVo.getCalorie());
 
         CuisineIngredientCategoryWeightVo cuisineIngredientCategoryWeightVo = cuisineIngredientCategoryWeightService
                 .queryByCuisineCode(cuisineCode);
@@ -377,7 +392,9 @@ public class CuisineBiz {
             cuisineIngredientAoList.add(CuisineIngredientAo.builder().code(ingredientCode).name(ingredientVo.getName())
                     .weight(cuisineIngredientWeightEntry.getValue()).build());
         }
-        cuisineDetailsAoBuilder.ingredientList(cuisineIngredientAoList);
+        cuisineDetailsAoBuilder.ingredientList(cuisineIngredientAoList.stream()
+                .sorted(Comparator.comparingInt(CuisineIngredientAo::getWeight).reversed())
+                .collect(Collectors.toList()));
 
 
         StoreVo storeVo = storeService.queryByCode(cuisineVo.getStoreCode());
@@ -397,5 +414,9 @@ public class CuisineBiz {
             return true;
         }
         return cuisineVoList.stream().noneMatch(cuisineVo -> cuisineName.equals(cuisineVo.getName()));
+    }
+
+    public List<CuisineVo> queryCuisineListByStoreCode(String storeCode) {
+        return cuisineService.queryByStoreCode(storeCode);
     }
 }

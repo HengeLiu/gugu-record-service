@@ -13,7 +13,10 @@ import java.util.List;
 public class CuisineUtil {
 
     public static String ingredientListToStr(List<String> ingredientNameList) {
-        return StringUtils.concat(ingredientNameList.subList(0, 7)).replaceAll(",", " ")
+        if (ingredientNameList.size() > 7) {
+            ingredientNameList = ingredientNameList.subList(0, 7);
+        }
+        return StringUtils.concat(ingredientNameList).replaceAll(",", " ")
                 .replace("[", "").replace("]", "") + " ...";
     }
 }

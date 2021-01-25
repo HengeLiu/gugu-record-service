@@ -70,6 +70,12 @@ public class CuisineController {
         return Response.success(cuisineBiz.queryCuisineList(storeCode));
     }
 
+    @GetMapping("/query/cuisine-list")
+    @ResponseBody
+    public Response queryCuisineListByStoreCode(@RequestParam String storeCode) {
+        return Response.success(cuisineBiz.queryCuisineListByStoreCode(storeCode));
+    }
+
     @GetMapping("/query-details")
     @ResponseBody
     public Response queryCuisineDetails(@RequestParam String cuisineCode) {

@@ -43,7 +43,7 @@ public class ImageController {
 
     @GetMapping(value = "/ingredient-icon", produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
-    public byte[] getIngredientIxon(@RequestParam String ingredientCode) {
+    public byte[] getIngredientIcon(@RequestParam String ingredientCode) {
         byte[] ingredientBytes = getImageBytes(
                 configPropertiesService.getIngredientIconPath() + ingredientCode + ".jpeg");
         if (ingredientBytes.length == 0) {
@@ -92,7 +92,7 @@ public class ImageController {
             File file = new File(imagePath);
             inputStream = new FileInputStream(file);
         } catch (FileNotFoundException e) {
-            log.error("Image not found, {}.", imagePath, e);
+            log.error("Image not found, {}.", imagePath);
             return new byte[0];
         }
         byte[] bytes = new byte[0];

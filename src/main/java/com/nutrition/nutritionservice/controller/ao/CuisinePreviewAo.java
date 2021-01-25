@@ -32,6 +32,16 @@ public class CuisinePreviewAo implements Serializable {
     private String name;
 
     /**
+     * 热量
+     */
+    private Double calorie;
+
+    /**
+     * 排序优先级
+     */
+    private Integer sortPriority;
+
+    /**
      * 上次添加日期时间
      */
     private String lastAddedDateTime;
