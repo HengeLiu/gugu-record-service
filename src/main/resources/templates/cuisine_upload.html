@@ -11,7 +11,7 @@
 
     window.onload = function () {
         $.ajax({
-            url: "https://localhost/ingredient/query/available",
+            url: "https://www.nutrition-service.com/ingredient/query/available",
             method: "GET",
             success: function (data) {
                 ingredientList = data.data
@@ -150,7 +150,7 @@
             cuisineNameWarning.pass = false;
         } else {
             $.ajax({
-                url: "https://localhost/cuisine/check-name",
+                url: "https://www.nutrition-service.com/cuisine/check-name",
                 method: "GET",
                 data: {
                     cuisineName: cuisineName,
@@ -219,7 +219,7 @@
 
 
         $.ajax({
-            url: "https://localhost/cuisine/upload",
+            url: "https://www.nutrition-service.com/cuisine/upload",
             method: "POST",
             data: JSON.stringify({
                 storeCode: storeCode,
@@ -245,7 +245,7 @@
         //     }
         // }
         $.ajax({
-            url: "https://localhost/cuisine/query/cuisine-list",
+            url: "https://www.nutrition-service.com/cuisine/query/cuisine-list",
             method: "GET",
             data: {
                 storeCode: storeCode
