@@ -2,14 +2,14 @@ package com.nutrition.nutritionservice.biz;
 
 import com.google.common.collect.Lists;
 import com.nutrition.nutritionservice.annotation.Biz;
+import com.nutrition.nutritionservice.controller.ao.IngredientAo;
+import com.nutrition.nutritionservice.converter.IngredientVo2AoConverter;
 import com.nutrition.nutritionservice.service.IngredientService;
 import com.nutrition.nutritionservice.vo.IngredientVo;
 import com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo;
 import lombok.extern.slf4j.Slf4j;
-import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
 import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
-import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 
 import javax.annotation.Resource;
 import java.util.Comparator;
@@ -43,17 +43,13 @@ public class IngredientBiz {
         return cuisineCalorie;
     }
 
-    public List<IngredientVo> queryAvailable() {
+    public List<IngredientAo> queryAvailable() {
         HanyuPinyinOutputFormat hanyuPinyinOutputFormat = new HanyuPinyinOutputFormat();
         hanyuPinyinOutputFormat.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
-        return ingredientService.queryAvailable().stream().sorted(Comparator.comparing(ingredientVo -> {
-            try {
-                return PinyinHelper.toHanYuPinyinString(ingredientVo.getName(), hanyuPinyinOutputFormat, "", false);
-            } catch (BadHanyuPinyinOutputFormatCombination badHanyuPinyinOutputFormatCombination) {
-                log.error("Convert ingredient Chinese name to Pinyin failed, {}.", ingredientVo.getName());
-            }
-            return ingredientVo.getName();
-        })).collect(Collectors.toList());
+        List<IngredientAo> ingredientAoList = IngredientVo2AoConverter.convertToList(ingredientService.queryAvailable(),
+                hanyuPinyinOutputFormat);
+        return ingredientAoList.stream().sorted(Comparator.comparing(IngredientAo::getFirstPinyin))
+                .collect(Collectors.toList());
     }
 
 }

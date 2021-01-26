@@ -4,14 +4,19 @@
 	<meta charset="UTF-8">
 	<title>菜品设计助手</title>
 </head>
+<style>
+
+</style>
 <script type="text/javascript" src="/js/jquery-3.5.1.min.js"></script>
 <script>
     let ingredientList;
     let cuisineList;
+    // let hostUrl = 'https://www.nutrition-service.com';
+    let hostUrl = 'https://localhost';
 
     window.onload = function () {
         $.ajax({
-            url: "https://www.nutrition-service.com/ingredient/query/available",
+            url: hostUrl + "/ingredient/query/available",
             method: "GET",
             success: function (data) {
                 ingredientList = data.data
@@ -89,13 +94,14 @@
             let ingredientNameOptionElem = document.createElement('option');
             ingredientNameOptionElem.setAttribute('class', 'ingredient_name_option');
             ingredientNameOptionElem.setAttribute('value', ingredient.code);
-            ingredientNameOptionElem.text = ingredient.name;
+            ingredientNameOptionElem.text = ingredient.firstPinyin + '\t' + ingredient.name;
             if (ingredient.nicknames !== undefined && ingredient.specifications !== '') {
                 ingredientNameOptionElem.text = ingredientNameOptionElem.text + ' | ' + String(ingredient.nicknames).replaceAll('|', ' | ')
             }
             if (ingredient.specifications !== undefined && ingredient.specifications !== '均值') {
                 ingredientNameOptionElem.text = ingredientNameOptionElem.text + ' (' + ingredient.specifications + ')';
             }
+			
             selectElem.appendChild(ingredientNameOptionElem);
         }
     }
@@ -150,7 +156,7 @@
             cuisineNameWarning.pass = false;
         } else {
             $.ajax({
-                url: "https://www.nutrition-service.com/cuisine/check-name",
+                url: hostUrl + "/cuisine/check-name",
                 method: "GET",
                 data: {
                     cuisineName: cuisineName,
@@ -219,7 +225,7 @@
 
 
         $.ajax({
-            url: "https://www.nutrition-service.com/cuisine/upload",
+            url: hostUrl + "/cuisine/upload",
             method: "POST",
             data: JSON.stringify({
                 storeCode: storeCode,
@@ -245,7 +251,7 @@
         //     }
         // }
         $.ajax({
-            url: "https://www.nutrition-service.com/cuisine/query/cuisine-list",
+            url: hostUrl + "/cuisine/query/cuisine-list",
             method: "GET",
             data: {
                 storeCode: storeCode

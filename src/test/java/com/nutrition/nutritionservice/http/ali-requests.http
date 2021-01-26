@@ -4,7 +4,7 @@ GET https://www.nutrition-service.com/hello
 Content-Type: application/x-www-form-urlencoded
 
 ### 添加饮食记录
-GET https://www.nutrition-service.com/user/save/cuisine-history?uuid=424ea6f5f2804470956ad91346344fa8&cuisineCode=d3a83514e8954e97be979ee076c61a53
+GET https://www.nutrition-service.com/user/save/cuisine-history?uuid=b6c990bef8bc454a8b9bc7d1e0bb8f57&cuisineCode=870c962d3c0648488f86e08acaeffcb5
 
 ### 查询餐品详情
 GET https://www.nutrition-service.com/cuisine/query-details?cuisineCode=1a219e3a71f34d8ebc2af9c3d2d6eef8
