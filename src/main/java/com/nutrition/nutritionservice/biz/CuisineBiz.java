@@ -145,25 +145,31 @@ public class CuisineBiz {
         if (CollectionUtils.isEmpty(ingredientWeightList)) {
             throw new NutritionServiceException("餐品食材列表不能为空");
         }
-        String baseCuisineCode = cuisineUploadAo.getBaseCuisineCode();
-        if (!StringUtils.isEmpty(baseCuisineCode)) {
-            List<CuisineIngredientRelVo> baseCuisineIngredientRelList = cuisineIngredientRelService
-                    .queryByCuisineCode(baseCuisineCode);
-            ingredientWeightList.addAll(baseCuisineIngredientRelList.stream()
-                    .map(baseCuisineIngredientRel -> CuisineIngredientAo.builder()
-                            .code(baseCuisineIngredientRel.getIngredientCode())
-                            .weight(baseCuisineIngredientRel.getWeight()).build())
-                    .collect(Collectors.toList()));
+        List<String> baseCuisineCodeList = cuisineUploadAo.getBaseCuisineCodeList();
+        if (!CollectionUtils.isEmpty(baseCuisineCodeList)) {
+            for (String baseCuisineCode : baseCuisineCodeList) {
+                if (!StringUtils.isEmpty(baseCuisineCode)) {
+                    List<CuisineIngredientRelVo> baseCuisineIngredientRelList = cuisineIngredientRelService
+                            .queryByCuisineCode(baseCuisineCode);
+                    ingredientWeightList.addAll(baseCuisineIngredientRelList.stream()
+                            .map(baseCuisineIngredientRel -> CuisineIngredientAo.builder()
+                                    .code(baseCuisineIngredientRel.getIngredientCode())
+                                    .weight(baseCuisineIngredientRel.getWeight()).build())
+                            .collect(Collectors.toList()));
 
+                }
+            }
         }
+        Map<Integer, Integer> ingredientCodeWeightMap = ingredientWeightList.stream()
+                .collect(Collectors.toMap(CuisineIngredientAo::getCode, CuisineIngredientAo::getWeight, Integer::sum));
         addNewCuisine(CuisineDesignerAo.builder()
                 .cuisineVo(CuisineVo.builder().warm(CuisineWarmEnum.COOL.getCode())
                         .status(CuisineStatusEnum.SALE.getCode()).cuisineType(CuisineCategoryEnum.SET.getCode())
                         .name(cuisineUploadAo.getCuisineName()).dineTime(DineTimeEnum.LUNCH.getCode())
                         .storeCode(cuisineUploadAo.getStoreCode()).goal(ModelGoalEnum.LOSE_WEIGHT.getCode()).build())
-                .cuisineIngredientRelList(ingredientWeightList.stream()
-                        .map(ingredientWeightAo -> CuisineIngredientRelVo.builder()
-                                .weight(ingredientWeightAo.getWeight()).ingredientCode(ingredientWeightAo.getCode())
+                .cuisineIngredientRelList(ingredientCodeWeightMap.entrySet().stream()
+                        .map(ingredientWeightEntry -> CuisineIngredientRelVo.builder()
+                                .weight(ingredientWeightEntry.getValue()).ingredientCode(ingredientWeightEntry.getKey())
                                 .build())
                         .collect(Collectors.toList()))
                 .build());

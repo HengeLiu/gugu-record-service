@@ -25,7 +25,7 @@ public class CuisineUploadAo implements Serializable {
 
     private String cuisineName;
 
-    private String baseCuisineCode;
+    private List<String> baseCuisineCodeList;
 
     private List<CuisineIngredientAo> ingredientWeightList;
 

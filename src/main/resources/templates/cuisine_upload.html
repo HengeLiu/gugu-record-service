@@ -7,6 +7,7 @@
 <script type="text/javascript" src="/js/jquery-3.5.1.min.js"></script>
 <script>
     let ingredientList;
+    let cuisineList;
 
     window.onload = function () {
         $.ajax({
@@ -88,10 +89,12 @@
             let ingredientNameOptionElem = document.createElement('option');
             ingredientNameOptionElem.setAttribute('class', 'ingredient_name_option');
             ingredientNameOptionElem.setAttribute('value', ingredient.code);
-            if (ingredient.specifications === undefined || ingredient.specifications === '均值') {
-                ingredientNameOptionElem.text = ingredient.name;
-            } else {
-                ingredientNameOptionElem.text = ingredient.name + '(' + ingredient.specifications + ')';
+            ingredientNameOptionElem.text = ingredient.name;
+            if (ingredient.nicknames !== undefined && ingredient.specifications !== '') {
+                ingredientNameOptionElem.text = ingredientNameOptionElem.text + ' | ' + String(ingredient.nicknames).replaceAll('|', ' | ')
+            }
+            if (ingredient.specifications !== undefined && ingredient.specifications !== '均值') {
+                ingredientNameOptionElem.text = ingredientNameOptionElem.text + ' (' + ingredient.specifications + ')';
             }
             selectElem.appendChild(ingredientNameOptionElem);
         }
@@ -154,7 +157,7 @@
                     storeCode: storeCode
                 },
                 success: function (data) {
-                    if (data.result) {
+                    if (data.data) {
                         cuisineNameWarning.innerHTML = '餐名校验通过';
                         cuisineNameWarning.style.color = 'green';
                         cuisineNameWarning.pass = true;
@@ -205,11 +208,15 @@
             })
         }
 
-        let baseCuisineNameSelectEle = document.getElementById("base_cuisine_name_select");
-        let baseCuisineCode = '';
-        if (baseCuisineNameSelectEle.value != null && baseCuisineNameSelectEle.value !== 'none'){
-            baseCuisineCode = baseCuisineNameSelectEle.value;
-		}
+        let baseCuisineRowListEle = document.getElementById("base_cuisine_row_list");
+        let baseCuisineSelectEleList = baseCuisineRowListEle.getElementsByClassName('base_cuisine_select');
+        let baseCuisineCodeList = [];
+        for (let baseCuisineSelectEle of baseCuisineSelectEleList) {
+            if (baseCuisineSelectEle.value != null && baseCuisineSelectEle.value !== 'none'){
+                baseCuisineCodeList.push(baseCuisineSelectEle.value);
+            }
+        }
+
 
         $.ajax({
             url: "https://localhost/cuisine/upload",
@@ -217,7 +224,7 @@
             data: JSON.stringify({
                 storeCode: storeCode,
                 cuisineName: cuisineName,
-                baseCuisineCode: baseCuisineCode,
+                baseCuisineCodeList: baseCuisineCodeList,
                 ingredientWeightList: ingredientWeightDataList
             })
             ,
@@ -232,6 +239,11 @@
     }
     
     function loadBaseCuisine(storeCode) {
+        // if (cuisineList !== undefined) {
+        //     if (!confirm("更换门店将清空 底菜 列表，确定要更换吗？")) {
+        //         return false;
+        //     }
+        // }
         $.ajax({
             url: "https://localhost/cuisine/query/cuisine-list",
             method: "GET",
@@ -244,27 +256,52 @@
                 "Content-Type": "application/json;charset=UTF-8"
             },
             success: function (data) {
-                let baseCuisineNameSelectEle = document.getElementById("base_cuisine_name_select");
-                baseCuisineNameSelectEle.innerHTML = "";
-                
-                let noticeOptionEle = document.createElement('option');
-                noticeOptionEle.setAttribute('class', 'base_cuisine_name_option');
-                noticeOptionEle.setAttribute('value', 'none');
-                noticeOptionEle.text = '--无底菜--';
-                baseCuisineNameSelectEle.appendChild(noticeOptionEle);
-
-                baseCuisineNameSelectEle.value = 'none';
-                
-                let cuisineList = data.data;
-                for (let cuisine of cuisineList) {
-                    let ingredientNameOptionElem = document.createElement('option');
-                    ingredientNameOptionElem.setAttribute('class', 'base_cuisine_name_option');
-                    ingredientNameOptionElem.setAttribute('value', cuisine.code);
-                    ingredientNameOptionElem.text = cuisine.name;
-                    baseCuisineNameSelectEle.appendChild(ingredientNameOptionElem);
-                }
+                cuisineList = data.data;
+                document.getElementById("base_cuisine_row_list").innerHTML = '';
             }
         })
+    }
+
+
+    function appendNewBaseCuisineRow() {
+        if (cuisineList === undefined) {
+            alert("请先选择门店");
+            return;
+        }
+
+        let noticeOptionEle = document.createElement('option');
+        noticeOptionEle.setAttribute('class', 'notice_option');
+        noticeOptionEle.setAttribute('value', 'none');
+        noticeOptionEle.text = '--无底菜--';
+
+        let baseCuisineNameSelectEle = document.createElement("select");
+        baseCuisineNameSelectEle.setAttribute("class", "base_cuisine_select")
+        baseCuisineNameSelectEle.appendChild(noticeOptionEle);
+
+        for (let cuisine of cuisineList) {
+            let ingredientNameOptionElem = document.createElement('option');
+            ingredientNameOptionElem.setAttribute('class', 'base_cuisine_name_option');
+            ingredientNameOptionElem.setAttribute('value', cuisine.code);
+            ingredientNameOptionElem.text = cuisine.name;
+            baseCuisineNameSelectEle.appendChild(ingredientNameOptionElem);
+        }
+
+        let removeRowButtonElem = document.createElement('button');
+        removeRowButtonElem.setAttribute('type', 'button');
+        removeRowButtonElem.setAttribute('onclick', 'removeBaseCuisineRow(this)');
+        removeRowButtonElem.innerHTML = '移除';
+
+        let baseCuisineRow = document.createElement('div');
+        baseCuisineRow.setAttribute('class', 'base_cuisine_row');
+        baseCuisineRow.appendChild(baseCuisineNameSelectEle);
+        baseCuisineRow.appendChild(removeRowButtonElem);
+
+        let baseCuisineRowListEle = document.getElementById("base_cuisine_row_list");
+        baseCuisineRowListEle.appendChild(baseCuisineRow);
+    }
+
+    function removeBaseCuisineRow(baseCuisineRow) {
+        baseCuisineRow.parentNode.parentNode.removeChild(baseCuisineRow.parentNode);
     }
 
 </script>
@@ -288,11 +325,11 @@
 		<label id="cuisine_name_warning"></label>
 	</div>
 	<div>
-		<label class="base_cuisine_name_label">引入底菜:
-			<select id="base_cuisine_name_select">
-				<option class="notice_option" value="none">--没有底菜--</option>
-			</select>
-		</label>
+		<div class="base_cuisine_name_label">选择底菜</div>
+		<div id="base_cuisine_row_list">
+		
+		</div>
+		<button type="button" onclick="appendNewBaseCuisineRow()">添加底菜项</button>
 	</div>
 	<div id="ingredient_table">
 		<div>选择食材</div>
@@ -305,7 +342,6 @@
 			</label>
 		</div>
 		<div id="ingredient_row_list">
-		
 		</div>
 		<button type="button" onclick="appendNewRowToIngredientRowList(ingredientList)">添加食材项</button>
 	</div>

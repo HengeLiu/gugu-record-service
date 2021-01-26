@@ -15,13 +15,13 @@
 	[[${#numbers.formatInteger(cuisineDetail.calorie,0)}]] 千卡
 </div>
 <div style="display: flex; flex-wrap: wrap;">
-	<div style="margin: 10px; text-align: center; width: 22%"
+	<div style="margin: 10px; text-align: center; width: 300px"
 		 th:each="ingredient:${cuisineDetail.ingredientList}">
 		<div>
 			<img style="height: 200px; width: 200px;"
 				 th:src="'https://localhost/static/ingredient-image?ingredientCode='+${ingredient.code}">
 		</div>
-		<div style="display: flex; text-align: center;">
+		<div style="display: flex; text-align: center;margin-left: 50px">
 			<div style="font-size: 20px; margin-right:20px">
 				[[${ingredient.name}]]
 			</div>

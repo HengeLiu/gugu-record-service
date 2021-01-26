@@ -19,7 +19,7 @@
 		[[${cuisineCategory.categoryName}]]
 	</div>
 	<div style="display: flex; flex-wrap: wrap;">
-		<div style="margin: 20px; display: flex; width: 40%"
+		<div style="margin: 20px; display: flex; width: 400px"
 			 th:each="cuisinePreview:${cuisineCategory.cuisineList}" th:data-cuisuine_code="${cuisinePreview.code}"
 			 onclick="jumpToCuisineDetails(this)">
 			<div>
