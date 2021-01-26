@@ -76,6 +76,8 @@ public class ConfigPropertiesService {
     private String cuisineImagePath;
     @Value("${empty_image_path}")
     private String emptyImagePath;
+    @Value("${image_host_url}")
+    private String imageHostUrl;
 
     public UserInfoVo getDefaultUserInfo(GenderEnum genderEnum) {
         if (genderEnum == null || genderEnum == GenderEnum.FEMALE) {

@@ -5,6 +5,7 @@ import com.nutrition.nutritionservice.biz.IngredientBiz;
 import com.nutrition.nutritionservice.biz.ModelIngredientCategoryModelBiz;
 import com.nutrition.nutritionservice.biz.StoreBiz;
 import com.nutrition.nutritionservice.controller.ao.CuisineDesignerAo;
+import com.nutrition.nutritionservice.service.ConfigPropertiesService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +36,9 @@ public class PageController {
     @Resource
     private IngredientBiz ingredientBiz;
 
+    @Resource
+    private ConfigPropertiesService configPropertiesService;
+
     @RequestMapping("/cuisine/design")
     public ModelAndView cuisineDesigner(@RequestParam("dine") Integer dineCode) {
         ModelAndView model = new ModelAndView("cuisine_designer");
@@ -50,6 +54,7 @@ public class PageController {
         ModelAndView model = new ModelAndView("cuisine_upload");
         model.addObject("storeList", storeBiz.queryAllSupportedStore());
         model.addObject("ingredientList", ingredientBiz.queryAvailable());
+        model.addObject("imageHostUrl", configPropertiesService.getImageHostUrl());
         return model;
     }
 
@@ -57,6 +62,7 @@ public class PageController {
     public ModelAndView listStoreCuisine(@RequestParam String storeCode) {
         ModelAndView model = new ModelAndView("store_cuisine");
         model.addObject("cuisineList", cuisineBiz.queryCuisineList(storeCode));
+        model.addObject("imageHostUrl", configPropertiesService.getImageHostUrl());
         return model;
     }
 
@@ -64,6 +70,7 @@ public class PageController {
     public ModelAndView listCuisineDetails(@RequestParam String cuisineCode) {
         ModelAndView model = new ModelAndView("cuisine_details");
         model.addObject("cuisineDetail", cuisineBiz.queryCuisineDetails(cuisineCode));
+        model.addObject("imageHostUrl", configPropertiesService.getImageHostUrl());
         return model;
     }
 
