@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -34,7 +39,7 @@ public class ImageController {
     @ResponseBody
     public byte[] getIngredientImage(@RequestParam String ingredientCode) {
         byte[] ingredientBytes = getImageBytes(
-                configPropertiesService.getIngredientImagePath() + ingredientCode + ".jpeg");
+                configPropertiesService.getIngredientImagePath() + ingredientCode + ".webp");
         if (ingredientBytes.length == 0) {
             return getEmptyImageBytes();
         }
@@ -45,7 +50,7 @@ public class ImageController {
     @ResponseBody
     public byte[] getIngredientIcon(@RequestParam String ingredientCode) {
         byte[] ingredientBytes = getImageBytes(
-                configPropertiesService.getIngredientIconPath() + ingredientCode + ".jpeg");
+                configPropertiesService.getIngredientIconPath() + ingredientCode + ".webp");
         if (ingredientBytes.length == 0) {
             return getEmptyImageBytes();
         }
@@ -55,7 +60,7 @@ public class ImageController {
     @GetMapping(value = "/shop-image", produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
     public byte[] getShopImage(@RequestParam String shopCode) {
-        byte[] ingredientBytes = getImageBytes(configPropertiesService.getShopImagePath() + shopCode + ".jpeg");
+        byte[] ingredientBytes = getImageBytes(configPropertiesService.getShopImagePath() + shopCode + ".webp");
         if (ingredientBytes.length == 0) {
             return getEmptyImageBytes();
         }
@@ -65,7 +70,7 @@ public class ImageController {
     @GetMapping(value = "/shop-icon", produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
     public byte[] getShopIcon(@RequestParam String shopCode) {
-        byte[] ingredientBytes = getImageBytes(configPropertiesService.getShopIconPath() + shopCode + ".jpeg");
+        byte[] ingredientBytes = getImageBytes(configPropertiesService.getShopIconPath() + shopCode + ".webp");
         if (ingredientBytes.length == 0) {
             return getEmptyImageBytes();
         }
@@ -75,7 +80,7 @@ public class ImageController {
     @GetMapping(value = "/cuisine-image", produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
     public byte[] getCuisineImage(@RequestParam String cuisineCode) {
-        byte[] ingredientBytes = getImageBytes(configPropertiesService.getCuisineImagePath() + cuisineCode + ".jpeg");
+        byte[] ingredientBytes = getImageBytes(configPropertiesService.getCuisineImagePath() + cuisineCode + ".webp");
         if (ingredientBytes.length == 0) {
             return getEmptyImageBytes();
         }
@@ -106,6 +111,37 @@ public class ImageController {
             log.error("IOException when getting image {}", imagePath, e);
         }
         return bytes;
+    }
+
+    private byte[] getCompressImage(String imagePath) {
+        File imageFile = new File(imagePath);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try {
+            BufferedImage originBufferedImage = ImageIO.read(imageFile);
+            int widthOrigin = originBufferedImage.getWidth();
+            int heightOrigin = originBufferedImage.getHeight();
+            int size = widthOrigin * heightOrigin;
+            int maxPixel = 100;
+            if (size <= maxPixel * maxPixel) {
+                ImageIO.write(originBufferedImage, "jpeg", byteArrayOutputStream);
+                return byteArrayOutputStream.toByteArray();
+            }
+            double scaleWidth = maxPixel / (double) (widthOrigin);
+            double scaleHeight = maxPixel / (double) (heightOrigin);
+            AffineTransform transform = new AffineTransform();
+            transform.setToScale(scaleWidth, scaleHeight);
+            // 生成转换操作对象
+            AffineTransformOp transOp = new AffineTransformOp(transform, null);
+            // 生成压缩图片缓冲对象
+            BufferedImage newBufferedImage = new BufferedImage(maxPixel, maxPixel, BufferedImage.TYPE_3BYTE_BGR);
+            // 生成缩小图片
+            transOp.filter(originBufferedImage, newBufferedImage);
+            ImageIO.write(newBufferedImage, "jpeg", byteArrayOutputStream);
+            return byteArrayOutputStream.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new byte[0];
     }
 
 }

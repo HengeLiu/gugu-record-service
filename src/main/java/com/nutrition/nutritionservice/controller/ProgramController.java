@@ -26,14 +26,9 @@ public class ProgramController {
     @Resource
     private ProgramBiz programBiz;
 
-    @GetMapping("/load/user-info")
-    public Response loadUserInfo(@RequestParam String openid) {
-        return Response.success(programBiz.loadUserInfo(openid));
-    }
-
-    @GetMapping("/load/user-info/by-code")
-    public Response loadUserInfoByWxCode(@RequestParam String code) {
-        return Response.success(programBiz.loadUserInfoByWxCode(code));
+    @GetMapping("/load/user-info/by-uuid")
+    public Response loadUserInfoByUuid(@RequestParam String uuid) {
+        return Response.success(programBiz.loadUserInfoUuid(uuid));
     }
 
     @GetMapping("/function-list")

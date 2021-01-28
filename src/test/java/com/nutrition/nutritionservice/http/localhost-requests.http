@@ -4,7 +4,7 @@ GET https://localhost/hello
 Content-Type: application/x-www-form-urlencoded
 
 ### 添加饮食记录
-GET https://localhost/user/save/cuisine-history?uuid=afc7fdc66d9a4fbf9211d787c1b42bbe&cuisineCode=1a219e3a71f34d8ebc2af9c3d2d6eef8
+GET https://localhost/user/save/cuisine-history?uuid=60bbac5f34b14b0792c39b71b87739e1&cuisineCode=870c962d3c0648488f86e08acaeffcb5
 
 ### 查询餐品详情
 GET https://localhost/cuisine/query-details?cuisineCode=1a219e3a71f34d8ebc2af9c3d2d6eef8

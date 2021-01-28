@@ -18,7 +18,7 @@
 	<div style="margin: 10px; text-align: center; width: 300px"
 		 th:each="ingredient:${cuisineDetail.ingredientList}">
 		<div>
-			<img style="height: 200px; width: 200px;"
+			<img style="height: 100px; width: 100px;"
 				 th:src="${imageHostUrl}+'/static/ingredient-image?ingredientCode='+${ingredient.code}">
 		</div>
 		<div style="display: flex; text-align: center;margin-left: 50px">

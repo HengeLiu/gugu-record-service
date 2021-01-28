@@ -8,7 +8,6 @@ import com.nutrition.nutritionservice.controller.ao.StoreRecommendAo;
 import com.nutrition.nutritionservice.controller.ao.UserOpinionAo;
 import com.nutrition.nutritionservice.enums.database.ProductFunctionStatusEnum;
 import com.nutrition.nutritionservice.enums.database.StoreStatusEnum;
-import com.nutrition.nutritionservice.enums.database.UserAccountTypeEnum;
 import com.nutrition.nutritionservice.service.ProductFunctionService;
 import com.nutrition.nutritionservice.service.ProductStoreRecommendationService;
 import com.nutrition.nutritionservice.service.ProductUserRecommendationService;
@@ -24,7 +23,6 @@ import com.nutrition.nutritionservice.vo.ProductUserRecommendationVo;
 import com.nutrition.nutritionservice.vo.StoreInfoVo;
 import com.nutrition.nutritionservice.vo.UserFunctionVotesVo;
 import com.nutrition.nutritionservice.vo.UserStatusInfoVo;
-import com.nutrition.nutritionservice.vo.user.UserAccountVo;
 import com.nutrition.nutritionservice.vo.user.UserInfoVo;
 import com.nutrition.nutritionservice.vo.user.UserIngredientWeightSumDailyVo;
 import lombok.extern.slf4j.Slf4j;
@@ -81,21 +79,13 @@ public class ProgramBiz {
     @Resource
     private ProductStoreRecommendationService productStoreRecommendationService;
 
-    @Resource
-    private UserBiz userBiz;
-
     @Transactional(rollbackFor = Exception.class)
-    public PreloadDataAo loadUserInfo(String openid) {
+    public PreloadDataAo loadUserInfoUuid(String uuid) {
         PreloadDataAo.PreloadDataAoBuilder preloadDataAoBuilder = PreloadDataAo.builder();
-        UserAccountVo userAccount = userAccountService.queryByExternalIdAndType(openid, UserAccountTypeEnum.WEI_XIN);
-        if (userAccount == null) {
-            userAccount = userBiz.creatAccountUserInfoAndModel(openid);
-        }
-        String uuid = userAccount.getUuid();
-        UserInfoVo userInfoVo = userInfoService.selectByUuid(uuid);
-
         preloadDataAoBuilder.uuid(uuid);
 
+
+        UserInfoVo userInfoVo = userInfoService.selectByUuid(uuid);
         /* 用户目标摄入热量 */
         preloadDataAoBuilder.targetCalorie(userInfoVo.getTargetCalorie());
 
@@ -127,10 +117,6 @@ public class ProgramBiz {
         preloadDataAoBuilder.customInfo(Objects.requireNonNull(userStatusInfoVo).getCustomInfo());
 
         return preloadDataAoBuilder.build();
-    }
-
-    public PreloadDataAo loadUserInfoByWxCode(String jsCode) {
-        return loadUserInfo(wechatHttpApiService.getUserOpenId(jsCode));
     }
 
     public ProductFunctionListAo queryNominatedFunctionList(String uuid) {

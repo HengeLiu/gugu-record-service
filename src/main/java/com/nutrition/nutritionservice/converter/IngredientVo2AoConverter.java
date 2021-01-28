@@ -2,7 +2,6 @@ package com.nutrition.nutritionservice.converter;
 
 import com.nutrition.nutritionservice.controller.ao.IngredientAo;
 import com.nutrition.nutritionservice.vo.IngredientVo;
-import com.sun.tools.javac.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
@@ -33,9 +32,9 @@ public class IngredientVo2AoConverter {
         ingredientAo.setCode(ingredientVo.getCode());
         ingredientAo.setName(ingredientVo.getName());
         try {
-            ingredientAo.setFirstPinyin(StringUtils
-                    .toUpperCase(
-                            PinyinHelper.toHanYuPinyinString(ingredientVo.getName(), pinyinOutputFormat, "", false))
+
+            ingredientAo.setFirstPinyin(
+                    PinyinHelper.toHanYuPinyinString(ingredientVo.getName(), pinyinOutputFormat, "", false)
                     .charAt(0));
         } catch (Exception e) {
             log.error("Convert ingredient Chinese name to Pinyin failed, {}.", ingredientVo.getName());

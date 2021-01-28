@@ -22,8 +22,8 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class WechatHttpApiService {
 
-    private final String appId = "wx923f2dd6725185fd";
-    private final String appSecret = "86aaa34906fbcc9ff33dd22407e1a2c5";
+    private final String appId = "wxdc94b625569ad4f3";
+    private final String appSecret = "f7032240aed473179138231cbceaab35";
     private final String code2SessionUrl = "https://api.weixin.qq.com/sns/jscode2session?appid=" + appId + "&secret="
             + appSecret + "&grant_type=authorization_code&js_code=";
 
