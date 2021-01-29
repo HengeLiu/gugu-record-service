@@ -4,7 +4,16 @@ GET https://localhost/hello
 Content-Type: application/x-www-form-urlencoded
 
 ### 添加饮食记录
-GET https://localhost/user/save/cuisine-history?uuid=60bbac5f34b14b0792c39b71b87739e1&cuisineCode=870c962d3c0648488f86e08acaeffcb5
+GET https://localhost/user/save/cuisine-history?uuid=d5113334b32e4c159e595c5238daedec&cuisineCode=d0674c8a7d0341e4aca453a58a279823
+
+### 查询用户今日添加餐品列表
+GET https://localhost/user/query/today-cuisine-history?uuid=d5113334b32e4c159e595c5238daedec
+
+### 加载用户信息
+GET https://localhost/product/load/user-info/by-uuid?uuid=d5113334b32e4c159e595c5238daedec
+
+### 删除餐品记录
+GET https://localhost/user/remove/cuisine-history?uuid=d5113334b32e4c159e595c5238daedec&userHistoricalCuisineId=25
 
 ### 查询餐品详情
 GET https://localhost/cuisine/query-details?cuisineCode=1a219e3a71f34d8ebc2af9c3d2d6eef8
@@ -12,8 +21,8 @@ GET https://localhost/cuisine/query-details?cuisineCode=1a219e3a71f34d8ebc2af9c3
 ### 查询门店列表
 GET https://localhost/store/query/supported
 
-### 加载用户信息
-GET https://localhost/product/load/user-info?openid=ov5KQ4l0nO7L1k5d95_4xFvrIuxc
+### 查询用户健康信息
+GET https://localhost/user/query/user-info?uuid=cebd6d86e3fb4cc9b6351c45a5df9ea1
 
 ### 保存用户健康信息
 POST https://localhost/user/save/user-info
@@ -32,9 +41,6 @@ Content-Type: application/json
 
 ### 查询已支持门店列表
 GET https://localhost/store/query/supported
-
-### 查询用户今日添加餐品列表
-GET https://localhost/user/query/today-cuisine-history?uuid=afc7fdc66d9a4fbf9211d787c1b42bbe
 
 ### 查询用户信息
 GET https://localhost/user/query/user-info?uuid=87391f78d143405b9de4ca9a8b35ef05

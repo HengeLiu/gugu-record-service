@@ -27,6 +27,11 @@ public class UserIngredientWeightSumDailyService {
     }
 
     @Transactional(rollbackFor = Exception.class)
+    public void update(UserIngredientWeightSumDailyVo record){
+        userIngredientWeightSumDailyDao.updateByUuidAndDate(record);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
     public void insertOrUpdateByUuidAndDate(UserIngredientWeightSumDailyVo record) {
         if (userIngredientWeightSumDailyDao.selectByUuidAndDate(record.getUuid(), record.getDate()) == null) {
             userIngredientWeightSumDailyDao.insert(record);

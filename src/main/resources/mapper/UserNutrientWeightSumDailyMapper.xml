@@ -16,6 +16,9 @@
     <sql id="Insert_Column_List">
     uuid, `date`, nutrient_code, weight
   </sql>
+    <delete id="deleteByUuidAndDate">
+        delete from user_nutrient_weight_sum_daily where uuid = #{uuid} and date = #{date}
+    </delete>
     <select id="selectByUuidAndDate" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

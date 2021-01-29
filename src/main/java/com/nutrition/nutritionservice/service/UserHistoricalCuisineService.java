@@ -1,6 +1,7 @@
 package com.nutrition.nutritionservice.service;
 
 import com.nutrition.nutritionservice.dao.UserHistoricalCuisineDao;
+import com.nutrition.nutritionservice.enums.database.UserHistoricalCuisineStatusEnum;
 import com.nutrition.nutritionservice.vo.user.UserHistoricalCuisineVo;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,14 @@ public class UserHistoricalCuisineService {
     @Transactional(rollbackFor = Exception.class)
     public void add(UserHistoricalCuisineVo userHistoricalCuisineVo) {
         userHistoricalCuisineDao.insert(userHistoricalCuisineVo);
+    }
+
+    @Nullable
+    @Transactional(rollbackFor = Exception.class)
+    public UserHistoricalCuisineVo remove(long userHistoricalCuisineId) {
+        userHistoricalCuisineDao.updateStatusById(userHistoricalCuisineId,
+                UserHistoricalCuisineStatusEnum.DELETED.getCode());
+        return userHistoricalCuisineDao.selectById(userHistoricalCuisineId);
     }
 
     public List<UserHistoricalCuisineVo> queryByUuidAndDate(String uuid, LocalDate localDate) {

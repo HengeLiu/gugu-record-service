@@ -35,6 +35,20 @@ public class UserNutrientWeightSumDailyService {
     }
 
     @Transactional(rollbackFor = Exception.class)
+    public int replaceAll(String uuid, LocalDate localDate,
+            List<UserNutrientWeightSumDailyVo> userNutrientWeightSumDailyVoList) {
+        userNutrientWeightSumDailyDao.deleteByUuidAndDate(uuid, localDate);
+        if (CollectionUtils.isEmpty(userNutrientWeightSumDailyVoList)) {
+            return 0;
+        }
+        userNutrientWeightSumDailyVoList.forEach(userNutrientWeightSumDailyVo -> {
+            userNutrientWeightSumDailyVo.setUuid(uuid);
+            userNutrientWeightSumDailyVo.setDate(localDate);
+        });
+        return userNutrientWeightSumDailyDao.batchInsert(userNutrientWeightSumDailyVoList);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
     public int updateAll(List<UserNutrientWeightSumDailyVo> userNutrientWeightSumDailyVoList) {
         if (CollectionUtils.isEmpty(userNutrientWeightSumDailyVoList)) {
             return 0;

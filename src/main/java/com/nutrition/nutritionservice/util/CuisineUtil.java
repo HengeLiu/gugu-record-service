@@ -17,6 +17,6 @@ public class CuisineUtil {
             ingredientNameList = ingredientNameList.subList(0, 7);
         }
         return StringUtils.concat(ingredientNameList).replaceAll(",", " ")
-                .replace("[", "").replace("]", "") + " ...";
+                .replace("[", "").replace("]", "") + "等";
     }
 }

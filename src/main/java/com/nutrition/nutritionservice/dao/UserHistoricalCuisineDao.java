@@ -17,7 +17,9 @@ public interface UserHistoricalCuisineDao {
 
     List<UserHistoricalCuisineVo> selectByUuid(String uuid);
 
-    int updateStatusByUuidAndCuisineCode(String uuid, String cuisineCode, int status);
-
     List<UserHistoricalCuisineVo> selectByUuidAndDateTime(String uuid, LocalDateTime startTime, LocalDateTime endTime);
+
+    void updateStatusById(long userHistoricalCuisineId, int status);
+
+    UserHistoricalCuisineVo selectById(long userHistoricalCuisineId);
 }

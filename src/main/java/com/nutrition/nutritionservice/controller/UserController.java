@@ -37,7 +37,14 @@ public class UserController {
 
     @GetMapping("/save/cuisine-history")
     public Response saveCuisineHistory(@RequestParam String uuid, @RequestParam String cuisineCode) {
-        return Response.success(userBiz.saveCuisineHistory(uuid, cuisineCode));
+        userBiz.saveCuisineHistory(uuid, cuisineCode);
+        return Response.success();
+    }
+
+    @GetMapping("/remove/cuisine-history")
+    public Response removeCuisineHistory(@RequestParam String uuid, @RequestParam Long userHistoricalCuisineId) {
+        userBiz.removeCuisineHistory(uuid, userHistoricalCuisineId);
+        return Response.success();
     }
 
     @GetMapping("/query/today-cuisine-history")

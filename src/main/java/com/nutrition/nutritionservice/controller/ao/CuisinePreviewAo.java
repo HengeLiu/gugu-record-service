@@ -47,6 +47,11 @@ public class CuisinePreviewAo implements Serializable {
     private String lastAddedDateTime;
 
     /**
+     * 记录id
+     */
+    private Long cuisineHistoryId;
+
+    /**
      * 主要食材名称列表字符串
      */
     private String mainIngredientListStr;

@@ -89,5 +89,26 @@ public class UserIngredientWeightSumDailyVo extends CategoryModel<Double> implem
         this.setCalorie(this.getCalorie() + cuisineIngredientCategoryWeightVo.getCalorie());
     }
 
+    public void minusCuisineCategoryWeight(CuisineIngredientCategoryWeightVo cuisineIngredientCategoryWeightVo) {
+        this.setProcessedGrains(this.getProcessedGrains() - cuisineIngredientCategoryWeightVo.getProcessedGrains());
+        this.setUnprocessedGrains(this.getUnprocessedGrains() - cuisineIngredientCategoryWeightVo.getUnprocessedGrains());
+        this.setMixedBeans(this.getMixedBeans() - cuisineIngredientCategoryWeightVo.getMixedBeans());
+        this.setTuber(this.getTuber() - cuisineIngredientCategoryWeightVo.getTuber());
+        this.setGeneralVegetables(this.getGeneralVegetables() - cuisineIngredientCategoryWeightVo.getGeneralVegetables());
+        this.setDarkVegetables(this.getDarkVegetables() - cuisineIngredientCategoryWeightVo.getDarkVegetables());
+        this.setFruit(this.getFruit() - cuisineIngredientCategoryWeightVo.getFruit());
+        this.setMeat(this.getMeat() - cuisineIngredientCategoryWeightVo.getMeat());
+        this.setPoultry(this.getPoultry() - cuisineIngredientCategoryWeightVo.getPoultry());
+        this.setAquatic(this.getAquatic() - cuisineIngredientCategoryWeightVo.getAquatic());
+        this.setEgg(this.getEgg() - cuisineIngredientCategoryWeightVo.getEgg());
+        this.setDairy(this.getDairy() - cuisineIngredientCategoryWeightVo.getDairy());
+        this.setSoybean(this.getSoybean() - cuisineIngredientCategoryWeightVo.getSoybean());
+        this.setNut(this.getNut() - cuisineIngredientCategoryWeightVo.getNut());
+        this.setOil(this.getOil() - cuisineIngredientCategoryWeightVo.getOil());
+        this.setSalt(this.getSalt() - cuisineIngredientCategoryWeightVo.getSalt());
+        this.setCalorie(this.getCalorie() - cuisineIngredientCategoryWeightVo.getCalorie());
+    }
+
+
     private static final long serialVersionUID = 1L;
 }

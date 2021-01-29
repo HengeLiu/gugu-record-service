@@ -20,29 +20,38 @@
         select
         <include refid="Base_Column_List"/>
         from user_historical_cuisine
-        where uuid = #{uuid}
+        where uuid = #{uuid} and status = 1
     </select>
     <select id="selectByUuidAndCuisineCode" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from user_historical_cuisine
-        where uuid = #{uuid} and cuisine_code = #{cuisineCode}
+        where uuid = #{uuid} and cuisine_code = #{cuisineCode} and status = 1
     </select>
+
     <select id="countByCuisineCodeAndTaste" resultType="java.lang.Integer">
-        select count(*) from user_historical_cuisine where cuisine_code = #{cuisineCode} and taste = #{taste}
+        select count(*) from user_historical_cuisine where cuisine_code = #{cuisineCode} and taste = #{taste} and status = 1
     </select>
+
     <select id="selectLastCuisineByUuid"
             resultType="com.nutrition.nutritionservice.vo.user.UserHistoricalCuisineVo">
         select
         <include refid="Base_Column_List"/>
         from user_historical_cuisine
-        where uuid = #{uuid} order by create_time desc limit 1
+        where uuid = #{uuid} and status = 1 order by create_time desc limit 1
     </select>
+
     <select id="selectByUuidAndDateTime" resultType="com.nutrition.nutritionservice.vo.user.UserHistoricalCuisineVo">
         select
         <include refid="Base_Column_List"/>
         from user_historical_cuisine
-        where uuid = #{uuid} and create_time &gt;= #{startTime} and create_time &lt; #{endTime}
+        where uuid = #{uuid} and create_time &gt;= #{startTime} and create_time &lt; #{endTime} and status = 0
+    </select>
+    <select id="selectById" resultType="com.nutrition.nutritionservice.vo.user.UserHistoricalCuisineVo">
+        select
+        <include refid="Base_Column_List"/>
+        from user_historical_cuisine
+        where id = #{userHistoricalCuisineId}
     </select>
 
     <insert id="insert" keyColumn="id" keyProperty="id"
@@ -54,10 +63,10 @@
         #{status,jdbcType=TINYINT}
         )
     </insert>
-    <update id="updateStatusByUuidAndCuisineCode">
+    <update id="updateStatusById">
     update user_historical_cuisine
     set
       `status` = #{status}
-    where uuid = #{uuid} and cuisine_code = #{cuisineCode}
-  </update>
+    where id = #{userHistoricalCuisineId}
+    </update>
 </mapper>
