@@ -18,8 +18,6 @@ public enum ProfeCharEnum implements CodeEnum<Integer> {
 
     ALWAYS_STANDING(3, "久站", 2),
 
-    HEAVY_WORK(4, "重体力劳动", 3)
-
     ;
 
     private final int code;

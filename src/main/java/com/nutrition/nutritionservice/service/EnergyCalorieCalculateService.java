@@ -48,7 +48,7 @@ public class EnergyCalorieCalculateService {
         if (profeCharEnum == null || sportHabitEnum == null) {
             return 0.0;
         }
-        return 1.5 + 0.5 * ((double) (profeCharEnum.getScore() + sportHabitEnum.getScore()) / 6);
+        return 1.5 + 0.5 * ((double) (profeCharEnum.getScore() + sportHabitEnum.getScore()) / 5);
     }
 
 }
