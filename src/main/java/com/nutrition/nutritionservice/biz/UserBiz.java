@@ -189,6 +189,7 @@ public class UserBiz {
         return userInfoVo.getTargetCalorie();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void removeCuisineHistory(String uuid, long userHistoricalCuisineId) {
         /* 更新餐品记录 */
         UserHistoricalCuisineVo removedCuisineHistory = userHistoricalCuisineService.remove(userHistoricalCuisineId);
