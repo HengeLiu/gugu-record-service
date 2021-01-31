@@ -358,7 +358,7 @@ public class UserBiz {
                     .collect(Collectors.toList());
             cuisinePreviewAoList.add(CuisinePreviewAo.builder().code(cuisineVo.getCode()).name(cuisineVo.getName())
                     .calorie(cuisineVo.getCalorie()).sortPriority(cuisineVo.getSortPriority())
-                    .lastAddedDateTime(DateTimeUtil.HM.format(historicalCuisineVo.getCreateTime()))
+                    .lastAddedDateTime(DateTimeUtil.MDHM.format(historicalCuisineVo.getCreateTime()))
                     .cuisineHistoryId(historicalCuisineVo.getId())
                     .storeCode(storeVo.getCode()).storeName(storeVo.getName())
                     .mainIngredientListStr(CuisineUtil.ingredientListToStr(mainIngredientNameList)).build());
