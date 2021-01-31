@@ -46,7 +46,7 @@ public class NutrientWeightVo2AoConverter {
                             .calorie(nutrientWeight * nutrientCalorie).build();
                 }).collect(Collectors.toList());
         double calorieSum = nutrientWeightAoList.stream().mapToDouble(NutrientWeightAo::getCalorie).sum();
-        if (calorieSum != 0) {
+        if (calorieSum > 5) {
             if (targetCalorie != null) {
                 // 热量计算误差处理
                 nutrientWeightAoList.forEach(nutrientWeight -> {
