@@ -53,6 +53,13 @@
         from user_historical_cuisine
         where id = #{userHistoricalCuisineId}
     </select>
+    <select id="selectLastByUuidLimit"
+            resultType="com.nutrition.nutritionservice.vo.user.UserHistoricalCuisineVo">
+        select
+        <include refid="Base_Column_List"/>
+        from user_historical_cuisine
+        where uuid = #{uuid} order by create_time desc limit #{limit}
+    </select>
 
     <insert id="insert" keyColumn="id" keyProperty="id"
             parameterType="com.nutrition.nutritionservice.vo.user.UserHistoricalCuisineVo" useGeneratedKeys="true">

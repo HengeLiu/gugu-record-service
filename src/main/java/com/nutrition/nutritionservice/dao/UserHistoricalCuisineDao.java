@@ -22,4 +22,6 @@ public interface UserHistoricalCuisineDao {
     void updateStatusById(long userHistoricalCuisineId, int status);
 
     UserHistoricalCuisineVo selectById(long userHistoricalCuisineId);
+
+    List<UserHistoricalCuisineVo> selectLastByUuidLimit(String uuid, int limit);
 }

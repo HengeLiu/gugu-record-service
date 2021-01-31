@@ -51,4 +51,8 @@ public class UserHistoricalCuisineService {
                 localDate.atTime(LocalTime.MAX));
     }
 
+    public List<UserHistoricalCuisineVo> queryLastByUuidLimit(String uuid, int limit) {
+        return userHistoricalCuisineDao.selectLastByUuidLimit(uuid, limit);
+    }
+
 }
