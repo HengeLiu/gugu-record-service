@@ -58,7 +58,7 @@
         select
         <include refid="Base_Column_List"/>
         from user_historical_cuisine
-        where uuid = #{uuid} order by create_time desc limit #{limit}
+        where uuid = #{uuid} and status = 0 order by create_time desc limit #{limit}
     </select>
 
     <insert id="insert" keyColumn="id" keyProperty="id"
