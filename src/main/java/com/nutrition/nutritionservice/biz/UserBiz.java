@@ -322,7 +322,7 @@ public class UserBiz {
 
     public List<CuisinePreviewAo> queryTodayCuisineHistory(String uuid) {
         List<UserHistoricalCuisineVo> userHistoricalCuisineVoList = userHistoricalCuisineService
-                .queryLastByUuidLimit(uuid, 4);
+                .queryLastByUuidLimit(uuid, 5);
         if (CollectionUtils.isEmpty(userHistoricalCuisineVoList)) {
             return Collections.emptyList();
         }
