@@ -12,7 +12,7 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, code, title, introduction, `status`, sortPriority, create_time, update_time
+    id, code, title, introduction, `status`, sort_priority, create_time, update_time
   </sql>
     <select id="selectByStatus" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
