@@ -344,6 +344,7 @@ public class UserBiz {
         Map<String, List<CuisineIngredientRelVo>> cuisineIngredientMap = cuisineIngredientRelVoList.stream()
                 .collect(Collectors.groupingBy(CuisineIngredientRelVo::getCuisineCode));
         List<CuisinePreviewAo> cuisinePreviewAoList = Lists.newArrayList();
+        LocalDate today = LocalDate.now();
         for (UserHistoricalCuisineVo historicalCuisineVo : userHistoricalCuisineVoList) {
             CuisineVo cuisineVo = cuisineCodeMap.get(historicalCuisineVo.getCuisineCode());
             StoreVo storeVo = storeCodeMap.get(cuisineVo.getStoreCode());
@@ -358,11 +359,10 @@ public class UserBiz {
                     .collect(Collectors.toList());
             cuisinePreviewAoList.add(CuisinePreviewAo.builder().code(cuisineVo.getCode()).name(cuisineVo.getName())
                     .calorie(cuisineVo.getCalorie()).sortPriority(cuisineVo.getSortPriority())
-                    .lastAddedDateTime(DateTimeUtil.MDHM.format(historicalCuisineVo.getCreateTime()))
+                    .lastAddedDateTime(DateTimeUtil.todayOrLastDayFormat(today, historicalCuisineVo.getCreateTime()))
                     .cuisineHistoryId(historicalCuisineVo.getId())
                     .storeCode(storeVo.getCode()).storeName(storeVo.getName())
                     .mainIngredientListStr(CuisineUtil.ingredientListToStr(mainIngredientNameList)).build());
-
         }
         return cuisinePreviewAoList.stream()
                 .sorted(Comparator.comparingInt(CuisinePreviewAo::getSortPriority).reversed())
