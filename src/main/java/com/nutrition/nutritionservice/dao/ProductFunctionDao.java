@@ -8,5 +8,4 @@ public interface ProductFunctionDao {
 
     List<ProductFunctionVo> selectByStatus(Integer status);
 
-    void updateVotesOneByCode(String code);
 }

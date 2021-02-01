@@ -7,11 +7,12 @@
         <result column="title" jdbcType="VARCHAR" property="title"/>
         <result column="introduction" jdbcType="VARCHAR" property="introduction"/>
         <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="sort_priority" jdbcType="INTEGER" property="sortPriority"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, code, title, introduction, `status`, create_time, update_time
+    id, code, title, introduction, `status`, sortPriority, create_time, update_time
   </sql>
     <select id="selectByStatus" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -20,10 +21,4 @@
         where status = #{status}
     </select>
 
-    <update id="updateVotesOneByCode" parameterType="com.nutrition.nutritionservice.vo.ProductFunctionVo">
-    update product_function
-    set
-      votes = product_function.votes + 1
-    where code = #{code}
-  </update>
 </mapper>

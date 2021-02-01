@@ -34,6 +34,11 @@ public class ProductFunctionVo implements Serializable {
      */
     private Byte status;
 
+    /**
+     * 排序优先级
+     */
+    private Integer sortPriority;
+
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;

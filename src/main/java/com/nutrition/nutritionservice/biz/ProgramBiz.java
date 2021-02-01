@@ -18,6 +18,7 @@ import com.nutrition.nutritionservice.service.UserInfoService;
 import com.nutrition.nutritionservice.service.UserIngredientWeightSumDailyService;
 import com.nutrition.nutritionservice.service.UserStatusInfoService;
 import com.nutrition.nutritionservice.service.WechatHttpApiService;
+import com.nutrition.nutritionservice.vo.ProductFunctionVo;
 import com.nutrition.nutritionservice.vo.ProductStoreRecommendationVo;
 import com.nutrition.nutritionservice.vo.ProductUserRecommendationVo;
 import com.nutrition.nutritionservice.vo.StoreInfoVo;
@@ -128,7 +129,9 @@ public class ProgramBiz {
                         .sorted(Comparator.comparing(UserFunctionVotesVo::getCreateTime).reversed())
                         .map(UserFunctionVotesVo::getFunctionCode).findFirst().orElse(null))
                 .productFunctionList(
-                        productFunctionService.queryProductFunctionList(ProductFunctionStatusEnum.NOMINATED.getCode()))
+                        productFunctionService.queryProductFunctionList(ProductFunctionStatusEnum.NOMINATED.getCode())
+                                .stream().sorted(Comparator.comparing(ProductFunctionVo::getSortPriority).reversed())
+                                .collect(Collectors.toList()))
                 .build();
 
     }

@@ -20,9 +20,4 @@ public class ProductFunctionService {
     public List<ProductFunctionVo> queryProductFunctionList(int functionStatus) {
         return productFunctionDao.selectByStatus(functionStatus);
     }
-
-    public void updateVotesOneByCode(String code) {
-        productFunctionDao.updateVotesOneByCode(code);
-    }
-
 }
