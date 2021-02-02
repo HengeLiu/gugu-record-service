@@ -53,7 +53,6 @@ public class PageController {
     public ModelAndView cuisineUpload() {
         ModelAndView model = new ModelAndView("cuisine_upload");
         model.addObject("storeList", storeBiz.queryAllSupportedStore());
-        model.addObject("ingredientList", ingredientBiz.queryAvailable());
         model.addObject("imageHostUrl", configPropertiesService.getImageHostUrl());
         return model;
     }
@@ -77,7 +76,9 @@ public class PageController {
     @GetMapping("/modify/cuisine")
     public ModelAndView modifyCuisine(@RequestParam String cuisineCode) {
         ModelAndView model = new ModelAndView("cuisine_modify");
+        model.addObject("storeList", storeBiz.queryAllSupportedStore());
         model.addObject("cuisineDetail", cuisineBiz.queryCuisineDetails(cuisineCode));
+        model.addObject("availableIngredientList", ingredientBiz.queryAvailable());
         model.addObject("imageHostUrl", configPropertiesService.getImageHostUrl());
         return model;
     }
