@@ -45,6 +45,12 @@
         from cuisine
         where store_code = #{storeCode}
     </select>
+    <select id="selectByStoreCodeAndStatus" resultType="com.nutrition.nutritionservice.vo.store.CuisineVo">
+        select
+        <include refid="Base_Column_List"/>
+        from cuisine
+        where store_code = #{storeCode} and status = #{status}
+    </select>
     <select id="selectByDineTime" resultType="com.nutrition.nutritionservice.vo.store.CuisineVo">
         select
         <include refid="Base_Column_List"/>

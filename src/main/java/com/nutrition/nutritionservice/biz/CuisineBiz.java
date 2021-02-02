@@ -341,7 +341,7 @@ public class CuisineBiz {
 
     }
 
-    public StoreCuisineListAo queryCuisineList(String storeCode) {
+    public StoreCuisineListAo queryCuisineList(String storeCode, Integer cuisineStatus) {
         StoreCuisineListAo.StoreCuisineListAoBuilder storeCuisineListAoBuilder = StoreCuisineListAo.builder();
         StoreVo storeVo = storeService.queryByCode(storeCode);
         if (storeVo == null) {
@@ -349,8 +349,12 @@ public class CuisineBiz {
         }
         storeCuisineListAoBuilder.storeCode(storeCode);
         storeCuisineListAoBuilder.storeName(storeVo.getName());
-
-        List<CuisineVo> cuisineVoList = cuisineService.queryByStoreCode(storeCode);
+        List<CuisineVo> cuisineVoList;
+        if (cuisineStatus != null) {
+            cuisineVoList = cuisineService.queryByStoreCodeAndStatus(storeCode, cuisineStatus);
+        } else {
+            cuisineVoList = cuisineService.queryByStoreCode(storeCode);
+        }
         if (CollectionUtils.isEmpty(cuisineVoList)) {
             storeCuisineListAoBuilder.cuisineCategoryList(Collections.emptyList());
             return storeCuisineListAoBuilder.build();

@@ -11,8 +11,8 @@
 <script>
     let ingredientList;
     let cuisineList;
-    // let hostUrl = 'https://www.nutrition-service.com';
-    let hostUrl = 'https://localhost';
+    let hostUrl = 'https://www.nutrition-service.com';
+    // let hostUrl = 'https://localhost';
 
     window.onload = function () {
         $.ajax({
@@ -183,10 +183,10 @@
             alert('请选择门店');
             return;
         }
-        if (!document.getElementById("cuisine_name_warning").pass) {
-            alert('餐品名称检查未通过');
-            return;
-        }
+        // if (!document.getElementById("cuisine_name_warning").pass) {
+        //     alert('餐品名称检查未通过');
+        //     return;
+        // }
         let cuisineName = document.getElementById("cuisine_name_input").value;
 
         let ingredientRowElemList = document.getElementsByClassName('ingredient_row');
@@ -334,8 +334,7 @@
 	</div>
 	<div>
 		<label class="cuisine_name_label">餐品名称:
-			<input id="cuisine_name_input" th:value="${cuisineDetail.name}" onchange="checkCuisineName(this.value)"
-				   onkeydown="checkCuisineNameInputKeyDown(event,this.value)"/>
+			<input id="cuisine_name_input" th:value="${cuisineDetail.name}" />
 		</label>
 		<label id="cuisine_name_warning"></label>
 	</div>

@@ -74,7 +74,7 @@ public class CuisineController {
     @GetMapping("/cuisine-list")
     @ResponseBody
     public Response queryCuisineList(@RequestParam String storeCode) {
-        return Response.success(cuisineBiz.queryCuisineList(storeCode));
+        return Response.success(cuisineBiz.queryCuisineList(storeCode, null));
     }
 
     @GetMapping("/query/cuisine-list")

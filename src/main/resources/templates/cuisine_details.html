@@ -16,7 +16,7 @@
 <div style="font-size: 25px">
 	[[${cuisineDetail.name}]]
 </div>
-<button onclick="toModify()" th:data-cuisuine_code="${cuisineDetail.code}"
+<button onclick="toModify(this)" th:data-cuisuine_code="${cuisineDetail.code}"
 		th:data-image_host_url="${imageHostUrl}">
 	编辑
 </button>

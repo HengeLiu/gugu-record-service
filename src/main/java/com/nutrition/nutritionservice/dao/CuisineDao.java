@@ -22,4 +22,6 @@ public interface CuisineDao {
     List<CuisineVo> batchSelect(List<String> cuisineCodeList);
 
     void updateByCuisineCodeSelective(CuisineVo cuisineVo);
+
+    List<CuisineVo> selectByStoreCodeAndStatus(String storeCode, int status);
 }

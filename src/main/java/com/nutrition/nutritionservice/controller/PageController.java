@@ -58,9 +58,9 @@ public class PageController {
     }
 
     @GetMapping("/list/store/cuisine")
-    public ModelAndView listStoreCuisine(@RequestParam String storeCode) {
+    public ModelAndView listStoreCuisine(@RequestParam String storeCode, @RequestParam Integer cuisineStatus) {
         ModelAndView model = new ModelAndView("store_cuisine");
-        model.addObject("cuisineList", cuisineBiz.queryCuisineList(storeCode));
+        model.addObject("cuisineList", cuisineBiz.queryCuisineList(storeCode, cuisineStatus));
         model.addObject("imageHostUrl", configPropertiesService.getImageHostUrl());
         return model;
     }

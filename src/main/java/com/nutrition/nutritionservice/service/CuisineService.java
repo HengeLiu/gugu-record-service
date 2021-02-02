@@ -52,6 +52,10 @@ public class CuisineService {
         return cuisineDao.selectByStoreCode(storeCode);
     }
 
+    public List<CuisineVo> queryByStoreCodeAndStatus(String storeCode, int status) {
+        return cuisineDao.selectByStoreCodeAndStatus(storeCode, status);
+    }
+
     public List<CuisineVo> queryByDineTime(int dineTime) {
         return cuisineDao.selectByDineTime(dineTime);
     }
