@@ -50,6 +50,13 @@ public class CuisineController {
         return Response.success("upload success");
     }
 
+    @PostMapping("/update")
+    @ResponseBody
+    public Response update(@RequestBody CuisineUploadAo cuisineUploadAo) {
+        cuisineBiz.update(cuisineUploadAo);
+        return Response.success("update success");
+    }
+
     @PostMapping("/recommendedList/dine")
     @ResponseBody
     public List<CuisineRecommendedScoreWebAo> queryRecommendedCuisineList(UserIngredientCategoryModelVo userModel,

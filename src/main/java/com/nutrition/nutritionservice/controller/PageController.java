@@ -74,4 +74,12 @@ public class PageController {
         return model;
     }
 
+    @GetMapping("/modify/cuisine")
+    public ModelAndView modifyCuisine(@RequestParam String cuisineCode) {
+        ModelAndView model = new ModelAndView("cuisine_modify");
+        model.addObject("cuisineDetail", cuisineBiz.queryCuisineDetails(cuisineCode));
+        model.addObject("imageHostUrl", configPropertiesService.getImageHostUrl());
+        return model;
+    }
+
 }

@@ -173,70 +173,9 @@
     #{dairy,jdbcType=INTEGER}, #{soybean,jdbcType=INTEGER}, #{nut,jdbcType=INTEGER},
     #{oil,jdbcType=INTEGER}, #{salt,jdbcType=INTEGER})
   </insert>
-  <update id="updateByCuisineCodeSelective" parameterType="com.nutrition.nutritionservice.vo.CuisineIngredientCategoryWeightVo">
-    update cuisine_ingredient_category_weight
-    <set>
-      <if test="cuisineCode != null">
-        cuisine_code = #{cuisineCode,jdbcType=VARCHAR},
-      </if>
-      <if test="calorie != null">
-        calorie = #{calorie,jdbcType=DOUBLE},
-      </if>
-      <if test="processedGrains != null">
-        processed_grains = #{processedGrains,jdbcType=INTEGER},
-      </if>
-      <if test="unprocessedGrains != null">
-        unprocessed_grains = #{unprocessedGrains,jdbcType=INTEGER},
-      </if>
-      <if test="mixedBeans != null">
-        mixed_beans = #{mixedBeans,jdbcType=INTEGER},
-      </if>
-      <if test="tuber != null">
-        tuber = #{tuber,jdbcType=INTEGER},
-      </if>
-      <if test="generalVegetables != null">
-        general_vegetables = #{generalVegetables,jdbcType=INTEGER},
-      </if>
-      <if test="darkVegetables != null">
-        dark_vegetables = #{darkVegetables,jdbcType=INTEGER},
-      </if>
-      <if test="fruit != null">
-        fruit = #{fruit,jdbcType=INTEGER},
-      </if>
-      <if test="meat != null">
-        meat = #{meat,jdbcType=INTEGER},
-      </if>
-      <if test="poultry != null">
-        poultry = #{poultry,jdbcType=INTEGER},
-      </if>
-      <if test="aquatic != null">
-        aquatic = #{aquatic,jdbcType=INTEGER},
-      </if>
-      <if test="egg != null">
-        egg = #{egg,jdbcType=INTEGER},
-      </if>
-      <if test="dairy != null">
-        dairy = #{dairy,jdbcType=INTEGER},
-      </if>
-      <if test="soybean != null">
-        soybean = #{soybean,jdbcType=INTEGER},
-      </if>
-      <if test="nut != null">
-        nut = #{nut,jdbcType=INTEGER},
-      </if>
-      <if test="oil != null">
-        oil = #{oil,jdbcType=INTEGER},
-      </if>
-      <if test="salt != null">
-        salt = #{salt,jdbcType=INTEGER},
-      </if>
-    </set>
-    where cuisine_code = #{cuisineCode}
-  </update>
   <update id="updateByCuisineCode" parameterType="com.nutrition.nutritionservice.vo.CuisineIngredientCategoryWeightVo">
     update cuisine_ingredient_category_weight
-    set cuisine_code = #{cuisineCode,jdbcType=VARCHAR},
-      calorie = #{calorie,jdbcType=DOUBLE},
+    set calorie = #{calorie,jdbcType=DOUBLE},
       processed_grains = #{processedGrains,jdbcType=INTEGER},
       unprocessed_grains = #{unprocessedGrains,jdbcType=INTEGER},
       mixed_beans = #{mixedBeans,jdbcType=INTEGER},

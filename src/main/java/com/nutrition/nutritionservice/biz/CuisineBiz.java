@@ -119,7 +119,7 @@ public class CuisineBiz {
         String cuisineCode = UUID.randomUUID().toString().replace("-", "");
         List<CuisineIngredientRelVo> cuisineIngredientRelList = cuisineDesignerAo.getCuisineIngredientRelList();
         if (CollectionUtils.isEmpty(cuisineIngredientRelList)) {
-            throw new NutritionServiceException("New cuisine ingredient list can not be empty, saving new cuisine.");
+            throw new NutritionServiceException("Cuisine ingredient list can not be empty when adding.");
         }
         // 计算菜品热量
         double cuisineCalorie = ingredientBiz.calculateCalorie(cuisineIngredientRelList);
@@ -140,7 +140,35 @@ public class CuisineBiz {
     }
 
     @Transactional(rollbackFor = Exception.class)
+    public void updateCuisineWithCuisineCode(CuisineDesignerAo cuisineDesignerAo, String cuisineCode) {
+        List<CuisineIngredientRelVo> cuisineIngredientRelList = cuisineDesignerAo.getCuisineIngredientRelList();
+        if (CollectionUtils.isEmpty(cuisineIngredientRelList)) {
+            throw new NutritionServiceException("Cuisine ingredient list can not be empty when updating.");
+        }
+        // 计算菜品热量
+        double cuisineCalorie = ingredientBiz.calculateCalorie(cuisineIngredientRelList);
+        cuisineDesignerAo.getCuisineVo().setCode(cuisineCode);
+        cuisineDesignerAo.getCuisineVo().setCalorie(cuisineCalorie);
+        // 保存菜品基础信息
+        cuisineService.updateByCuisineCode(cuisineDesignerAo.getCuisineVo());
+        cuisineIngredientRelList.forEach(cuisineIngredientRelVo -> cuisineIngredientRelVo.setCuisineCode(cuisineCode));
+        // 保存菜品食材重量信息
+        cuisineIngredientRelService.replaceAllByCuisineCode(cuisineCode, cuisineIngredientRelList);
+        CuisineIngredientCategoryWeightVo cuisineIngredientCategoryWeightVo = cuisineIngredientCategoryWeightService
+                .calculateCuisineCategoryWight(cuisineDesignerAo);
+        // 保存菜品食材分类重量信息
+        cuisineIngredientCategoryWeightService.updateByCuisineCode(cuisineIngredientCategoryWeightVo);
+        // 保存菜品营养素重量信息
+        cuisineNutrientWeightService.updateByCuisineCode(cuisineCode,
+                this.calculateNutrientWeight(cuisineIngredientRelList, cuisineCode));
+    }
+
+    @Transactional(rollbackFor = Exception.class)
     public void uploadCuisine(CuisineUploadAo cuisineUploadAo) {
+        this.addNewCuisine(this.convertToDesignerAo(cuisineUploadAo));
+    }
+
+    private CuisineDesignerAo convertToDesignerAo(CuisineUploadAo cuisineUploadAo) {
         List<CuisineIngredientAo> ingredientWeightList = cuisineUploadAo.getIngredientWeightList();
         if (CollectionUtils.isEmpty(ingredientWeightList)) {
             throw new NutritionServiceException("餐品食材列表不能为空");
@@ -162,7 +190,7 @@ public class CuisineBiz {
         }
         Map<Integer, Integer> ingredientCodeWeightMap = ingredientWeightList.stream()
                 .collect(Collectors.toMap(CuisineIngredientAo::getCode, CuisineIngredientAo::getWeight, Integer::sum));
-        addNewCuisine(CuisineDesignerAo.builder()
+        return CuisineDesignerAo.builder()
                 .cuisineVo(CuisineVo.builder().warm(CuisineWarmEnum.COOL.getCode())
                         .status(CuisineStatusEnum.SALE.getCode()).cuisineType(CuisineCategoryEnum.SET.getCode())
                         .name(cuisineUploadAo.getCuisineName()).dineTime(DineTimeEnum.LUNCH.getCode())
@@ -172,7 +200,7 @@ public class CuisineBiz {
                                 .weight(ingredientWeightEntry.getValue()).ingredientCode(ingredientWeightEntry.getKey())
                                 .build())
                         .collect(Collectors.toList()))
-                .build());
+                .build();
     }
 
     public List<CuisineNutrientWeightVo> calculateNutrientWeight(
@@ -424,5 +452,9 @@ public class CuisineBiz {
 
     public List<CuisineVo> queryCuisineListByStoreCode(String storeCode) {
         return cuisineService.queryByStoreCode(storeCode);
+    }
+
+    public void update(CuisineUploadAo cuisineUploadAo) {
+        this.updateCuisineWithCuisineCode(convertToDesignerAo(cuisineUploadAo), cuisineUploadAo.getCuisineCode());
     }
 }

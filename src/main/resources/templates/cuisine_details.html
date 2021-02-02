@@ -4,6 +4,11 @@
 	<meta charset="UTF-8">
 	<title>餐品详情</title>
 </head>
+<script>
+    function toModify(elem) {
+        window.location.href = elem.dataset.image_host_url + '/page/modify/cuisine?cuisineCode=' + elem.dataset.cuisuine_code;
+    }
+</script>
 <body>
 <div>
 	[[${cuisineDetail.storeInfo.name}]]
@@ -11,6 +16,10 @@
 <div style="font-size: 25px">
 	[[${cuisineDetail.name}]]
 </div>
+<button onclick="toModify()" th:data-cuisuine_code="${cuisineDetail.code}"
+		th:data-image_host_url="${imageHostUrl}">
+	编辑
+</button>
 <div style="font-size: 20px;">
 	[[${#numbers.formatInteger(cuisineDetail.calorie,0)}]] 千卡
 </div>

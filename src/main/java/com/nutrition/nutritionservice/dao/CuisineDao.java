@@ -20,4 +20,6 @@ public interface CuisineDao {
     List<CuisineVo> selectFromIdWithLimit(int id, int limit);
 
     List<CuisineVo> batchSelect(List<String> cuisineCodeList);
+
+    void updateByCuisineCodeSelective(CuisineVo cuisineVo);
 }

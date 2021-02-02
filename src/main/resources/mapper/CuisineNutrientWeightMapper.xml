@@ -10,11 +10,16 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, cuisine_code, nutrient_code, weight, create_time, update_time
-  </sql>
+        id, cuisine_code, nutrient_code, weight, create_time, update_time
+    </sql>
     <sql id="Insert_Column_List">
-    cuisine_code, nutrient_code, weight
-  </sql>
+        cuisine_code, nutrient_code, weight
+    </sql>
+    <delete id="deleteByCuisineCode">
+        delete
+        from cuisine_nutrient_weight
+        where cuisine_code = #{cuisineCode}
+    </delete>
     <select id="selectByCuisineCode" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

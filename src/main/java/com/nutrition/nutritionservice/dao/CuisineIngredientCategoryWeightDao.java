@@ -14,7 +14,5 @@ public interface CuisineIngredientCategoryWeightDao {
 
     CuisineIngredientCategoryWeightVo selectByCuisineCode(String cuisineCode);
 
-    int updateByCuisineCodeSelective(CuisineIngredientCategoryWeightVo record);
-
     int updateByCuisineCode(CuisineIngredientCategoryWeightVo record);
 }

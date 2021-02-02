@@ -16,4 +16,5 @@ public interface CuisineIngredientRelDao {
 
     List<CuisineIngredientRelVo> batchSelectByCuisineCodeList(List<String> cuisineCodeList);
 
+    int deleteByCuisineCode(String cuisineCode);
 }

@@ -4,6 +4,7 @@ import com.nutrition.nutritionservice.dao.CuisineDao;
 import com.nutrition.nutritionservice.vo.IDPageParamVo;
 import com.nutrition.nutritionservice.vo.store.CuisineVo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
@@ -33,8 +34,14 @@ public class CuisineService {
         return cuisineDao.selectCountByCalorieAndGoal(minCalorie, maxCalorie, goal);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void add(CuisineVo cuisineVo) {
         cuisineDao.insert(cuisineVo);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void updateByCuisineCode(CuisineVo cuisineVo){
+        cuisineDao.updateByCuisineCodeSelective(cuisineVo);
     }
 
     public List<CuisineVo> queryPage(IDPageParamVo paramVo) {

@@ -68,8 +68,8 @@ public class CuisineIngredientCategoryWeightService {
         cuisineIngredientCategoryWeightDao.insertSelective(cuisineIngredientCategoryWeightVo);
     }
 
-    public void updateByCuisineCodeSelective(CuisineIngredientCategoryWeightVo cuisineIngredientCategoryWeightVo) {
-        cuisineIngredientCategoryWeightDao.updateByCuisineCodeSelective(cuisineIngredientCategoryWeightVo);
+    public void updateByCuisineCode(CuisineIngredientCategoryWeightVo cuisineIngredientCategoryWeightVo) {
+        cuisineIngredientCategoryWeightDao.updateByCuisineCode(cuisineIngredientCategoryWeightVo);
     }
 
 }

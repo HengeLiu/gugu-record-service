@@ -21,6 +21,8 @@ import java.util.List;
 public class CuisineUploadAo implements Serializable {
     private static final long serialVersionUID = -3133858795574696190L;
 
+    private String cuisineCode;
+
     private String storeCode;
 
     private String cuisineName;

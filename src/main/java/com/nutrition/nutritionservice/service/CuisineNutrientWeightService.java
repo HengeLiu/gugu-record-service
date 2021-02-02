@@ -3,6 +3,7 @@ package com.nutrition.nutritionservice.service;
 import com.nutrition.nutritionservice.dao.CuisineNutrientWeightDao;
 import com.nutrition.nutritionservice.vo.CuisineNutrientWeightVo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
@@ -24,19 +25,23 @@ public class CuisineNutrientWeightService {
         return cuisineNutrientWeightDao.selectByCuisineCode(cuisineCode);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public int add(CuisineNutrientWeightVo cuisineNutrientWeightVo) {
         return cuisineNutrientWeightDao.insert(cuisineNutrientWeightVo);
     }
 
-    public void addAll(List<CuisineNutrientWeightVo> cuisineNutrientWeightVoList) {
+    @Transactional(rollbackFor = Exception.class)
+    public int addAll(List<CuisineNutrientWeightVo> cuisineNutrientWeightVoList) {
         if (CollectionUtils.isEmpty(cuisineNutrientWeightVoList)) {
-            return;
+            return 0;
         }
-        cuisineNutrientWeightDao.batchInsert(cuisineNutrientWeightVoList);
+        return cuisineNutrientWeightDao.batchInsert(cuisineNutrientWeightVoList);
     }
 
-    public int updateWeightByCuisineAndNutrientCode(String cuisineCode, int nutrientCode, double weight) {
-        return cuisineNutrientWeightDao.updateWeightByCuisineAndNutrientCode(cuisineCode, nutrientCode, weight);
+    @Transactional(rollbackFor = Exception.class)
+    public int updateByCuisineCode(String cuisineCode, List<CuisineNutrientWeightVo> cuisineNutrientWeightVoList) {
+        cuisineNutrientWeightDao.deleteByCuisineCode(cuisineCode);
+        return this.addAll(cuisineNutrientWeightVoList);
     }
 
 }

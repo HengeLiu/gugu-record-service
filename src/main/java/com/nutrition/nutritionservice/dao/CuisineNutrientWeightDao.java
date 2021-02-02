@@ -13,4 +13,6 @@ public interface CuisineNutrientWeightDao {
     List<CuisineNutrientWeightVo> selectByCuisineCode(String cuisineCode);
 
     int updateWeightByCuisineAndNutrientCode(String cuisineCode, int nutrientCode, double weight);
+
+    void deleteByCuisineCode(String cuisineCode);
 }
