@@ -103,6 +103,57 @@ public class ModelUtil {
         model.setSalt(categoryEnumMap.get(IngredientCategoryEnum.SALT));
     }
 
+    public static <T> void fillValue(CategoryModel<T> model, T value) {
+        if (model.getProcessedGrains() == null) {
+            model.setProcessedGrains(value);
+        }
+        if (model.getUnprocessedGrains() == null) {
+            model.setUnprocessedGrains(value);
+        }
+        if (model.getMixedBeans() == null) {
+            model.setMixedBeans(value);
+        }
+        if (model.getTuber() == null) {
+            model.setTuber(value);
+        }
+        if (model.getGeneralVegetables() == null) {
+            model.setGeneralVegetables(value);
+        }
+        if (model.getDarkVegetables() == null) {
+            model.setDarkVegetables(value);
+        }
+        if (model.getFruit() == null) {
+            model.setFruit(value);
+        }
+        if (model.getMeat() == null) {
+            model.setMeat(value);
+        }
+        if (model.getPoultry() == null) {
+            model.setPoultry(value);
+        }
+        if (model.getAquatic() == null) {
+            model.setAquatic(value);
+        }
+        if (model.getEgg() == null) {
+            model.setEgg(value);
+        }
+        if (model.getDairy() == null) {
+            model.setDairy(value);
+        }
+        if (model.getSoybean() == null) {
+            model.setSoybean(value);
+        }
+        if (model.getNut() == null) {
+            model.setNut(value);
+        }
+        if (model.getOil() == null) {
+            model.setOil(value);
+        }
+        if (model.getSalt() == null) {
+            model.setSalt(value);
+        }
+    }
+
     public static <T> Map<IngredientCategoryEnum, T> modelToCategoryEnumMap(CategoryModel<T> intakesModelVo) {
         Map<IngredientCategoryEnum, T> modelCategoryMap = Maps.newHashMap();
         modelCategoryMap.put(IngredientCategoryEnum.PROCESSED_GRAINS, intakesModelVo.getProcessedGrains());

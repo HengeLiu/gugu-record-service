@@ -61,7 +61,10 @@ public class CuisineIngredientCategoryWeightService {
 
     @Nullable
     public CuisineIngredientCategoryWeightVo queryByCuisineCode(String cuisineCode) {
-        return cuisineIngredientCategoryWeightDao.selectByCuisineCode(cuisineCode);
+        CuisineIngredientCategoryWeightVo cuisineIngredientCategoryWeightVo = cuisineIngredientCategoryWeightDao
+                .selectByCuisineCode(cuisineCode);
+        ModelUtil.fillValue(cuisineIngredientCategoryWeightVo, 0);
+        return cuisineIngredientCategoryWeightVo;
     }
 
     public void add(CuisineIngredientCategoryWeightVo cuisineIngredientCategoryWeightVo) {
