@@ -1,6 +1,7 @@
 package com.nutrition.nutritionservice.vo;
 
 import lombok.Data;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -43,11 +44,13 @@ public class IngredientVo implements Serializable {
     /**
      * 别名
      */
+    @Nullable
     private String nicknames;
 
     /**
      * 规格
      */
+    @Nullable
     private String specifications;
 
     /**

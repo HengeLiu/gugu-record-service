@@ -341,7 +341,7 @@ public class CuisineBiz {
 
     }
 
-    public StoreCuisineListAo queryCuisineList(String storeCode, Integer cuisineStatus) {
+    public StoreCuisineListAo queryCuisineList(String storeCode, Integer cuisineStatus, String searchParam) {
         StoreCuisineListAo.StoreCuisineListAoBuilder storeCuisineListAoBuilder = StoreCuisineListAo.builder();
         StoreVo storeVo = storeService.queryByCode(storeCode);
         if (storeVo == null) {
@@ -365,6 +365,26 @@ public class CuisineBiz {
                 .map(CuisineIngredientRelVo::getIngredientCode).distinct().collect(Collectors.toList()));
         Map<Integer, String> ingredientCodeNameMap = ingredientVoList.stream()
                 .collect(Collectors.toMap(IngredientVo::getCode, IngredientVo::getName));
+
+        if (!StringUtils.isEmpty(searchParam)) {
+            String searchParamUpperCase = searchParam.toUpperCase();
+            // 名称或昵称中包含搜索参数的食材编码列表
+            List<Integer> searchFilterIngredientCodeList = ingredientVoList.stream()
+                    .filter(ingredientVo -> (ingredientVo.getName() + ingredientVo.getNicknames())
+                            .contains(searchParamUpperCase))
+                    .map(IngredientVo::getCode).collect(Collectors.toList());
+            // 食材中包含搜索参数的餐品编码列表
+            List<String> searchFilterCuisineCodeeList = cuisineIngredientRelVoList.stream()
+                    .filter(cuisineIngredientRelVo -> searchFilterIngredientCodeList
+                            .contains(cuisineIngredientRelVo.getIngredientCode()))
+                    .map(CuisineIngredientRelVo::getCuisineCode).distinct().collect(Collectors.toList());
+            // 餐品名称中包含 或者 食材中包含 搜索参数的餐品
+            cuisineVoList = cuisineVoList.stream()
+                    .filter(cuisineVo -> cuisineVo.getName().contains(searchParamUpperCase)
+                            || searchFilterCuisineCodeeList.contains(cuisineVo.getCode()))
+                    .collect(Collectors.toList());
+        }
+
         // 餐品食材名称列表
         Map<String, List<String>> cuisineCodeIngredientNameMap = cuisineIngredientRelVoList.stream()
                 .collect(Collectors.groupingBy(CuisineIngredientRelVo::getCuisineCode)).entrySet().stream()
