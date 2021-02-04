@@ -7,7 +7,7 @@ import java.util.Date;
 
 /**
  * qr_code_scan_count
- * @author 
+ * @author heng.liu
  */
 @Data
 public class QrCodeScanCountVo implements Serializable {
@@ -17,6 +17,11 @@ public class QrCodeScanCountVo implements Serializable {
      * 二维码批次号
      */
     private String batchVersion;
+
+    /**
+     * 扫码用户uuid
+     */
+    private String uuid;
 
     /**
      * 二维码内容

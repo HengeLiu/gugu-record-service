@@ -4,11 +4,12 @@
   <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.QrCodeScanCountVo">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="batch_version" jdbcType="VARCHAR" property="batchVersion" />
+    <result column="uuid" jdbcType="VARCHAR" property="uuid" />
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, batch_version, content, create_time
+    id, batch_version, uuid, content, create_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -21,8 +22,8 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nutrition.nutritionservice.vo.QrCodeScanCountVo" useGeneratedKeys="true">
-    insert into qr_code_scan_count (batch_version, content)
-    values (#{batchVersion,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR})
+    insert into qr_code_scan_count (batch_version, uuid, content)
+    values (#{batchVersion,jdbcType=VARCHAR}, #{uuid}, #{content,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.nutrition.nutritionservice.vo.QrCodeScanCountVo" useGeneratedKeys="true">
     insert into qr_code_scan_count
