@@ -13,6 +13,7 @@ import com.nutrition.nutritionservice.controller.ao.CuisinePreviewAo;
 import com.nutrition.nutritionservice.controller.ao.CuisineUploadAo;
 import com.nutrition.nutritionservice.controller.ao.StoreCuisineListAo;
 import com.nutrition.nutritionservice.controller.ao.StorePreviewAo;
+import com.nutrition.nutritionservice.converter.IngredientVo2AoConverter;
 import com.nutrition.nutritionservice.enums.CodeEnums;
 import com.nutrition.nutritionservice.enums.UnitEnum;
 import com.nutrition.nutritionservice.enums.database.CuisineCategoryEnum;
@@ -363,8 +364,8 @@ public class CuisineBiz {
                 .queryByCuisineCodeList(cuisineVoList.stream().map(CuisineVo::getCode).collect(Collectors.toList()));
         List<IngredientVo> ingredientVoList = ingredientService.queryByCodeList(cuisineIngredientRelVoList.stream()
                 .map(CuisineIngredientRelVo::getIngredientCode).distinct().collect(Collectors.toList()));
-        Map<Integer, String> ingredientCodeNameMap = ingredientVoList.stream()
-                .collect(Collectors.toMap(IngredientVo::getCode, IngredientVo::getName));
+        Map<Integer, IngredientVo> ingredientCodeMap = ingredientVoList.stream()
+                .collect(Collectors.toMap(IngredientVo::getCode, Function.identity()));
 
         if (!StringUtils.isEmpty(searchParam)) {
             String searchParamUpperCase = searchParam.toUpperCase();
@@ -386,12 +387,12 @@ public class CuisineBiz {
         }
 
         // 餐品食材名称列表
-        Map<String, List<String>> cuisineCodeIngredientNameMap = cuisineIngredientRelVoList.stream()
+        Map<String, List<IngredientVo>> cuisineCodeIngredientListMap = cuisineIngredientRelVoList.stream()
                 .collect(Collectors.groupingBy(CuisineIngredientRelVo::getCuisineCode)).entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey,
                         entry -> entry.getValue().stream()
                                 .sorted(Comparator.comparingInt(CuisineIngredientRelVo::getWeight).reversed())
-                                .map(cuisineIngredientRelVo -> ingredientCodeNameMap
+                                .map(cuisineIngredientRelVo -> ingredientCodeMap
                                         .get(cuisineIngredientRelVo.getIngredientCode()))
                                 .collect(Collectors.toList())));
         Map<CuisineCategoryEnum, List<CuisineVo>> cuisineCategoryMap = cuisineVoList.stream().collect(Collectors
@@ -406,7 +407,10 @@ public class CuisineBiz {
                                         .name(cuisineVo.getName())
                                         .calorie(cuisineVo.getCalorie()).sortPriority(cuisineVo.getSortPriority())
                                         .mainIngredientListStr(
-                                                CuisineUtil.ingredientListToStr(cuisineCodeIngredientNameMap
+                                                CuisineUtil.ingredientListToStr(cuisineCodeIngredientListMap
+                                                        .getOrDefault(cuisineVo.getCode(), Collections.emptyList())))
+                                        .ingredientList(
+                                                IngredientVo2AoConverter.convertToList(cuisineCodeIngredientListMap
                                                         .getOrDefault(cuisineVo.getCode(), Collections.emptyList())))
                                         .build())
                                 .sorted(Comparator.comparingInt(CuisinePreviewAo::getSortPriority).reversed())

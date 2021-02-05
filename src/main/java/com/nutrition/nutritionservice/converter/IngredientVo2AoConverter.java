@@ -5,6 +5,7 @@ import com.nutrition.nutritionservice.vo.IngredientVo;
 import lombok.extern.slf4j.Slf4j;
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
+import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
@@ -18,12 +19,13 @@ import java.util.stream.Collectors;
 @Slf4j
 public class IngredientVo2AoConverter {
 
-    public static List<IngredientAo> convertToList(List<IngredientVo> ingredientVoList,
-            HanyuPinyinOutputFormat pinyinOutputFormat) {
+    public static List<IngredientAo> convertToList(List<IngredientVo> ingredientVoList) {
+        HanyuPinyinOutputFormat hanyuPinyinOutputFormat = new HanyuPinyinOutputFormat();
+        hanyuPinyinOutputFormat.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
         if (CollectionUtils.isEmpty(ingredientVoList)) {
             return Collections.emptyList();
         }
-        return ingredientVoList.stream().map(ingredientVo -> convert(ingredientVo, pinyinOutputFormat))
+        return ingredientVoList.stream().map(ingredientVo -> convert(ingredientVo, hanyuPinyinOutputFormat))
                 .collect(Collectors.toList());
     }
 

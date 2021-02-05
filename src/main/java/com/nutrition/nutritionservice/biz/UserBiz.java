@@ -337,10 +337,10 @@ public class UserBiz {
                 .collect(Collectors.toMap(CuisineVo::getCode, Function.identity()));
         List<CuisineIngredientRelVo> cuisineIngredientRelVoList = cuisineIngredientRelService
                 .queryByCuisineCodeList(cuisineCodeList);
-        Map<Integer, String> ingredientCodeNameMap = ingredientService
+        Map<Integer, IngredientVo> ingredientCodeNameMap = ingredientService
                 .queryByCodeList(cuisineIngredientRelVoList.stream().map(CuisineIngredientRelVo::getIngredientCode)
                         .distinct().collect(Collectors.toList()))
-                .stream().collect(Collectors.toMap(IngredientVo::getCode, IngredientVo::getName));
+                .stream().collect(Collectors.toMap(IngredientVo::getCode, Function.identity()));
         Map<String, List<CuisineIngredientRelVo>> cuisineIngredientMap = cuisineIngredientRelVoList.stream()
                 .collect(Collectors.groupingBy(CuisineIngredientRelVo::getCuisineCode));
         List<CuisinePreviewAo> cuisinePreviewAoList = Lists.newArrayList();
@@ -350,7 +350,7 @@ public class UserBiz {
             StoreVo storeVo = storeCodeMap.get(cuisineVo.getStoreCode());
             List<CuisineIngredientRelVo> ingredientRelVoList = cuisineIngredientMap.getOrDefault(cuisineVo.getCode(),
                     Collections.emptyList());
-            List<String> mainIngredientNameList = ingredientRelVoList.stream()
+            List<IngredientVo> mainIngredientList = ingredientRelVoList.stream()
                     .sorted(Comparator.comparingInt(CuisineIngredientRelVo::getWeight).reversed())
                     .filter(cuisineIngredientRelVo -> ingredientCodeNameMap
                             .containsKey(cuisineIngredientRelVo.getIngredientCode()))
@@ -362,7 +362,7 @@ public class UserBiz {
                     .lastAddedDateTime(DateTimeUtil.todayOrLastDayFormat(today, historicalCuisineVo.getCreateTime()))
                     .cuisineHistoryId(historicalCuisineVo.getId())
                     .storeCode(storeVo.getCode()).storeName(storeVo.getName())
-                    .mainIngredientListStr(CuisineUtil.ingredientListToStr(mainIngredientNameList)).build());
+                    .mainIngredientListStr(CuisineUtil.ingredientListToStr(mainIngredientList)).build());
         }
         return cuisinePreviewAoList.stream()
                 .sorted(Comparator.comparingInt(CuisinePreviewAo::getSortPriority).reversed())

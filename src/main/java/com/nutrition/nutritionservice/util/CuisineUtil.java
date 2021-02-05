@@ -1,8 +1,10 @@
 package com.nutrition.nutritionservice.util;
 
+import com.nutrition.nutritionservice.vo.IngredientVo;
 import org.thymeleaf.util.StringUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 餐品工具
@@ -12,11 +14,12 @@ import java.util.List;
  */
 public class CuisineUtil {
 
-    public static String ingredientListToStr(List<String> ingredientNameList) {
-        if (ingredientNameList.size() > 7) {
-            ingredientNameList = ingredientNameList.subList(0, 7);
+    public static String ingredientListToStr(List<IngredientVo> ingredientList) {
+        if (ingredientList.size() > 7) {
+            ingredientList = ingredientList.subList(0, 7);
         }
-        return StringUtils.concat(ingredientNameList).replaceAll(",", " ")
+        return StringUtils.concat(ingredientList.stream().map(IngredientVo::getName).collect(Collectors.toList()))
+                .replaceAll(",", " ")
                 .replace("[", "").replace("]", "") + "等";
     }
 }

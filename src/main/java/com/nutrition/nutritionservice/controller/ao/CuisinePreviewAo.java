@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 餐品预览
@@ -55,6 +56,11 @@ public class CuisinePreviewAo implements Serializable {
      * 主要食材名称列表字符串
      */
     private String mainIngredientListStr;
+
+    /**
+     * 食材列表
+     */
+    private List<IngredientAo> ingredientList;
 
     /**
      * 所属门店编码

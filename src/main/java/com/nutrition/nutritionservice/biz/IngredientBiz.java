@@ -8,8 +8,6 @@ import com.nutrition.nutritionservice.service.IngredientService;
 import com.nutrition.nutritionservice.vo.IngredientVo;
 import com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo;
 import lombok.extern.slf4j.Slf4j;
-import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
-import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
 
 import javax.annotation.Resource;
 import java.util.Comparator;
@@ -44,10 +42,8 @@ public class IngredientBiz {
     }
 
     public List<IngredientAo> queryAvailable() {
-        HanyuPinyinOutputFormat hanyuPinyinOutputFormat = new HanyuPinyinOutputFormat();
-        hanyuPinyinOutputFormat.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
-        List<IngredientAo> ingredientAoList = IngredientVo2AoConverter.convertToList(ingredientService.queryAvailable(),
-                hanyuPinyinOutputFormat);
+        List<IngredientAo> ingredientAoList = IngredientVo2AoConverter
+                .convertToList(ingredientService.queryAvailable());
         return ingredientAoList.stream().sorted(Comparator.comparing(IngredientAo::getFirstPinyin))
                 .collect(Collectors.toList());
     }
