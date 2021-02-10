@@ -43,6 +43,11 @@ public class CuisineDetailsAo implements Serializable {
     private List<CuisineIngredientAo> ingredientList;
 
     /**
+     * 热量列表
+     */
+    private List<NutrientWeightAo> nutrientWeightList;
+
+    /**
      * 门店信息
      */
     private StorePreviewAo storeInfo;

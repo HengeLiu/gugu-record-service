@@ -11,9 +11,11 @@ import com.nutrition.nutritionservice.controller.ao.CuisineDetailsAo;
 import com.nutrition.nutritionservice.controller.ao.CuisineIngredientAo;
 import com.nutrition.nutritionservice.controller.ao.CuisinePreviewAo;
 import com.nutrition.nutritionservice.controller.ao.CuisineUploadAo;
+import com.nutrition.nutritionservice.controller.ao.NutrientWeightAo;
 import com.nutrition.nutritionservice.controller.ao.StoreCuisineListAo;
 import com.nutrition.nutritionservice.controller.ao.StorePreviewAo;
 import com.nutrition.nutritionservice.converter.IngredientVo2AoConverter;
+import com.nutrition.nutritionservice.converter.NutrientWeightVo2AoConverter;
 import com.nutrition.nutritionservice.enums.CodeEnums;
 import com.nutrition.nutritionservice.enums.UnitEnum;
 import com.nutrition.nutritionservice.enums.database.CuisineCategoryEnum;
@@ -458,6 +460,12 @@ public class CuisineBiz {
                 .sorted(Comparator.comparingInt(CuisineIngredientAo::getWeight).reversed())
                 .collect(Collectors.toList()));
 
+        /* 餐品营养素重量 */
+        List<CuisineNutrientWeightVo> cuisineNutrientWeightVoList = cuisineNutrientWeightService
+                .queryByCuisineCode(cuisineCode);
+        List<NutrientWeightAo> nutrientWeightAoList = NutrientWeightVo2AoConverter.convert(cuisineVo.getCalorie(),
+                cuisineNutrientWeightVoList);
+        cuisineDetailsAoBuilder.nutrientWeightList(nutrientWeightAoList);
 
         StoreVo storeVo = storeService.queryByCode(cuisineVo.getStoreCode());
         if (storeVo == null) {
