@@ -1,9 +1,10 @@
 package com.nutrition.nutritionservice.converter;
 
-import com.google.common.collect.Maps;
+import com.google.common.collect.Lists;
 import com.nutrition.nutritionservice.controller.ao.NutrientWeightAo;
 import com.nutrition.nutritionservice.enums.database.NutrientEnum;
 import com.nutrition.nutritionservice.vo.NutrientWeightVo;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.Collections;
 import java.util.List;
@@ -29,14 +30,14 @@ public class NutrientWeightVo2AoConverter {
             nutrientWeightList = Collections.emptyList();
         }
         // 需要展示或计算热量的营养素，key: NutrientEnum，value: 营养素的热量。
-        Map<NutrientEnum, Double> nutrientEnumCalorieMap = Maps.newTreeMap();
-        nutrientEnumCalorieMap.put(NutrientEnum.CHO, 4.0);
-        nutrientEnumCalorieMap.put(NutrientEnum.Fat, 9.0);
-        nutrientEnumCalorieMap.put(NutrientEnum.Protein, 4.0);
+        List<ImmutablePair<NutrientEnum, Double>> nutrientEnumCalorieList = Lists.newArrayList();
+        nutrientEnumCalorieList.add(ImmutablePair.of(NutrientEnum.CHO, 4.0));
+        nutrientEnumCalorieList.add(ImmutablePair.of(NutrientEnum.Fat, 9.0));
+        nutrientEnumCalorieList.add(ImmutablePair.of(NutrientEnum.Protein, 4.0));
 
         Map<Integer, Double> nutrientWeightMap = nutrientWeightList.stream()
                 .collect(Collectors.toMap(NutrientWeightVo::getNutrientCode, NutrientWeightVo::getWeight));
-        List<NutrientWeightAo> nutrientWeightAoList = nutrientEnumCalorieMap.entrySet().stream()
+        List<NutrientWeightAo> nutrientWeightAoList = nutrientEnumCalorieList.stream()
                 .map(nutrientCodeCalorieEntry -> {
                     NutrientEnum nutrientEnum = nutrientCodeCalorieEntry.getKey();
                     Double nutrientCalorie = nutrientCodeCalorieEntry.getValue();
