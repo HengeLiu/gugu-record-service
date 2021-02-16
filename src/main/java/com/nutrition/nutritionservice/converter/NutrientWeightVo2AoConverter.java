@@ -30,9 +30,9 @@ public class NutrientWeightVo2AoConverter {
         }
         // 需要展示或计算热量的营养素，key: NutrientEnum，value: 营养素的热量。
         Map<NutrientEnum, Double> nutrientEnumCalorieMap = Maps.newTreeMap();
-        nutrientEnumCalorieMap.put(NutrientEnum.Protein, 4.0);
-        nutrientEnumCalorieMap.put(NutrientEnum.Fat, 9.0);
         nutrientEnumCalorieMap.put(NutrientEnum.CHO, 4.0);
+        nutrientEnumCalorieMap.put(NutrientEnum.Fat, 9.0);
+        nutrientEnumCalorieMap.put(NutrientEnum.Protein, 4.0);
 
         Map<Integer, Double> nutrientWeightMap = nutrientWeightList.stream()
                 .collect(Collectors.toMap(NutrientWeightVo::getNutrientCode, NutrientWeightVo::getWeight));
