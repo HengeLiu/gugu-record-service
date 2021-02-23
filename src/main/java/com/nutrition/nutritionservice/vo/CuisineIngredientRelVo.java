@@ -33,6 +33,11 @@ public class CuisineIngredientRelVo implements Serializable {
     private int weight;
 
     /**
+     * 是否为主要食材，0.否，1.是
+     */
+    private int main;
+
+    /**
      * 加工方式
      */
     private int process;

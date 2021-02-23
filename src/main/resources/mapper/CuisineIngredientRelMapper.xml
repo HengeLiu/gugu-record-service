@@ -6,15 +6,16 @@
         <result column="cuisine_code" jdbcType="VARCHAR" property="cuisineCode"/>
         <result column="ingredient_code" jdbcType="INTEGER" property="ingredientCode"/>
         <result column="weight" jdbcType="INTEGER" property="weight"/>
+        <result column="main" jdbcType="INTEGER" property="main"/>
         <result column="process" jdbcType="TINYINT" property="process"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id, cuisine_code, ingredient_code, weight, `process`, create_time, update_time
+        id, cuisine_code, ingredient_code, weight, `process`, main, create_time, update_time
     </sql>
     <sql id="Insert_Column_List">
-        cuisine_code, ingredient_code, weight, `process`
+        cuisine_code, ingredient_code, weight, main, `process`
     </sql>
     <delete id="deleteByCuisineCode">
         delete
@@ -60,6 +61,9 @@
             <if test="weight != null">
                 weight,
             </if>
+            <if test="main != null">
+                main,
+            </if>
             <if test="process != null">
                 `process`,
             </if>
@@ -73,6 +77,9 @@
             </if>
             <if test="weight != null">
                 #{weight,jdbcType=INTEGER},
+            </if>
+            <if test="main != null">
+                #{main,jdbcType=INTEGER},
             </if>
             <if test="process != null">
                 #{process,jdbcType=TINYINT},
@@ -88,6 +95,7 @@
             #{rel.cuisineCode,jdbcType=VARCHAR},
             #{rel.ingredientCode,jdbcType=INTEGER},
             #{rel.weight,jdbcType=INTEGER},
+            #{rel.main,jdbcType=INTEGER},
             #{rel.process,jdbcType=TINYINT}
             )
         </foreach>

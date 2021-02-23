@@ -18,7 +18,4 @@ public interface StoreInfoDao {
 
     List<StoreInfoVo> selectByStatus(int storeStatus, int limit);
 
-    int updateByPrimaryKeySelective(StoreInfoVo record);
-
-    int updateByPrimaryKey(StoreInfoVo record);
 }

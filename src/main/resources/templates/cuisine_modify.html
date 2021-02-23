@@ -11,8 +11,8 @@
 <script>
     let ingredientList;
     let cuisineList;
-    let hostUrl = 'https://www.nutrition-service.com';
-    // let hostUrl = 'https://localhost';
+    // let hostUrl = 'https://www.nutrition-service.com';
+    let hostUrl = 'https://localhost';
 
     window.onload = function () {
         $.ajax({
@@ -20,7 +20,7 @@
             method: "GET",
             success: function (data) {
                 ingredientList = data.data
-                appendNewRowToIngredientRowList(ingredientList);
+                // appendNewRowToIngredientRowList(ingredientList);
             }
         });
 
@@ -58,6 +58,10 @@
         ingredientWeightLabelElem.appendChild(ingredientWeightInputElem);
         ingredientWeightLabelElem.appendChild(ingredientUnitSpanElem);
 
+        let ingredientMainCheckedElem = document.createElement('input')
+        ingredientMainCheckedElem.setAttribute('type', 'checkbox')
+        ingredientMainCheckedElem.setAttribute('class', 'ingredient_main_checkbox')
+
         let removeRowButtonElem = document.createElement('button');
         removeRowButtonElem.setAttribute('type', 'button');
         removeRowButtonElem.setAttribute('onclick', 'removeIngredientRow(this)');
@@ -67,6 +71,7 @@
         ingredientRowElem.setAttribute('class', 'ingredient_row');
         ingredientRowElem.appendChild(ingredientNameLabelElem);
         ingredientRowElem.appendChild(ingredientWeightLabelElem);
+        ingredientRowElem.appendChild(ingredientMainCheckedElem);
         ingredientRowElem.appendChild(removeRowButtonElem);
 
         return ingredientRowElem;
@@ -208,9 +213,16 @@
                 alert('餐品食材重量不能为空');
                 return;
             }
+            let ingredientMainCheckboxEle = ingredientRowElement.getElementsByClassName('ingredient_main_checkbox')[0];
+            let main = ingredientMainCheckboxEle.checked;
+            if (main === undefined || main === '') {
+                main = false
+            }
+
             ingredientWeightDataList.push({
                 code: parseInt(ingredientCode),
                 weight: parseInt(ingredientWeight),
+                main: main
             })
         }
 
@@ -374,6 +386,9 @@
 					<span
 							class="ingredient_weight_unit"> 克
 					</span>
+				</label>
+				<label>
+					<input type="checkbox" class="ingredient_main_checkbox" th:checked="${ingredient.main}">
 				</label>
 				<button type="button" onclick="removeIngredientRow(this)">移除</button>
 			</div>

@@ -10,15 +10,17 @@
         <result column="location_latitude" jdbcType="DOUBLE" property="locationLatitude"/>
         <result column="location_longitude" jdbcType="DOUBLE" property="locationLongitude"/>
         <result column="business_type" jdbcType="TINYINT" property="businessType"/>
+        <result column="meituan_mini_app_path" jdbcType="VARCHAR" property="meituanMiniAppPath"/>
+        <result column="ele_mini_app_path" jdbcType="VARCHAR" property="eleMiniAppPath"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, store_code, store_name, location_title, location_type, location_latitude, location_longitude, business_type, create_time, update_time
-  </sql>
+        id, store_code, store_name, location_title, location_type, location_latitude, location_longitude, business_type, meituan_mini_app_path, ele_mini_app_path, create_time, update_time
+    </sql>
     <sql id="Insert_Column_List">
-    store_code, store_name, location_title, location_type, location_latitude, location_longitude, business_type
-  </sql>
+        store_code, store_name, location_title, location_type, location_latitude, location_longitude, meituan_mini_app_path, ele_mini_app_path,, business_type
+    </sql>
     <select id="selectByStoreCode" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -55,7 +57,9 @@
         )
         values (#{storeCode,jdbcType=VARCHAR}, #{storeName}, #{locationTitle,jdbcType=VARCHAR},
         #{locationType,jdbcType=TINYINT},
-        #{locationLatitude,jdbcType=DOUBLE}, #{locationLongitude,jdbcType=DOUBLE}, #{businessType,jdbcType=TINYINT})
+        #{locationLatitude,jdbcType=DOUBLE}, #{locationLongitude,jdbcType=DOUBLE}, #{businessType,jdbcType=TINYINT},
+        #{meituanMiniAppPath}, #{leMiniAppPath}
+        )
     </insert>
     <insert id="insertSelective" keyColumn="id" keyProperty="id"
             parameterType="com.nutrition.nutritionservice.vo.StoreInfoVo" useGeneratedKeys="true">
@@ -82,6 +86,12 @@
             <if test="businessType != null">
                 business_type,
             </if>
+            <if test="meituanMiniAppPath != null">
+                meituan_mini_app_path,
+            </if>
+            <if test="leMiniAppPath != null">
+                ele_mini_app_path,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="storeCode != null">
@@ -105,44 +115,12 @@
             <if test="businessType != null">
                 #{businessType,jdbcType=TINYINT},
             </if>
+            <if test="meituanMiniAppPath != null">
+                #{meituanMiniAppPath},
+            </if>
+            <if test="leMiniAppPath != null">
+                #{leMiniAppPath},
+            </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.nutrition.nutritionservice.vo.StoreInfoVo">
-        update store_info
-        <set>
-            <if test="storeCode != null">
-                store_code = #{storeCode,jdbcType=VARCHAR},
-            </if>
-            <if test="storeName != null">
-                store_name = #{storeName,jdbcType=VARCHAR},
-            </if>
-            <if test="locationTitle != null">
-                location_title = #{locationTitle,jdbcType=VARCHAR},
-            </if>
-            <if test="locationType != null">
-                location_type = #{locationType,jdbcType=TINYINT},
-            </if>
-            <if test="locationLatitude != null">
-                location_latitude = #{locationLatitude,jdbcType=DOUBLE},
-            </if>
-            <if test="locationLongitude != null">
-                location_longitude = #{locationLongitude,jdbcType=DOUBLE},
-            </if>
-            <if test="businessType != null">
-                business_type = #{businessType,jdbcType=TINYINT},
-            </if>
-        </set>
-        where id = #{id,jdbcType=BIGINT}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="com.nutrition.nutritionservice.vo.StoreInfoVo">
-    update store_info
-    set store_code = #{storeCode,jdbcType=VARCHAR},
-      store_name = #{storeName,jdbcType=VARCHAR},
-      location_title = #{locationTitle,jdbcType=VARCHAR},
-      location_type = #{locationType,jdbcType=TINYINT},
-      location_latitude = #{locationLatitude,jdbcType=DOUBLE},
-      location_longitude = #{locationLongitude,jdbcType=DOUBLE},
-      business_type = #{businessType,jdbcType=TINYINT}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
 </mapper>

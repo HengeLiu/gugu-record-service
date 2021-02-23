@@ -11,8 +11,8 @@
 <script>
     let ingredientList;
     let cuisineList;
-    let hostUrl = 'https://www.nutrition-service.com';
-    // let hostUrl = 'https://localhost';
+    // let hostUrl = 'https://www.nutrition-service.com';
+    let hostUrl = 'https://localhost';
 
     window.onload = function () {
         $.ajax({
@@ -52,11 +52,14 @@
         let ingredientUnitSpanElem = document.createElement('span');
         ingredientUnitSpanElem.setAttribute('class', 'ingredient_weight_unit');
         ingredientUnitSpanElem.innerHTML = ' 克';
-
+		
         let ingredientWeightLabelElem = document.createElement('label');
         ingredientWeightLabelElem.setAttribute('class', 'ingredient_weight_label');
         ingredientWeightLabelElem.appendChild(ingredientWeightInputElem);
         ingredientWeightLabelElem.appendChild(ingredientUnitSpanElem);
+
+        let ingredientMainCheckedElem = document.createElement('input')
+        ingredientMainCheckedElem.setAttribute('type', 'checkbox')
 
         let removeRowButtonElem = document.createElement('button');
         removeRowButtonElem.setAttribute('type', 'button');
@@ -67,6 +70,7 @@
         ingredientRowElem.setAttribute('class', 'ingredient_row');
         ingredientRowElem.appendChild(ingredientNameLabelElem);
         ingredientRowElem.appendChild(ingredientWeightLabelElem);
+        ingredientRowElem.appendChild(ingredientMainCheckedElem);
         ingredientRowElem.appendChild(removeRowButtonElem);
 
         return ingredientRowElem;

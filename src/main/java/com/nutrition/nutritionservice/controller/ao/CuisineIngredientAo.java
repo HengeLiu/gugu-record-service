@@ -35,4 +35,9 @@ public class CuisineIngredientAo implements Serializable {
      */
     private Integer weight;
 
+    /**
+     * 是否为主要食材
+     */
+    private Boolean main;
+
 }

@@ -190,7 +190,8 @@ public class CuisineBiz {
                     ingredientWeightList.addAll(baseCuisineIngredientRelList.stream()
                             .map(baseCuisineIngredientRel -> CuisineIngredientAo.builder()
                                     .code(baseCuisineIngredientRel.getIngredientCode())
-                                    .weight(baseCuisineIngredientRel.getWeight()).build())
+                                    .weight(baseCuisineIngredientRel.getWeight())
+                                    .main(baseCuisineIngredientRel.getMain() == 1).build())
                             .collect(Collectors.toList()));
 
                 }
@@ -198,6 +199,9 @@ public class CuisineBiz {
         }
         Map<Integer, Integer> ingredientCodeWeightMap = ingredientWeightList.stream()
                 .collect(Collectors.toMap(CuisineIngredientAo::getCode, CuisineIngredientAo::getWeight, Integer::sum));
+        Map<Integer, Integer> ingredientMainMap = ingredientWeightList.stream()
+                .collect(Collectors.toMap(CuisineIngredientAo::getCode,
+                        cuisineIngredientAo -> cuisineIngredientAo.getMain() ? 1 : 0, Integer::sum));
         return CuisineDesignerAo.builder()
                 .cuisineVo(CuisineVo.builder().warm(CuisineWarmEnum.COOL.getCode())
                         .status(CuisineStatusEnum.SALE.getCode()).cuisineType(CuisineCategoryEnum.SET.getCode())
@@ -206,6 +210,7 @@ public class CuisineBiz {
                 .cuisineIngredientRelList(ingredientCodeWeightMap.entrySet().stream()
                         .map(ingredientWeightEntry -> CuisineIngredientRelVo.builder()
                                 .weight(ingredientWeightEntry.getValue()).ingredientCode(ingredientWeightEntry.getKey())
+                                .main(ingredientMainMap.getOrDefault(ingredientWeightEntry.getKey(), 0) > 0 ? 1 : 0)
                                 .build())
                         .collect(Collectors.toList()))
                 .build();
@@ -444,14 +449,16 @@ public class CuisineBiz {
                     "Cuisine ingredient category weight can not null, cuisine code " + cuisineCode);
         }
 
-        Map<Integer, Integer> ingredientCodeWeightMap = cuisineIngredientRelService.queryByCuisineCode(cuisineCode)
+        Map<Integer, CuisineIngredientRelVo> ingredientCodeWeightMap = cuisineIngredientRelService
+                .queryByCuisineCode(cuisineCode)
                 .stream().filter(cuisineIngredientRelVo -> cuisineIngredientRelVo.getWeight() > 0).collect(
-                        Collectors.toMap(CuisineIngredientRelVo::getIngredientCode, CuisineIngredientRelVo::getWeight));
+                        Collectors.toMap(CuisineIngredientRelVo::getIngredientCode, Function.identity()));
         Map<Integer, IngredientVo> ingredientCodeMap = ingredientService
                 .queryByCodeList(Lists.newArrayList(ingredientCodeWeightMap.keySet())).stream()
                 .collect(Collectors.toMap(IngredientVo::getCode, Function.identity()));
         List<CuisineIngredientAo> cuisineIngredientAoList = Lists.newArrayList();
-        for (Map.Entry<Integer, Integer> cuisineIngredientWeightEntry : ingredientCodeWeightMap.entrySet()) {
+        for (Map.Entry<Integer, CuisineIngredientRelVo> cuisineIngredientWeightEntry : ingredientCodeWeightMap
+                .entrySet()) {
             Integer ingredientCode = cuisineIngredientWeightEntry.getKey();
             IngredientVo ingredientVo = ingredientCodeMap.get(ingredientCode);
             if (ingredientVo == null) {
@@ -459,10 +466,12 @@ public class CuisineBiz {
                 continue;
             }
             cuisineIngredientAoList.add(CuisineIngredientAo.builder().code(ingredientCode).name(ingredientVo.getName())
-                    .weight(cuisineIngredientWeightEntry.getValue()).build());
+                    .weight(cuisineIngredientWeightEntry.getValue().getWeight())
+                    .main(cuisineIngredientWeightEntry.getValue().getMain() == 1).build());
         }
         cuisineDetailsAoBuilder.ingredientList(cuisineIngredientAoList.stream()
                 .sorted(Comparator.comparingInt(CuisineIngredientAo::getWeight).reversed())
+                .sorted(Comparator.comparing(CuisineIngredientAo::getMain).reversed())
                 .collect(Collectors.toList()));
 
         /* 餐品营养素重量 */
