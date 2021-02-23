@@ -6,7 +6,7 @@ import com.nutrition.nutritionservice.controller.ao.IngredientAo;
 import com.nutrition.nutritionservice.converter.IngredientVo2AoConverter;
 import com.nutrition.nutritionservice.service.IngredientService;
 import com.nutrition.nutritionservice.vo.IngredientVo;
-import com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo;
+import com.nutrition.nutritionservice.vo.CuisineIngredientRelVo;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.annotation.Resource;

@@ -1,6 +1,6 @@
 package com.nutrition.nutritionservice.dao;
 
-import com.nutrition.nutritionservice.vo.store.CuisineVo;
+import com.nutrition.nutritionservice.vo.CuisineVo;
 
 import java.util.List;
 

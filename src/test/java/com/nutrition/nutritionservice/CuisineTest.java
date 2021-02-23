@@ -15,8 +15,8 @@ import com.nutrition.nutritionservice.service.CuisineService;
 import com.nutrition.nutritionservice.vo.CuisineNutrientWeightVo;
 import com.nutrition.nutritionservice.vo.IngredientVo;
 import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientCategoryModelVo;
-import com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo;
-import com.nutrition.nutritionservice.vo.store.CuisineVo;
+import com.nutrition.nutritionservice.vo.CuisineIngredientRelVo;
+import com.nutrition.nutritionservice.vo.CuisineVo;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

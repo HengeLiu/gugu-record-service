@@ -25,4 +25,8 @@ public class StoreInfoService {
         return storeInfoDao.selectByStatus(storeStatus, limit);
     }
 
+    public StoreInfoVo queryByCode(String storeCode) {
+        return storeInfoDao.selectByStoreCode(storeCode);
+    }
+
 }

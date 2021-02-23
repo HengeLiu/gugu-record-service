@@ -2,7 +2,7 @@ package com.nutrition.nutritionservice.service;
 
 import com.nutrition.nutritionservice.dao.CuisineDao;
 import com.nutrition.nutritionservice.vo.IDPageParamVo;
-import com.nutrition.nutritionservice.vo.store.CuisineVo;
+import com.nutrition.nutritionservice.vo.CuisineVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;

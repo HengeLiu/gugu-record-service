@@ -1,7 +1,7 @@
 package com.nutrition.nutritionservice.service;
 
 import com.nutrition.nutritionservice.dao.CuisineIngredientRelDao;
-import com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo;
+import com.nutrition.nutritionservice.vo.CuisineIngredientRelVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;

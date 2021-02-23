@@ -7,7 +7,7 @@ import com.nutrition.nutritionservice.util.ModelUtil;
 import com.nutrition.nutritionservice.vo.CuisineIngredientCategoryWeightVo;
 import com.nutrition.nutritionservice.vo.IngredientVo;
 import com.nutrition.nutritionservice.controller.ao.CuisineDesignerAo;
-import com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo;
+import com.nutrition.nutritionservice.vo.CuisineIngredientRelVo;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 

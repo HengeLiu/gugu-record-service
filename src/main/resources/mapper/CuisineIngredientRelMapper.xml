@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nutrition.nutritionservice.dao.CuisineIngredientRelDao">
-    <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo">
+    <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.CuisineIngredientRelVo">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="cuisine_code" jdbcType="VARCHAR" property="cuisineCode"/>
         <result column="ingredient_code" jdbcType="INTEGER" property="ingredientCode"/>
@@ -39,7 +39,7 @@
         )
     </select>
     <insert id="insert" keyColumn="id" keyProperty="id"
-            parameterType="com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo" useGeneratedKeys="true">
+            parameterType="com.nutrition.nutritionservice.vo.CuisineIngredientRelVo" useGeneratedKeys="true">
         insert into cuisine_ingredient_rel (
         <include refid="Insert_Column_List"/>
         )
@@ -48,7 +48,7 @@
         )
     </insert>
     <insert id="insertSelective" keyColumn="id" keyProperty="id"
-            parameterType="com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo" useGeneratedKeys="true">
+            parameterType="com.nutrition.nutritionservice.vo.CuisineIngredientRelVo" useGeneratedKeys="true">
         insert into cuisine_ingredient_rel
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="cuisineCode != null">
@@ -94,7 +94,7 @@
     </insert>
 
     <!--    <update id="updateByPrimaryKeySelective"-->
-    <!--            parameterType="com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo">-->
+    <!--            parameterType="com.nutrition.nutritionservice.vo.CuisineIngredientRelVo">-->
     <!--        update cuisine_ingredient_rel-->
     <!--        <set>-->
     <!--            <if test="cuisineCode != null">-->
@@ -112,7 +112,7 @@
     <!--        </set>-->
     <!--        where id = #{id,jdbcType=INTEGER}-->
     <!--    </update>-->
-    <!--    <update id="updateByPrimaryKey" parameterType="com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo">-->
+    <!--    <update id="updateByPrimaryKey" parameterType="com.nutrition.nutritionservice.vo.CuisineIngredientRelVo">-->
     <!--    update-->
     <!--    cuisine_ingredient_rel-->
     <!--    set-->

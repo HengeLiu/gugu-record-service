@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nutrition.nutritionservice.dao.CuisineDao">
-    <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.store.CuisineVo">
+    <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.CuisineVo">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="code" jdbcType="VARCHAR" property="code"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
@@ -33,31 +33,31 @@
     <select id="selectCountByCalorieAndGoal" resultType="java.lang.Integer">
         select count(*) from cuisine where goal = #{goal} and calorie &gt;= #{minCalorie} and calorie &lt; #{maxCalorie}
     </select>
-    <select id="selectFromIdWithLimit" resultType="com.nutrition.nutritionservice.vo.store.CuisineVo">
+    <select id="selectFromIdWithLimit" resultType="com.nutrition.nutritionservice.vo.CuisineVo">
         select
         <include refid="Base_Column_List"/>
         from cuisine
         where id >= #{id} limit #{limit}
     </select>
-    <select id="selectByStoreCode" resultType="com.nutrition.nutritionservice.vo.store.CuisineVo">
+    <select id="selectByStoreCode" resultType="com.nutrition.nutritionservice.vo.CuisineVo">
         select
         <include refid="Base_Column_List"/>
         from cuisine
         where store_code = #{storeCode}
     </select>
-    <select id="selectByStoreCodeAndStatus" resultType="com.nutrition.nutritionservice.vo.store.CuisineVo">
+    <select id="selectByStoreCodeAndStatus" resultType="com.nutrition.nutritionservice.vo.CuisineVo">
         select
         <include refid="Base_Column_List"/>
         from cuisine
         where store_code = #{storeCode} and status = #{status}
     </select>
-    <select id="selectByDineTime" resultType="com.nutrition.nutritionservice.vo.store.CuisineVo">
+    <select id="selectByDineTime" resultType="com.nutrition.nutritionservice.vo.CuisineVo">
         select
         <include refid="Base_Column_List"/>
         from cuisine
         where dine_time = #{dineTime}
     </select>
-    <select id="batchSelect" resultType="com.nutrition.nutritionservice.vo.store.CuisineVo">
+    <select id="batchSelect" resultType="com.nutrition.nutritionservice.vo.CuisineVo">
         select
         <include refid="Base_Column_List"/>
         from cuisine
@@ -67,7 +67,7 @@
         </foreach>
         )
     </select>
-    <insert id="insert" parameterType="com.nutrition.nutritionservice.vo.store.CuisineVo">
+    <insert id="insert" parameterType="com.nutrition.nutritionservice.vo.CuisineVo">
         insert into cuisine (
         <include refid="Insert_Column_List"/>
         )
@@ -80,7 +80,7 @@
         set status = #{status}
         where code = #{code}
     </update>
-    <update id="updateByCuisineCodeSelective" parameterType="com.nutrition.nutritionservice.vo.store.CuisineVo">
+    <update id="updateByCuisineCodeSelective" parameterType="com.nutrition.nutritionservice.vo.CuisineVo">
         update cuisine
         <set>
             <if test="name != null">

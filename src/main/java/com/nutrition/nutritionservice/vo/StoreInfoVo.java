@@ -49,6 +49,17 @@ public class StoreInfoVo implements Serializable {
      */
     private Byte businessType;
 
+    /**
+     * 美团外卖小程序地址
+     */
+    private String meituanMiniAppPath;
+
+    /**
+     * 饿了么小程序地址
+     */
+    private String eleMiniAppPath;
+
+
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;

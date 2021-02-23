@@ -1,4 +1,4 @@
-package com.nutrition.nutritionservice.vo.store;
+package com.nutrition.nutritionservice.vo;
 
 import lombok.Builder;
 import lombok.Data;

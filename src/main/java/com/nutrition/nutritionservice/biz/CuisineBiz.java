@@ -36,6 +36,7 @@ import com.nutrition.nutritionservice.service.CuisineService;
 import com.nutrition.nutritionservice.service.DineRecommendedRateService;
 import com.nutrition.nutritionservice.service.IngredientNutrientRelService;
 import com.nutrition.nutritionservice.service.IngredientService;
+import com.nutrition.nutritionservice.service.StoreInfoService;
 import com.nutrition.nutritionservice.service.StoreService;
 import com.nutrition.nutritionservice.util.CuisineUtil;
 import com.nutrition.nutritionservice.util.ModelUtil;
@@ -48,10 +49,11 @@ import com.nutrition.nutritionservice.vo.DineRecommendedRateVo;
 import com.nutrition.nutritionservice.vo.IDPageParamVo;
 import com.nutrition.nutritionservice.vo.IngredientNutrientRelVo;
 import com.nutrition.nutritionservice.vo.IngredientVo;
+import com.nutrition.nutritionservice.vo.StoreInfoVo;
 import com.nutrition.nutritionservice.vo.StoreVo;
 import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientCategoryModelVo;
-import com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo;
-import com.nutrition.nutritionservice.vo.store.CuisineVo;
+import com.nutrition.nutritionservice.vo.CuisineIngredientRelVo;
+import com.nutrition.nutritionservice.vo.CuisineVo;
 import com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo;
 import com.nutrition.nutritionservice.vo.user.UserIngredientWeightSumDailyVo;
 import lombok.extern.slf4j.Slf4j;
@@ -113,6 +115,9 @@ public class CuisineBiz {
 
     @Resource
     private StoreService storeService;
+
+    @Resource
+    private StoreInfoService storeInfoService;
 
     @Resource
     private IngredientNutrientRelService ingredientNutrientRelService;
@@ -467,13 +472,15 @@ public class CuisineBiz {
                 cuisineNutrientWeightVoList);
         cuisineDetailsAoBuilder.nutrientWeightList(nutrientWeightAoList);
 
-        StoreVo storeVo = storeService.queryByCode(cuisineVo.getStoreCode());
-        if (storeVo == null) {
+        StoreInfoVo storeInfoVo = storeInfoService.queryByCode(cuisineVo.getStoreCode());
+        if (storeInfoVo == null) {
             throw new NutritionServiceException("Cuisine store can not null, cuisine code " + cuisineCode
                     + ", store code " + cuisineVo.getStoreCode());
         }
         cuisineDetailsAoBuilder
-                .storeInfo(StorePreviewAo.builder().code(storeVo.getCode()).name(storeVo.getName()).build());
+                .storeInfo(StorePreviewAo.builder().code(storeInfoVo.getStoreCode()).name(storeInfoVo.getStoreName())
+                        .meituanMiniAppPath(storeInfoVo.getMeituanMiniAppPath())
+                        .eleMiniAppPath(storeInfoVo.getEleMiniAppPath()).build());
 
         return cuisineDetailsAoBuilder.build();
     }

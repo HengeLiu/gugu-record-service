@@ -1,7 +1,7 @@
 package com.nutrition.nutritionservice.controller.ao;
 
-import com.nutrition.nutritionservice.vo.store.CuisineIngredientRelVo;
-import com.nutrition.nutritionservice.vo.store.CuisineVo;
+import com.nutrition.nutritionservice.vo.CuisineIngredientRelVo;
+import com.nutrition.nutritionservice.vo.CuisineVo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

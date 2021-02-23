@@ -30,6 +30,16 @@ public class StorePreviewAo implements Serializable {
     private String name;
 
     /**
+     * 美团外卖小程序地址
+     */
+    private String meituanMiniAppPath;
+
+    /**
+     * 饿了么小程序地址
+     */
+    private String eleMiniAppPath;
+
+    /**
      * 地址名称
      */
     private String addressTitle;
