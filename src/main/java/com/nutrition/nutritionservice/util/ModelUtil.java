@@ -194,7 +194,7 @@ public class ModelUtil {
                                         .targetWeight(categoryEntry.getValue())
                                         // 摄入历史值
                                         .historicalWeight(historicalMap.get(categoryEnum).intValue())
-                                        .commonIngredientNameListStr(categoryEnum.getCommonIngredientNameArrayStr())
+                                        .commonIngredientNameListStr(categoryEnum.getCommonIngredientNameListStr())
                                         .build();
                             }).collect(Collectors.toList());
                     // 计算大类下分类总目标重量

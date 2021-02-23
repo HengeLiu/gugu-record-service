@@ -18,6 +18,11 @@ public enum UnitEnum implements CodeEnum<Integer> {
 
     MICROGRAMS(4, "微克", "μg"),
 
+    MILLIGRAMS_PER_DAY(5, "毫克/天", "mg/d"),
+
+    MICROGRAMS_PER_DAY(6, "微克/天", "μg/d"),
+
+
     ;
 
     private final int code;
