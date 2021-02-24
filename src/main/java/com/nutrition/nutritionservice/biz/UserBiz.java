@@ -18,11 +18,11 @@ import com.nutrition.nutritionservice.service.CuisineIngredientCategoryWeightSer
 import com.nutrition.nutritionservice.service.CuisineIngredientRelService;
 import com.nutrition.nutritionservice.service.CuisineNutrientWeightService;
 import com.nutrition.nutritionservice.service.CuisineService;
-import com.nutrition.nutritionservice.service.EnergyCalorieCalculateService;
 import com.nutrition.nutritionservice.service.IngredientService;
 import com.nutrition.nutritionservice.service.StoreService;
 import com.nutrition.nutritionservice.service.UserAccountService;
 import com.nutrition.nutritionservice.service.UserHistoricalCuisineService;
+import com.nutrition.nutritionservice.service.UserHistoricalOrderService;
 import com.nutrition.nutritionservice.service.UserInfoService;
 import com.nutrition.nutritionservice.service.UserIngredientCategoryModelService;
 import com.nutrition.nutritionservice.service.UserIngredientWeightSumDailyService;
@@ -32,15 +32,17 @@ import com.nutrition.nutritionservice.service.WechatHttpApiService;
 import com.nutrition.nutritionservice.util.CuisineUtil;
 import com.nutrition.nutritionservice.util.DateTimeUtil;
 import com.nutrition.nutritionservice.vo.CuisineIngredientCategoryWeightVo;
+import com.nutrition.nutritionservice.vo.CuisineIngredientRelVo;
 import com.nutrition.nutritionservice.vo.CuisineNutrientWeightVo;
+import com.nutrition.nutritionservice.vo.CuisineVo;
+import com.nutrition.nutritionservice.vo.HistoricalCuisineRecordVo;
 import com.nutrition.nutritionservice.vo.IngredientVo;
 import com.nutrition.nutritionservice.vo.ModelParamVo;
 import com.nutrition.nutritionservice.vo.StoreVo;
+import com.nutrition.nutritionservice.vo.UserHistoricalOrderVo;
 import com.nutrition.nutritionservice.vo.UserNutrientWeightSumDailyVo;
 import com.nutrition.nutritionservice.vo.UserStatusInfoVo;
 import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientCategoryModelVo;
-import com.nutrition.nutritionservice.vo.CuisineIngredientRelVo;
-import com.nutrition.nutritionservice.vo.CuisineVo;
 import com.nutrition.nutritionservice.vo.user.UserAccountVo;
 import com.nutrition.nutritionservice.vo.user.UserHistoricalCuisineVo;
 import com.nutrition.nutritionservice.vo.user.UserInfoVo;
@@ -52,6 +54,7 @@ import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -80,9 +83,6 @@ public class UserBiz {
     private UserInfoService userInfoService;
 
     @Resource
-    private EnergyCalorieCalculateService energyCalorieCalculateService;
-
-    @Resource
     private UserIngredientWeightSumDailyService userIngredientWeightSumDailyService;
 
     @Resource
@@ -90,6 +90,9 @@ public class UserBiz {
 
     @Resource
     private UserHistoricalCuisineService userHistoricalCuisineService;
+
+    @Resource
+    private UserHistoricalOrderService userHistoricalOrderService;
 
     @Resource
     private UserIngredientCategoryModelService userIngredientCategoryModelService;
@@ -321,14 +324,22 @@ public class UserBiz {
     }
 
     public List<CuisinePreviewAo> queryTodayCuisineHistory(String uuid) {
-        List<UserHistoricalCuisineVo> userHistoricalCuisineVoList = userHistoricalCuisineService
-                .queryLastByUuidLimit(uuid, 5);
-        if (CollectionUtils.isEmpty(userHistoricalCuisineVoList)) {
+
+        List<UserHistoricalOrderVo> userHistoricalOrderVoList = userHistoricalOrderService.queryByUuid(uuid, 5);
+        List<Long> userHistoricalOrderIdList = userHistoricalOrderVoList.stream().map(UserHistoricalOrderVo::getId)
+                .collect(Collectors.toList());
+
+        List<HistoricalCuisineRecordVo> allHistoricalCuisineRecordList = new ArrayList<>();
+        allHistoricalCuisineRecordList.addAll(userHistoricalCuisineService.queryLastByUuidLimit(uuid, 5));
+        allHistoricalCuisineRecordList.addAll(userHistoricalOrderVoList);
+
+        if (CollectionUtils.isEmpty(allHistoricalCuisineRecordList)) {
             return Collections.emptyList();
         }
-        List<String> cuisineCodeList = userHistoricalCuisineVoList.stream().map(UserHistoricalCuisineVo::getCuisineCode)
+        List<String> allCuisineCodeList = allHistoricalCuisineRecordList.stream()
+                .map(HistoricalCuisineRecordVo::getCuisineCode)
                 .collect(Collectors.toList());
-        List<CuisineVo> cuisineVoList = cuisineService.queryByCuisineCodeList(cuisineCodeList);
+        List<CuisineVo> cuisineVoList = cuisineService.queryByCuisineCodeList(allCuisineCodeList);
         List<StoreVo> storeVoList = storeService
                 .queryByCodeList(cuisineVoList.stream().map(CuisineVo::getStoreCode).collect(Collectors.toList()));
         Map<String, StoreVo> storeCodeMap = storeVoList.stream()
@@ -336,7 +347,7 @@ public class UserBiz {
         Map<String, CuisineVo> cuisineCodeMap = cuisineVoList.stream()
                 .collect(Collectors.toMap(CuisineVo::getCode, Function.identity()));
         List<CuisineIngredientRelVo> cuisineIngredientRelVoList = cuisineIngredientRelService
-                .queryByCuisineCodeList(cuisineCodeList);
+                .queryByCuisineCodeList(allCuisineCodeList);
         Map<Integer, IngredientVo> ingredientCodeNameMap = ingredientService
                 .queryByCodeList(cuisineIngredientRelVoList.stream().map(CuisineIngredientRelVo::getIngredientCode)
                         .distinct().collect(Collectors.toList()))
@@ -345,7 +356,8 @@ public class UserBiz {
                 .collect(Collectors.groupingBy(CuisineIngredientRelVo::getCuisineCode));
         List<CuisinePreviewAo> cuisinePreviewAoList = Lists.newArrayList();
         LocalDate today = LocalDate.now();
-        for (UserHistoricalCuisineVo historicalCuisineVo : userHistoricalCuisineVoList) {
+
+        for (HistoricalCuisineRecordVo historicalCuisineVo : allHistoricalCuisineRecordList) {
             CuisineVo cuisineVo = cuisineCodeMap.get(historicalCuisineVo.getCuisineCode());
             StoreVo storeVo = storeCodeMap.get(cuisineVo.getStoreCode());
             List<CuisineIngredientRelVo> ingredientRelVoList = cuisineIngredientMap.getOrDefault(cuisineVo.getCode(),
@@ -359,13 +371,16 @@ public class UserBiz {
                     .collect(Collectors.toList());
             cuisinePreviewAoList.add(CuisinePreviewAo.builder().code(cuisineVo.getCode()).name(cuisineVo.getName())
                     .calorie(cuisineVo.getCalorie()).sortPriority(cuisineVo.getSortPriority())
-                    .lastAddedDateTime(DateTimeUtil.todayOrLastDayFormat(today, historicalCuisineVo.getCreateTime()))
+                    .lastAddedDateTimeStr(DateTimeUtil.todayOrLastDayFormat(today, historicalCuisineVo.getCreateTime()))
+                    .createTime(DateTimeUtil.convert(historicalCuisineVo.getCreateTime()))
                     .cuisineHistoryId(historicalCuisineVo.getId())
+                    .dietRecord(!userHistoricalOrderIdList.contains(historicalCuisineVo.getId()))
                     .storeCode(storeVo.getCode()).storeName(storeVo.getName())
                     .mainIngredientListStr(CuisineUtil.ingredientListToStr(mainIngredientList)).build());
         }
+
         return cuisinePreviewAoList.stream()
-                .sorted(Comparator.comparingInt(CuisinePreviewAo::getSortPriority).reversed())
+                .sorted(Comparator.comparing(CuisinePreviewAo::getCreateTime).reversed())
                 .collect(Collectors.toList());
     }
 

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nutrition.nutritionservice.dao.UserHistoricalOrderDao">
+    <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.UserHistoricalOrderVo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="uuid" jdbcType="VARCHAR" property="uuid"/>
+        <result column="cuisine_code" jdbcType="VARCHAR" property="cuisineCode"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, uuid, cuisine_code, `status`, create_time, update_time
+    </sql>
+
+    <sql id="Insert_Column_list">
+        uuid, cuisine_code
+    </sql>
+
+    <select id="selectLastByUuid" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_historical_order
+        where uuid = #{uuid} and status = 0 order by create_time desc limit 1;
+    </select>
+
+    <select id="selectByUuid" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_historical_order
+        where uuid = #{uuid} and status = 0 order by create_time desc limit #{limit};
+    </select>
+    <select id="selectById" resultType="com.nutrition.nutritionservice.vo.UserHistoricalOrderVo">
+        select
+        <include refid="Base_Column_List"/>
+        from user_historical_order
+        where id = #{id}
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true">
+        insert into user_historical_order (<include refid="Insert_Column_list"/>)
+        values (#{uuid,jdbcType=VARCHAR}, #{cuisineCode,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateStatusById" parameterType="com.nutrition.nutritionservice.vo.UserHistoricalOrderVo">
+        update user_historical_order
+        set `status` = #{status,jdbcType=TINYINT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

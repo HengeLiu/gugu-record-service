@@ -1,6 +1,5 @@
-package com.nutrition.nutritionservice.vo.user;
+package com.nutrition.nutritionservice.vo;
 
-import com.nutrition.nutritionservice.vo.HistoricalCuisineRecordVo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,22 +10,16 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * user_historical_cuisine
+ * user_historical_order
  * 
  * @author heng.liu
- * @since 2020/12/28
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserHistoricalCuisineVo extends HistoricalCuisineRecordVo implements Serializable {
-
-    /**
-     * 味道评分
-     */
-    private int tasteScore;
+public class UserHistoricalOrderVo extends HistoricalCuisineRecordVo implements Serializable {
 
     private LocalDateTime updateTime;
 
