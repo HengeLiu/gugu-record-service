@@ -19,7 +19,7 @@ public class CuisineUtil {
             ingredientList = ingredientList.subList(0, 7);
         }
         return StringUtils.concat(ingredientList.stream().map(IngredientVo::getName).collect(Collectors.toList()))
-                .replaceAll(",", " ")
+                .replaceAll(",", " ")
                 .replace("[", "").replace("]", "") + "等";
     }
 }
