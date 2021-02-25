@@ -6,16 +6,16 @@
     <result column="uuid" jdbcType="VARCHAR" property="uuid"/>
     <result column="custom_info" jdbcType="TINYINT" property="customInfo"/>
     <result column="shown_info_collect_window" jdbcType="TINYINT" property="shownInfoCollectWindow"/>
-    <result column="shown_process_window" jdbcType="TINYINT" property="shownProcessWindow"/>
+    <result column="show_process_window" jdbcType="TINYINT" property="showProcessWindow"/>
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
   </resultMap>
   <sql id="Base_Column_List">
-    id, uuid, custom_info, shown_info_collect_window, shown_process_window, create_time, 
+    id, uuid, custom_info, shown_info_collect_window, show_process_window, create_time, 
     update_time
   </sql>
   <sql id="Insert_Column_List">
-    id, uuid, custom_info, shown_info_collect_window, shown_process_window
+    id, uuid, custom_info, shown_info_collect_window, show_process_window
   </sql>
   <select id="selectByUuid" resultMap="BaseResultMap">
     select
@@ -37,8 +37,8 @@
       <if test="shownInfoCollectWindow != null">
         shown_info_collect_window,
       </if>
-      <if test="shownProcessWindow != null">
-        shown_process_window,
+      <if test="showProcessWindow != null">
+        show_process_window,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -51,8 +51,8 @@
       <if test="shownInfoCollectWindow != null">
         #{shownInfoCollectWindow,jdbcType=TINYINT},
       </if>
-      <if test="shownProcessWindow != null">
-        #{shownProcessWindow,jdbcType=TINYINT},
+      <if test="showProcessWindow != null">
+        #{showProcessWindow,jdbcType=TINYINT},
       </if>
     </trim>
   </insert>
@@ -66,8 +66,8 @@
       <if test="shownInfoCollectWindow != null">
         shown_info_collect_window = #{shownInfoCollectWindow,jdbcType=TINYINT},
       </if>
-      <if test="shownProcessWindow != null">
-        shown_process_window = #{shownProcessWindow,jdbcType=TINYINT},
+      <if test="showProcessWindow != null">
+        show_process_window = #{showProcessWindow,jdbcType=TINYINT},
       </if>
     </set>
     where uuid = #{uuid}

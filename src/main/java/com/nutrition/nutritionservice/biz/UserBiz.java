@@ -158,7 +158,7 @@ public class UserBiz {
         saveUserInfoAndModel(userInfoVo, uuid);
 
         UserStatusInfoVo userStatusInfoVo = UserStatusInfoVo.builder().uuid(uuid).customInfo(0)
-                .shownInfoCollectWindow(0).shownProcessWindow(0).build();
+                .shownInfoCollectWindow(0).showProcessWindow(0).build();
         // 创建用户状态
         userStatusInfoService.add(userStatusInfoVo);
         return userAccount;
@@ -370,6 +370,7 @@ public class UserBiz {
             cuisinePreviewAoList.add(CuisinePreviewAo.builder().code(cuisineVo.getCode()).name(cuisineVo.getName())
                     .calorie(cuisineVo.getCalorie()).sortPriority(cuisineVo.getSortPriority())
                     .lastAddedDateTimeStr(DateTimeUtil.todayOrLastDayFormat(today, historicalCuisineVo.getCreateTime()))
+                    .lastAddedDateTime(DateTimeUtil.todayOrLastDayFormat(today, historicalCuisineVo.getCreateTime()))
                     .createTime(DateTimeUtil.convert(historicalCuisineVo.getCreateTime()))
                     .cuisineHistoryId(historicalCuisineVo.getId())
                     .orderRecord(userHistoricalOrderIdList.contains(historicalCuisineVo.getId()))

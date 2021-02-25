@@ -1,12 +1,12 @@
 package com.nutrition.nutritionservice.vo;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * user_status_info
@@ -36,9 +36,9 @@ public class UserStatusInfoVo implements Serializable {
     private int shownInfoCollectWindow;
 
     /**
-     * 是否已展示「使用流程」浮窗
+     * 是否需要展示「使用流程」浮窗
      */
-    private int shownProcessWindow;
+    private int showProcessWindow;
 
     private LocalDateTime createTime;
 

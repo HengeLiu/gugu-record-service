@@ -18,7 +18,7 @@ public class UserStatusInfoVo2AoConverter extends BaseConverter<UserStatusInfoVo
         UserStatusInfoAo userStatusInfoAo = new UserStatusInfoAo();
         userStatusInfoAo.setCustomInfo(userStatusInfoVo.getCustomInfo());
         userStatusInfoAo.setShownInfoCollectWindow(userStatusInfoVo.getShownInfoCollectWindow());
-        userStatusInfoAo.setShownProcessWindow(userStatusInfoVo.getShownProcessWindow());
+        userStatusInfoAo.setShownProcessWindow(userStatusInfoVo.getShowProcessWindow());
         return userStatusInfoAo;
     }
 

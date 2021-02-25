@@ -5,6 +5,7 @@ import com.nutrition.nutritionservice.exception.NutritionServiceException;
 import com.nutrition.nutritionservice.vo.UserStatusInfoVo;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
@@ -26,10 +27,12 @@ public class UserStatusInfoService {
         return userStatusInfoDao.selectByUuid(uuid);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public int add(UserStatusInfoVo userStatusInfoVo) {
         return userStatusInfoDao.insertSelective(userStatusInfoVo);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public int updateByUuidSelective(UserStatusInfoVo userStatusInfoVo) {
         if (StringUtils.isEmpty(userStatusInfoVo.getUuid())) {
             throw new NutritionServiceException("Uuid can not empty, userStatusInfoVo " + userStatusInfoVo.toString());
@@ -37,6 +40,7 @@ public class UserStatusInfoService {
         return userStatusInfoDao.updateByUuidSelective(userStatusInfoVo);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void updateCustomInfoStatusByUuid(int customUserInfoStatus, String uuid) {
         userStatusInfoDao.updateCustomInfoStatusByUuid(customUserInfoStatus, uuid);
     }

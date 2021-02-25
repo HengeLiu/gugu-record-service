@@ -26,7 +26,7 @@
   </delete>
   <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.nutrition.nutritionservice.vo.UserStatusInfoVo" useGeneratedKeys="true">
     insert into user_status_info (uuid, custom_info, shown_info_collect_window, 
-      shown_process_window, create_time, update_time
+      show_process_window, create_time, update_time
       )
     values (#{uuid,jdbcType=VARCHAR}, #{customInfo,jdbcType=TINYINT}, #{shownInfoCollectWindow,jdbcType=TINYINT}, 
       #{shownProcessWindow,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
@@ -104,7 +104,7 @@
     set uuid = #{uuid,jdbcType=VARCHAR},
       custom_info = #{customInfo,jdbcType=TINYINT},
       shown_info_collect_window = #{shownInfoCollectWindow,jdbcType=TINYINT},
-      shown_process_window = #{shownProcessWindow,jdbcType=TINYINT},
+      show_process_window = #{shownProcessWindow,jdbcType=TINYINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}

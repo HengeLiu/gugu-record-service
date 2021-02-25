@@ -49,6 +49,11 @@ public class CuisinePreviewAo implements Serializable {
     private String lastAddedDateTimeStr;
 
     /**
+     * 上次添加日期时间
+     */
+    private String lastAddedDateTime;
+
+    /**
      * 创建时间
      */
     private Date createTime;
