@@ -38,6 +38,12 @@ public class CuisineDetailsAo implements Serializable {
     private Double calorie;
 
     /**
+     * 在美团中搜索时使用的名称
+     */
+    private String meituanSearchingName;
+
+
+    /**
      * 食材列表
      */
     private List<CuisineIngredientAo> ingredientList;

@@ -442,6 +442,7 @@ public class CuisineBiz {
         CuisineVo cuisineVo = cuisineService.queryByCuisineCode(cuisineCode);
         cuisineDetailsAoBuilder.name(cuisineVo.getName());
         cuisineDetailsAoBuilder.calorie(cuisineVo.getCalorie());
+        cuisineDetailsAoBuilder.meituanSearchingName(cuisineVo.getMeituanSearchingName());
 
         CuisineIngredientCategoryWeightVo cuisineIngredientCategoryWeightVo = cuisineIngredientCategoryWeightService
                 .queryByCuisineCode(cuisineCode);
