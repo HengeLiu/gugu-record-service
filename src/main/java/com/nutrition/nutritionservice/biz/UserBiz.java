@@ -259,13 +259,11 @@ public class UserBiz {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void saveCuisineHistory(String uuid, String cuisineCode) {
+    public void saveCuisineHistory(String uuid, String cuisineCode, LocalDate currentHistoryDate) {
 
         /* 更新餐品记录 */
         userHistoricalCuisineService.add(UserHistoricalCuisineVo.builder().uuid(uuid).cuisineCode(cuisineCode)
                 .status(CuisineTasteEnum.UNEVALUATED.getCode()).build());
-
-        LocalDate nowDate = LocalDate.now();
 
         /* 更新食材摄入历史记录 */
 
@@ -276,9 +274,9 @@ public class UserBiz {
                     "Cuisine ingredient category weight can not null, cuisine code " + cuisineCode);
         }
         UserIngredientWeightSumDailyVo userIngredientWeightSumDailyVo = userIngredientWeightSumDailyService
-                .queryByUuidAndDate(uuid, nowDate);
+                .queryByUuidAndDate(uuid, currentHistoryDate);
         if (userIngredientWeightSumDailyVo == null) {
-            userIngredientWeightSumDailyVo = UserIngredientWeightSumDailyVo.createEmpty(uuid, nowDate);
+            userIngredientWeightSumDailyVo = UserIngredientWeightSumDailyVo.createEmpty(uuid, currentHistoryDate);
         }
         userIngredientWeightSumDailyVo.addCuisineCategoryWeight(cuisineIngredientCategoryWeightVo);
         userIngredientWeightSumDailyService.insertOrUpdateByUuidAndDate(userIngredientWeightSumDailyVo);
@@ -300,7 +298,7 @@ public class UserBiz {
                 .stream().collect(
                         Collectors.toMap(CuisineNutrientWeightVo::getNutrientCode, CuisineNutrientWeightVo::getWeight));
         List<UserNutrientWeightSumDailyVo> userNutrientWeightSumDailyVoList = userNutrientWeightSumDailyService
-                .queryByUuidAndDate(uuid, nowDate);
+                .queryByUuidAndDate(uuid, currentHistoryDate);
         Map<Integer, Double> userNutrientCodeWeightSumDailyMap = Collections.emptyMap();
         if (!CollectionUtils.isEmpty(userNutrientWeightSumDailyVoList)) {
             userNutrientCodeWeightSumDailyMap = userNutrientWeightSumDailyVoList.stream().collect(Collectors
@@ -318,9 +316,9 @@ public class UserBiz {
         }
         List<UserNutrientWeightSumDailyVo> newUserNutrientWeightSumDailyVoList = userHistoricalNutrientCodeWeightMap
                 .entrySet().stream().map(entry -> UserNutrientWeightSumDailyVo.builder().uuid(uuid)
-                        .nutrientCode(entry.getKey()).weight(entry.getValue()).date(nowDate).build())
+                        .nutrientCode(entry.getKey()).weight(entry.getValue()).date(currentHistoryDate).build())
                 .collect(Collectors.toList());
-        userNutrientWeightSumDailyService.replaceAll(uuid, nowDate, newUserNutrientWeightSumDailyVoList);
+        userNutrientWeightSumDailyService.replaceAll(uuid, currentHistoryDate, newUserNutrientWeightSumDailyVoList);
     }
 
     public List<CuisinePreviewAo> queryTodayCuisineHistory(String uuid) {

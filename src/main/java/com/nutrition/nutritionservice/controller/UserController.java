@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
 
 /**
  * @author heng.liu
@@ -37,7 +38,7 @@ public class UserController {
 
     @GetMapping("/save/cuisine-history")
     public Response saveCuisineHistory(@RequestParam String uuid, @RequestParam String cuisineCode) {
-        userBiz.saveCuisineHistory(uuid, cuisineCode);
+        userBiz.saveCuisineHistory(uuid, cuisineCode, LocalDate.now());
         return Response.success();
     }
 

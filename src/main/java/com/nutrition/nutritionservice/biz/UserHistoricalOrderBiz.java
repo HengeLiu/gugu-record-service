@@ -42,7 +42,8 @@ public class UserHistoricalOrderBiz {
         if (userHistoricalOrderVo == null) {
             throw new NutritionServiceException("未找到用户点餐记录，id " + id);
         }
-        userBiz.saveCuisineHistory(userHistoricalOrderVo.getUuid(), userHistoricalOrderVo.getCuisineCode());
+        userBiz.saveCuisineHistory(userHistoricalOrderVo.getUuid(), userHistoricalOrderVo.getCuisineCode(),
+                userHistoricalOrderVo.getCreateTime().toLocalDate());
         userHistoricalOrderService.updateStatusByPrimaryKey(id, UserHistoricalOrderStatusEnum.YET.getCode());
     }
 
