@@ -369,6 +369,7 @@ public class UserBiz {
                     .collect(Collectors.toList());
             cuisinePreviewAoList.add(CuisinePreviewAo.builder().code(cuisineVo.getCode()).name(cuisineVo.getName())
                     .calorie(cuisineVo.getCalorie()).sortPriority(cuisineVo.getSortPriority())
+                    .meituanSearchingName(cuisineVo.getMeituanSearchingName())
                     .lastAddedDateTimeStr(DateTimeUtil.todayOrLastDayFormat(today, historicalCuisineVo.getCreateTime()))
                     .lastAddedDateTime(DateTimeUtil.todayOrLastDayFormat(today, historicalCuisineVo.getCreateTime()))
                     .createTime(DateTimeUtil.convert(historicalCuisineVo.getCreateTime()))

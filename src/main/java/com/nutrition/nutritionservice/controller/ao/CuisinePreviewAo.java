@@ -44,6 +44,11 @@ public class CuisinePreviewAo implements Serializable {
     private Integer sortPriority;
 
     /**
+     * 在美团中搜索时使用的名称
+     */
+    private String meituanSearchingName;
+
+    /**
      * 上次添加日期时间
      */
     private String lastAddedDateTimeStr;

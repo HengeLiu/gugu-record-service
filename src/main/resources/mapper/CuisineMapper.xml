@@ -14,15 +14,16 @@
         <result column="warm" jdbcType="TINYINT" property="warm"/>
         <result column="status" jdbcType="TINYINT" property="status"/>
         <result column="sort_priority" jdbcType="INTEGER" property="sortPriority"/>
+        <result column="meituan_searching_name" jdbcType="VARCHAR" property="meituanSearchingName"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, code, `name`, price, store_code, calorie, goal, cuisine_type, dine_time, warm, `status`, sort_priority,
+    id, code, `name`, price, store_code, calorie, goal, cuisine_type, dine_time, warm, `status`, sort_priority, meituan_searching_name,
     create_time, update_time
   </sql>
     <sql id="Insert_Column_List">
-    code, `name`, price, store_code, calorie, goal, cuisine_type, dine_time, warm, `status`, sort_priority
+    code, `name`, price, store_code, calorie, goal, cuisine_type, dine_time, warm, `status`, sort_priority, meituan_searching_name
   </sql>
     <select id="selectByCode" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
@@ -73,7 +74,7 @@
         )
         values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{price}, #{storeCode,jdbcType=VARCHAR},
         #{calorie,jdbcType=INTEGER}, #{goal,jdbcType=TINYINT}, #{cuisineType,jdbcType=TINYINT},
-        #{dineTime,jdbcType=TINYINT}, #{warm,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{sortPriority})
+        #{dineTime,jdbcType=TINYINT}, #{warm,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{sortPriority}), #{meituanSearchingName}
     </insert>
     <update id="updateStatusByCode" parameterType="java.lang.String">
         update cuisine
@@ -112,6 +113,9 @@
             </if>
             <if test="sortPriority != null">
                 sort_priority = #{sortPriority}
+            </if>
+            <if test="meituanSearchingName != null">
+                meituan_searching_name = #{meituanSearchingName}
             </if>
         </set>
         where code = #{code}

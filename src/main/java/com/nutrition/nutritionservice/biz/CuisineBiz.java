@@ -418,6 +418,7 @@ public class CuisineBiz {
                                 .map(cuisineVo -> CuisinePreviewAo.builder().code(cuisineVo.getCode())
                                         .name(cuisineVo.getName())
                                         .calorie(cuisineVo.getCalorie()).sortPriority(cuisineVo.getSortPriority())
+                                        .meituanSearchingName(cuisineVo.getMeituanSearchingName())
                                         .mainIngredientListStr(
                                                 CuisineUtil.ingredientListToStr(cuisineCodeIngredientListMap
                                                         .getOrDefault(cuisineVo.getCode(), Collections.emptyList())))

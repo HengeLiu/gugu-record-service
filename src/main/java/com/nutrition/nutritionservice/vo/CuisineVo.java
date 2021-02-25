@@ -72,6 +72,11 @@ public class CuisineVo implements Serializable {
     private int sortPriority;
 
     /**
+     * 在美团中搜索时使用的名称
+     */
+    private String meituanSearchingName;
+
+    /**
      * 创建时间
      */
     private LocalDateTime createTime;
