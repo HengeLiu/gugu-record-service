@@ -374,7 +374,7 @@ public class UserBiz {
                     .lastAddedDateTimeStr(DateTimeUtil.todayOrLastDayFormat(today, historicalCuisineVo.getCreateTime()))
                     .createTime(DateTimeUtil.convert(historicalCuisineVo.getCreateTime()))
                     .cuisineHistoryId(historicalCuisineVo.getId())
-                    .dietRecord(!userHistoricalOrderIdList.contains(historicalCuisineVo.getId()))
+                    .orderRecord(userHistoricalOrderIdList.contains(historicalCuisineVo.getId()))
                     .storeCode(storeVo.getCode()).storeName(storeVo.getName())
                     .mainIngredientListStr(CuisineUtil.ingredientListToStr(mainIngredientList)).build());
         }

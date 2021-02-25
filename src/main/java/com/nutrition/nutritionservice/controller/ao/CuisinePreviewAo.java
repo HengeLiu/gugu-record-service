@@ -59,9 +59,9 @@ public class CuisinePreviewAo implements Serializable {
     private Long cuisineHistoryId;
 
     /**
-     * 是否已加入饮食记录
+     * 是否是点单记录
      */
-    private Boolean dietRecord;
+    private Boolean orderRecord;
 
     /**
      * 主要食材名称列表字符串

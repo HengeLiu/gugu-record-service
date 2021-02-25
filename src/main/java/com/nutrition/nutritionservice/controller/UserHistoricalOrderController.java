@@ -30,6 +30,12 @@ public class UserHistoricalOrderController {
         return Response.success();
     }
 
+    @GetMapping("/delete-history")
+    public Response deleteOrderHistory(@RequestParam Long orderHistoryId) {
+        userHistoricalOrderBiz.deleteHistoricalOrder(orderHistoryId);
+        return Response.success();
+    }
+
     @GetMapping("/to-diet")
     public Response addHistoricalOrderToRecord(@RequestParam Long orderHistoryId) {
         userHistoricalOrderBiz.addHistoricalOrderToRecord(orderHistoryId);
