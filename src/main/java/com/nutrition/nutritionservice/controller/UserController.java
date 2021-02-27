@@ -2,6 +2,7 @@ package com.nutrition.nutritionservice.controller;
 
 import com.nutrition.nutritionservice.biz.UserBiz;
 import com.nutrition.nutritionservice.common.Response;
+import com.nutrition.nutritionservice.controller.ao.CustomIntakesHistoryAo;
 import com.nutrition.nutritionservice.controller.ao.UserInfoAo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,6 +40,12 @@ public class UserController {
     @GetMapping("/save/cuisine-history")
     public Response saveCuisineHistory(@RequestParam String uuid, @RequestParam String cuisineCode) {
         userBiz.saveCuisineHistory(uuid, cuisineCode, LocalDate.now());
+        return Response.success();
+    }
+
+    @PostMapping("/save/custom-cuisine-history")
+    public Response saveCustomCuisineHistory(@RequestBody CustomIntakesHistoryAo customIntakesHistoryAo) {
+        userBiz.saveCustomCuisineHistory(customIntakesHistoryAo, LocalDate.now());
         return Response.success();
     }
 

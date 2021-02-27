@@ -28,9 +28,7 @@ public class IngredientBiz {
     @Resource
     private IngredientService ingredientService;
 
-    public double calculateCalorie(List<CuisineIngredientRelVo> cuisineIngredientRelList) {
-        Map<Integer, Integer> ingredientWeightMap = cuisineIngredientRelList.stream().collect(
-                Collectors.toMap(CuisineIngredientRelVo::getIngredientCode, CuisineIngredientRelVo::getWeight));
+    public double calculateCalorieByIngredientWeight(Map<Integer, Integer> ingredientWeightMap) {
         List<IngredientVo> ingredientVoList = ingredientService
                 .queryByCodeList(Lists.newArrayList(ingredientWeightMap.keySet()));
         double cuisineCalorie = 0;
@@ -39,6 +37,12 @@ public class IngredientBiz {
                     * ingredient.getCalorie();
         }
         return cuisineCalorie;
+    }
+
+    public double calculateCalorie(List<CuisineIngredientRelVo> cuisineIngredientRelList) {
+        Map<Integer, Integer> ingredientWeightMap = cuisineIngredientRelList.stream().collect(
+                Collectors.toMap(CuisineIngredientRelVo::getIngredientCode, CuisineIngredientRelVo::getWeight));
+        return this.calculateCalorieByIngredientWeight(ingredientWeightMap);
     }
 
     public List<IngredientAo> queryAvailable() {

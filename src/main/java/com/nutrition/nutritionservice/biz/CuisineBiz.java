@@ -136,14 +136,15 @@ public class CuisineBiz {
         // 保存菜品食材重量信息
         cuisineIngredientRelService.addBatch(cuisineIngredientRelList);
         CuisineIngredientCategoryWeightVo cuisineIngredientCategoryWeightVo = cuisineIngredientCategoryWeightService
-                .calculateCuisineCategoryWight(cuisineDesignerAo);
+                .calculateIngredientCategoryWightWithCuisine(cuisineDesignerAo);
         // 保存菜品食材分类重量信息
         cuisineIngredientCategoryWeightService.add(cuisineIngredientCategoryWeightVo);
         // 餐品食材重量
         Map<Integer, Integer> ingredientCodeWeightMap = cuisineIngredientRelList.stream().collect(
                 Collectors.toMap(CuisineIngredientRelVo::getIngredientCode, CuisineIngredientRelVo::getWeight));
         // 保存菜品营养素重量信息
-        cuisineNutrientWeightService.addAll(this.calculateNutrientWeight(ingredientCodeWeightMap, cuisineCode));
+        cuisineNutrientWeightService
+                .addAll(this.ingredientWeightToNutrientWeightVo(ingredientCodeWeightMap, cuisineCode));
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -162,7 +163,7 @@ public class CuisineBiz {
         // 保存菜品食材重量信息
         cuisineIngredientRelService.replaceAllByCuisineCode(cuisineCode, cuisineIngredientRelList);
         CuisineIngredientCategoryWeightVo cuisineIngredientCategoryWeightVo = cuisineIngredientCategoryWeightService
-                .calculateCuisineCategoryWight(cuisineDesignerAo);
+                .calculateIngredientCategoryWightWithCuisine(cuisineDesignerAo);
         // 保存菜品食材分类重量信息
         cuisineIngredientCategoryWeightService.updateByCuisineCode(cuisineIngredientCategoryWeightVo);
         // 餐品食材重量
@@ -170,7 +171,7 @@ public class CuisineBiz {
                 Collectors.toMap(CuisineIngredientRelVo::getIngredientCode, CuisineIngredientRelVo::getWeight));
         // 保存菜品营养素重量信息
         cuisineNutrientWeightService.updateByCuisineCode(cuisineCode,
-                this.calculateNutrientWeight(ingredientCodeWeightMap, cuisineCode));
+                this.ingredientWeightToNutrientWeightVo(ingredientCodeWeightMap, cuisineCode));
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -218,8 +219,17 @@ public class CuisineBiz {
                 .build();
     }
 
-    public List<CuisineNutrientWeightVo> calculateNutrientWeight(
+    public List<CuisineNutrientWeightVo> ingredientWeightToNutrientWeightVo(
             Map<Integer, Integer> ingredientCodeWeightMap, String cuisineCode) {
+        Map<Integer, Double> nutrientCodeWeightMap = this.calculateNutrientWeight(ingredientCodeWeightMap);
+        return nutrientCodeWeightMap.entrySet().stream()
+                .map(nutrientCodeWeightEntry -> CuisineNutrientWeightVo.builder().cuisineCode(cuisineCode)
+                        .nutrientCode(nutrientCodeWeightEntry.getKey()).weight(nutrientCodeWeightEntry.getValue())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    public Map<Integer, Double> calculateNutrientWeight(Map<Integer, Integer> ingredientCodeWeightMap) {
         // 食材营养素含量
         Map<Integer, List<IngredientNutrientRelVo>> ingredientNutrientMap = ingredientNutrientRelService
                 .queryByIngredientCodeList(Lists.newArrayList(ingredientCodeWeightMap.keySet())).stream()
@@ -251,11 +261,7 @@ public class CuisineBiz {
                         + nutrientCodeWeightMap.getOrDefault(ingredientNutrientRelVo.getNutrientCode(), 0.0));
             }
         }
-        return nutrientCodeWeightMap.entrySet().stream()
-                .map(nutrientCodeWeightEntry -> CuisineNutrientWeightVo.builder().cuisineCode(cuisineCode)
-                        .nutrientCode(nutrientCodeWeightEntry.getKey()).weight(nutrientCodeWeightEntry.getValue())
-                        .build())
-                .collect(Collectors.toList());
+        return nutrientCodeWeightMap;
     }
 
     public Map<String, List<IngredientVo>> queryIngredientCategoryMap() {

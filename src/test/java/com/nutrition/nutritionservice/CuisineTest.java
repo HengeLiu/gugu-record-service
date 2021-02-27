@@ -88,7 +88,7 @@ public class CuisineTest {
                     .queryByCuisineCode(cuisineVo.getCode()).stream().collect(Collectors
                             .toMap(CuisineIngredientRelVo::getIngredientCode, CuisineIngredientRelVo::getWeight));
             List<CuisineNutrientWeightVo> cuisineNutrientWeightVoList = cuisineBiz
-                    .calculateNutrientWeight(ingredientCodeWeightMap, cuisineVo.getCode());
+                    .ingredientWeightToNutrientWeightVo(ingredientCodeWeightMap, cuisineVo.getCode());
             cuisineNutrientWeightService.addAll(cuisineNutrientWeightVoList);
         }
     }

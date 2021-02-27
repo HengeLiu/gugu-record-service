@@ -83,7 +83,7 @@ public class ModelUtil {
         return VectorUtil.euclidDistance(v1, v2);
     }
 
-    public static <T> void categoryEnumMapToModel(Map<IngredientCategoryEnum, T> categoryEnumMap,
+    public static <T> CategoryModel<T> categoryEnumMapToModel(Map<IngredientCategoryEnum, T> categoryEnumMap,
             CategoryModel<T> model) {
         model.setProcessedGrains(categoryEnumMap.get(IngredientCategoryEnum.PROCESSED_GRAINS));
         model.setUnprocessedGrains(categoryEnumMap.get(IngredientCategoryEnum.UNPROCESSED_GRAINS));
@@ -101,6 +101,7 @@ public class ModelUtil {
         model.setNut(categoryEnumMap.get(IngredientCategoryEnum.NUT));
         model.setOil(categoryEnumMap.get(IngredientCategoryEnum.OIL));
         model.setSalt(categoryEnumMap.get(IngredientCategoryEnum.SALT));
+        return model;
     }
 
     public static <T> void fillValue(CategoryModel<T> model, T value) {

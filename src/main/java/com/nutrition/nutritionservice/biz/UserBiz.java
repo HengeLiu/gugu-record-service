@@ -3,11 +3,14 @@ package com.nutrition.nutritionservice.biz;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.nutrition.nutritionservice.annotation.Biz;
+import com.nutrition.nutritionservice.controller.ao.CuisineIngredientAo;
 import com.nutrition.nutritionservice.controller.ao.CuisinePreviewAo;
+import com.nutrition.nutritionservice.controller.ao.CustomIntakesHistoryAo;
 import com.nutrition.nutritionservice.controller.ao.UserInfoAo;
 import com.nutrition.nutritionservice.converter.Model2UserModelConverter;
 import com.nutrition.nutritionservice.enums.database.CuisineTasteEnum;
 import com.nutrition.nutritionservice.enums.database.CustomUserInfoStatusEnum;
+import com.nutrition.nutritionservice.enums.database.IngredientCategoryEnum;
 import com.nutrition.nutritionservice.enums.database.NutrientEnum;
 import com.nutrition.nutritionservice.enums.database.UserAccountStatusTypeEnum;
 import com.nutrition.nutritionservice.enums.database.UserAccountTypeEnum;
@@ -31,6 +34,7 @@ import com.nutrition.nutritionservice.service.UserStatusInfoService;
 import com.nutrition.nutritionservice.service.WechatHttpApiService;
 import com.nutrition.nutritionservice.util.CuisineUtil;
 import com.nutrition.nutritionservice.util.DateTimeUtil;
+import com.nutrition.nutritionservice.util.ModelUtil;
 import com.nutrition.nutritionservice.vo.CuisineIngredientCategoryWeightVo;
 import com.nutrition.nutritionservice.vo.CuisineIngredientRelVo;
 import com.nutrition.nutritionservice.vo.CuisineNutrientWeightVo;
@@ -42,6 +46,7 @@ import com.nutrition.nutritionservice.vo.StoreVo;
 import com.nutrition.nutritionservice.vo.UserHistoricalOrderVo;
 import com.nutrition.nutritionservice.vo.UserNutrientWeightSumDailyVo;
 import com.nutrition.nutritionservice.vo.UserStatusInfoVo;
+import com.nutrition.nutritionservice.vo.modeldata.CategoryModel;
 import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientCategoryModelVo;
 import com.nutrition.nutritionservice.vo.user.UserAccountVo;
 import com.nutrition.nutritionservice.vo.user.UserHistoricalCuisineVo;
@@ -123,6 +128,12 @@ public class UserBiz {
 
     @Resource
     private ConfigPropertiesService configPropertiesService;
+
+    @Resource
+    private IngredientBiz ingredientBiz;
+
+    @Resource
+    private CuisineBiz cuisineBiz;
 
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> saveUserInfo(UserInfoAo userInfoAo) {
@@ -258,31 +269,62 @@ public class UserBiz {
         userNutrientWeightSumDailyService.replaceAll(uuid, historyLocalDate, newUserNutrientWeightSumDailyVoList);
     }
 
+    public void saveCustomCuisineHistory(CustomIntakesHistoryAo customIntakesHistoryAo, LocalDate targetDate) {
+        /* 更新餐品记录 */
+        userHistoricalCuisineService.add(UserHistoricalCuisineVo.builder().uuid(customIntakesHistoryAo.getUuid())
+                .cuisineCode(customIntakesHistoryAo.getCuisineCode()).status(CuisineTasteEnum.UNEVALUATED.getCode())
+                .build());
+
+        List<CuisineIngredientAo> ingredientWeightList = customIntakesHistoryAo.getIngredientList();
+        if (CollectionUtils.isEmpty(ingredientWeightList)) {
+            log.error("Ingredient list is empty, cuisine code {}, uuid {}", customIntakesHistoryAo.getCuisineCode(),
+                    customIntakesHistoryAo.getUuid());
+        }
+
+        Map<Integer, Integer> integerWeightMap = ingredientWeightList.stream()
+                .collect(Collectors.toMap(CuisineIngredientAo::getCode, CuisineIngredientAo::getWeight));
+        /* 本次摄入热量 */
+        double calorie = ingredientBiz.calculateCalorieByIngredientWeight(integerWeightMap);
+        /* 餐品食材分类重量 */
+        Map<IngredientCategoryEnum, Integer> ingredientCategoryEnumIntegerMap = cuisineIngredientCategoryWeightService
+                .calculateIngredientCategoryWight(integerWeightMap);
+        /* 餐品营养素含量 */
+        Map<Integer, Double> nutrientWeightMap = cuisineBiz.calculateNutrientWeight(integerWeightMap);
+        if (CollectionUtils.isEmpty(nutrientWeightMap)) {
+            log.error("Cuisine nutrient weight is empty, cuisine code " + customIntakesHistoryAo.getCuisineCode());
+        }
+        this.saveIntakes(customIntakesHistoryAo.getUuid(), calorie, ingredientCategoryEnumIntegerMap, nutrientWeightMap,
+                targetDate);
+
+    }
+
     /**
      * 保存用户摄入信息
      * 
      * @param uuid 用户uuid
-     * @param cuisineIngredientCategoryWeightVo 餐品食材分类重量VO
-     * @param cuisineNutrientWeightVoList 餐品营养素重量列表
-     * @param currentHistoryDate 添加记录到哪一天
+     * @param calorie 本次摄入热量
+     * @param ingredientCategoryEnumIntegerMap 餐品食材分类重量，key: {@link IngredientCategoryEnum}，value: 食材重量
+     * @param cuisineNutrientCodeWeightMap 餐品营养素重量列表，key: nutrient code {@link NutrientEnum}，value: 营养素重量
+     * @param targetDate 添加记录到哪一天
      */
     @Transactional(rollbackFor = Exception.class)
-    public void saveIntakes(String uuid, CuisineIngredientCategoryWeightVo cuisineIngredientCategoryWeightVo,
-            List<CuisineNutrientWeightVo> cuisineNutrientWeightVoList, LocalDate currentHistoryDate) {
+    public void saveIntakes(String uuid, double calorie,
+            Map<IngredientCategoryEnum, Integer> ingredientCategoryEnumIntegerMap,
+            Map<Integer, Double> cuisineNutrientCodeWeightMap, LocalDate targetDate) {
         /* 更新食材摄入历史记录 */
         UserIngredientWeightSumDailyVo userIngredientWeightSumDailyVo = userIngredientWeightSumDailyService
-                .queryByUuidAndDate(uuid, currentHistoryDate);
+                .queryByUuidAndDate(uuid, targetDate);
         if (userIngredientWeightSumDailyVo == null) {
-            userIngredientWeightSumDailyVo = UserIngredientWeightSumDailyVo.createEmpty(uuid, currentHistoryDate);
+            userIngredientWeightSumDailyVo = UserIngredientWeightSumDailyVo.createEmpty(uuid, targetDate);
         }
-        userIngredientWeightSumDailyVo.addCuisineCategoryWeight(cuisineIngredientCategoryWeightVo);
+        CategoryModel<Integer> cuisineIngredientCategoryWeightVo = ModelUtil
+                .categoryEnumMapToModel(ingredientCategoryEnumIntegerMap, new CuisineIngredientCategoryWeightVo());
+        userIngredientWeightSumDailyVo.addCuisineCategoryWeight(cuisineIngredientCategoryWeightVo, calorie);
         userIngredientWeightSumDailyService.insertOrUpdateByUuidAndDate(userIngredientWeightSumDailyVo);
 
         /* 更新营养素摄入历史记录 */
-        Map<Integer, Double> cuisineNutrientCodeWeightMap = cuisineNutrientWeightVoList.stream().collect(
-                Collectors.toMap(CuisineNutrientWeightVo::getNutrientCode, CuisineNutrientWeightVo::getWeight));
         List<UserNutrientWeightSumDailyVo> userNutrientWeightSumDailyVoList = userNutrientWeightSumDailyService
-                .queryByUuidAndDate(uuid, currentHistoryDate);
+                .queryByUuidAndDate(uuid, targetDate);
         Map<Integer, Double> userNutrientCodeWeightSumDailyMap = Collections.emptyMap();
         if (!CollectionUtils.isEmpty(userNutrientWeightSumDailyVoList)) {
             userNutrientCodeWeightSumDailyMap = userNutrientWeightSumDailyVoList.stream().collect(Collectors
@@ -299,10 +341,9 @@ public class UserBiz {
         }
         List<UserNutrientWeightSumDailyVo> newUserNutrientWeightSumDailyVoList = userHistoricalNutrientCodeWeightMap
                 .entrySet().stream().map(entry -> UserNutrientWeightSumDailyVo.builder().uuid(uuid)
-                        .nutrientCode(entry.getKey()).weight(entry.getValue()).date(currentHistoryDate).build())
+                        .nutrientCode(entry.getKey()).weight(entry.getValue()).date(targetDate).build())
                 .collect(Collectors.toList());
-        userNutrientWeightSumDailyService.replaceAll(uuid, currentHistoryDate, newUserNutrientWeightSumDailyVoList);
-
+        userNutrientWeightSumDailyService.replaceAll(uuid, targetDate, newUserNutrientWeightSumDailyVoList);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -310,19 +351,26 @@ public class UserBiz {
         /* 更新餐品记录 */
         userHistoricalCuisineService.add(UserHistoricalCuisineVo.builder().uuid(uuid).cuisineCode(cuisineCode)
                 .status(CuisineTasteEnum.UNEVALUATED.getCode()).build());
-        // 餐品食材分类重量
+        /* 餐品食材分类重量 */
         CuisineIngredientCategoryWeightVo cuisineIngredientCategoryWeightVo = cuisineIngredientCategoryWeightService
                 .queryByCuisineCode(cuisineCode);
         if (cuisineIngredientCategoryWeightVo == null) {
-            log.error("Cuisine ingredient category weight is null, cuisine code " + cuisineCode);
+            throw new NutritionServiceException(
+                    "Cuisine ingredient category weight can not be null, cuisine code " + cuisineCode);
         }
-        // 餐品营养素含量
+        /* 餐品热量 */
+        double calorie = cuisineIngredientCategoryWeightVo.getCalorie();
+        /* 餐品营养素含量 */
         List<CuisineNutrientWeightVo> cuisineNutrientWeightVoList = cuisineNutrientWeightService
                 .queryByCuisineCode(cuisineCode);
         if (CollectionUtils.isEmpty(cuisineNutrientWeightVoList)) {
-            log.error("Cuisine nutrient weight is empty, cuisine code " + cuisineCode);
+            throw new NutritionServiceException(
+                    "Cuisine nutrient weight can not be empty, cuisine code " + cuisineCode);
         }
-        this.saveIntakes(uuid, cuisineIngredientCategoryWeightVo, cuisineNutrientWeightVoList, currentHistoryDate);
+        Map<Integer, Double> collect = cuisineNutrientWeightVoList.stream().collect(
+                Collectors.toMap(CuisineNutrientWeightVo::getNutrientCode, CuisineNutrientWeightVo::getWeight));
+        this.saveIntakes(uuid, calorie, ModelUtil.modelToCategoryEnumMap(cuisineIngredientCategoryWeightVo), collect,
+                currentHistoryDate);
     }
 
     public List<CuisinePreviewAo> queryTodayCuisineHistory(String uuid) {

@@ -69,7 +69,7 @@ public class UserIngredientWeightSumDailyVo extends CategoryModel<Double> implem
         return emptyVo;
     }
 
-    public void addCuisineCategoryWeight(CuisineIngredientCategoryWeightVo cuisineIngredientCategoryWeightVo) {
+    public void addCuisineCategoryWeight(CategoryModel<Integer> cuisineIngredientCategoryWeightVo, double calorie) {
         this.setProcessedGrains(this.getProcessedGrains() + cuisineIngredientCategoryWeightVo.getProcessedGrains());
         this.setUnprocessedGrains(this.getUnprocessedGrains() + cuisineIngredientCategoryWeightVo.getUnprocessedGrains());
         this.setMixedBeans(this.getMixedBeans() + cuisineIngredientCategoryWeightVo.getMixedBeans());
@@ -86,7 +86,7 @@ public class UserIngredientWeightSumDailyVo extends CategoryModel<Double> implem
         this.setNut(this.getNut() + cuisineIngredientCategoryWeightVo.getNut());
         this.setOil(this.getOil() + cuisineIngredientCategoryWeightVo.getOil());
         this.setSalt(this.getSalt() + cuisineIngredientCategoryWeightVo.getSalt());
-        this.setCalorie(this.getCalorie() + cuisineIngredientCategoryWeightVo.getCalorie());
+        this.setCalorie(this.getCalorie() + calorie);
     }
 
     public void minusCuisineCategoryWeight(CuisineIngredientCategoryWeightVo cuisineIngredientCategoryWeightVo) {
