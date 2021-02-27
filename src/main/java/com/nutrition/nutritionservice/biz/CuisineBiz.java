@@ -27,7 +27,6 @@ import com.nutrition.nutritionservice.enums.database.IngredientCategoryEnum;
 import com.nutrition.nutritionservice.enums.database.ModelGoalEnum;
 import com.nutrition.nutritionservice.exception.NutritionServiceException;
 import com.nutrition.nutritionservice.service.ConfigPropertiesService;
-import com.nutrition.nutritionservice.service.CuisineAdditionalInfoService;
 import com.nutrition.nutritionservice.service.CuisineHistoricalTasteService;
 import com.nutrition.nutritionservice.service.CuisineIngredientCategoryWeightService;
 import com.nutrition.nutritionservice.service.CuisineIngredientRelService;
@@ -43,8 +42,10 @@ import com.nutrition.nutritionservice.util.ModelUtil;
 import com.nutrition.nutritionservice.util.VectorUtil;
 import com.nutrition.nutritionservice.vo.CuisineHistoricalTasteVo;
 import com.nutrition.nutritionservice.vo.CuisineIngredientCategoryWeightVo;
+import com.nutrition.nutritionservice.vo.CuisineIngredientRelVo;
 import com.nutrition.nutritionservice.vo.CuisineNutrientWeightVo;
 import com.nutrition.nutritionservice.vo.CuisineRecommendedScoreWebAo;
+import com.nutrition.nutritionservice.vo.CuisineVo;
 import com.nutrition.nutritionservice.vo.DineRecommendedRateVo;
 import com.nutrition.nutritionservice.vo.IDPageParamVo;
 import com.nutrition.nutritionservice.vo.IngredientNutrientRelVo;
@@ -52,8 +53,6 @@ import com.nutrition.nutritionservice.vo.IngredientVo;
 import com.nutrition.nutritionservice.vo.StoreInfoVo;
 import com.nutrition.nutritionservice.vo.StoreVo;
 import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientCategoryModelVo;
-import com.nutrition.nutritionservice.vo.CuisineIngredientRelVo;
-import com.nutrition.nutritionservice.vo.CuisineVo;
 import com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo;
 import com.nutrition.nutritionservice.vo.user.UserIngredientWeightSumDailyVo;
 import lombok.extern.slf4j.Slf4j;
@@ -108,9 +107,6 @@ public class CuisineBiz {
     private ConfigPropertiesService configPropertiesService;
 
     @Resource
-    private CuisineAdditionalInfoService cuisineAdditionalInfoService;
-
-    @Resource
     private IngredientBiz ingredientBiz;
 
     @Resource
@@ -143,8 +139,11 @@ public class CuisineBiz {
                 .calculateCuisineCategoryWight(cuisineDesignerAo);
         // 保存菜品食材分类重量信息
         cuisineIngredientCategoryWeightService.add(cuisineIngredientCategoryWeightVo);
+        // 餐品食材重量
+        Map<Integer, Integer> ingredientCodeWeightMap = cuisineIngredientRelList.stream().collect(
+                Collectors.toMap(CuisineIngredientRelVo::getIngredientCode, CuisineIngredientRelVo::getWeight));
         // 保存菜品营养素重量信息
-        cuisineNutrientWeightService.addAll(this.calculateNutrientWeight(cuisineIngredientRelList, cuisineCode));
+        cuisineNutrientWeightService.addAll(this.calculateNutrientWeight(ingredientCodeWeightMap, cuisineCode));
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -166,9 +165,12 @@ public class CuisineBiz {
                 .calculateCuisineCategoryWight(cuisineDesignerAo);
         // 保存菜品食材分类重量信息
         cuisineIngredientCategoryWeightService.updateByCuisineCode(cuisineIngredientCategoryWeightVo);
+        // 餐品食材重量
+        Map<Integer, Integer> ingredientCodeWeightMap = cuisineIngredientRelList.stream().collect(
+                Collectors.toMap(CuisineIngredientRelVo::getIngredientCode, CuisineIngredientRelVo::getWeight));
         // 保存菜品营养素重量信息
         cuisineNutrientWeightService.updateByCuisineCode(cuisineCode,
-                this.calculateNutrientWeight(cuisineIngredientRelList, cuisineCode));
+                this.calculateNutrientWeight(ingredientCodeWeightMap, cuisineCode));
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -217,10 +219,7 @@ public class CuisineBiz {
     }
 
     public List<CuisineNutrientWeightVo> calculateNutrientWeight(
-            List<CuisineIngredientRelVo> cuisineIngredientRelVoList, String cuisineCode) {
-        // 餐品食材重量
-        Map<Integer, Integer> ingredientCodeWeightMap = cuisineIngredientRelVoList.stream().collect(
-                Collectors.toMap(CuisineIngredientRelVo::getIngredientCode, CuisineIngredientRelVo::getWeight));
+            Map<Integer, Integer> ingredientCodeWeightMap, String cuisineCode) {
         // 食材营养素含量
         Map<Integer, List<IngredientNutrientRelVo>> ingredientNutrientMap = ingredientNutrientRelService
                 .queryByIngredientCodeList(Lists.newArrayList(ingredientCodeWeightMap.keySet())).stream()
