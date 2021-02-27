@@ -317,7 +317,7 @@ public class UserBiz {
         if (userIngredientWeightSumDailyVo == null) {
             userIngredientWeightSumDailyVo = UserIngredientWeightSumDailyVo.createEmpty(uuid, targetDate);
         }
-        CategoryModel<Integer> cuisineIngredientCategoryWeightVo = ModelUtil
+        CategoryModel cuisineIngredientCategoryWeightVo = ModelUtil
                 .categoryEnumMapToModel(ingredientCategoryEnumIntegerMap, new CuisineIngredientCategoryWeightVo());
         userIngredientWeightSumDailyVo.addCuisineCategoryWeight(cuisineIngredientCategoryWeightVo, calorie);
         userIngredientWeightSumDailyService.insertOrUpdateByUuidAndDate(userIngredientWeightSumDailyVo);

@@ -1,6 +1,5 @@
 package com.nutrition.nutritionservice.util;
 
-import java.awt.image.CropImageFilter;
 import java.util.Vector;
 
 /**
@@ -86,6 +85,15 @@ public class VectorUtil {
         Vector<Double> crossProduct = new Vector<>();
         for (int i = 0; i < v1.size(); i++) {
             crossProduct.add(i, v1.get(i).doubleValue() + v2.get(i).doubleValue());
+        }
+        return crossProduct;
+    }
+
+    public static Vector<Integer> additionInt(Vector<Integer> v1, Vector<Integer> v2) {
+        checkLength(v1, v2);
+        Vector<Integer> crossProduct = new Vector<>();
+        for (int i = 0; i < v1.size(); i++) {
+            crossProduct.add(i, v1.get(i) + v2.get(i));
         }
         return crossProduct;
     }

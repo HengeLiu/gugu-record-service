@@ -281,10 +281,10 @@ public class CuisineBiz {
         DineRecommendedRateVo dineRecommendedRateVo = dineRecommendedRateService
                 .selectByCalorieGoalDine(modelIngredientCategoryModelVo.getStandardCalorie(),
                         modelIngredientCategoryModelVo.getGoal(), dineTime);
-        Map<IngredientCategoryEnum, Double> dineRateMap = ModelUtil.modelToCategoryEnumMap(dineRecommendedRateVo);
+        Map<IngredientCategoryEnum, Integer> dineRateMap = ModelUtil.modelToCategoryEnumMap(dineRecommendedRateVo);
         Map<String, Integer> dineRecommendedWeightMap = Maps.newHashMap();
         ingredientCategoryWeightMap.forEach((key, value) -> dineRecommendedWeightMap.put(key.getNameEn(),
-                (int) (value * dineRateMap.getOrDefault(key, 0.0))));
+                value * dineRateMap.getOrDefault(key, 0)));
         return dineRecommendedWeightMap;
     }
 
@@ -293,7 +293,7 @@ public class CuisineBiz {
         Vector<Integer> userModelVector = ModelUtil.modelToVector(userModel);
         DineRecommendedRateVo dineRecommendedRateVo = dineRecommendedRateService
                 .selectByCalorieGoalDine(userModel.getCalorie(), userModel.getGoal(), dineTime);
-        Vector<Double> dineRateVector = ModelUtil.modelToVector(dineRecommendedRateVo);
+        Vector<Integer> dineRateVector = ModelUtil.modelToVector(dineRecommendedRateVo);
         Vector<Double> recommendedWeightVector = VectorUtil.crossProduct(userModelVector, dineRateVector);
         List<CuisineVo> cuisineList = cuisineService.queryPage(pageParamVo);
         List<CuisineIngredientCategoryWeightVo> cuisineCategoryWeightList = cuisineIngredientCategoryWeightService
@@ -309,7 +309,7 @@ public class CuisineBiz {
             UserIngredientCategoryModelVo userModel, UserIngredientWeightSumDailyVo historicalWeightSumDaily,
             IDPageParamVo pageParamVo) {
         Vector<Integer> userModelVector = ModelUtil.modelToVector(userModel);
-        Vector<Double> historicalWeightVector = ModelUtil.modelToVector(historicalWeightSumDaily);
+        Vector<Integer> historicalWeightVector = ModelUtil.modelToVector(historicalWeightSumDaily);
         Vector<Double> subtractionVector = VectorUtil.subtraction(userModelVector, historicalWeightVector);
         List<CuisineVo> cuisineList = cuisineService.queryPage(pageParamVo);
         List<CuisineIngredientCategoryWeightVo> cuisineCategoryWeightList = cuisineIngredientCategoryWeightService

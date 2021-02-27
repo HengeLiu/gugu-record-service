@@ -23,11 +23,11 @@ import java.util.stream.Collectors;
  */
 public class ModelUtil {
 
-    public static <T> Vector<T> modelToVector(CategoryModel<T> model) {
+    public static Vector<Integer> modelToVector(CategoryModel model) {
         if (model == null) {
             return new Vector<>();
         }
-        Vector<T> v = new Vector<>();
+        Vector<Integer> v = new Vector<>();
         v.add(0, model.getProcessedGrains());
         v.add(1, model.getUnprocessedGrains());
         v.add(2, model.getMixedBeans());
@@ -47,7 +47,7 @@ public class ModelUtil {
         return v;
     }
 
-    public static <T> void vectorToModel(Vector<T> vector, CategoryModel<T> targetModel) {
+    public static void vectorToModel(Vector<Integer> vector, CategoryModel targetModel) {
         if (vector.size() != 16) {
             throw new UnsupportedOperationException(
                     "Model vector length error, length " + vector.size() + ", target length 16");
@@ -70,21 +70,20 @@ public class ModelUtil {
         targetModel.setSalt(vector.get(15));
     }
 
-    public static double calculateCosineSimilarity(CategoryModel<? extends Number> model1,
-            CategoryModel<? extends Number> model2) {
+    public static double calculateCosineSimilarity(CategoryModel model1, CategoryModel model2) {
         Vector<? extends Number> v1 = ModelUtil.modelToVector(model1);
         Vector<? extends Number> v2 = ModelUtil.modelToVector(model2);
         return VectorUtil.cosineSimilarity(v1, v2);
     }
 
-    public static <T extends Number> double calculateEuclidDistance(CategoryModel<T> model1, CategoryModel<T> model2) {
-        Vector<T> v1 = ModelUtil.modelToVector(model1);
-        Vector<T> v2 = ModelUtil.modelToVector(model2);
+    public static <T extends Number> double calculateEuclidDistance(CategoryModel model1, CategoryModel model2) {
+        Vector<Integer> v1 = ModelUtil.modelToVector(model1);
+        Vector<Integer> v2 = ModelUtil.modelToVector(model2);
         return VectorUtil.euclidDistance(v1, v2);
     }
 
-    public static <T> CategoryModel<T> categoryEnumMapToModel(Map<IngredientCategoryEnum, T> categoryEnumMap,
-            CategoryModel<T> model) {
+    public static CategoryModel categoryEnumMapToModel(Map<IngredientCategoryEnum, Integer> categoryEnumMap,
+            CategoryModel model) {
         model.setProcessedGrains(categoryEnumMap.get(IngredientCategoryEnum.PROCESSED_GRAINS));
         model.setUnprocessedGrains(categoryEnumMap.get(IngredientCategoryEnum.UNPROCESSED_GRAINS));
         model.setMixedBeans(categoryEnumMap.get(IngredientCategoryEnum.MIXED_BEANS));
@@ -104,7 +103,7 @@ public class ModelUtil {
         return model;
     }
 
-    public static <T> void fillValue(CategoryModel<T> model, T value) {
+    public static void fillValue(CategoryModel model, Integer value) {
         if (model.getProcessedGrains() == null) {
             model.setProcessedGrains(value);
         }
@@ -155,8 +154,8 @@ public class ModelUtil {
         }
     }
 
-    public static <T> Map<IngredientCategoryEnum, T> modelToCategoryEnumMap(CategoryModel<T> intakesModelVo) {
-        Map<IngredientCategoryEnum, T> modelCategoryMap = Maps.newHashMap();
+    public static Map<IngredientCategoryEnum, Integer> modelToCategoryEnumMap(CategoryModel intakesModelVo) {
+        Map<IngredientCategoryEnum, Integer> modelCategoryMap = Maps.newHashMap();
         modelCategoryMap.put(IngredientCategoryEnum.PROCESSED_GRAINS, intakesModelVo.getProcessedGrains());
         modelCategoryMap.put(IngredientCategoryEnum.UNPROCESSED_GRAINS, intakesModelVo.getUnprocessedGrains());
         modelCategoryMap.put(IngredientCategoryEnum.MIXED_BEANS, intakesModelVo.getMixedBeans());
@@ -179,7 +178,7 @@ public class ModelUtil {
     public static List<SupperIngredientCategoryWeightAo> modelHistoryToWeightAo(UserIngredientCategoryModelVo targetModel,
                                                                                 UserIngredientWeightSumDailyVo historicalModel) {
         Map<IngredientCategoryEnum, Integer> targetMap = modelToCategoryEnumMap(targetModel);
-        Map<IngredientCategoryEnum, Double> historicalMap = modelToCategoryEnumMap(historicalModel);
+        Map<IngredientCategoryEnum, Integer> historicalMap = modelToCategoryEnumMap(historicalModel);
         return targetMap.entrySet().stream()
                 // 先按照食材大类分组
                 .collect(Collectors.groupingBy(entry -> entry.getKey().getParentCategory()))

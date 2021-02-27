@@ -13,11 +13,11 @@ import java.time.LocalDateTime;
  * user_ingredient_weight_sum_daily
  * 
  * @author heng.liu
- * @since 20.020.0/12/28
+ * @since 2020/12/28
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class UserIngredientWeightSumDailyVo extends CategoryModel<Double> implements Serializable {
+public class UserIngredientWeightSumDailyVo extends CategoryModel implements Serializable {
     private int id;
 
     /**
@@ -47,29 +47,29 @@ public class UserIngredientWeightSumDailyVo extends CategoryModel<Double> implem
 
     public static UserIngredientWeightSumDailyVo createEmpty(String uuid, LocalDate date) {
         UserIngredientWeightSumDailyVo emptyVo = new UserIngredientWeightSumDailyVo();
-        emptyVo.setProcessedGrains(0.0);
-        emptyVo.setUnprocessedGrains(0.0);
-        emptyVo.setMixedBeans(0.0);
-        emptyVo.setTuber(0.0);
-        emptyVo.setGeneralVegetables(0.0);
-        emptyVo.setDarkVegetables(0.0);
-        emptyVo.setFruit(0.0);
-        emptyVo.setMeat(0.0);
-        emptyVo.setPoultry(0.0);
-        emptyVo.setAquatic(0.0);
-        emptyVo.setEgg(0.0);
-        emptyVo.setDairy(0.0);
-        emptyVo.setSoybean(0.0);
-        emptyVo.setNut(0.0);
-        emptyVo.setOil(0.0);
-        emptyVo.setSalt(0.0);
+        emptyVo.setProcessedGrains(0);
+        emptyVo.setUnprocessedGrains(0);
+        emptyVo.setMixedBeans(0);
+        emptyVo.setTuber(0);
+        emptyVo.setGeneralVegetables(0);
+        emptyVo.setDarkVegetables(0);
+        emptyVo.setFruit(0);
+        emptyVo.setMeat(0);
+        emptyVo.setPoultry(0);
+        emptyVo.setAquatic(0);
+        emptyVo.setEgg(0);
+        emptyVo.setDairy(0);
+        emptyVo.setSoybean(0);
+        emptyVo.setNut(0);
+        emptyVo.setOil(0);
+        emptyVo.setSalt(0);
         emptyVo.setUuid(uuid);
         emptyVo.setDate(date);
-        emptyVo.setCalorie(0.0);
+        emptyVo.setCalorie(0);
         return emptyVo;
     }
 
-    public void addCuisineCategoryWeight(CategoryModel<Integer> cuisineIngredientCategoryWeightVo, double calorie) {
+    public void addCuisineCategoryWeight(CategoryModel cuisineIngredientCategoryWeightVo, double calorie) {
         this.setProcessedGrains(this.getProcessedGrains() + cuisineIngredientCategoryWeightVo.getProcessedGrains());
         this.setUnprocessedGrains(this.getUnprocessedGrains() + cuisineIngredientCategoryWeightVo.getUnprocessedGrains());
         this.setMixedBeans(this.getMixedBeans() + cuisineIngredientCategoryWeightVo.getMixedBeans());

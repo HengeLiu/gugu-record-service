@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class ModelIngredientCategoryModelVo extends CategoryModel<Integer> {
+public class ModelIngredientCategoryModelVo extends CategoryModel {
 
     private int id;
 

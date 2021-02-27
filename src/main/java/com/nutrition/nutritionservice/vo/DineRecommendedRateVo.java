@@ -1,11 +1,11 @@
 package com.nutrition.nutritionservice.vo;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 import com.nutrition.nutritionservice.vo.modeldata.CategoryModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * dine_recommended_rate
@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class DineRecommendedRateVo extends CategoryModel<Double> implements Serializable {
+public class DineRecommendedRateVo extends CategoryModel implements Serializable {
     private Integer id;
 
     /**

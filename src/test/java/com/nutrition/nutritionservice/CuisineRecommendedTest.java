@@ -107,14 +107,14 @@ public class CuisineRecommendedTest {
                     ? UserIngredientWeightSumDailyVo.createEmpty(testUuid, date)
                     : userIngredientWeightSumDailyVo;
             // 用户今日摄入记录向量
-            Vector<Double> userHistoricalWeightVector = ModelUtil.modelToVector(userIngredientWeightSumDailyVo);
+            Vector<Integer> userHistoricalWeightVector = ModelUtil.modelToVector(userIngredientWeightSumDailyVo);
             log.info("用户今日摄入记录向量 {}", userHistoricalWeightVector.toString());
             CuisineIngredientCategoryWeightVo cuisineIngredientCategoryWeightVo = cuisineIngredientCategoryWeightService
                     .queryByCuisineCode(mostRecommendedCuisine.getCode());
             // 菜品食材种类重量向量
             Vector<Integer> cuisineCategoryWeightVector = ModelUtil.modelToVector(cuisineIngredientCategoryWeightVo);
             log.info("菜品食材种类重量向量 {}", cuisineCategoryWeightVector.toString());
-            ModelUtil.vectorToModel(VectorUtil.addition(cuisineCategoryWeightVector, userHistoricalWeightVector),
+            ModelUtil.vectorToModel(VectorUtil.additionInt(cuisineCategoryWeightVector, userHistoricalWeightVector),
                     userIngredientWeightSumDailyVo);
             userIngredientWeightSumDailyService.insertOrUpdateByUuidAndDate(userIngredientWeightSumDailyVo);
             log.info("用户摄入后模型 {}", ModelUtil.modelToVector(userIngredientWeightSumDailyVo).toString());
