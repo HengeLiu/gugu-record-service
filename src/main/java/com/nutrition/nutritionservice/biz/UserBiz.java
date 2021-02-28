@@ -8,6 +8,7 @@ import com.nutrition.nutritionservice.controller.ao.CuisinePreviewAo;
 import com.nutrition.nutritionservice.controller.ao.CustomIntakesHistoryAo;
 import com.nutrition.nutritionservice.controller.ao.UserInfoAo;
 import com.nutrition.nutritionservice.converter.Model2UserModelConverter;
+import com.nutrition.nutritionservice.enums.BooleanEnum;
 import com.nutrition.nutritionservice.enums.database.CuisineTasteEnum;
 import com.nutrition.nutritionservice.enums.database.CustomUserInfoStatusEnum;
 import com.nutrition.nutritionservice.enums.database.IngredientCategoryEnum;
@@ -21,6 +22,7 @@ import com.nutrition.nutritionservice.service.CuisineIngredientCategoryWeightSer
 import com.nutrition.nutritionservice.service.CuisineIngredientRelService;
 import com.nutrition.nutritionservice.service.CuisineNutrientWeightService;
 import com.nutrition.nutritionservice.service.CuisineService;
+import com.nutrition.nutritionservice.service.CustomHistoricalCuisineIngredientRelService;
 import com.nutrition.nutritionservice.service.IngredientService;
 import com.nutrition.nutritionservice.service.StoreService;
 import com.nutrition.nutritionservice.service.UserAccountService;
@@ -39,6 +41,7 @@ import com.nutrition.nutritionservice.vo.CuisineIngredientCategoryWeightVo;
 import com.nutrition.nutritionservice.vo.CuisineIngredientRelVo;
 import com.nutrition.nutritionservice.vo.CuisineNutrientWeightVo;
 import com.nutrition.nutritionservice.vo.CuisineVo;
+import com.nutrition.nutritionservice.vo.CustomHistoricalCuisineIngredientRelVo;
 import com.nutrition.nutritionservice.vo.HistoricalCuisineRecordVo;
 import com.nutrition.nutritionservice.vo.IngredientVo;
 import com.nutrition.nutritionservice.vo.ModelParamVo;
@@ -134,6 +137,9 @@ public class UserBiz {
 
     @Resource
     private CuisineBiz cuisineBiz;
+
+    @Resource
+    private CustomHistoricalCuisineIngredientRelService customHistoricalCuisineIngredientRelService;
 
     @Transactional(rollbackFor = Exception.class)
     public Map<String, Object> saveUserInfo(UserInfoAo userInfoAo) {
@@ -269,17 +275,28 @@ public class UserBiz {
         userNutrientWeightSumDailyService.replaceAll(uuid, historyLocalDate, newUserNutrientWeightSumDailyVoList);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void saveCustomCuisineHistory(CustomIntakesHistoryAo customIntakesHistoryAo, LocalDate targetDate) {
         /* 更新餐品记录 */
-        userHistoricalCuisineService.add(UserHistoricalCuisineVo.builder().uuid(customIntakesHistoryAo.getUuid())
-                .cuisineCode(customIntakesHistoryAo.getCuisineCode()).status(CuisineTasteEnum.UNEVALUATED.getCode())
+        long historicalCuisineId = userHistoricalCuisineService.add(UserHistoricalCuisineVo.builder()
+                .uuid(customIntakesHistoryAo.getUuid()).cuisineCode(customIntakesHistoryAo.getCuisineCode())
+                .custom(BooleanEnum.TRUE.getCode()).status(CuisineTasteEnum.UNEVALUATED.getCode())
                 .build());
+
 
         List<CuisineIngredientAo> ingredientWeightList = customIntakesHistoryAo.getIngredientList();
         if (CollectionUtils.isEmpty(ingredientWeightList)) {
             log.error("Ingredient list is empty, cuisine code {}, uuid {}", customIntakesHistoryAo.getCuisineCode(),
                     customIntakesHistoryAo.getUuid());
         }
+
+        List<CustomHistoricalCuisineIngredientRelVo> customHistoricalCuisineIngredientRelVoList = ingredientWeightList
+                .stream()
+                .map(cuisineIngredientAo -> CustomHistoricalCuisineIngredientRelVo.builder()
+                        .userHistoricalCuisineId(historicalCuisineId).uuid(customIntakesHistoryAo.getUuid())
+                        .ingredientCode(cuisineIngredientAo.getCode()).weight(cuisineIngredientAo.getWeight()).build())
+                .collect(Collectors.toList());
+        customHistoricalCuisineIngredientRelService.batchInsert(customHistoricalCuisineIngredientRelVoList);
 
         Map<Integer, Integer> integerWeightMap = ingredientWeightList.stream()
                 .collect(Collectors.toMap(CuisineIngredientAo::getCode, CuisineIngredientAo::getWeight));

@@ -34,8 +34,8 @@ public class UserHistoricalCuisineService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void add(UserHistoricalCuisineVo userHistoricalCuisineVo) {
-        userHistoricalCuisineDao.insert(userHistoricalCuisineVo);
+    public long add(UserHistoricalCuisineVo userHistoricalCuisineVo) {
+        return userHistoricalCuisineDao.insert(userHistoricalCuisineVo);
     }
 
     @Nullable

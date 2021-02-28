@@ -6,16 +6,17 @@
         <result column="uuid" jdbcType="VARCHAR" property="uuid"/>
         <result column="cuisine_code" jdbcType="VARCHAR" property="cuisineCode"/>
         <result column="taste" jdbcType="TINYINT" property="tasteScore"/>
+        <result column="custom" jdbcType="TINYINT" property="custom"/>
         <result column="status" jdbcType="TINYINT" property="status"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, uuid, cuisine_code, taste, `status`, create_time, update_time
-  </sql>
+        id, uuid, cuisine_code, taste, custom, `status`, create_time, update_time
+    </sql>
     <sql id="Insert_Column_List">
-    uuid, cuisine_code, taste, `status`
-  </sql>
+        uuid, cuisine_code, taste, `status`, custom
+    </sql>
     <select id="selectByUuid" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -67,7 +68,7 @@
         <include refid="Insert_Column_List"/>
         )
         values (#{uuid,jdbcType=VARCHAR}, #{cuisineCode,jdbcType=VARCHAR}, #{tasteScore,jdbcType=TINYINT},
-        #{status,jdbcType=TINYINT}
+        #{custom},#{status,jdbcType=TINYINT}
         )
     </insert>
     <update id="updateStatusById">

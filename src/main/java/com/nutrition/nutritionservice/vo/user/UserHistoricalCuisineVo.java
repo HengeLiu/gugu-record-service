@@ -28,6 +28,11 @@ public class UserHistoricalCuisineVo extends HistoricalCuisineRecordVo implement
      */
     private int tasteScore;
 
+    /**
+     * 是否是自定义的记录 {@link com.nutrition.nutritionservice.enums.BooleanEnum}
+     */
+    private int custom;
+
     private LocalDateTime updateTime;
 
     private static final long serialVersionUID = 1L;

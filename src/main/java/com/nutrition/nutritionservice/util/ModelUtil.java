@@ -84,22 +84,22 @@ public class ModelUtil {
 
     public static CategoryModel categoryEnumMapToModel(Map<IngredientCategoryEnum, Integer> categoryEnumMap,
             CategoryModel model) {
-        model.setProcessedGrains(categoryEnumMap.get(IngredientCategoryEnum.PROCESSED_GRAINS));
-        model.setUnprocessedGrains(categoryEnumMap.get(IngredientCategoryEnum.UNPROCESSED_GRAINS));
-        model.setMixedBeans(categoryEnumMap.get(IngredientCategoryEnum.MIXED_BEANS));
-        model.setTuber(categoryEnumMap.get(IngredientCategoryEnum.TUBER));
-        model.setGeneralVegetables(categoryEnumMap.get(IngredientCategoryEnum.GENERAL_VEGETABLES));
-        model.setDarkVegetables(categoryEnumMap.get(IngredientCategoryEnum.DARK_VEGETABLES));
-        model.setFruit(categoryEnumMap.get(IngredientCategoryEnum.FRUITS));
-        model.setMeat(categoryEnumMap.get(IngredientCategoryEnum.MEAT));
-        model.setPoultry(categoryEnumMap.get(IngredientCategoryEnum.POULTRY));
-        model.setAquatic(categoryEnumMap.get(IngredientCategoryEnum.AQUATIC));
-        model.setEgg(categoryEnumMap.get(IngredientCategoryEnum.EGGS));
-        model.setDairy(categoryEnumMap.get(IngredientCategoryEnum.DAIRY));
-        model.setSoybean(categoryEnumMap.get(IngredientCategoryEnum.SOYBEAN));
-        model.setNut(categoryEnumMap.get(IngredientCategoryEnum.NUT));
-        model.setOil(categoryEnumMap.get(IngredientCategoryEnum.OIL));
-        model.setSalt(categoryEnumMap.get(IngredientCategoryEnum.SALT));
+        model.setProcessedGrains(categoryEnumMap.getOrDefault(IngredientCategoryEnum.PROCESSED_GRAINS, 0));
+        model.setUnprocessedGrains(categoryEnumMap.getOrDefault(IngredientCategoryEnum.UNPROCESSED_GRAINS, 0));
+        model.setMixedBeans(categoryEnumMap.getOrDefault(IngredientCategoryEnum.MIXED_BEANS, 0));
+        model.setTuber(categoryEnumMap.getOrDefault(IngredientCategoryEnum.TUBER, 0));
+        model.setGeneralVegetables(categoryEnumMap.getOrDefault(IngredientCategoryEnum.GENERAL_VEGETABLES, 0));
+        model.setDarkVegetables(categoryEnumMap.getOrDefault(IngredientCategoryEnum.DARK_VEGETABLES, 0));
+        model.setFruit(categoryEnumMap.getOrDefault(IngredientCategoryEnum.FRUITS, 0));
+        model.setMeat(categoryEnumMap.getOrDefault(IngredientCategoryEnum.MEAT, 0));
+        model.setPoultry(categoryEnumMap.getOrDefault(IngredientCategoryEnum.POULTRY, 0));
+        model.setAquatic(categoryEnumMap.getOrDefault(IngredientCategoryEnum.AQUATIC, 0));
+        model.setEgg(categoryEnumMap.getOrDefault(IngredientCategoryEnum.EGGS, 0));
+        model.setDairy(categoryEnumMap.getOrDefault(IngredientCategoryEnum.DAIRY, 0));
+        model.setSoybean(categoryEnumMap.getOrDefault(IngredientCategoryEnum.SOYBEAN, 0));
+        model.setNut(categoryEnumMap.getOrDefault(IngredientCategoryEnum.NUT, 0));
+        model.setOil(categoryEnumMap.getOrDefault(IngredientCategoryEnum.OIL, 0));
+        model.setSalt(categoryEnumMap.getOrDefault(IngredientCategoryEnum.SALT, 0));
         return model;
     }
 
