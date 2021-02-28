@@ -49,6 +49,12 @@ public class UserController {
         return Response.success();
     }
 
+    @PostMapping("/update/custom-cuisine-history")
+    public Response updateCustomCuisineHistory(@RequestBody CustomIntakesHistoryAo customIntakesHistoryAo) {
+        userBiz.updateCustomCuisineHistory(customIntakesHistoryAo);
+        return Response.success();
+    }
+
     @GetMapping("/remove/cuisine-history")
     public Response removeCuisineHistory(@RequestParam String uuid, @RequestParam Long userHistoricalCuisineId) {
         userBiz.removeDietRecord(uuid, userHistoricalCuisineId);

@@ -28,6 +28,12 @@ public class CustomIntakesHistoryAo implements Serializable {
     private String uuid;
 
     /**
+     * 用户历史餐品记录id
+     * @apiNote 更新时需要此字段
+     */
+    private Long userHistoricalCuisineId;
+
+    /**
      * 餐品编码
      */
     private String cuisineCode;

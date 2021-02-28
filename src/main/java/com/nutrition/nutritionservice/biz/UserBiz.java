@@ -211,6 +211,20 @@ public class UserBiz {
     }
 
     @Transactional(rollbackFor = Exception.class)
+    public void updateCustomCuisineHistory(CustomIntakesHistoryAo customIntakesHistoryAo) {
+        String uuid = customIntakesHistoryAo.getUuid();
+        Long userHistoricalCuisineId = customIntakesHistoryAo.getUserHistoricalCuisineId();
+        UserHistoricalCuisineVo removedCuisineHistory = userHistoricalCuisineService.remove(userHistoricalCuisineId);
+        if (removedCuisineHistory == null) {
+            log.error("Cuisine history null, user " + uuid + ", historical cuisine id " + userHistoricalCuisineId);
+            return;
+        }
+        this.removeCustomCuisineHistory(userHistoricalCuisineId, uuid,
+                removedCuisineHistory.getCreateTime().toLocalDate());
+        this.saveCustomCuisineHistory(customIntakesHistoryAo, removedCuisineHistory.getCreateTime().toLocalDate());
+    }
+
+    @Transactional(rollbackFor = Exception.class)
     public void removeDietRecord(String uuid, long userHistoricalCuisineId) {
         /* 更新餐品记录 */
         UserHistoricalCuisineVo removedCuisineHistory = userHistoricalCuisineService.remove(userHistoricalCuisineId);
