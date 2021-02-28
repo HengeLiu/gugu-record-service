@@ -235,7 +235,7 @@ public class UserBiz {
             return;
         }
 
-        boolean custom = removedCuisineHistory.getCustom() == 1;
+        boolean custom = removedCuisineHistory.getCustom() == BooleanEnum.TRUE.getCode();
         LocalDate historyLocalDate = removedCuisineHistory.getCreateTime().toLocalDate();
         String cuisineCode = removedCuisineHistory.getCuisineCode();
 
@@ -438,7 +438,7 @@ public class UserBiz {
         userNutrientWeightSumDailyService.replaceAll(uuid, targetDate, newUserNutrientWeightSumDailyVoList);
     }
 
-    public List<CuisinePreviewAo> queryTodayCuisineHistory(String uuid) {
+    public List<CuisinePreviewAo> queryUserDietRecords(String uuid) {
 
         List<UserHistoricalOrderVo> userHistoricalOrderVoList = userHistoricalOrderService.queryByUuid(uuid, 5);
         List<Long> userHistoricalOrderIdList = userHistoricalOrderVoList.stream().map(UserHistoricalOrderVo::getId)
@@ -520,19 +520,23 @@ public class UserBiz {
 
     public UserDietRecordDetailsAo queryUserDietRecordDetails(Long userHistoricalCuisineId) {
         UserHistoricalCuisineVo userHistoricalCuisine = userHistoricalCuisineService.queryById(userHistoricalCuisineId);
-        List<CustomHistoricalCuisineIngredientRelVo> customHistoricalCuisineIngredientRelVoList = customHistoricalCuisineIngredientRelService
-                .selectByHistoricalCuisineId(userHistoricalCuisineId);
 
-        UserCustomDietRecordAo userCustomDietRecordAo = UserCustomDietRecordAo.builder()
-                .cuisineCode(userHistoricalCuisine.getCuisineCode())
-                .ingredientList(customHistoricalCuisineIngredientRelVoList.stream()
-                        .map(customIngredientWeight -> CuisineIngredientAo.builder()
-                                .code(customIngredientWeight.getIngredientCode())
-                                .weight(customIngredientWeight.getWeight()).build())
-                        .collect(Collectors.toList()))
-                .userHistoricalCuisineId(userHistoricalCuisineId).uuid(userHistoricalCuisine.getUuid()).build();
+        UserCustomDietRecordAo userCustomDietRecordAo = null;
+        if (userHistoricalCuisine.getCustom() == BooleanEnum.TRUE.getCode()) {
+            List<CustomHistoricalCuisineIngredientRelVo> customHistoricalCuisineIngredientRelVoList = customHistoricalCuisineIngredientRelService
+                    .selectByHistoricalCuisineId(userHistoricalCuisineId);
+            userCustomDietRecordAo = UserCustomDietRecordAo.builder()
+                    .cuisineCode(userHistoricalCuisine.getCuisineCode())
+                    .ingredientList(customHistoricalCuisineIngredientRelVoList.stream()
+                            .map(customIngredientWeight -> CuisineIngredientAo.builder()
+                                    .code(customIngredientWeight.getIngredientCode())
+                                    .weight(customIngredientWeight.getWeight()).build())
+                            .collect(Collectors.toList()))
+                    .userHistoricalCuisineId(userHistoricalCuisineId).uuid(userHistoricalCuisine.getUuid()).build();
+        }
 
         CuisineDetailsAo cuisineDetailsAo = cuisineBiz.queryCuisineDetails(userHistoricalCuisine.getCuisineCode());
+
         return UserDietRecordDetailsAo.builder().uuid(userHistoricalCuisine.getUuid())
                 .dietRecordId(userHistoricalCuisine.getId())
                 .customDietRecord(userCustomDietRecordAo)

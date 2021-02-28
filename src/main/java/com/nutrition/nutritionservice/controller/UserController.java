@@ -67,8 +67,8 @@ public class UserController {
     }
 
     @GetMapping("/query/today-cuisine-history")
-    public Response queryTodayCuisineHistory(@RequestParam String uuid) {
-        return Response.success(userBiz.queryTodayCuisineHistory(uuid));
+    public Response queryUserDietRecords(@RequestParam String uuid) {
+        return Response.success(userBiz.queryUserDietRecords(uuid));
     }
 
     @GetMapping("/query/user-info")
