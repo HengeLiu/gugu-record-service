@@ -7,7 +7,7 @@ import com.nutrition.nutritionservice.controller.ao.CuisineDetailsAo;
 import com.nutrition.nutritionservice.controller.ao.CuisineIngredientAo;
 import com.nutrition.nutritionservice.controller.ao.CuisinePreviewAo;
 import com.nutrition.nutritionservice.controller.ao.CustomIntakesHistoryAo;
-import com.nutrition.nutritionservice.controller.ao.UserDietRecordAo;
+import com.nutrition.nutritionservice.controller.ao.UserDietRecordDetailsAo;
 import com.nutrition.nutritionservice.controller.ao.UserInfoAo;
 import com.nutrition.nutritionservice.converter.Model2UserModelConverter;
 import com.nutrition.nutritionservice.enums.BooleanEnum;
@@ -518,10 +518,11 @@ public class UserBiz {
         return userAccountVo.getUuid();
     }
 
-    public UserDietRecordAo queryCuisineHistory(String uuid, Long userHistoricalCuisineId) {
+    public UserDietRecordDetailsAo queryCuisineHistory( Long userHistoricalCuisineId) {
         UserHistoricalCuisineVo userHistoricalCuisine = userHistoricalCuisineService.queryById(userHistoricalCuisineId);
         CuisineDetailsAo cuisineDetailsAo = cuisineBiz.queryCuisineDetails(userHistoricalCuisine.getCuisineCode());
-        return UserDietRecordAo.builder().uuid(uuid).dietRecordId(userHistoricalCuisine.getId())
+        return UserDietRecordDetailsAo.builder().uuid(userHistoricalCuisine.getUuid())
+                .dietRecordId(userHistoricalCuisine.getId())
                 .cuisineDetails(cuisineDetailsAo).build();
     }
 }

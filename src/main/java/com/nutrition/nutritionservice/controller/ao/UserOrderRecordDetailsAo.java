@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
- * 用户饮食记录
+ * 用户订单记录详情
  *
  * @author heng.liu
  * @since 2021/2/28
@@ -17,13 +17,13 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDietRecordAo implements Serializable {
+public class UserOrderRecordDetailsAo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     private String uuid;
 
-    private Long dietRecordId;
+    private Long orderRecordId;
 
     private CuisineDetailsAo cuisineDetails;
 

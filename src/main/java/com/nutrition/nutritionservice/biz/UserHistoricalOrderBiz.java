@@ -1,6 +1,8 @@
 package com.nutrition.nutritionservice.biz;
 
 import com.nutrition.nutritionservice.annotation.Biz;
+import com.nutrition.nutritionservice.controller.ao.CuisineDetailsAo;
+import com.nutrition.nutritionservice.controller.ao.UserOrderRecordDetailsAo;
 import com.nutrition.nutritionservice.enums.database.UserHistoricalOrderStatusEnum;
 import com.nutrition.nutritionservice.exception.NutritionServiceException;
 import com.nutrition.nutritionservice.service.UserHistoricalOrderService;
@@ -22,6 +24,9 @@ public class UserHistoricalOrderBiz {
     @Resource
     private UserBiz userBiz;
 
+    @Resource
+    private CuisineBiz cuisineBiz;
+
     public void saveHistoricalOrder(String uuid, String cuisineCode) {
         userHistoricalOrderService.add(uuid, cuisineCode);
     }
@@ -34,17 +39,27 @@ public class UserHistoricalOrderBiz {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void addHistoricalOrderToRecord(Long id) {
-        if (id == null) {
+    public void addHistoricalOrderToRecord(Long orderHistoryId) {
+        if (orderHistoryId == null) {
             return;
         }
-        UserHistoricalOrderVo userHistoricalOrderVo = userHistoricalOrderService.queryById(id);
+        UserHistoricalOrderVo userHistoricalOrderVo = userHistoricalOrderService.queryById(orderHistoryId);
         if (userHistoricalOrderVo == null) {
-            throw new NutritionServiceException("未找到用户点餐记录，id " + id);
+            throw new NutritionServiceException("未找到用户点餐记录，orderHistoryId " + orderHistoryId);
         }
         userBiz.saveCuisineHistory(userHistoricalOrderVo.getUuid(), userHistoricalOrderVo.getCuisineCode(),
                 userHistoricalOrderVo.getCreateTime().toLocalDate());
-        userHistoricalOrderService.updateStatusByPrimaryKey(id, UserHistoricalOrderStatusEnum.YET.getCode());
+        userHistoricalOrderService.updateStatusByPrimaryKey(orderHistoryId,
+                UserHistoricalOrderStatusEnum.YET.getCode());
     }
 
+    public UserOrderRecordDetailsAo queryOrderRecordId(Long orderHistoryId) {
+        UserHistoricalOrderVo userHistoricalOrderVo = userHistoricalOrderService.queryById(orderHistoryId);
+        if (userHistoricalOrderVo == null) {
+            throw new NutritionServiceException("未找到用户点餐记录，id " + orderHistoryId);
+        }
+        CuisineDetailsAo cuisineDetails = cuisineBiz.queryCuisineDetails(userHistoricalOrderVo.getCuisineCode());
+        return UserOrderRecordDetailsAo.builder().orderRecordId(orderHistoryId).uuid(userHistoricalOrderVo.getUuid())
+                .cuisineDetails(cuisineDetails).build();
+    }
 }
