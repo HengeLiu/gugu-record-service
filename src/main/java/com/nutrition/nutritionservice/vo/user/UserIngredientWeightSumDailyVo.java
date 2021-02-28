@@ -1,6 +1,5 @@
 package com.nutrition.nutritionservice.vo.user;
 
-import com.nutrition.nutritionservice.vo.CuisineIngredientCategoryWeightVo;
 import com.nutrition.nutritionservice.vo.modeldata.CategoryModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -89,7 +88,7 @@ public class UserIngredientWeightSumDailyVo extends CategoryModel implements Ser
         this.setCalorie(this.getCalorie() + calorie);
     }
 
-    public void minusCuisineCategoryWeight(CuisineIngredientCategoryWeightVo cuisineIngredientCategoryWeightVo) {
+    public void minusCuisineCategoryWeight(CategoryModel cuisineIngredientCategoryWeightVo, double calorie) {
         this.setProcessedGrains(
                 Math.max(this.getProcessedGrains() - cuisineIngredientCategoryWeightVo.getProcessedGrains(), 0));
         this.setUnprocessedGrains(
@@ -110,7 +109,7 @@ public class UserIngredientWeightSumDailyVo extends CategoryModel implements Ser
         this.setNut(Math.max(this.getNut() - cuisineIngredientCategoryWeightVo.getNut(), 0));
         this.setOil(Math.max(this.getOil() - cuisineIngredientCategoryWeightVo.getOil(), 0));
         this.setSalt(Math.max(this.getSalt() - cuisineIngredientCategoryWeightVo.getSalt(), 0));
-        this.setCalorie(Math.max(this.getCalorie() - cuisineIngredientCategoryWeightVo.getCalorie(), 0));
+        this.setCalorie(Math.max(this.getCalorie() - calorie, 0));
     }
 
     private static final long serialVersionUID = 1L;

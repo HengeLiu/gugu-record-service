@@ -51,7 +51,7 @@ public class UserController {
 
     @GetMapping("/remove/cuisine-history")
     public Response removeCuisineHistory(@RequestParam String uuid, @RequestParam Long userHistoricalCuisineId) {
-        userBiz.removeCuisineHistory(uuid, userHistoricalCuisineId);
+        userBiz.removeDietRecord(uuid, userHistoricalCuisineId);
         return Response.success();
     }
 
