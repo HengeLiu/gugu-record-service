@@ -474,6 +474,7 @@ public class CuisineBiz {
             }
             cuisineIngredientAoList.add(CuisineIngredientAo.builder().code(ingredientCode).name(ingredientVo.getName())
                     .weight(cuisineIngredientWeightEntry.getValue().getWeight())
+                    .categoryCode(ingredientVo.getCategoryCode()).categoryName(ingredientVo.getCategoryName())
                     .main(cuisineIngredientWeightEntry.getValue().getMain() == 1).build());
         }
         cuisineDetailsAoBuilder.ingredientList(cuisineIngredientAoList.stream()
