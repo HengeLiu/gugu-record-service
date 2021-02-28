@@ -3,8 +3,10 @@ package com.nutrition.nutritionservice.service;
 import com.nutrition.nutritionservice.dao.IngredientNutrientRelDao;
 import com.nutrition.nutritionservice.vo.IngredientNutrientRelVo;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -24,6 +26,9 @@ public class IngredientNutrientRelService {
     }
 
     public List<IngredientNutrientRelVo> queryByIngredientCodeList(List<Integer> ingredientCodeList) {
+        if (CollectionUtils.isEmpty(ingredientCodeList)) {
+            return Collections.emptyList();
+        }
         return ingredientNutrientRelDao.selectByIngredientCodeList(ingredientCodeList);
     }
 }

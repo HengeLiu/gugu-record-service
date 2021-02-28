@@ -15,7 +15,7 @@
         id, uuid, cuisine_code, taste, custom, `status`, create_time, update_time
     </sql>
     <sql id="Insert_Column_List">
-        uuid, cuisine_code, taste, `status`, custom
+        uuid, cuisine_code, taste, custom, `status`
     </sql>
     <select id="selectByUuid" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
@@ -62,7 +62,7 @@
         where uuid = #{uuid} and status = 0 order by create_time desc limit #{limit}
     </select>
 
-    <insert id="insert" keyColumn="id" keyProperty="id"
+    <insert id="insert" keyProperty="id"
             parameterType="com.nutrition.nutritionservice.vo.user.UserHistoricalCuisineVo" useGeneratedKeys="true">
         insert into user_historical_cuisine (
         <include refid="Insert_Column_List"/>

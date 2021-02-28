@@ -3,9 +3,11 @@ package com.nutrition.nutritionservice.biz;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.nutrition.nutritionservice.annotation.Biz;
+import com.nutrition.nutritionservice.controller.ao.CuisineDetailsAo;
 import com.nutrition.nutritionservice.controller.ao.CuisineIngredientAo;
 import com.nutrition.nutritionservice.controller.ao.CuisinePreviewAo;
 import com.nutrition.nutritionservice.controller.ao.CustomIntakesHistoryAo;
+import com.nutrition.nutritionservice.controller.ao.UserDietRecordAo;
 import com.nutrition.nutritionservice.controller.ao.UserInfoAo;
 import com.nutrition.nutritionservice.converter.Model2UserModelConverter;
 import com.nutrition.nutritionservice.enums.BooleanEnum;
@@ -329,11 +331,11 @@ public class UserBiz {
     @Transactional(rollbackFor = Exception.class)
     public void saveCustomCuisineHistory(CustomIntakesHistoryAo customIntakesHistoryAo, LocalDate targetDate) {
         /* 更新餐品记录 */
-        long historicalCuisineId = userHistoricalCuisineService.add(UserHistoricalCuisineVo.builder()
+        UserHistoricalCuisineVo userHistoricalCuisineVo = UserHistoricalCuisineVo.builder()
                 .uuid(customIntakesHistoryAo.getUuid()).cuisineCode(customIntakesHistoryAo.getCuisineCode())
-                .custom(BooleanEnum.TRUE.getCode()).status(CuisineTasteEnum.UNEVALUATED.getCode())
-                .build());
-
+                .custom(BooleanEnum.TRUE.getCode()).tasteScore(CuisineTasteEnum.UNEVALUATED.getCode()).build();
+        userHistoricalCuisineService.add(userHistoricalCuisineVo);
+        long historicalCuisineId = userHistoricalCuisineVo.getId();
 
         List<CuisineIngredientAo> ingredientWeightList = customIntakesHistoryAo.getIngredientList();
         if (CollectionUtils.isEmpty(ingredientWeightList)) {
@@ -516,4 +518,10 @@ public class UserBiz {
         return userAccountVo.getUuid();
     }
 
+    public UserDietRecordAo queryCuisineHistory(String uuid, Long userHistoricalCuisineId) {
+        UserHistoricalCuisineVo userHistoricalCuisine = userHistoricalCuisineService.queryById(userHistoricalCuisineId);
+        CuisineDetailsAo cuisineDetailsAo = cuisineBiz.queryCuisineDetails(userHistoricalCuisine.getCuisineCode());
+        return UserDietRecordAo.builder().uuid(uuid).dietRecordId(userHistoricalCuisine.getId())
+                .cuisineDetails(cuisineDetailsAo).build();
+    }
 }

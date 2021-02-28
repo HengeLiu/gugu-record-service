@@ -55,4 +55,8 @@ public class UserHistoricalCuisineService {
         return userHistoricalCuisineDao.selectLastByUuidLimit(uuid, limit);
     }
 
+    public UserHistoricalCuisineVo queryById(long userHistoricalCuisineId) {
+        return userHistoricalCuisineDao.selectById(userHistoricalCuisineId);
+    }
+
 }

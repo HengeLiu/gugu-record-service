@@ -13,7 +13,7 @@ public interface UserHistoricalCuisineDao {
 
     UserHistoricalCuisineVo selectLastCuisineByUuid(String uuid);
 
-    long insert(UserHistoricalCuisineVo record);
+    int insert(UserHistoricalCuisineVo record);
 
     List<UserHistoricalCuisineVo> selectByUuid(String uuid);
 
