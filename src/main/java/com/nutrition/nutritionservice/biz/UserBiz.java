@@ -6,7 +6,7 @@ import com.nutrition.nutritionservice.annotation.Biz;
 import com.nutrition.nutritionservice.controller.ao.CuisineDetailsAo;
 import com.nutrition.nutritionservice.controller.ao.CuisineIngredientAo;
 import com.nutrition.nutritionservice.controller.ao.CuisinePreviewAo;
-import com.nutrition.nutritionservice.controller.ao.CustomIntakesHistoryAo;
+import com.nutrition.nutritionservice.controller.ao.UserCustomDietRecordAo;
 import com.nutrition.nutritionservice.controller.ao.UserDietRecordDetailsAo;
 import com.nutrition.nutritionservice.controller.ao.UserInfoAo;
 import com.nutrition.nutritionservice.converter.Model2UserModelConverter;
@@ -213,9 +213,9 @@ public class UserBiz {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void updateCustomCuisineHistory(CustomIntakesHistoryAo customIntakesHistoryAo) {
-        String uuid = customIntakesHistoryAo.getUuid();
-        Long userHistoricalCuisineId = customIntakesHistoryAo.getUserHistoricalCuisineId();
+    public void updateCustomCuisineHistory(UserCustomDietRecordAo userCustomDietRecordAo) {
+        String uuid = userCustomDietRecordAo.getUuid();
+        Long userHistoricalCuisineId = userCustomDietRecordAo.getUserHistoricalCuisineId();
         UserHistoricalCuisineVo removedCuisineHistory = userHistoricalCuisineService.remove(userHistoricalCuisineId);
         if (removedCuisineHistory == null) {
             log.error("Cuisine history null, user " + uuid + ", historical cuisine id " + userHistoricalCuisineId);
@@ -223,7 +223,7 @@ public class UserBiz {
         }
         this.removeCustomCuisineHistory(userHistoricalCuisineId, uuid,
                 removedCuisineHistory.getCreateTime().toLocalDate());
-        this.saveCustomCuisineHistory(customIntakesHistoryAo, removedCuisineHistory.getCreateTime().toLocalDate());
+        this.saveCustomCuisineHistory(userCustomDietRecordAo, removedCuisineHistory.getCreateTime().toLocalDate());
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -329,21 +329,21 @@ public class UserBiz {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void saveCustomCuisineHistory(CustomIntakesHistoryAo customIntakesHistoryAo, LocalDate targetDate) {
+    public void saveCustomCuisineHistory(UserCustomDietRecordAo userCustomDietRecordAo, LocalDate targetDate) {
         /* 更新餐品记录 */
         UserHistoricalCuisineVo userHistoricalCuisineVo = UserHistoricalCuisineVo.builder()
-                .uuid(customIntakesHistoryAo.getUuid()).cuisineCode(customIntakesHistoryAo.getCuisineCode())
+                .uuid(userCustomDietRecordAo.getUuid()).cuisineCode(userCustomDietRecordAo.getCuisineCode())
                 .custom(BooleanEnum.TRUE.getCode()).tasteScore(CuisineTasteEnum.UNEVALUATED.getCode()).build();
         userHistoricalCuisineService.add(userHistoricalCuisineVo);
         long historicalCuisineId = userHistoricalCuisineVo.getId();
 
-        List<CuisineIngredientAo> ingredientWeightList = customIntakesHistoryAo.getIngredientList();
+        List<CuisineIngredientAo> ingredientWeightList = userCustomDietRecordAo.getIngredientList();
         if (CollectionUtils.isEmpty(ingredientWeightList)) {
-            log.error("Ingredient list is empty, cuisine code {}, uuid {}", customIntakesHistoryAo.getCuisineCode(),
-                    customIntakesHistoryAo.getUuid());
+            log.error("Ingredient list is empty, cuisine code {}, uuid {}", userCustomDietRecordAo.getCuisineCode(),
+                    userCustomDietRecordAo.getUuid());
         }
 
-        this.batchAddCustomCuisineIngredientWeight(historicalCuisineId, customIntakesHistoryAo.getUuid(),
+        this.batchAddCustomCuisineIngredientWeight(historicalCuisineId, userCustomDietRecordAo.getUuid(),
                 ingredientWeightList);
 
         Map<Integer, Integer> integerWeightMap = ingredientWeightList.stream()
@@ -356,9 +356,9 @@ public class UserBiz {
         /* 餐品营养素含量 */
         Map<Integer, Double> nutrientWeightMap = cuisineBiz.calculateNutrientWeight(integerWeightMap);
         if (CollectionUtils.isEmpty(nutrientWeightMap)) {
-            log.error("Cuisine nutrient weight is empty, cuisine code " + customIntakesHistoryAo.getCuisineCode());
+            log.error("Cuisine nutrient weight is empty, cuisine code " + userCustomDietRecordAo.getCuisineCode());
         }
-        this.saveIntakes(customIntakesHistoryAo.getUuid(), calorie, ingredientCategoryEnumIntegerMap, nutrientWeightMap,
+        this.saveIntakes(userCustomDietRecordAo.getUuid(), calorie, ingredientCategoryEnumIntegerMap, nutrientWeightMap,
                 targetDate, OperatorEnum.ADD);
     }
 
@@ -518,11 +518,24 @@ public class UserBiz {
         return userAccountVo.getUuid();
     }
 
-    public UserDietRecordDetailsAo queryCuisineHistory( Long userHistoricalCuisineId) {
+    public UserDietRecordDetailsAo queryUserDietRecordDetails(Long userHistoricalCuisineId) {
         UserHistoricalCuisineVo userHistoricalCuisine = userHistoricalCuisineService.queryById(userHistoricalCuisineId);
+        List<CustomHistoricalCuisineIngredientRelVo> customHistoricalCuisineIngredientRelVoList = customHistoricalCuisineIngredientRelService
+                .selectByHistoricalCuisineId(userHistoricalCuisineId);
+
+        UserCustomDietRecordAo userCustomDietRecordAo = UserCustomDietRecordAo.builder()
+                .cuisineCode(userHistoricalCuisine.getCuisineCode())
+                .ingredientList(customHistoricalCuisineIngredientRelVoList.stream()
+                        .map(customIngredientWeight -> CuisineIngredientAo.builder()
+                                .code(customIngredientWeight.getIngredientCode())
+                                .weight(customIngredientWeight.getWeight()).build())
+                        .collect(Collectors.toList()))
+                .userHistoricalCuisineId(userHistoricalCuisineId).uuid(userHistoricalCuisine.getUuid()).build();
+
         CuisineDetailsAo cuisineDetailsAo = cuisineBiz.queryCuisineDetails(userHistoricalCuisine.getCuisineCode());
         return UserDietRecordDetailsAo.builder().uuid(userHistoricalCuisine.getUuid())
                 .dietRecordId(userHistoricalCuisine.getId())
+                .customDietRecord(userCustomDietRecordAo)
                 .cuisineDetails(cuisineDetailsAo).build();
     }
 }

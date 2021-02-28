@@ -18,7 +18,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CustomIntakesHistoryAo implements Serializable {
+public class UserCustomDietRecordAo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

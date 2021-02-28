@@ -6,10 +6,12 @@ import com.nutrition.nutritionservice.controller.ao.UserOrderRecordDetailsAo;
 import com.nutrition.nutritionservice.enums.database.UserHistoricalOrderStatusEnum;
 import com.nutrition.nutritionservice.exception.NutritionServiceException;
 import com.nutrition.nutritionservice.service.UserHistoricalOrderService;
+import com.nutrition.nutritionservice.util.DateTimeUtil;
 import com.nutrition.nutritionservice.vo.UserHistoricalOrderVo;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
 
 /**
  * @author heng.liu
@@ -60,6 +62,8 @@ public class UserHistoricalOrderBiz {
         }
         CuisineDetailsAo cuisineDetails = cuisineBiz.queryCuisineDetails(userHistoricalOrderVo.getCuisineCode());
         return UserOrderRecordDetailsAo.builder().orderRecordId(orderHistoryId).uuid(userHistoricalOrderVo.getUuid())
+                .createTimeStr(
+                        DateTimeUtil.todayOrLastDayFormat(LocalDate.now(), userHistoricalOrderVo.getCreateTime()))
                 .cuisineDetails(cuisineDetails).build();
     }
 }

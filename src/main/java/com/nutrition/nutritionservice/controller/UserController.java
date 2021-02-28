@@ -2,7 +2,7 @@ package com.nutrition.nutritionservice.controller;
 
 import com.nutrition.nutritionservice.biz.UserBiz;
 import com.nutrition.nutritionservice.common.Response;
-import com.nutrition.nutritionservice.controller.ao.CustomIntakesHistoryAo;
+import com.nutrition.nutritionservice.controller.ao.UserCustomDietRecordAo;
 import com.nutrition.nutritionservice.controller.ao.UserInfoAo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,14 +44,14 @@ public class UserController {
     }
 
     @PostMapping("/save/custom-cuisine-history")
-    public Response saveCustomCuisineHistory(@RequestBody CustomIntakesHistoryAo customIntakesHistoryAo) {
-        userBiz.saveCustomCuisineHistory(customIntakesHistoryAo, LocalDate.now());
+    public Response saveCustomCuisineHistory(@RequestBody UserCustomDietRecordAo userCustomDietRecordAo) {
+        userBiz.saveCustomCuisineHistory(userCustomDietRecordAo, LocalDate.now());
         return Response.success();
     }
 
     @PostMapping("/update/custom-cuisine-history")
-    public Response updateCustomCuisineHistory(@RequestBody CustomIntakesHistoryAo customIntakesHistoryAo) {
-        userBiz.updateCustomCuisineHistory(customIntakesHistoryAo);
+    public Response updateCustomCuisineHistory(@RequestBody UserCustomDietRecordAo userCustomDietRecordAo) {
+        userBiz.updateCustomCuisineHistory(userCustomDietRecordAo);
         return Response.success();
     }
 
@@ -61,9 +61,9 @@ public class UserController {
         return Response.success();
     }
 
-    @GetMapping("/query/cuisine-history")
+    @GetMapping("/query/user-diet-record-details")
     public Response queryCuisineHistory(@RequestParam Long userHistoricalCuisineId) {
-        return Response.success(userBiz.queryCuisineHistory(userHistoricalCuisineId));
+        return Response.success(userBiz.queryUserDietRecordDetails(userHistoricalCuisineId));
     }
 
     @GetMapping("/query/today-cuisine-history")

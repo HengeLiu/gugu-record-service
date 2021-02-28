@@ -25,6 +25,8 @@ public class UserOrderRecordDetailsAo implements Serializable {
 
     private Long orderRecordId;
 
+    private String createTimeStr;
+
     private CuisineDetailsAo cuisineDetails;
 
 }

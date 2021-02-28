@@ -25,6 +25,8 @@ public class UserDietRecordDetailsAo implements Serializable {
 
     private Long dietRecordId;
 
+    private UserCustomDietRecordAo customDietRecord;
+
     private CuisineDetailsAo cuisineDetails;
 
 }
