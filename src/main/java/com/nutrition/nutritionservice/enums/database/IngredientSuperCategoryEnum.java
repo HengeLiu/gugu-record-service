@@ -10,7 +10,7 @@ import com.nutrition.nutritionservice.enums.CodeEnum;
  */
 public enum IngredientSuperCategoryEnum implements CodeEnum<Integer> {
 
-    UNKNOWN(0, "unknown", "未知"),
+    UNKNOWN(0, "unknown", "其他"),
 
     GRAINS_POTATOES(1, "grains_potatoes", "谷薯类"),
 

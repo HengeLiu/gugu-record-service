@@ -16,6 +16,7 @@ import com.nutrition.nutritionservice.controller.ao.StoreCuisineListAo;
 import com.nutrition.nutritionservice.controller.ao.StorePreviewAo;
 import com.nutrition.nutritionservice.converter.IngredientVo2AoConverter;
 import com.nutrition.nutritionservice.converter.NutrientWeightVo2AoConverter;
+import com.nutrition.nutritionservice.enums.BooleanEnum;
 import com.nutrition.nutritionservice.enums.CodeEnums;
 import com.nutrition.nutritionservice.enums.UnitEnum;
 import com.nutrition.nutritionservice.enums.database.CuisineCategoryEnum;
@@ -194,7 +195,7 @@ public class CuisineBiz {
                             .map(baseCuisineIngredientRel -> CuisineIngredientAo.builder()
                                     .code(baseCuisineIngredientRel.getIngredientCode())
                                     .weight(baseCuisineIngredientRel.getWeight())
-                                    .main(baseCuisineIngredientRel.getMain() == 1).build())
+                                    .main(baseCuisineIngredientRel.getMain() == BooleanEnum.TRUE.getCode()).build())
                             .collect(Collectors.toList()));
 
                 }
@@ -213,7 +214,9 @@ public class CuisineBiz {
                 .cuisineIngredientRelList(ingredientCodeWeightMap.entrySet().stream()
                         .map(ingredientWeightEntry -> CuisineIngredientRelVo.builder()
                                 .weight(ingredientWeightEntry.getValue()).ingredientCode(ingredientWeightEntry.getKey())
-                                .main(ingredientMainMap.getOrDefault(ingredientWeightEntry.getKey(), 0) > 0 ? 1 : 0)
+                                .main(ingredientMainMap.getOrDefault(ingredientWeightEntry.getKey(), 0) > 0
+                                        ? BooleanEnum.TRUE.getCode()
+                                        : BooleanEnum.FALSE.getCode())
                                 .build())
                         .collect(Collectors.toList()))
                 .build();
@@ -472,10 +475,17 @@ public class CuisineBiz {
                 log.error("Ingredient not exist, code {}", ingredientCode);
                 continue;
             }
+            IngredientCategoryEnum ingredientCategoryEnum = CodeEnums.valueOf(IngredientCategoryEnum.class,
+                    ingredientVo.getCategoryCode());
+            if (ingredientCategoryEnum == null) {
+                ingredientCategoryEnum = IngredientCategoryEnum.UNKNOWN;
+            }
             cuisineIngredientAoList.add(CuisineIngredientAo.builder().code(ingredientCode).name(ingredientVo.getName())
                     .weight(cuisineIngredientWeightEntry.getValue().getWeight())
-                    .categoryCode(ingredientVo.getCategoryCode()).categoryName(ingredientVo.getCategoryName())
-                    .main(cuisineIngredientWeightEntry.getValue().getMain() == 1).build());
+                    .categoryCode(ingredientCategoryEnum.getCode()).categoryName(ingredientCategoryEnum.getNameZh())
+                    .superCategoryCode(ingredientCategoryEnum.getParentCategory().getCode())
+                    .superCategoryName(ingredientCategoryEnum.getParentCategory().getNameZh())
+                    .main(cuisineIngredientWeightEntry.getValue().getMain() == BooleanEnum.TRUE.getCode()).build());
         }
         cuisineDetailsAoBuilder.ingredientList(cuisineIngredientAoList.stream()
                 .sorted(Comparator.comparingInt(CuisineIngredientAo::getWeight).reversed())
