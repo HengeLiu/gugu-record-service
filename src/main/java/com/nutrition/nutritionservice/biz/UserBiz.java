@@ -178,7 +178,7 @@ public class UserBiz {
         saveUserInfoAndModel(userInfoVo, uuid);
 
         UserStatusInfoVo userStatusInfoVo = UserStatusInfoVo.builder().uuid(uuid).customInfo(0)
-                .shownInfoCollectWindow(0).showProcessWindow(0).build();
+                .shownInfoCollectWindow(0).showProcessWindow(1).build();
         // 创建用户状态
         userStatusInfoService.add(userStatusInfoVo);
         return userAccount;
