@@ -12,7 +12,7 @@ import lombok.Getter;
 @Getter
 public enum IngredientCategoryEnum implements CodeEnum<Integer> {
 
-    UNKNOWN(0, "unknown", "未知", IngredientSuperCategoryEnum.UNKNOWN, "", false),
+    UNKNOWN(0, "unknown", "其他", IngredientSuperCategoryEnum.UNKNOWN, "", false),
 
     PROCESSED_GRAINS(1, "processed_grains", "精制谷物", IngredientSuperCategoryEnum.GRAINS_POTATOES, "", true),
 

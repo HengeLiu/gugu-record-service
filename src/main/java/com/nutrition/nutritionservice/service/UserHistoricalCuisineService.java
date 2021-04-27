@@ -34,8 +34,8 @@ public class UserHistoricalCuisineService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void add(UserHistoricalCuisineVo userHistoricalCuisineVo) {
-        userHistoricalCuisineDao.insert(userHistoricalCuisineVo);
+    public long add(UserHistoricalCuisineVo userHistoricalCuisineVo) {
+        return userHistoricalCuisineDao.insert(userHistoricalCuisineVo);
     }
 
     @Nullable
@@ -53,6 +53,10 @@ public class UserHistoricalCuisineService {
 
     public List<UserHistoricalCuisineVo> queryLastByUuidLimit(String uuid, int limit) {
         return userHistoricalCuisineDao.selectLastByUuidLimit(uuid, limit);
+    }
+
+    public UserHistoricalCuisineVo queryById(long userHistoricalCuisineId) {
+        return userHistoricalCuisineDao.selectById(userHistoricalCuisineId);
     }
 
 }

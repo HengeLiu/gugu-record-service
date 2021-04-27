@@ -2,6 +2,7 @@ package com.nutrition.nutritionservice.controller;
 
 import com.nutrition.nutritionservice.biz.UserBiz;
 import com.nutrition.nutritionservice.common.Response;
+import com.nutrition.nutritionservice.controller.ao.UserCustomDietRecordAo;
 import com.nutrition.nutritionservice.controller.ao.UserInfoAo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,15 +43,32 @@ public class UserController {
         return Response.success();
     }
 
-    @GetMapping("/remove/cuisine-history")
-    public Response removeCuisineHistory(@RequestParam String uuid, @RequestParam Long userHistoricalCuisineId) {
-        userBiz.removeCuisineHistory(uuid, userHistoricalCuisineId);
+    @PostMapping("/save/custom-cuisine-history")
+    public Response saveCustomCuisineHistory(@RequestBody UserCustomDietRecordAo userCustomDietRecordAo) {
+        userBiz.saveCustomCuisineHistory(userCustomDietRecordAo, LocalDate.now());
         return Response.success();
     }
 
+    @PostMapping("/update/custom-cuisine-history")
+    public Response updateCustomCuisineHistory(@RequestBody UserCustomDietRecordAo userCustomDietRecordAo) {
+        userBiz.updateCustomCuisineHistory(userCustomDietRecordAo);
+        return Response.success();
+    }
+
+    @GetMapping("/remove/cuisine-history")
+    public Response removeCuisineHistory(@RequestParam String uuid, @RequestParam Long userHistoricalCuisineId) {
+        userBiz.removeDietRecord(uuid, userHistoricalCuisineId);
+        return Response.success();
+    }
+
+    @GetMapping("/query/user-diet-record-details")
+    public Response queryCuisineHistory(@RequestParam Long userHistoricalCuisineId) {
+        return Response.success(userBiz.queryUserDietRecordDetails(userHistoricalCuisineId));
+    }
+
     @GetMapping("/query/today-cuisine-history")
-    public Response queryTodayCuisineHistory(@RequestParam String uuid) {
-        return Response.success(userBiz.queryTodayCuisineHistory(uuid));
+    public Response queryUserDietRecords(@RequestParam String uuid) {
+        return Response.success(userBiz.queryUserDietRecords(uuid));
     }
 
     @GetMapping("/query/user-info")

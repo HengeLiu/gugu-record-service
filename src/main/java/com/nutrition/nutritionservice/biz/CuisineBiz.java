@@ -16,6 +16,7 @@ import com.nutrition.nutritionservice.controller.ao.StoreCuisineListAo;
 import com.nutrition.nutritionservice.controller.ao.StorePreviewAo;
 import com.nutrition.nutritionservice.converter.IngredientVo2AoConverter;
 import com.nutrition.nutritionservice.converter.NutrientWeightVo2AoConverter;
+import com.nutrition.nutritionservice.enums.BooleanEnum;
 import com.nutrition.nutritionservice.enums.CodeEnums;
 import com.nutrition.nutritionservice.enums.UnitEnum;
 import com.nutrition.nutritionservice.enums.database.CuisineCategoryEnum;
@@ -27,7 +28,6 @@ import com.nutrition.nutritionservice.enums.database.IngredientCategoryEnum;
 import com.nutrition.nutritionservice.enums.database.ModelGoalEnum;
 import com.nutrition.nutritionservice.exception.NutritionServiceException;
 import com.nutrition.nutritionservice.service.ConfigPropertiesService;
-import com.nutrition.nutritionservice.service.CuisineAdditionalInfoService;
 import com.nutrition.nutritionservice.service.CuisineHistoricalTasteService;
 import com.nutrition.nutritionservice.service.CuisineIngredientCategoryWeightService;
 import com.nutrition.nutritionservice.service.CuisineIngredientRelService;
@@ -43,8 +43,10 @@ import com.nutrition.nutritionservice.util.ModelUtil;
 import com.nutrition.nutritionservice.util.VectorUtil;
 import com.nutrition.nutritionservice.vo.CuisineHistoricalTasteVo;
 import com.nutrition.nutritionservice.vo.CuisineIngredientCategoryWeightVo;
+import com.nutrition.nutritionservice.vo.CuisineIngredientRelVo;
 import com.nutrition.nutritionservice.vo.CuisineNutrientWeightVo;
 import com.nutrition.nutritionservice.vo.CuisineRecommendedScoreWebAo;
+import com.nutrition.nutritionservice.vo.CuisineVo;
 import com.nutrition.nutritionservice.vo.DineRecommendedRateVo;
 import com.nutrition.nutritionservice.vo.IDPageParamVo;
 import com.nutrition.nutritionservice.vo.IngredientNutrientRelVo;
@@ -52,8 +54,6 @@ import com.nutrition.nutritionservice.vo.IngredientVo;
 import com.nutrition.nutritionservice.vo.StoreInfoVo;
 import com.nutrition.nutritionservice.vo.StoreVo;
 import com.nutrition.nutritionservice.vo.modeldata.ModelIngredientCategoryModelVo;
-import com.nutrition.nutritionservice.vo.CuisineIngredientRelVo;
-import com.nutrition.nutritionservice.vo.CuisineVo;
 import com.nutrition.nutritionservice.vo.user.UserIngredientCategoryModelVo;
 import com.nutrition.nutritionservice.vo.user.UserIngredientWeightSumDailyVo;
 import lombok.extern.slf4j.Slf4j;
@@ -108,9 +108,6 @@ public class CuisineBiz {
     private ConfigPropertiesService configPropertiesService;
 
     @Resource
-    private CuisineAdditionalInfoService cuisineAdditionalInfoService;
-
-    @Resource
     private IngredientBiz ingredientBiz;
 
     @Resource
@@ -140,11 +137,15 @@ public class CuisineBiz {
         // 保存菜品食材重量信息
         cuisineIngredientRelService.addBatch(cuisineIngredientRelList);
         CuisineIngredientCategoryWeightVo cuisineIngredientCategoryWeightVo = cuisineIngredientCategoryWeightService
-                .calculateCuisineCategoryWight(cuisineDesignerAo);
+                .calculateIngredientCategoryWightWithCuisine(cuisineDesignerAo);
         // 保存菜品食材分类重量信息
         cuisineIngredientCategoryWeightService.add(cuisineIngredientCategoryWeightVo);
+        // 餐品食材重量
+        Map<Integer, Integer> ingredientCodeWeightMap = cuisineIngredientRelList.stream().collect(
+                Collectors.toMap(CuisineIngredientRelVo::getIngredientCode, CuisineIngredientRelVo::getWeight));
         // 保存菜品营养素重量信息
-        cuisineNutrientWeightService.addAll(this.calculateNutrientWeight(cuisineIngredientRelList, cuisineCode));
+        cuisineNutrientWeightService
+                .addAll(this.ingredientWeightToNutrientWeightVo(ingredientCodeWeightMap, cuisineCode));
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -163,12 +164,15 @@ public class CuisineBiz {
         // 保存菜品食材重量信息
         cuisineIngredientRelService.replaceAllByCuisineCode(cuisineCode, cuisineIngredientRelList);
         CuisineIngredientCategoryWeightVo cuisineIngredientCategoryWeightVo = cuisineIngredientCategoryWeightService
-                .calculateCuisineCategoryWight(cuisineDesignerAo);
+                .calculateIngredientCategoryWightWithCuisine(cuisineDesignerAo);
         // 保存菜品食材分类重量信息
         cuisineIngredientCategoryWeightService.updateByCuisineCode(cuisineIngredientCategoryWeightVo);
+        // 餐品食材重量
+        Map<Integer, Integer> ingredientCodeWeightMap = cuisineIngredientRelList.stream().collect(
+                Collectors.toMap(CuisineIngredientRelVo::getIngredientCode, CuisineIngredientRelVo::getWeight));
         // 保存菜品营养素重量信息
         cuisineNutrientWeightService.updateByCuisineCode(cuisineCode,
-                this.calculateNutrientWeight(cuisineIngredientRelList, cuisineCode));
+                this.ingredientWeightToNutrientWeightVo(ingredientCodeWeightMap, cuisineCode));
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -191,7 +195,7 @@ public class CuisineBiz {
                             .map(baseCuisineIngredientRel -> CuisineIngredientAo.builder()
                                     .code(baseCuisineIngredientRel.getIngredientCode())
                                     .weight(baseCuisineIngredientRel.getWeight())
-                                    .main(baseCuisineIngredientRel.getMain() == 1).build())
+                                    .main(baseCuisineIngredientRel.getMain() == BooleanEnum.TRUE.getCode()).build())
                             .collect(Collectors.toList()));
 
                 }
@@ -210,17 +214,25 @@ public class CuisineBiz {
                 .cuisineIngredientRelList(ingredientCodeWeightMap.entrySet().stream()
                         .map(ingredientWeightEntry -> CuisineIngredientRelVo.builder()
                                 .weight(ingredientWeightEntry.getValue()).ingredientCode(ingredientWeightEntry.getKey())
-                                .main(ingredientMainMap.getOrDefault(ingredientWeightEntry.getKey(), 0) > 0 ? 1 : 0)
+                                .main(ingredientMainMap.getOrDefault(ingredientWeightEntry.getKey(), 0) > 0
+                                        ? BooleanEnum.TRUE.getCode()
+                                        : BooleanEnum.FALSE.getCode())
                                 .build())
                         .collect(Collectors.toList()))
                 .build();
     }
 
-    public List<CuisineNutrientWeightVo> calculateNutrientWeight(
-            List<CuisineIngredientRelVo> cuisineIngredientRelVoList, String cuisineCode) {
-        // 餐品食材重量
-        Map<Integer, Integer> ingredientCodeWeightMap = cuisineIngredientRelVoList.stream().collect(
-                Collectors.toMap(CuisineIngredientRelVo::getIngredientCode, CuisineIngredientRelVo::getWeight));
+    public List<CuisineNutrientWeightVo> ingredientWeightToNutrientWeightVo(
+            Map<Integer, Integer> ingredientCodeWeightMap, String cuisineCode) {
+        Map<Integer, Double> nutrientCodeWeightMap = this.calculateNutrientWeight(ingredientCodeWeightMap);
+        return nutrientCodeWeightMap.entrySet().stream()
+                .map(nutrientCodeWeightEntry -> CuisineNutrientWeightVo.builder().cuisineCode(cuisineCode)
+                        .nutrientCode(nutrientCodeWeightEntry.getKey()).weight(nutrientCodeWeightEntry.getValue())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    public Map<Integer, Double> calculateNutrientWeight(Map<Integer, Integer> ingredientCodeWeightMap) {
         // 食材营养素含量
         Map<Integer, List<IngredientNutrientRelVo>> ingredientNutrientMap = ingredientNutrientRelService
                 .queryByIngredientCodeList(Lists.newArrayList(ingredientCodeWeightMap.keySet())).stream()
@@ -252,11 +264,7 @@ public class CuisineBiz {
                         + nutrientCodeWeightMap.getOrDefault(ingredientNutrientRelVo.getNutrientCode(), 0.0));
             }
         }
-        return nutrientCodeWeightMap.entrySet().stream()
-                .map(nutrientCodeWeightEntry -> CuisineNutrientWeightVo.builder().cuisineCode(cuisineCode)
-                        .nutrientCode(nutrientCodeWeightEntry.getKey()).weight(nutrientCodeWeightEntry.getValue())
-                        .build())
-                .collect(Collectors.toList());
+        return nutrientCodeWeightMap;
     }
 
     public Map<String, List<IngredientVo>> queryIngredientCategoryMap() {
@@ -276,10 +284,10 @@ public class CuisineBiz {
         DineRecommendedRateVo dineRecommendedRateVo = dineRecommendedRateService
                 .selectByCalorieGoalDine(modelIngredientCategoryModelVo.getStandardCalorie(),
                         modelIngredientCategoryModelVo.getGoal(), dineTime);
-        Map<IngredientCategoryEnum, Double> dineRateMap = ModelUtil.modelToCategoryEnumMap(dineRecommendedRateVo);
+        Map<IngredientCategoryEnum, Integer> dineRateMap = ModelUtil.modelToCategoryEnumMap(dineRecommendedRateVo);
         Map<String, Integer> dineRecommendedWeightMap = Maps.newHashMap();
         ingredientCategoryWeightMap.forEach((key, value) -> dineRecommendedWeightMap.put(key.getNameEn(),
-                (int) (value * dineRateMap.getOrDefault(key, 0.0))));
+                value * dineRateMap.getOrDefault(key, 0)));
         return dineRecommendedWeightMap;
     }
 
@@ -288,7 +296,7 @@ public class CuisineBiz {
         Vector<Integer> userModelVector = ModelUtil.modelToVector(userModel);
         DineRecommendedRateVo dineRecommendedRateVo = dineRecommendedRateService
                 .selectByCalorieGoalDine(userModel.getCalorie(), userModel.getGoal(), dineTime);
-        Vector<Double> dineRateVector = ModelUtil.modelToVector(dineRecommendedRateVo);
+        Vector<Integer> dineRateVector = ModelUtil.modelToVector(dineRecommendedRateVo);
         Vector<Double> recommendedWeightVector = VectorUtil.crossProduct(userModelVector, dineRateVector);
         List<CuisineVo> cuisineList = cuisineService.queryPage(pageParamVo);
         List<CuisineIngredientCategoryWeightVo> cuisineCategoryWeightList = cuisineIngredientCategoryWeightService
@@ -304,7 +312,7 @@ public class CuisineBiz {
             UserIngredientCategoryModelVo userModel, UserIngredientWeightSumDailyVo historicalWeightSumDaily,
             IDPageParamVo pageParamVo) {
         Vector<Integer> userModelVector = ModelUtil.modelToVector(userModel);
-        Vector<Double> historicalWeightVector = ModelUtil.modelToVector(historicalWeightSumDaily);
+        Vector<Integer> historicalWeightVector = ModelUtil.modelToVector(historicalWeightSumDaily);
         Vector<Double> subtractionVector = VectorUtil.subtraction(userModelVector, historicalWeightVector);
         List<CuisineVo> cuisineList = cuisineService.queryPage(pageParamVo);
         List<CuisineIngredientCategoryWeightVo> cuisineCategoryWeightList = cuisineIngredientCategoryWeightService
@@ -467,9 +475,17 @@ public class CuisineBiz {
                 log.error("Ingredient not exist, code {}", ingredientCode);
                 continue;
             }
+            IngredientCategoryEnum ingredientCategoryEnum = CodeEnums.valueOf(IngredientCategoryEnum.class,
+                    ingredientVo.getCategoryCode());
+            if (ingredientCategoryEnum == null) {
+                ingredientCategoryEnum = IngredientCategoryEnum.UNKNOWN;
+            }
             cuisineIngredientAoList.add(CuisineIngredientAo.builder().code(ingredientCode).name(ingredientVo.getName())
                     .weight(cuisineIngredientWeightEntry.getValue().getWeight())
-                    .main(cuisineIngredientWeightEntry.getValue().getMain() == 1).build());
+                    .categoryCode(ingredientCategoryEnum.getCode()).categoryName(ingredientCategoryEnum.getNameZh())
+                    .superCategoryCode(ingredientCategoryEnum.getParentCategory().getCode())
+                    .superCategoryName(ingredientCategoryEnum.getParentCategory().getNameZh())
+                    .main(cuisineIngredientWeightEntry.getValue().getMain() == BooleanEnum.TRUE.getCode()).build());
         }
         cuisineDetailsAoBuilder.ingredientList(cuisineIngredientAoList.stream()
                 .sorted(Comparator.comparingInt(CuisineIngredientAo::getWeight).reversed())

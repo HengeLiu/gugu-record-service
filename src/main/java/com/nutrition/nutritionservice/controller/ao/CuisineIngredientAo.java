@@ -40,4 +40,24 @@ public class CuisineIngredientAo implements Serializable {
      */
     private Boolean main;
 
+    /**
+     * 食材分类码
+     */
+    private int categoryCode;
+
+    /**
+     * 食材分类名称
+     */
+    private String categoryName;
+
+    /**
+     * 食材分类码
+     */
+    private int superCategoryCode;
+
+    /**
+     * 食材分类名称
+     */
+    private String superCategoryName;
+
 }

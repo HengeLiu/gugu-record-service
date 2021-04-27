@@ -23,6 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author heng.liu
@@ -82,8 +83,12 @@ public class CuisineTest {
     public void saveCuisineNutrient() {
         List<CuisineVo> cuisineVos = cuisineService.queryByStoreCode("100001");
         for (CuisineVo cuisineVo : cuisineVos) {
-            List<CuisineNutrientWeightVo> cuisineNutrientWeightVoList = cuisineBiz.calculateNutrientWeight(
-                    cuisineIngredientRelService.queryByCuisineCode(cuisineVo.getCode()), cuisineVo.getCode());
+            // 餐品食材重量
+            Map<Integer, Integer> ingredientCodeWeightMap = cuisineIngredientRelService
+                    .queryByCuisineCode(cuisineVo.getCode()).stream().collect(Collectors
+                            .toMap(CuisineIngredientRelVo::getIngredientCode, CuisineIngredientRelVo::getWeight));
+            List<CuisineNutrientWeightVo> cuisineNutrientWeightVoList = cuisineBiz
+                    .ingredientWeightToNutrientWeightVo(ingredientCodeWeightMap, cuisineVo.getCode());
             cuisineNutrientWeightService.addAll(cuisineNutrientWeightVoList);
         }
     }

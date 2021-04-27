@@ -9,86 +9,86 @@ import lombok.Data;
  * @since 2020/12/28
  */
 @Data
-public class CategoryModel<T> {
+public class CategoryModel {
 
     /**
      * 精制谷物
      */
-    protected T processedGrains;
+    protected Integer processedGrains;
 
     /**
      * 全谷物
      */
-    protected T unprocessedGrains;
+    protected Integer unprocessedGrains;
 
     /**
      * 杂豆
      */
-    protected T mixedBeans;
+    protected Integer mixedBeans;
 
     /**
      * 薯类
      */
-    protected T tuber;
+    protected Integer tuber;
 
     /**
      * 一般蔬菜
      */
-    protected T generalVegetables;
+    protected Integer generalVegetables;
 
     /**
      * 深色蔬菜
      */
-    protected T darkVegetables;
+    protected Integer darkVegetables;
 
     /**
      * 水果
      */
-    protected T fruit;
+    protected Integer fruit;
 
     /**
      * 禽肉
      */
-    protected T meat;
+    protected Integer meat;
 
     /**
      * 禽肉
      */
-    protected T poultry;
+    protected Integer poultry;
 
     /**
      * 水产品
      */
-    protected T aquatic;
+    protected Integer aquatic;
 
     /**
      * 蛋
      */
-    protected T egg;
+    protected Integer egg;
 
     /**
      * 乳
      */
-    protected T dairy;
+    protected Integer dairy;
 
     /**
      * 大豆
      */
-    protected T soybean;
+    protected Integer soybean;
 
     /**
      * 坚果
      */
-    protected T nut;
+    protected Integer nut;
 
     /**
      * 烹调油
      */
-    protected T oil;
+    protected Integer oil;
 
     /**
      * 食盐
      */
-    protected T salt;
+    protected Integer salt;
 
 }

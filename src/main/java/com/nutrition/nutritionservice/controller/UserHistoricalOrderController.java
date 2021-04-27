@@ -42,4 +42,9 @@ public class UserHistoricalOrderController {
         return Response.success();
     }
 
+    @GetMapping("/query/details")
+    public Response queryDetails(@RequestParam Long orderHistoryId) {
+        return Response.success(userHistoricalOrderBiz.queryOrderRecordId(orderHistoryId));
+    }
+
 }

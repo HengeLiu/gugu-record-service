@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class UserIngredientCategoryModelVo extends CategoryModel<Integer> implements Serializable {
+public class UserIngredientCategoryModelVo extends CategoryModel implements Serializable {
     private long id;
 
     /**
