@@ -80,10 +80,14 @@ public class ConfigPropertiesService {
     private String fileDownloadPath;
     @Value("${image_host_url}")
     private String imageHostUrl;
+    @Value("${feie_url}")
+    private String feieUrl;
     @Value("${feie_user}")
     private String feieUser;
     @Value("${feie_ukey}")
     private String feieUkey;
+    @Value("${summer_long_label_printer_sn}")
+    private String summerLongLabelPrinterSn;
 
     public UserInfoVo getDefaultUserInfo(GenderEnum genderEnum) {
         if (genderEnum == null || genderEnum == GenderEnum.FEMALE) {
