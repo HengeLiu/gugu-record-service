@@ -17,6 +17,7 @@ public class UUIDTests {
 
         UUID uuid = UUID.randomUUID();
         System.out.println(uuid);
+
     }
 
 }

@@ -1,0 +1,7 @@
+POST http://api.feieyun.cn/Api/Open/
+Content-Type: application/x-www-form-urlencoded
+
+{
+"user":"",
+"
+}
