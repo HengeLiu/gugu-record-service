@@ -64,7 +64,6 @@ public class FeiePrinterTest {
         String sn = configPropertiesService.getSummerLongLabelPrinterSn();
         String stime = String.valueOf(timestamp / 1000);
         String sig = DigestUtils.sha1Hex(feieUser + feieUkey + stime);
-
         bodyEntity.add(new BasicNameValuePair("user", configPropertiesService.getFeieUser()));
         bodyEntity.add(new BasicNameValuePair("stime", stime));
         bodyEntity.add(new BasicNameValuePair("sig", sig));

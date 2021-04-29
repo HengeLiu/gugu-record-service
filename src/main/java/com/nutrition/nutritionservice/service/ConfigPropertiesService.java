@@ -88,6 +88,12 @@ public class ConfigPropertiesService {
     private String feieUkey;
     @Value("${summer_long_label_printer_sn}")
     private String summerLongLabelPrinterSn;
+    @Value("${sf_express_url}")
+    private String sfExpressUrl;
+    @Value("${sf_express_dev_id}")
+    private String sfExpressDevId;
+    @Value("${sf_express_key}")
+    private String sfExpressKey;
 
     public UserInfoVo getDefaultUserInfo(GenderEnum genderEnum) {
         if (genderEnum == null || genderEnum == GenderEnum.FEMALE) {
