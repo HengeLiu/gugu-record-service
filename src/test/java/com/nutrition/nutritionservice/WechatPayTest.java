@@ -9,7 +9,6 @@ import com.wechat.pay.contrib.apache.httpclient.auth.PrivateKeySigner;
 import com.wechat.pay.contrib.apache.httpclient.auth.WechatPay2Credentials;
 import com.wechat.pay.contrib.apache.httpclient.auth.WechatPay2Validator;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.HttpUrl;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -26,12 +25,9 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
-import java.security.Signature;
-import java.security.SignatureException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
@@ -48,8 +44,6 @@ public class WechatPayTest {
 
     @Resource
     private ConfigPropertiesService configPropertiesService;
-
-    private final String schema = "WECHATPAY2-SHA256-RSA2048";
 
     private String merchantId = "1608516327";
     private String merchantSerialNumber = "3805C0F90908991E64A8EC1EC67175797DCF7829";
@@ -137,47 +131,6 @@ public class WechatPayTest {
         } catch (InvalidKeySpecException e) {
             throw new RuntimeException("无效的密钥格式");
         }
-    }
-
-    String getToken(String method, HttpUrl url, String body) {
-        String nonceStr = "your nonce string";
-        long timestamp = System.currentTimeMillis() / 1000;
-        String message = buildMessage(method, url, timestamp, nonceStr, body);
-        String signature = null;
-        try {
-            signature = sign(message.getBytes(StandardCharsets.UTF_8));
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (SignatureException e) {
-            e.printStackTrace();
-        }
-
-        return "mchid=\"" + merchantId + "\"," + "nonce_str=\"" + nonceStr + "\"," + "timestamp=\"" + timestamp + "\","
-                + "serial_no=\"" + merchantSerialNumber + "\"," + "signature=\"" + signature + "\"";
-    }
-
-    String sign(byte[] message) throws NoSuchAlgorithmException, IOException, InvalidKeyException, SignatureException {
-        Signature sign = Signature.getInstance("SHA256withRSA");
-        String privateKeyFilePath = ClassUtils.getDefaultClassLoader().getResource("static").getPath()
-                + "/pem/apiclient_key.pem";
-        log.info("privateKeyFilePath\n" + privateKeyFilePath);
-        sign.initSign(getPrivateKey(privateKeyFilePath));
-        sign.update(message);
-
-        return Base64.getEncoder().encodeToString(sign.sign());
-    }
-
-    String buildMessage(String method, HttpUrl url, long timestamp, String nonceStr, String body) {
-        String canonicalUrl = url.encodedPath();
-        if (url.encodedQuery() != null) {
-            canonicalUrl += "?" + url.encodedQuery();
-        }
-
-        return method + "\n" + canonicalUrl + "\n" + timestamp + "\n" + nonceStr + "\n" + body + "\n";
     }
 
 }
