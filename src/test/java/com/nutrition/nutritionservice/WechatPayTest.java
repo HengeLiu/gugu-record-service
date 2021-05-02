@@ -9,6 +9,7 @@ import com.wechat.pay.contrib.apache.httpclient.auth.PrivateKeySigner;
 import com.wechat.pay.contrib.apache.httpclient.auth.WechatPay2Credentials;
 import com.wechat.pay.contrib.apache.httpclient.auth.WechatPay2Validator;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.HttpUrl;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -28,6 +29,7 @@ import java.nio.file.Paths;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
+import java.security.Signature;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
@@ -49,10 +51,12 @@ public class WechatPayTest {
     private String merchantSerialNumber = "3805C0F90908991E64A8EC1EC67175797DCF7829";
     private String apiV3Key = "d5113334b32e4c159e595c5238daedec";
     private String appId = "wxdc94b625569ad4f3";
+    private String schema = "WECHATPAY2-SHA256-RSA2048";
 
     private PrivateKey merchantPrivateKey;
     private AutoUpdateCertificatesVerifier verifier;
     private WechatPayHttpClientBuilder httpClientBuilder;
+
 
     @BeforeEach
     public void buildPreParam() {
@@ -123,7 +127,6 @@ public class WechatPayTest {
         try {
             String privateKey = content.replace("-----BEGIN PRIVATE KEY-----", "")
                     .replace("-----END PRIVATE KEY-----", "").replaceAll("\\s+", "");
-
             KeyFactory kf = KeyFactory.getInstance("RSA");
             return kf.generatePrivate(new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKey)));
         } catch (NoSuchAlgorithmException e) {
@@ -131,6 +134,58 @@ public class WechatPayTest {
         } catch (InvalidKeySpecException e) {
             throw new RuntimeException("无效的密钥格式");
         }
+    }
+
+    @Test
+    public void testSign() {
+        HttpUrl httpurl = HttpUrl.parse("https://api.mch.weixin.qq.com/v3/pay/transactions/jsapi");
+        log.info("Authorization:" + " " + schema + " " + getToken("GET", httpurl, ""));
+    }
+
+    private String getToken(String method, HttpUrl url, String body) {
+        String nonceStr = "your nonce string";
+        long timestamp = System.currentTimeMillis() / 1000;
+        String message = buildMessage(method, url, timestamp, nonceStr, body);
+        String signature = null;
+        try {
+            signature = sign(message.getBytes(StandardCharsets.UTF_8));
+        } catch (Exception e) {
+            log.error("生成签名时发生异常", e);
+        }
+        return "mchid=\"" + merchantId + "\"," + "nonce_str=\"" + nonceStr + "\"," + "timestamp=\"" + timestamp + "\","
+                + "serial_no=\"" + merchantSerialNumber + "\"," + "signature=\"" + signature + "\"";
+    }
+
+    /**
+     * 使用私钥对签名串进行 SHA256 with RSA 签名后，使用Base64编码。
+     * 
+     * @param message 签名串
+     * @return 签名值
+     * @throws Exception 签名时发生异常
+     */
+    String sign(byte[] message) throws Exception {
+        Signature sign = Signature.getInstance("SHA256withRSA");
+        sign.initSign(merchantPrivateKey);
+        sign.update(message);
+        return Base64.getEncoder().encodeToString(sign.sign());
+    }
+
+    /**
+     * 构造签名串
+     * 
+     * @param method 请求方法
+     * @param url 请求路径
+     * @param timestamp 秒级时间戳
+     * @param nonceStr 32位随机字符串
+     * @param body 请求体JSON格式，或为空字符串
+     * @return 签名串
+     */
+    private String buildMessage(String method, HttpUrl url, long timestamp, String nonceStr, String body) {
+        String canonicalUrl = url.encodedPath();
+        if (url.encodedQuery() != null) {
+            canonicalUrl += "?" + url.encodedQuery();
+        }
+        return method + "\n" + canonicalUrl + "\n" + timestamp + "\n" + nonceStr + "\n" + body + "\n";
     }
 
 }
