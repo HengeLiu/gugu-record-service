@@ -28,7 +28,7 @@ public class CuisineIngredientRelService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public int addBatch(List<CuisineIngredientRelVo> relList) {
+    public int batchAdd(List<CuisineIngredientRelVo> relList) {
         if (CollectionUtils.isEmpty(relList)){
             return 0;
         }
@@ -38,7 +38,7 @@ public class CuisineIngredientRelService {
     @Transactional(rollbackFor = Exception.class)
     public int replaceAllByCuisineCode(String cuisineCode, List<CuisineIngredientRelVo> relList) {
         cuisineIngredientRelDao.deleteByCuisineCode(cuisineCode);
-        return this.addBatch(relList);
+        return this.batchAdd(relList);
     }
 
     public List<CuisineIngredientRelVo> queryByCuisineCode(String cuisineCode) {

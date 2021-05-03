@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nutrition.nutritionservice.dao.CustomCuisineIngredientRelTmpDao">
+    <resultMap id="BaseResultMap" type="com.nutrition.nutritionservice.vo.CustomCuisineIngredientRelTmpVo">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="custom_cuisine_code" jdbcType="VARCHAR" property="customCuisineCode"/>
+        <result column="ingredient_code" jdbcType="INTEGER" property="ingredientCode"/>
+        <result column="weight" jdbcType="INTEGER" property="weight"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, custom_cuisine_code, ingredient_code, weight, create_time, update_time
+    </sql>
+    <sql id="Insert_Column_List">
+        custom_cuisine_code, ingredient_code, weight
+    </sql>
+    <select id="selectByCuisineCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from custom_cuisine_ingredient_rel_tmp
+        where custom_cuisine_code = #{code}
+    </select>
+    <insert id="insert" keyColumn="id" keyProperty="id"
+            parameterType="com.nutrition.nutritionservice.vo.CustomCuisineIngredientRelTmpVo" useGeneratedKeys="true">
+        insert into custom_cuisine_ingredient_rel_tmp (<include refid="Insert_Column_List"/>)
+        values (#{customCuisineCode,jdbcType=VARCHAR}, #{ingredientCode,jdbcType=INTEGER},
+        #{weight,jdbcType=INTEGER})
+    </insert>
+    <insert id="batchInsert">
+        insert into custom_cuisine_ingredient_rel_tmp
+        (<include refid="Insert_Column_List"/>)
+        values
+        <foreach collection="relList" item="rel" index="index" separator=",">
+            (
+            #{rel.customCuisineCode,jdbcType=VARCHAR},
+            #{rel.ingredientCode,jdbcType=INTEGER},
+            #{rel.weight,jdbcType=INTEGER}
+            )
+        </foreach>
+
+    </insert>
+</mapper>

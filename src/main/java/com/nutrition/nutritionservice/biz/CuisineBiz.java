@@ -33,6 +33,8 @@ import com.nutrition.nutritionservice.service.CuisineIngredientCategoryWeightSer
 import com.nutrition.nutritionservice.service.CuisineIngredientRelService;
 import com.nutrition.nutritionservice.service.CuisineNutrientWeightService;
 import com.nutrition.nutritionservice.service.CuisineService;
+import com.nutrition.nutritionservice.service.CustomCuisineIngredientRelTmpService;
+import com.nutrition.nutritionservice.service.CustomCuisineTmpService;
 import com.nutrition.nutritionservice.service.DineRecommendedRateService;
 import com.nutrition.nutritionservice.service.IngredientNutrientRelService;
 import com.nutrition.nutritionservice.service.IngredientService;
@@ -47,6 +49,8 @@ import com.nutrition.nutritionservice.vo.CuisineIngredientRelVo;
 import com.nutrition.nutritionservice.vo.CuisineNutrientWeightVo;
 import com.nutrition.nutritionservice.vo.CuisineRecommendedScoreWebAo;
 import com.nutrition.nutritionservice.vo.CuisineVo;
+import com.nutrition.nutritionservice.vo.CustomCuisineIngredientRelTmpVo;
+import com.nutrition.nutritionservice.vo.CustomCuisineTmpVo;
 import com.nutrition.nutritionservice.vo.DineRecommendedRateVo;
 import com.nutrition.nutritionservice.vo.IDPageParamVo;
 import com.nutrition.nutritionservice.vo.IngredientNutrientRelVo;
@@ -119,6 +123,12 @@ public class CuisineBiz {
     @Resource
     private IngredientNutrientRelService ingredientNutrientRelService;
 
+    @Resource
+    private CustomCuisineTmpService customCuisineTmpService;
+
+    @Resource
+    private CustomCuisineIngredientRelTmpService customCuisineIngredientRelTmpService;
+
     @Transactional(rollbackFor = Exception.class)
     public void addNewCuisine(CuisineDesignerAo cuisineDesignerAo) {
         String cuisineCode = UUID.randomUUID().toString().replace("-", "");
@@ -135,7 +145,7 @@ public class CuisineBiz {
         cuisineIngredientRelList
                 .forEach(cuisineIngredientRelVo -> cuisineIngredientRelVo.setCuisineCode(cuisineCode));
         // 保存菜品食材重量信息
-        cuisineIngredientRelService.addBatch(cuisineIngredientRelList);
+        cuisineIngredientRelService.batchAdd(cuisineIngredientRelList);
         CuisineIngredientCategoryWeightVo cuisineIngredientCategoryWeightVo = cuisineIngredientCategoryWeightService
                 .calculateIngredientCategoryWightWithCuisine(cuisineDesignerAo);
         // 保存菜品食材分类重量信息
@@ -146,6 +156,23 @@ public class CuisineBiz {
         // 保存菜品营养素重量信息
         cuisineNutrientWeightService
                 .addAll(this.ingredientWeightToNutrientWeightVo(ingredientCodeWeightMap, cuisineCode));
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void addNewCustomCuisine(List<CustomCuisineIngredientRelTmpVo> cuisineIngredientRelList, String storeCode) {
+        String cuisineCode = UUID.randomUUID().toString().replace("-", "");
+        if (CollectionUtils.isEmpty(cuisineIngredientRelList)) {
+            throw new NutritionServiceException("Cuisine ingredient list can not be empty when adding.");
+        }
+        // 计算菜品热量
+        Map<Integer, Integer> ingredientWeightMap = cuisineIngredientRelList.stream().collect(Collectors
+                .toMap(CustomCuisineIngredientRelTmpVo::getIngredientCode, CustomCuisineIngredientRelTmpVo::getWeight));
+        double cuisineCalorie = ingredientBiz.calculateCalorieByIngredientWeight(ingredientWeightMap);
+        // 保存菜品基础信息
+        customCuisineTmpService.add(
+                CustomCuisineTmpVo.builder().code(cuisineCode).calorie(cuisineCalorie).storeCode(storeCode).build());
+        // 保存菜品食材重量信息
+        customCuisineIngredientRelTmpService.batchAdd(cuisineIngredientRelList);
     }
 
     @Transactional(rollbackFor = Exception.class)

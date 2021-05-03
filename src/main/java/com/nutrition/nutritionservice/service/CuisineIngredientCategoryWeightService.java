@@ -36,15 +36,20 @@ public class CuisineIngredientCategoryWeightService {
 
     public CuisineIngredientCategoryWeightVo calculateIngredientCategoryWightWithCuisine(
             CuisineDesignerAo cuisineDesignerAo) {
-        Map<Integer, Integer> ingredientWeightMap = cuisineDesignerAo.getCuisineIngredientRelList().stream()
-                .collect(Collectors.toMap(CuisineIngredientRelVo::getIngredientCode, CuisineIngredientRelVo::getWeight,
-                        Integer::sum));
+        return calculateIngredientCategoryWightWithIngredientList(cuisineDesignerAo.getCuisineIngredientRelList(),
+                cuisineDesignerAo.getCuisineVo().getCode(), cuisineDesignerAo.getCuisineVo().getCalorie());
+    }
+
+    public CuisineIngredientCategoryWeightVo calculateIngredientCategoryWightWithIngredientList(
+            List<CuisineIngredientRelVo> cuisineIngredientRelList, String cuisineCode, double cuisineCalorie) {
+        Map<Integer, Integer> ingredientWeightMap = cuisineIngredientRelList.stream().collect(Collectors
+                .toMap(CuisineIngredientRelVo::getIngredientCode, CuisineIngredientRelVo::getWeight, Integer::sum));
         Map<IngredientCategoryEnum, Integer> categoryWeightMap = this
                 .calculateIngredientCategoryWight(ingredientWeightMap);
         CuisineIngredientCategoryWeightVo cuisineIngredientCategoryWeightVo = new CuisineIngredientCategoryWeightVo();
         ModelUtil.categoryEnumMapToModel(categoryWeightMap, cuisineIngredientCategoryWeightVo);
-        cuisineIngredientCategoryWeightVo.setCuisineCode(cuisineDesignerAo.getCuisineVo().getCode());
-        cuisineIngredientCategoryWeightVo.setCalorie(cuisineDesignerAo.getCuisineVo().getCalorie());
+        cuisineIngredientCategoryWeightVo.setCuisineCode(cuisineCode);
+        cuisineIngredientCategoryWeightVo.setCalorie(cuisineCalorie);
         return cuisineIngredientCategoryWeightVo;
     }
 
