@@ -33,23 +33,93 @@ public class FeiePrinterTest {
     private ConfigPropertiesService configPropertiesService;
 
     @Test
-    public void printLabelMsg() {
-
+    public void testPrintLabelMsg() {
         String content = "";
         content += "<DIRECTION>1</DIRECTION>";
-        content += "<TEXT x='10' y='10' font='12' w='1' h='1' r='0'>";
-        content += "测试单子";
+        content += "<TEXT x='10' y='15' font='12' w='1' h='1' r='0'>";
+        content += "自定义套餐";
         content += "</TEXT>";
-        content += "<TEXT x='80' y='40' font='12' w='2' h='2' r='0'>";
-        content += "标题";
+        content += "<TEXT x='10' y='40' font='12' w='2' h='2' r='0'>";
+        content += "美团#91";
         content += "</TEXT>";
 
-        content += "<QR x='10'  y='100'  e='L'  w='20'>这是一个二维码</QR>";
-        content += "<LOGO x='150' y='100'>";
+        content += "<QR x='10'  y='100'  e='L'  w='5'>";
+        content += configPropertiesService.getMiniProgramCuisineDetailsQrUrl() + "customCuisineCodecustomCuisineCode";
+        content += "</QR>";
 
-        content += "<TEXT x='10' y='220' font='12' w='1' h='1' r='0'>";
-        content += "单号：****************";
+        content += "<TEXT x='50' y='310' font='12' w='1' h='1' r='0'>";
+        content += "微信扫码";
         content += "</TEXT>";
+        content += "<TEXT x='270' y='130' font='12' w='2' h='1' r='0'>";
+        content += "光吃不记";
+        content += "</TEXT>";
+        content += "<TEXT x='270' y='220' font='12' w='2' h='1' r='0'>";
+        content += "假把式";
+        content += "</TEXT>";
+        this.printLabelMsg(content, 1);
+    }
+
+    @Test
+    public void printLabelMsg() {
+        String content = "";
+        content += "<DIRECTION>1</DIRECTION>";
+        content += "<TEXT x='10' y='40' font='12' w='2' h='2' r='0'>";
+        content += "青柠鸡胸肉";
+        content += "</TEXT>";
+        content += "<TEXT x='10' y='100' font='12' w='2' h='2' r='0'>";
+        content += "荞麦面";
+        content += "</TEXT>";
+        content += "<TEXT x='10' y='160' font='12' w='2' h='2' r='0'>";
+        content += "标准份量";
+        content += "</TEXT>";
+        this.printLabelMsg(content, 5);
+    }
+
+    @Test
+    public void printCuisineLabelMsg() {
+        String content = "";
+        content += "<DIRECTION>1</DIRECTION>";
+        content += "<TEXT x='20' y='10' font='12' w='2' h='2' r='0'>";
+        content += "嫩煎鸡腿肉";
+        content += "</TEXT>";
+        content += "<TEXT x='20' y='60' font='12' w='2' h='2' r='0'>";
+        content += "花椰菜沙拉";
+        content += "</TEXT>";
+        content += "<TEXT x='20' y='130' font='12' w='1' h='1' r='0'>";
+        content += "总热量: 281 千卡";
+        content += "</TEXT>";
+        content += "<TEXT x='20' y='160' font='12' w='1' h='1' r='0'>";
+        content += "其中肉类热量: 167 千卡";
+        content += "</TEXT>";
+        content += "<TEXT x='20' y='200' font='12' w='1' h='1' r='0'>";
+        content += "蛋白质: 100 克";
+        content += "</TEXT>";
+        this.printLabelMsg(content, 5);
+    }
+
+    @Test
+    public void printRiceLabelMsg() {
+        String content = "";
+        content += "<DIRECTION>1</DIRECTION>";
+        content += "<TEXT x='20' y='10' font='12' w='2' h='2' r='0'>";
+        content += "荞麦面主食碗";
+        content += "</TEXT>";
+        content += "<TEXT x='20' y='60' font='12' w='2' h='2' r='0'>";
+        content += "女生均衡";
+        content += "</TEXT>";
+        content += "<TEXT x='20' y='130' font='12' w='1' h='1' r='0'>";
+        content += "总热量: 340 千卡";
+        content += "</TEXT>";
+        content += "<TEXT x='20' y='160' font='12' w='1' h='1' r='0'>";
+        content += "其中主食热量: 300 千卡";
+        content += "</TEXT>";
+        content += "<TEXT x='20' y='200' font='12' w='1' h='1' r='0'>";
+        content += "蛋白质: 0 克";
+        content += "</TEXT>";
+        this.printLabelMsg(content, 20);
+    }
+
+    private void printLabelMsg(String content, int times) {
 
         RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(30000).setConnectTimeout(30000).build();
 
@@ -70,7 +140,7 @@ public class FeiePrinterTest {
         bodyEntity.add(new BasicNameValuePair("apiname", "Open_printLabelMsg"));// 固定值,不需要修改
         bodyEntity.add(new BasicNameValuePair("sn", sn));
         bodyEntity.add(new BasicNameValuePair("content", content));
-        bodyEntity.add(new BasicNameValuePair("times", "1"));// 打印联数
+        bodyEntity.add(new BasicNameValuePair("times", "" + times));// 打印联数
 
         try {
             httpPost.setEntity(new UrlEncodedFormEntity(bodyEntity, "utf-8"));

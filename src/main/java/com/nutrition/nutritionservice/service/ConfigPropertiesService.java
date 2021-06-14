@@ -94,6 +94,8 @@ public class ConfigPropertiesService {
     private String sfExpressDevId;
     @Value("${sf_express_key}")
     private String sfExpressKey;
+    @Value("${mini_program_cuisine_details_qr_url}")
+    private String miniProgramCuisineDetailsQrUrl;
 
     public UserInfoVo getDefaultUserInfo(GenderEnum genderEnum) {
         if (genderEnum == null || genderEnum == GenderEnum.FEMALE) {
