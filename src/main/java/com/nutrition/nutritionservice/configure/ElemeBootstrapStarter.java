@@ -1,10 +1,7 @@
 package com.nutrition.nutritionservice.configure;
 
 import com.nutrition.nutritionservice.biz.ElemeBusinessHandle;
-import eleme.openapi.ws.sdk.Bootstrap;
-import eleme.openapi.ws.sdk.config.Config;
 import eleme.openapi.ws.sdk.entity.Account;
-import eleme.openapi.ws.sdk.exception.UnableConnectionException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -37,14 +34,14 @@ public class ElemeBootstrapStarter {
 
     @PostConstruct
     private void start() {
-        log.info("eleme bootstrap starting!!!!");
-        Config config = new Config(accounts, elemeBusinessHandle, elemeLogger);
-        try {
-            Bootstrap.start(config);
-            log.info("eleme bootstrap started!!!!");
-        } catch (UnableConnectionException e) {
-            log.error("failed to start eleme bootstrap!!!!", e);
-        }
+//        log.info("eleme bootstrap starting!!!!");
+//        Config config = new Config(accounts, elemeBusinessHandle, elemeLogger);
+//        try {
+//            Bootstrap.start(config);
+//            log.info("eleme bootstrap started!!!!");
+//        } catch (UnableConnectionException e) {
+//            log.error("failed to start eleme bootstrap!!!!", e);
+//        }
 
     }
 

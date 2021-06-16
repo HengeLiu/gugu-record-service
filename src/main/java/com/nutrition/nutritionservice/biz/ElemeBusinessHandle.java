@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ElemeBusinessHandle implements BusinessHandle {
     @Override
     public boolean onMessage(String s) {
-        log.info("eleme message: " + s);
-        return false;
+//        log.info("eleme message: " + s);
+        return true;
     }
 }

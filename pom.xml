@@ -113,6 +113,11 @@
             <artifactId>eleme-java-ws-openapi</artifactId>
             <version>1.0.2-RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>me.ele.openapi</groupId>
+            <artifactId>eleme-openapi-sdk</artifactId>
+            <version>1.30.13</version>
+        </dependency>
         <!-- utils -->
     </dependencies>
 
