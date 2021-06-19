@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.nutrition.nutritionservice.service.ElemeManageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -32,7 +31,7 @@ public class ElemeScheduleTask {
 //        this.shopIdList.add(2086662834L);
     }
 
-    @Scheduled(cron = "0 * * * * ? ")
+//    @Scheduled(cron = "0 * * * * ? ")
     public void autoPrepared() {
         log.info("Start preparing ELEME orders!!!");
         for (Long aLong : shopIdList) {

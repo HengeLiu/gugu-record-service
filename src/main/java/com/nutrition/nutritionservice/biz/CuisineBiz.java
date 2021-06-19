@@ -205,7 +205,10 @@ public class CuisineBiz {
                 .collect(Collectors.toMap(CuisineIngredientAo::getCode, CuisineIngredientAo::getWeight, Integer::sum));
         Map<Integer, Integer> ingredientMainMap = ingredientWeightList.stream()
                 .collect(Collectors.toMap(CuisineIngredientAo::getCode,
-                        cuisineIngredientAo -> cuisineIngredientAo.getMain() ? 1 : 0, Integer::sum));
+                        cuisineIngredientAo -> cuisineIngredientAo.getMain() != null && cuisineIngredientAo.getMain()
+                                ? 1
+                                : 0,
+                        Integer::sum));
         return CuisineDesignerAo.builder()
                 .cuisineVo(CuisineVo.builder().warm(CuisineWarmEnum.COOL.getCode())
                         .status(CuisineStatusEnum.SALE.getCode()).cuisineType(CuisineCategoryEnum.SET.getCode())

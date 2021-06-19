@@ -74,7 +74,7 @@
         )
         values (#{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{price}, #{storeCode,jdbcType=VARCHAR},
         #{calorie,jdbcType=INTEGER}, #{goal,jdbcType=TINYINT}, #{cuisineType,jdbcType=TINYINT},
-        #{dineTime,jdbcType=TINYINT}, #{warm,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{sortPriority}), #{meituanSearchingName}
+        #{dineTime,jdbcType=TINYINT}, #{warm,jdbcType=TINYINT}, #{status,jdbcType=TINYINT}, #{sortPriority}, #{meituanSearchingName})
     </insert>
     <update id="updateStatusByCode" parameterType="java.lang.String">
         update cuisine
